@@ -12,7 +12,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->redirectTo(
+            guests: '/login',
+            users: function (Request $request) {
+                if (!\Illuminate\Support\Facades\Auth::check()) {
+                    return '/login';
+                }
+                $role = \Illuminate\Support\Facades\Auth::user()->role;
+                if ($role === 'staff') return '/dashboard/staff';
+                if ($role === 'admin') return '/dashboard/admin';
+                if ($role === 'psikolog') return '/dashboard/psikolog';
+                return '/';
+            }
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
