@@ -8,7 +8,6 @@ use App\Models\Counselor;
 use App\Models\Client;
 use App\Models\User;
 use App\Models\Pairing;
-use App\Models\CounselingRecord;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -20,8 +19,24 @@ class BookingController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Booking::with(['client', 'counselor', 'staffPenguji', 'staffKoreksi', 'staffPelapor', 'followUpOf', 'participants'])
-            ->latest();
+        $query = Booking::with([
+            'client.assignedStaff',
+            'client.pairings.counselor',
+            'client.clientParticipants',
+            'client.bookings.counselor',
+            'client.bookings.staffPenguji',
+            'client.bookings.staffKoreksi',
+            'client.bookings.staffPelapor',
+            'client.testResults',
+            'counselor',
+            'staffPenguji',
+            'staffKoreksi',
+            'staffPelapor',
+            'followUpOf',
+            'followUps',
+            'participants',
+            'paymentTransaction'
+        ])->latest();
 
         // Staff hanya bisa lihat booking dari klien yang ditugaskan kepadanya,
         // ATAU booking di mana dirinya tercatat sebagai staff penguji/koreksi/pelapor
@@ -49,8 +64,11 @@ class BookingController extends Controller
         }
 
         $bookings = $query->paginate(15)->withQueryString();
+        $clients = Client::orderBy('name')->get();
+        $counselors = Counselor::where('status', 'active')->orderBy('name')->get();
+        $staffs = User::whereIn('role', ['staff', 'admin'])->orderBy('name')->get();
 
-        return view('bookings.index', compact('bookings'));
+        return view('bookings.index', compact('bookings', 'clients', 'counselors', 'staffs'));
     }
 
     /**
@@ -58,12 +76,7 @@ class BookingController extends Controller
      */
     public function create(Request $request)
     {
-        $clients = Client::orderBy('name')->get();
-        $counselors = Counselor::where('status', 'active')->orderBy('name')->get();
-        $staffs = User::whereIn('role', ['staff', 'admin'])->orderBy('name')->get();
-        $selectedClient = $request->filled('client_id') ? Client::find($request->client_id) : null;
-
-        return view('bookings.create', compact('clients', 'counselors', 'staffs', 'selectedClient'));
+        return redirect()->route('dashboard')->with('error', 'Silakan gunakan tombol pop-up Booking pada halaman ini.');
     }
 
     /**
@@ -90,6 +103,34 @@ class BookingController extends Controller
             'session_type' => 'nullable|in:tatap_muka,online,whatsapp',
             'location' => 'nullable|string|max:255',
         ]);
+
+        $extraNotes = [];
+        if ($request->filled('start_time') || $request->filled('end_time')) {
+            $startTime = $request->input('start_time');
+            $endTime = $request->input('end_time');
+            $timeRange = trim(($startTime ?? '') . ($endTime ? ' - ' . $endTime : ''), ' -');
+            if ($timeRange) {
+                $extraNotes[] = "Waktu: " . $timeRange;
+            }
+        }
+        if ($request->filled('session_type')) {
+            $sessionTypeLabel = match($request->input('session_type')) {
+                'online' => 'Online',
+                'whatsapp' => 'WhatsApp',
+                default => 'Tatap Muka',
+            };
+            $extraNotes[] = "Tipe Sesi: " . $sessionTypeLabel;
+        }
+        if ($request->filled('location')) {
+            $extraNotes[] = "Lokasi: " . $request->input('location');
+        }
+
+        if (!empty($extraNotes)) {
+            $sessionInfo = implode(' | ', $extraNotes);
+            $validated['notes'] = !empty($validated['notes'])
+                ? $validated['notes'] . "\n[" . $sessionInfo . "]"
+                : $sessionInfo;
+        }
 
         $booking = Booking::create($validated);
 
@@ -120,7 +161,7 @@ class BookingController extends Controller
         }
         $client->update($clientUpdates);
 
-        // Jika konseling dan konselor dipilih: sinkronkan Pairing & CounselingRecord
+        // Jika konseling dan konselor dipilih: sinkronkan Pairing
         if ($validated['kategori'] === 'konseling' && !empty($validated['counselor_id'])) {
             Pairing::firstOrCreate([
                 'client_id' => $client->id,
@@ -129,27 +170,13 @@ class BookingController extends Controller
                 'status' => 'active',
                 'assigned_by' => auth()->id(),
             ]);
-
-            if (!empty($validated['tanggal_dijadwalkan'])) {
-                $startTime = $request->input('start_time', '09:00');
-                $endTime = $request->input('end_time', '10:30');
-                $scheduledAt = $validated['tanggal_dijadwalkan'] . ' ' . $startTime . ':00';
-                $endAt = $validated['tanggal_dijadwalkan'] . ' ' . $endTime . ':00';
-
-                CounselingRecord::create([
-                    'client_id' => $client->id,
-                    'counselor_id' => $validated['counselor_id'],
-                    'admin_id' => auth()->id(),
-                    'type' => $request->input('session_type', 'tatap_muka'),
-                    'scheduled_at' => $scheduledAt,
-                    'end_time' => $endAt,
-                    'location' => $request->input('location'),
-                    'status' => 'scheduled',
-                ]);
-            }
         }
 
-        return redirect()->route('bookings.create')->with('success', 'Booking berhasil dibuat.');
+        if ($request->filled('from_modal')) {
+            return redirect()->back()->with('success', 'Booking berhasil dibuat.');
+        }
+
+        return redirect()->route('bookings.index')->with('success', 'Booking berhasil dibuat.');
     }
 
     /**
@@ -159,9 +186,87 @@ class BookingController extends Controller
     {
         $this->authorize('view', $booking);
 
-        $booking->load(['client', 'counselor', 'staffPenguji', 'staffKoreksi', 'staffPelapor', 'followUpOf', 'followUps', 'participants', 'paymentTransaction']);
+        $booking->load([
+            'client.assignedStaff',
+            'client.pairings.counselor',
+            'client.clientParticipants',
+            'client.bookings.counselor',
+            'client.bookings.staffPenguji',
+            'client.bookings.staffKoreksi',
+            'client.bookings.staffPelapor',
+            'client.testResults',
+            'counselor',
+            'staffPenguji',
+            'staffKoreksi',
+            'staffPelapor',
+            'followUpOf',
+            'followUps',
+            'participants',
+            'paymentTransaction',
+        ]);
 
-        return view('bookings.show', compact('booking'));
+        $jamDibuat = $booking->created_at ? $booking->created_at->format('H:i') . ' WIB' : '-';
+        $jamSesi = null;
+        if (!empty($booking->notes) && preg_match('/(?:Waktu|Jam)\s*:\s*([0-9]{1,2}:[0-9]{2}(?:\s*-\s*[0-9]{1,2}:[0-9]{2})?)/i', $booking->notes, $matches)) {
+            $jamSesi = trim($matches[1]) . ' WIB';
+        }
+
+        $clientData = $booking->client ? [
+            'id' => $booking->client->id,
+            'name' => $booking->client->name,
+            'jenis' => $booking->client->jenis ?? 'individual',
+            'pic_name' => $booking->client->pic_name,
+            'phone' => $booking->client->phone ?? '-',
+            'email' => $booking->client->email ?? '-',
+            'gender' => $booking->client->gender_label ?? '-',
+            'dob' => $booking->client->dob ? $booking->client->dob->locale('id')->isoFormat('D MMMM Y') : '-',
+            'age' => $booking->client->age_label,
+            'occupation' => $booking->client->occupation ?? '-',
+            'education' => $booking->client->education_label ?? '-',
+            'marital_status' => $booking->client->marital_status ?? '-',
+            'city' => $booking->client->city ?? '',
+            'province' => $booking->client->province ?? '',
+            'country' => $booking->client->country ?? 'Indonesia',
+            'address' => $booking->client->address ?? '-',
+            'status' => $booking->client->status ?? 'unassigned',
+            'status_label' => ucfirst(str_replace('_', ' ', $booking->client->status ?? 'unassigned')),
+            'service_type' => $booking->client->service_type ?? '-',
+            'counseling_type' => $booking->client->counseling_type ?? '-',
+            'notes' => $booking->client->notes ?? '',
+            'assigned_staff' => $booking->client->assignedStaff ? [
+                'name' => $booking->client->assignedStaff->name,
+                'email' => $booking->client->assignedStaff->email,
+            ] : null,
+            'active_counselor' => $booking->client->pairings->where('status', 'active')->first()?->counselor ? [
+                'name' => $booking->client->pairings->where('status', 'active')->first()->counselor->name,
+                'specialization' => $booking->client->pairings->where('status', 'active')->first()->counselor->specialization,
+            ] : null,
+            'participants' => $booking->client->clientParticipants->pluck('nama_peserta')->values()->toArray(),
+            'bookings' => $booking->client->bookings->map(fn($b) => [
+                'id' => $b->id,
+                'kategori' => $b->kategori,
+                'status' => $b->status,
+                'status_label' => ucfirst(str_replace('_', ' ', $b->status)),
+                'tanggal_dibuat' => $b->tanggal_booking_dibuat->format('d M Y'),
+                'tanggal_dijadwalkan' => $b->tanggal_dijadwalkan ? $b->tanggal_dijadwalkan->format('d M Y') : 'Belum Dijadwalkan',
+                'counselor_name' => $b->counselor?->name,
+                'staff_penguji_name' => $b->staffPenguji?->name,
+                'notes' => $b->notes,
+                'update_url' => route('bookings.update', $b),
+            ])->values()->toArray(),
+            'test_results' => $booking->client->testResults->map(fn($t) => [
+                'id' => $t->id,
+                'test_name' => $t->test_name,
+                'status' => $t->status,
+                'status_label' => $t->status_label ?? ucfirst(str_replace('_', ' ', $t->status)),
+                'summary' => $t->result_summary,
+                'url' => route('test-results.show', $t),
+            ])->values()->toArray(),
+            'show_url' => route('clients.show', $booking->client),
+            'edit_url' => route('clients.edit', $booking->client),
+        ] : null;
+
+        return view('bookings.show', compact('booking', 'jamDibuat', 'jamSesi', 'clientData'));
     }
 
     /**
@@ -221,7 +326,7 @@ class BookingController extends Controller
     }
 
     /**
-     * Hapus booking (soft delete).
+     * Hapus booking.
      */
     public function destroy(Booking $booking)
     {

@@ -65,8 +65,8 @@
                             </div>
                         </td>
                         <td class="text-center px-4 py-3.5">
-                            <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-bold {{ $aClient->service_type === 'konseling' ? 'bg-indigo-50 text-indigo-700' : 'bg-amber-50 text-amber-700' }}">
-                                {{ ucfirst($aClient->service_type ?? 'konseling') }}
+                            <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-bold {{ $aClient->service_type === 'konseling' ? 'bg-indigo-50 text-indigo-700' : ($aClient->service_type === 'psikotes' ? 'bg-amber-50 text-amber-700' : 'bg-gray-100 text-gray-600') }}">
+                                {{ $aClient->service_type ? ucfirst($aClient->service_type) : 'Belum Booking' }}
                             </span>
                         </td>
                         <td class="px-5 py-3.5">
@@ -186,8 +186,7 @@
                                     {{ $client->name }}
                                 </a>
                                 <p class="text-xs text-[#6B5B85] truncate">
-                                    {{ ucfirst(str_replace('_', ' ', $client->source)) }}
-                                    · <span class="font-medium text-purple-deep">{{ ucfirst($client->service_type ?? 'konseling') }}</span>
+                                    <span class="font-medium text-purple-deep">{{ $client->service_type ? ucfirst($client->service_type) : 'Belum Ada Layanan' }}</span>
                                     · Terdaftar {{ $client->created_at ? $client->created_at->format('d M Y') : '-' }}
                                 </p>
                             </div>

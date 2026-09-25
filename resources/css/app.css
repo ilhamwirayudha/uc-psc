@@ -12,6 +12,18 @@
     --font-sans: "Montserrat", sans-serif;
 }
 
+[x-cloak] {
+    display: none !important;
+}
+
+html {
+    font-size: 90%;
+    /* Penskalaan native 0.9x untuk semua unit rem Tailwind (spacing, text, sizing) */
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 body {
     font-family: var(--font-sans);
     background-color: #FBF9FD;
@@ -64,9 +76,14 @@ h6 {
         transform: translateY(-4px) !important;
     }
 
+    .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: #E2E8F0 transparent;
+    }
+
     .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: 5px;
+        height: 5px;
     }
 
     .custom-scrollbar::-webkit-scrollbar-track {
@@ -74,11 +91,20 @@ h6 {
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #D9C2F0;
+        background: #E2E8F0;
         border-radius: 9999px;
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #7C4DBE;
+        background: #CBD5E1;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 }

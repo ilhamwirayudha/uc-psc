@@ -58,7 +58,7 @@ class StaffManagementController extends Controller
         }
 
         $activeClients = Client::where('assigned_staff_id', $staff->id)
-            ->with(['creator', 'counselingRecords', 'testResults'])
+            ->with(['creator', 'testResults'])
             ->latest()
             ->get();
 

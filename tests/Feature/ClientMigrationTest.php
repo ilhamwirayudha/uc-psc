@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Counselor;
-use App\Models\CounselingRecord;
 use App\Models\Pairing;
 use App\Models\TestResult;
 use App\Models\Booking;
@@ -52,13 +51,6 @@ class ClientMigrationTest extends TestCase
             'status' => 'active',
         ]);
 
-        $record = CounselingRecord::create([
-            'client_id' => $client->id,
-            'counselor_id' => $counselor->id,
-            'admin_id' => $admin->id,
-            'type' => 'tatap_muka',
-            'status' => 'scheduled',
-        ]);
 
         $booking = Booking::create([
             'client_id' => $client->id,
@@ -79,10 +71,8 @@ class ClientMigrationTest extends TestCase
 
         // Test relations
         $this->assertEquals(1, $client->pairings()->count());
-        $this->assertEquals(1, $client->counselingRecords()->count());
         $this->assertEquals(1, $client->bookings()->count());
         $this->assertEquals($client->id, $booking->client->id);
-        $this->assertEquals($client->id, $record->client->id);
         $this->assertEquals($client->id, $pairing->client->id);
 
         // 3. Check Dashboard page
@@ -119,27 +109,41 @@ class ClientMigrationTest extends TestCase
 
         $this->actingAs($admin);
 
-        // 1. Simpan Klien
+        // 1. Simpan Klien (Registrasi data diri saja, tanpa pemilihan service)
         $response = $this->post(route('clients.store'), [
             'name' => 'Ahmad Konseling',
-            'service_type' => 'konseling',
             'jenis' => 'individual',
             'phone' => '081299991111',
             'email' => 'ahmad@konseling.com',
             'gender' => 'l',
+            'birth_place' => 'Surabaya',
             'dob' => '2000-01-01',
-            'counseling_type' => 'Konseling Individu',
-            'source' => 'whatsapp',
+            'religion' => 'Islam',
+            'marital_status' => 'belum_menikah',
+            'education' => 's1',
+            'occupation' => 'Mahasiswa',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'Jl. Mayjend Sungkono No. 10',
             'status' => 'unassigned',
             'notes' => 'Catatan identitas awal klien konseling.',
         ]);
 
         $client = Client::where('name', 'Ahmad Konseling')->first();
         $this->assertNotNull($client);
+        $this->assertNull($client->service_type);
+        $this->assertEquals(0, $client->bookings()->count());
         $response->assertRedirect(route('clients.create', ['jenis' => 'individual']));
         $response->assertSessionHas('success', 'Data klien berhasil ditambahkan.');
 
-        // 2. Buat Booking Sesi untuk Klien
+        // Klien baru yang belum memiliki booking melihat onboarding banner
+        $showBeforeBooking = $this->get(route('clients.show', $client));
+        $showBeforeBooking->assertStatus(200);
+        $showBeforeBooking->assertSee('Klien Baru Terdaftar — Belum Memiliki Layanan');
+        $showBeforeBooking->assertSee('Daftarkan Layanan / Buat Booking');
+
+        // 2. Buat Booking Sesi untuk Klien (Mengikat layanan Konseling ke Klien)
         $bookingResponse = $this->post(route('bookings.store'), [
             'client_id' => $client->id,
             'kategori' => 'konseling',
@@ -156,13 +160,12 @@ class ClientMigrationTest extends TestCase
 
         $this->assertEquals(1, $client->pairings()->count());
         $this->assertEquals(1, $client->bookings()->count());
-        $this->assertEquals(1, $client->counselingRecords()->count());
 
-        // Verify show page renders Konseling layout
+        // Verify show page renders Konseling layout & record
         $showResponse = $this->get(route('clients.show', $client));
         $showResponse->assertStatus(200);
         $showResponse->assertSee('Konselor yang Dipasangkan');
-        $showResponse->assertSee('Riwayat Sesi Konseling');
+        $showResponse->assertSee('Daftar Sesi Konseling');
     }
 
     public function test_create_client_konseling_group_flow(): void
@@ -181,23 +184,23 @@ class ClientMigrationTest extends TestCase
 
         $this->actingAs($admin);
 
-        // 1. Simpan Klien Group
+        // 1. Simpan Klien Group (Data Kelompok & PIC)
         $response = $this->post(route('clients.store'), [
             'name' => 'Keluarga Bpk. Hendra Wijaya',
-            'service_type' => 'konseling',
             'jenis' => 'group',
             'pic_name' => 'Bpk. Hendra',
             'phone' => '081233445566',
             'email' => 'hendra@keluarga.com',
-            'counseling_type' => 'Konseling Keluarga',
-            'source' => 'whatsapp',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'Jl. Citraland Utama No. 8',
             'status' => 'unassigned',
             'notes' => 'Sesi konseling keluarga berkala.',
         ]);
 
         $client = Client::where('name', 'Keluarga Bpk. Hendra Wijaya')->first();
         $this->assertNotNull($client);
-        $this->assertEquals('konseling', $client->service_type);
         $this->assertEquals('group', $client->jenis);
 
         // 2. Buat Booking Group dengan Peserta
@@ -229,7 +232,6 @@ class ClientMigrationTest extends TestCase
         // Verify show page renders Konseling Berkelompok layout
         $showResponse = $this->get(route('clients.show', $client));
         $showResponse->assertStatus(200);
-        $showResponse->assertSee('Konseling Berkelompok');
         $showResponse->assertSee('Hendra Wijaya (Ayah)');
     }
 
@@ -244,27 +246,32 @@ class ClientMigrationTest extends TestCase
 
         $this->actingAs($admin);
 
-        // 1. Simpan Klien Psikotes
+        // 1. Simpan Klien Psikotes (Tanpa service_type pada registrasi klien)
         $response = $this->post(route('clients.store'), [
             'name' => 'Budi Santoso',
-            'service_type' => 'psikotes',
             'jenis' => 'individual',
             'phone' => '081234567890',
             'email' => 'budi@psikotes.com',
             'gender' => 'l',
+            'birth_place' => 'Sidoarjo',
             'dob' => '1998-05-12',
-            'counseling_type' => 'Tes IQ & Intelegensi (Kognitif)',
-            'source' => 'walk_in',
+            'religion' => 'Islam',
+            'marital_status' => 'belum_menikah',
+            'education' => 's1',
+            'occupation' => 'Karyawan Swasta',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kabupaten Sidoarjo',
+            'address' => 'Jl. Pahlawan No. 45',
             'status' => 'unassigned',
             'notes' => 'Permintaan tes intelegensi untuk syarat pendidikan.',
         ]);
 
         $client = Client::where('name', 'Budi Santoso')->first();
         $this->assertNotNull($client);
-        $this->assertEquals('psikotes', $client->service_type);
         $this->assertEquals('individual', $client->jenis);
 
-        // 2. Buat Booking Psikotes
+        // 2. Buat Booking Psikotes (Mengikat layanan Psikotes ke Klien)
         $bookingResponse = $this->post(route('bookings.store'), [
             'client_id' => $client->id,
             'kategori' => 'psikotes',
@@ -284,8 +291,8 @@ class ClientMigrationTest extends TestCase
         // Verify show page renders Psikotes Individu layout
         $showResponse = $this->get(route('clients.show', $client));
         $showResponse->assertStatus(200);
-        $showResponse->assertSee('Laporan Hasil Tes Psikologi');
-        $showResponse->assertSee('Psikotes Individu');
+        $showResponse->assertSee('Hasil Tes Psikologi');
+        $showResponse->assertSee('Budi Santoso');
     }
 
     public function test_create_client_psikotes_company_flow(): void
@@ -299,23 +306,23 @@ class ClientMigrationTest extends TestCase
 
         $this->actingAs($admin);
 
-        // 1. Simpan Klien Company
+        // 1. Simpan Klien Company (Data Perusahaan & PIC)
         $response = $this->post(route('clients.store'), [
             'name' => 'PT Ciputra Mitra Tbk',
-            'service_type' => 'psikotes',
             'jenis' => 'company',
             'pic_name' => 'Ibu Maria (HR Director)',
             'phone' => '0317654321',
             'email' => 'hrd@ciputra.com',
-            'counseling_type' => 'Asesmen Rekrutmen & Seleksi Karyawan',
-            'source' => 'referral',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'UC Tower Lt. 12, CitraLand Surabaya',
             'status' => 'unassigned',
             'notes' => 'Batch 1 asesmen calon supervisor.',
         ]);
 
         $client = Client::where('name', 'PT Ciputra Mitra Tbk')->first();
         $this->assertNotNull($client);
-        $this->assertEquals('psikotes', $client->service_type);
         $this->assertEquals('company', $client->jenis);
         $this->assertStringContainsString('PIC Perusahaan: Ibu Maria', $client->notes);
 
@@ -344,9 +351,9 @@ class ClientMigrationTest extends TestCase
         // Verify show page renders Psikotes Perusahaan layout
         $showResponse = $this->get(route('clients.show', $client));
         $showResponse->assertStatus(200);
-        $showResponse->assertSee('Daftar Karyawan / Peserta Asesmen');
+        $showResponse->assertSee('Daftar Peserta / Anggota Asesmen');
         $showResponse->assertSee('Karyawan 1 - Denny');
-        $showResponse->assertSee('Psikotes Perusahaan');
+        $showResponse->assertSee('Perusahaan');
     }
 
     public function test_staff_management_detail_and_assignment_management_flow(): void
@@ -447,7 +454,15 @@ class ClientMigrationTest extends TestCase
             'phone' => '081234567890',
             'email' => 'tugas.awal@test.com',
             'gender' => 'p',
+            'birth_place' => 'Surabaya',
             'dob' => '2001-04-15',
+            'religion' => 'Islam',
+            'marital_status' => 'belum_menikah',
+            'education' => 's1',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'Jl. Dharmahusada No. 12',
             'counseling_type' => 'Tes Kepribadian (Personality Profile)',
             'source' => 'whatsapp',
             'status' => 'unassigned',
@@ -485,14 +500,18 @@ class ClientMigrationTest extends TestCase
             'phone' => '08123456',
             'email' => 'short@test.com',
             'gender' => 'l',
+            'birth_place' => 'Surabaya',
             'dob' => '2000-01-01',
+            'religion' => 'Islam',
+            'marital_status' => 'belum_menikah',
+            'education' => 's1',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'Jl. Mayjend Sungkono No. 10',
             'counseling_type' => 'Tes IQ',
             'source' => 'whatsapp',
             'status' => 'unassigned',
-            'session_type' => 'tatap_muka',
-            'scheduled_at' => now()->addDays(1)->format('Y-m-d H:i:s'),
-            'end_time' => now()->addDays(1)->addHours(2)->format('Y-m-d H:i:s'),
-            'location' => 'Ruang 1',
         ]);
         $responseShort->assertSessionHasErrors('phone');
 
@@ -504,14 +523,18 @@ class ClientMigrationTest extends TestCase
             'phone' => '0812345678901234',
             'email' => 'long@test.com',
             'gender' => 'l',
+            'birth_place' => 'Surabaya',
             'dob' => '2000-01-01',
+            'religion' => 'Islam',
+            'marital_status' => 'belum_menikah',
+            'education' => 's1',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'Jl. Mayjend Sungkono No. 10',
             'counseling_type' => 'Tes IQ',
             'source' => 'whatsapp',
             'status' => 'unassigned',
-            'session_type' => 'tatap_muka',
-            'scheduled_at' => now()->addDays(1)->format('Y-m-d H:i:s'),
-            'end_time' => now()->addDays(1)->addHours(2)->format('Y-m-d H:i:s'),
-            'location' => 'Ruang 1',
         ]);
         $responseLong->assertSessionHasErrors('phone');
 
@@ -523,14 +546,18 @@ class ClientMigrationTest extends TestCase
             'phone' => '081234567890',
             'email' => 'valid@test.com',
             'gender' => 'l',
+            'birth_place' => 'Surabaya',
             'dob' => '2000-01-01',
+            'religion' => 'Islam',
+            'marital_status' => 'belum_menikah',
+            'education' => 's1',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'Jl. Mayjend Sungkono No. 10',
             'counseling_type' => 'Tes IQ',
             'source' => 'whatsapp',
             'status' => 'unassigned',
-            'session_type' => 'tatap_muka',
-            'scheduled_at' => now()->addDays(1)->format('Y-m-d H:i:s'),
-            'end_time' => now()->addDays(1)->addHours(2)->format('Y-m-d H:i:s'),
-            'location' => 'Ruang 1',
         ]);
         $responseValid->assertSessionHasNoErrors();
     }
@@ -640,5 +667,59 @@ class ClientMigrationTest extends TestCase
         ])->assertStatus(403);
 
         $this->post(route('assignments.unassign', $client))->assertStatus(403);
+    }
+
+    public function test_update_client_without_source_flow(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin Update Client',
+            'email' => 'adminupdate@test.com',
+            'password' => bcrypt('password'),
+            'role' => 'admin',
+        ]);
+
+        $client = Client::create([
+            'name' => 'Klien Update Test',
+            'service_type' => 'konseling',
+            'jenis' => 'individual',
+            'phone' => '081234567890',
+            'email' => 'clientupdate@test.com',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'Jl. Mayjend Sungkono No. 10',
+            'status' => 'unassigned',
+            'created_by' => $admin->id,
+        ]);
+
+        $this->actingAs($admin);
+
+        // Edit page loads without Sumber Rujukan
+        $editResponse = $this->get(route('clients.edit', $client));
+        $editResponse->assertStatus(200);
+        $editResponse->assertDontSee('Sumber / Rujukan');
+
+        // Update client without source field
+        $updateResponse = $this->from(route('clients.edit', $client))->put(route('clients.update', $client), [
+            'name' => 'Klien Update Sukses',
+            'service_type' => 'konseling',
+            'phone' => '081234567890',
+            'country' => 'Indonesia',
+            'province' => 'Jawa Timur',
+            'city' => 'Kota Surabaya',
+            'address' => 'Jl. Mayjend Sungkono No. 10',
+            'status' => 'ongoing',
+        ]);
+
+        $updateResponse->assertRedirect(route('clients.edit', $client));
+        $updateResponse->assertSessionHas('success', 'Data klien berhasil diperbarui.');
+        $client->refresh();
+        $this->assertEquals('Klien Update Sukses', $client->name);
+        $this->assertEquals('ongoing', $client->status);
+
+        // Show page loads without Sumber Rujukan
+        $showResponse = $this->get(route('clients.show', $client));
+        $showResponse->assertStatus(200);
+        $showResponse->assertDontSee('Sumber Rujukan:');
     }
 }

@@ -6,10 +6,10 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-use App\Models\CounselingRecord;
+use App\Models\Booking;
 
 #[Signature('app:update-client-status')]
-#[Description('Update client status based on counseling schedules')]
+#[Description('Update client status based on booking schedules')]
 class UpdateClientStatus extends Command
 {
     /**
@@ -17,32 +17,17 @@ class UpdateClientStatus extends Command
      */
     public function handle()
     {
-        $now = now();
+        $today = now()->toDateString();
 
-        // 1. Move to ongoing: scheduled_at <= now and end_time > now
-        $ongoingRecords = CounselingRecord::where('status', 'scheduled')
-            ->where('scheduled_at', '<=', $now)
-            ->where('end_time', '>', $now)
+        $bookings = Booking::whereDate('tanggal_dijadwalkan', '<=', $today)
+            ->whereIn('status', ['baru', 'lanjutan'])
+            ->with('client')
             ->get();
 
-        foreach ($ongoingRecords as $record) {
-            $client = $record->client;
+        foreach ($bookings as $booking) {
+            $client = $booking->client;
             if ($client && in_array($client->status, ['assigned', 'needs_followup'])) {
                 $client->update(['status' => 'ongoing']);
-            }
-        }
-
-        // 2. Move to completed (CounselingRecord) and unpaid (Client): end_time <= now
-        $completedRecords = CounselingRecord::where('status', 'scheduled')
-            ->where('end_time', '<=', $now)
-            ->get();
-
-        foreach ($completedRecords as $record) {
-            $record->update(['status' => 'completed']);
-            
-            $client = $record->client;
-            if ($client && $client->status === 'ongoing') {
-                $client->update(['status' => 'unpaid']);
             }
         }
 

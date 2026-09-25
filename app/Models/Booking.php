@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Booking extends Model
 {
-    use SoftDeletes;
 
     protected $fillable = [
         'client_id',
@@ -84,4 +83,17 @@ class Booking extends Model
     {
         return $this->hasMany(BookingParticipant::class);
     }
+
+    // --- Relasi ke hasil psikotes / assessment ---
+
+    public function testResults(): HasMany
+    {
+        return $this->hasMany(TestResult::class);
+    }
+
+    public function testResult(): HasOne
+    {
+        return $this->hasOne(TestResult::class)->latestOfMany();
+    }
 }
+

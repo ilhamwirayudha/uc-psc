@@ -2,6 +2,7 @@
 
 @section('title', 'Detail Staff — ' . $staff->name . ' — UC PSC')
 @section('page-title', 'Detail & Penugasan Staff')
+@section('back-url', route('staff-management.index'))
 
 @section('content')
 <div x-data="{ 
@@ -22,18 +23,12 @@
     }
 }" class="space-y-6">
 
-    {{-- Breadcrumb & Back --}}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <a href="{{ route('staff-management.index') }}" class="inline-flex items-center gap-2 text-xs font-semibold text-purple-deep hover:text-purple-deep/80 transition">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-            <span>Kembali ke Kelola Staff</span>
-        </a>
-        <div class="flex items-center gap-2">
-            <button type="button" @click="assignModalOpen = true" class="bg-purple-deep text-white px-4 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition shadow-xs flex items-center gap-1.5 cursor-pointer">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>Tugaskan Klien Baru</span>
-            </button>
-        </div>
+    {{-- Quick Action Header --}}
+    <div class="flex items-center justify-end">
+        <button type="button" @click="assignModalOpen = true" class="bg-purple-deep text-white px-4 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Tugaskan Klien Baru</span>
+        </button>
     </div>
 
     {{-- Staff Profile Card & Quick Stats --}}
@@ -66,8 +61,8 @@
                     <p class="text-xl font-bold text-purple-deep mt-0.5">{{ $activeClients->count() }}</p>
                 </div>
                 <div class="bg-[#F7F5FB] rounded-xl p-3.5 border border-[#EDE1FA] text-center">
-                    <p class="text-[11px] font-semibold text-[#6B5B85]">Sesi Konseling</p>
-                    <p class="text-xl font-bold text-purple-deep mt-0.5">{{ $staff->counselingRecords()->count() }}</p>
+                    <p class="text-[11px] font-semibold text-[#6B5B85]">Penugasan Kasus</p>
+                    <p class="text-xl font-bold text-purple-deep mt-0.5">{{ \App\Models\Booking::where('staff_penguji_id', $staff->id)->orWhere('staff_koreksi_id', $staff->id)->orWhere('staff_pelapor_id', $staff->id)->count() }}</p>
                 </div>
                 <div class="bg-[#F7F5FB] rounded-xl p-3.5 border border-[#EDE1FA] text-center col-span-2 sm:col-span-1">
                     <p class="text-[11px] font-semibold text-[#6B5B85]">Riwayat Penugasan</p>
@@ -131,8 +126,8 @@
                             <p class="truncate text-[11px]">{{ $client->email ?? '-' }}</p>
                         </td>
                         <td class="text-center px-4 py-3.5">
-                            <span class="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold {{ $client->service_type === 'konseling' ? 'bg-indigo-50 text-indigo-700' : 'bg-amber-50 text-amber-700' }}">
-                                {{ ucfirst($client->service_type ?? 'konseling') }}
+                            <span class="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold {{ $client->service_type === 'konseling' ? 'bg-indigo-50 text-indigo-700' : ($client->service_type === 'psikotes' ? 'bg-amber-50 text-amber-700' : 'bg-gray-100 text-gray-600') }}">
+                                {{ $client->service_type ? ucfirst($client->service_type) : 'Belum Booking' }}
                             </span>
                         </td>
                         <td class="text-center px-4 py-3.5">
@@ -247,7 +242,7 @@
                         <select x-ref="unassignedClientSelect" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm text-[#5B4A73] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                             <option value="">-- Pilih Klien --</option>
                             @foreach($unassignedClients as $uClient)
-                            <option value="{{ $uClient->id }}">{{ $uClient->name }} ({{ ucfirst($uClient->service_type ?? 'konseling') }})</option>
+                            <option value="{{ $uClient->id }}">{{ $uClient->name }} ({{ $uClient->service_type ? ucfirst($uClient->service_type) : 'Belum Booking' }})</option>
                             @endforeach
                         </select>
                     </div>

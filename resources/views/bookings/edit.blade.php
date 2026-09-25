@@ -2,7 +2,7 @@
 
 @section('title', 'Edit Booking — UC PSC')
 @section('page-title', 'Edit Booking #' . $booking->id)
-@section('page-subtitle', 'Perbarui data booking')
+@section('back-url', route('bookings.show', $booking))
 
 @section('content')
 <div class="max-w-3xl" x-data="{

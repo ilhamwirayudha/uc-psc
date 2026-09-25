@@ -6,7 +6,7 @@ use App\Models\Client;
 use App\Models\User;
 use App\Models\Counselor;
 use App\Models\Pairing;
-use App\Models\CounselingRecord;
+use App\Models\Booking;
 use App\Models\TestResult;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -48,16 +48,14 @@ class ClientSeeder extends Seeder
                 'notes' => 'Dipasangkan dengan psikolog klinis dewasa.',
             ]);
 
-            CounselingRecord::create([
+            Booking::create([
                 'client_id' => $john->id,
+                'kategori' => 'konseling',
                 'counselor_id' => $c1->id,
-                'admin_id' => $staff->id,
-                'type' => 'tatap_muka',
-                'scheduled_at' => Carbon::now()->addDays(1)->setTime(10, 0, 0),
-                'end_time' => Carbon::now()->addDays(1)->setTime(11, 30, 0),
-                'location' => 'Ruang Konseling A - Gedung Utama UC',
-                'summary' => 'Sesi 1: Asesmen awal dan identifikasi sumber stres.',
-                'status' => 'scheduled',
+                'tanggal_booking_dibuat' => Carbon::now()->subDays(2)->toDateString(),
+                'tanggal_dijadwalkan' => Carbon::now()->addDays(1)->toDateString(),
+                'status' => 'baru',
+                'notes' => 'Sesi 1: Asesmen awal dan identifikasi sumber stres.',
             ]);
         }
 
@@ -86,16 +84,14 @@ class ClientSeeder extends Seeder
                 'notes' => 'Sesi konseling sedang berlangsung aktif.',
             ]);
 
-            CounselingRecord::create([
+            Booking::create([
                 'client_id' => $andi->id,
+                'kategori' => 'konseling',
                 'counselor_id' => $c3->id,
-                'admin_id' => $staff->id,
-                'type' => 'tatap_muka',
-                'scheduled_at' => Carbon::now()->subMinutes(25),
-                'end_time' => Carbon::now()->addMinutes(35),
-                'location' => 'Ruang Konseling B - Ruang Tenang UC PSC',
-                'summary' => 'Sesi berlangsung: Eksplorasi hambatan karir dan relaksasi progresif.',
-                'status' => 'scheduled',
+                'tanggal_booking_dibuat' => Carbon::now()->subDays(3)->toDateString(),
+                'tanggal_dijadwalkan' => Carbon::now()->toDateString(),
+                'status' => 'baru',
+                'notes' => 'Sesi berlangsung: Eksplorasi hambatan karir dan relaksasi progresif.',
             ]);
         }
 
@@ -124,16 +120,14 @@ class ClientSeeder extends Seeder
                 'notes' => 'Menunggu bukti bayar untuk sesi 1.',
             ]);
 
-            CounselingRecord::create([
+            Booking::create([
                 'client_id' => $sari->id,
+                'kategori' => 'konseling',
                 'counselor_id' => $c1->id,
-                'admin_id' => $staff->id,
-                'type' => 'tatap_muka',
-                'scheduled_at' => Carbon::now()->subHours(4),
-                'end_time' => Carbon::now()->subHours(2)->subMinutes(30),
-                'location' => 'Ruang Konseling A - Gedung Utama UC',
-                'summary' => 'Sesi telah selesai. Klien dan pasangan sepakat membuat kesepakatan pola komunikasi harian.',
-                'status' => 'completed',
+                'tanggal_booking_dibuat' => Carbon::now()->subDays(4)->toDateString(),
+                'tanggal_dijadwalkan' => Carbon::now()->toDateString(),
+                'status' => 'selesai',
+                'notes' => 'Sesi telah selesai. Klien dan pasangan sepakat membuat kesepakatan pola komunikasi harian.',
             ]);
         }
 
@@ -162,16 +156,15 @@ class ClientSeeder extends Seeder
                 'notes' => 'Tester psikolog pendidikan.',
             ]);
 
-            CounselingRecord::create([
+            Booking::create([
                 'client_id' => $reza->id,
+                'kategori' => 'psikotes',
+                'staff_penguji_id' => $staff->id,
                 'counselor_id' => $c4->id,
-                'admin_id' => $staff->id,
-                'type' => 'tatap_muka',
-                'scheduled_at' => Carbon::now()->subDays(1)->setTime(13, 0, 0),
-                'end_time' => Carbon::now()->subDays(1)->setTime(15, 0, 0),
-                'location' => 'Lab Psikodiagnostik UC Lantai 3',
-                'summary' => 'Pelaksanaan tes minat bakat RIASEC dan inventori kepribadian 16PF berjalan lancar.',
-                'status' => 'completed',
+                'tanggal_booking_dibuat' => Carbon::now()->subDays(5)->toDateString(),
+                'tanggal_dijadwalkan' => Carbon::now()->subDays(1)->toDateString(),
+                'status' => 'selesai',
+                'notes' => 'Pelaksanaan tes minat bakat RIASEC dan inventori kepribadian 16PF berjalan lancar.',
             ]);
 
             TestResult::create([
@@ -209,16 +202,14 @@ class ClientSeeder extends Seeder
                 'notes' => 'Jadwalkan follow-up sesi kedua.',
             ]);
 
-            CounselingRecord::create([
+            Booking::create([
                 'client_id' => $maya->id,
+                'kategori' => 'konseling',
                 'counselor_id' => $c2->id,
-                'admin_id' => $staff->id,
-                'type' => 'online',
-                'scheduled_at' => Carbon::now()->subDays(2)->setTime(14, 0, 0),
-                'end_time' => Carbon::now()->subDays(2)->setTime(15, 30, 0),
-                'location' => 'https://meet.google.com/uc-family-counseling',
-                'summary' => 'Sesi 1 selesai. Perlu sesi 2 untuk melibatkan anggota keluarga lainnya.',
-                'status' => 'completed',
+                'tanggal_booking_dibuat' => Carbon::now()->subDays(6)->toDateString(),
+                'tanggal_dijadwalkan' => Carbon::now()->subDays(2)->toDateString(),
+                'status' => 'selesai',
+                'notes' => 'Sesi 1 selesai. Perlu sesi 2 untuk melibatkan anggota keluarga lainnya.',
             ]);
         }
 
@@ -247,16 +238,15 @@ class ClientSeeder extends Seeder
                 'notes' => 'Kasus asesmen tuntas diserahkan ke orang tua.',
             ]);
 
-            CounselingRecord::create([
+            Booking::create([
                 'client_id' => $fajar->id,
+                'kategori' => 'psikotes',
+                'staff_penguji_id' => $staff->id,
                 'counselor_id' => $c2->id,
-                'admin_id' => $staff->id,
-                'type' => 'tatap_muka',
-                'scheduled_at' => Carbon::now()->subDays(5)->setTime(9, 0, 0),
-                'end_time' => Carbon::now()->subDays(5)->setTime(11, 0, 0),
-                'location' => 'Ruang Asesmen Tumbuh Kembang Anak',
-                'summary' => 'Asesmen NST (Nijmeegse Schoolbekwaamheids Test) dan observasi motorik halus/kasar selesai.',
-                'status' => 'completed',
+                'tanggal_booking_dibuat' => Carbon::now()->subDays(8)->toDateString(),
+                'tanggal_dijadwalkan' => Carbon::now()->subDays(5)->toDateString(),
+                'status' => 'selesai',
+                'notes' => 'Asesmen NST (Nijmeegse Schoolbekwaamheids Test) dan observasi motorik halus/kasar selesai.',
             ]);
 
             TestResult::create([

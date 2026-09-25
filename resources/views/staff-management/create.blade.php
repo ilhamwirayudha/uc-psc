@@ -2,7 +2,7 @@
 
 @section('title', 'Tambah Staff — UC PSC')
 @section('page-title', 'Tambah Staff Baru')
-@section('page-subtitle', 'Buat akun staff baru untuk sistem UC PSC')
+@section('back-url', route('staff-management.index'))
 
 @section('content')
 <div class="max-w-2xl">
