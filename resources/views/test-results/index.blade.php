@@ -160,7 +160,7 @@
                         <a href="{{ route('clients.show', $test->client) }}" class="font-bold text-[#2A2035] hover:text-purple-deep hover:underline block truncate max-w-[160px]">
                             {{ $test->client->name ?? '-' }}
                         </a>
-                        <span class="text-[10px] text-[#827299] capitalize">{{ $test->client->jenis ?? 'Individu' }}</span>
+                        <span class="text-[10px] text-[#827299]">{{ in_array(strtolower($test->client->jenis ?? ''), ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}</span>
                     </td>
 
                     {{-- 3. Nama Tes --}}

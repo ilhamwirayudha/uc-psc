@@ -39,6 +39,13 @@ class Client extends Model
         'dob' => 'date',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function (Client $client) {
+            $client->clientForms()->delete();
+        });
+    }
+
     public function getPicNameAttribute(): ?string
     {
         if (!empty($this->attributes['pic_name'])) {
@@ -54,6 +61,23 @@ class Client extends Model
         }
 
         return null;
+    }
+
+    public function getJenisLabelAttribute(): string
+    {
+        return in_array(strtolower($this->jenis ?? ''), ['industri', 'company', 'perusahaan'])
+            ? 'Industri'
+            : 'Individu';
+    }
+
+    public function isIndustri(): bool
+    {
+        return in_array(strtolower($this->jenis ?? ''), ['industri', 'company', 'perusahaan']);
+    }
+
+    public function isIndividu(): bool
+    {
+        return !$this->isIndustri();
     }
 
     public function creator(): BelongsTo
@@ -79,6 +103,11 @@ class Client extends Model
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function clientForms(): HasMany
+    {
+        return $this->hasMany(ClientForm::class);
     }
 
 

@@ -3,7 +3,6 @@
 @section('title', 'Kasus Asesmen Psikotes — ' . $testResult->test_name . ' — UC PSC')
 @section('page-title', 'Detail Kasus Psikotes')
 @section('page-subtitle', 'Manajemen siklus pelaksanaan, koreksi, laporan psikologis, dan penyerahan hasil')
-@section('back-url', route('test-results.index'))
 
 @section('content')
 <div x-data="{
@@ -284,7 +283,7 @@
                         <a href="{{ route('clients.show', $testResult->client) }}" class="font-bold text-purple-deep hover:underline mt-0.5 block">
                             {{ $testResult->client->name }}
                         </a>
-                        <span class="text-[10px] text-[#827299] capitalize">{{ $testResult->client->jenis ?? 'Individu' }}</span>
+                        <span class="text-[10px] text-[#827299]">{{ in_array(strtolower($testResult->client->jenis ?? ''), ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}</span>
                     </div>
 
                     <div>

@@ -42,10 +42,13 @@ class ClientController extends Controller
         }
 
         if ($request->filled('jenis')) {
-            if ($request->jenis === 'individual') {
+            $j = strtolower($request->jenis);
+            if (in_array($j, ['individu', 'individual'])) {
                 $query->where(function($q) {
-                    $q->where('jenis', 'individual')->orWhereNull('jenis');
+                    $q->whereIn('jenis', ['individu', 'individual', 'group', 'pasangan'])->orWhereNull('jenis');
                 });
+            } elseif (in_array($j, ['industri', 'company', 'perusahaan'])) {
+                $query->whereIn('jenis', ['industri', 'company', 'perusahaan']);
             } else {
                 $query->where('jenis', $request->jenis);
             }
@@ -63,26 +66,15 @@ class ClientController extends Controller
                   ->orderBy('users.name', $direction)
                   ->select('clients.*');
         } elseif ($sort === 'jenis') {
-            if ($direction === 'group') {
+            if ($direction === 'desc') {
                 $query->orderByRaw("CASE 
-                    WHEN clients.jenis = 'group' THEN 1 
-                    WHEN clients.jenis = 'individual' OR clients.jenis IS NULL THEN 2 
-                    WHEN clients.jenis = 'company' THEN 3 
-                    ELSE 4 END ASC")
-                    ->orderBy('clients.created_at', 'desc');
-            } elseif ($direction === 'company' || $direction === 'desc') {
-                $query->orderByRaw("CASE 
-                    WHEN clients.jenis = 'company' THEN 1 
-                    WHEN clients.jenis = 'group' THEN 2 
-                    WHEN clients.jenis = 'individual' OR clients.jenis IS NULL THEN 3 
-                    ELSE 4 END ASC")
+                    WHEN clients.jenis IN ('industri', 'company', 'perusahaan') THEN 1 
+                    ELSE 2 END ASC")
                     ->orderBy('clients.created_at', 'desc');
             } else {
                 $query->orderByRaw("CASE 
-                    WHEN clients.jenis = 'individual' OR clients.jenis IS NULL THEN 1 
-                    WHEN clients.jenis = 'group' THEN 2 
-                    WHEN clients.jenis = 'company' THEN 3 
-                    ELSE 4 END ASC")
+                    WHEN clients.jenis IN ('industri', 'company', 'perusahaan') THEN 2 
+                    ELSE 1 END ASC")
                     ->orderBy('clients.created_at', 'desc');
             }
         } elseif (in_array($sort, ['id', 'name', 'created_at', 'updated_at', 'service_type', 'city', 'phone', 'email'])) {
@@ -91,9 +83,13 @@ class ClientController extends Controller
             $query->orderBy('clients.created_at', $direction);
         }
 
-        $clients = $query->paginate(15)->withQueryString();
+        $perPage = in_array((int) $request->get('per_page', 25), [10, 25, 50, 100])
+            ? (int) $request->get('per_page', 25)
+            : 25;
 
-        return view('clients.index', compact('clients', 'sort', 'direction'));
+        $clients = $query->paginate($perPage)->withQueryString();
+
+        return view('clients.index', compact('clients', 'sort', 'direction', 'perPage'));
     }
 
     public function create()
@@ -103,21 +99,24 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
-        if (!$request->filled('jenis')) {
-            $request->merge(['jenis' => 'individual']);
-        }
+        $rawJenis = $request->input('jenis', 'individu');
+        $jenis = in_array(strtolower($rawJenis), ['industri', 'company', 'perusahaan']) ? 'industri' : 'individu';
+        $isIndividual = $jenis === 'individu';
 
-        $jenis = $request->input('jenis', 'individual');
-        $isIndividual = $jenis === 'individual';
+        // Filter daftar peserta kosong jika ada
+        if ($request->has('participants') && is_array($request->participants)) {
+            $cleaned = array_values(array_filter(array_map('trim', $request->participants), fn($v) => !empty($v)));
+            $request->merge(['participants' => $cleaned]);
+        }
 
         $rules = [
             'service_type' => 'nullable|in:konseling,psikotes',
-            'jenis' => 'nullable|in:individual,company,group',
+            'jenis' => 'nullable|in:individu,industri,individual,company,group',
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[^0-9]+$/u',
+                ...($isIndividual ? ['regex:/^[^0-9]+$/u'] : []),
             ],
             'phone' => [
                 'required',
@@ -136,13 +135,17 @@ class ClientController extends Controller
             'occupation' => 'nullable|string|max:255',
             'education' => 'nullable|string|max:100',
             'marital_status' => 'nullable|string|max:100',
-            'country' => 'required|string|max:100',
-            'province' => 'nullable|required_if:country,Indonesia|string|max:100',
-            'city' => 'nullable|required_if:country,Indonesia|string|max:100',
+            'country' => 'nullable|string|max:100',
+            'province' => 'nullable|string|max:100',
+            'city' => 'nullable|string|max:100',
             'address' => 'required|string|max:1000',
             'source' => 'nullable|string|max:255',
             'status' => 'nullable|in:unassigned,assigned,ongoing,unpaid,paid,needs_followup,completed',
             'notes' => 'nullable|string',
+            'kontak_darurat' => 'nullable|string|max:255',
+            'alasan_konseling' => 'nullable|string',
+            'posisi_dituju' => 'nullable|string|max:255',
+            'suku_bangsa' => 'nullable|string|max:100',
         ];
 
         if ($isIndividual) {
@@ -163,7 +166,7 @@ class ClientController extends Controller
             $rules['religion'] = 'nullable|string|max:100';
             $rules['marital_status'] = 'nullable|string|max:100';
             $rules['education'] = 'nullable|string|max:100';
-            $rules['participants'] = 'required|array|min:2';
+            $rules['participants'] = 'nullable|array';
             $rules['participants.*'] = 'required|string|max:255';
         }
 
@@ -173,22 +176,45 @@ class ClientController extends Controller
             'religion.required' => 'Agama wajib dipilih.',
             'marital_status.required' => 'Status perkawinan wajib dipilih.',
             'education.required' => 'Pendidikan terakhir wajib dipilih.',
-            'country.required' => 'Negara wajib dipilih.',
-            'province.required_if' => 'Provinsi wajib dipilih untuk negara Indonesia.',
-            'city.required_if' => 'Kota / Kabupaten wajib dipilih untuk negara Indonesia.',
             'address.required' => 'Alamat lengkap wajib diisi.',
-            'participants.required' => 'Daftar anggota wajib diisi untuk klien kelompok / perusahaan.',
-            'participants.min' => 'Klien kelompok / perusahaan harus memiliki minimal 2 anggota. Jika hanya 1, gunakan jenis Individu.',
-            'participants.*.required' => 'Nama anggota tidak boleh kosong.',
+            'participants.*.required' => 'Nama anggota/karyawan tidak boleh kosong.',
         ]);
 
         $validated['created_by'] = auth()->id();
-        $validated['jenis'] = $validated['jenis'] ?? 'individual';
+        $validated['jenis'] = $jenis;
         $validated['status'] = $validated['status'] ?? 'unassigned';
 
         if (!$isIndividual) {
             $validated['pic_name'] = $request->pic_name;
         }
+
+        // Susun catatan tambahan spesifik formulir jika diisi
+        $extraNotes = [];
+        if ($isIndividual) {
+            if (!empty($validated['suku_bangsa'])) {
+                $extraNotes[] = "Suku Bangsa: " . $validated['suku_bangsa'];
+            }
+            if (!empty($validated['kontak_darurat'])) {
+                $extraNotes[] = "Kontak Darurat: " . $validated['kontak_darurat'];
+            }
+            if (!empty($validated['alasan_konseling'])) {
+                $extraNotes[] = "Alasan Konseling / Kebutuhan Layanan:\n" . $validated['alasan_konseling'];
+            }
+        } else {
+            if (!empty($validated['posisi_dituju'])) {
+                $extraNotes[] = "Posisi yang Dituju: " . $validated['posisi_dituju'];
+            }
+            if (!empty($validated['kontak_darurat'])) {
+                $extraNotes[] = "Kontak Darurat: " . $validated['kontak_darurat'];
+            }
+        }
+
+        if (!empty($extraNotes)) {
+            $currentNotes = trim($validated['notes'] ?? '');
+            $validated['notes'] = implode("\n\n", array_filter([$currentNotes, implode("\n", $extraNotes)]));
+        }
+
+        unset($validated['suku_bangsa'], $validated['kontak_darurat'], $validated['alasan_konseling'], $validated['posisi_dituju']);
 
         $participants = $validated['participants'] ?? [];
         unset($validated['participants']);
@@ -218,9 +244,12 @@ class ClientController extends Controller
         $this->authorize('view', $client);
 
         $client->load([
+            'clientForms' => fn($q) => $q->latest(),
+            'clientForms.booking',
             'creator',
             'pairings.counselor',
             'pairings.assigner',
+
             'testResults.administrator',
             'testResults.deliveredBy',
             'testResults.booking.staffPenguji',
@@ -355,6 +384,7 @@ class ClientController extends Controller
 
     public function destroy(Client $client)
     {
+        $client->clientForms()->delete();
         $client->delete();
         return redirect()->route('clients.index')->with('success', 'Klien berhasil dihapus.');
     }

@@ -3,7 +3,6 @@
 @section('title', 'Edit Konselor — UC PSC')
 @section('page-title', 'Edit Data Konselor')
 @section('page-subtitle', 'Perbarui data identitas, kualifikasi, atau status konselor')
-@section('back-url', route('counselors.index'))
 
 @section('content')
 @include('clients.partials.address-script')

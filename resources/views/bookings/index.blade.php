@@ -33,7 +33,7 @@
         </form>
         <button type="button" @click="$dispatch('open-booking-modal')" class="px-4 py-2 bg-orange text-white text-sm font-semibold rounded-xl hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center gap-1.5">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <span>+ Booking Baru</span>
+            <span>Booking Baru</span>
         </button>
     </div>
 
@@ -69,7 +69,7 @@
                         $clientData = $booking->client ? [
                             'id' => $booking->client->id,
                             'name' => $booking->client->name,
-                            'jenis' => $booking->client->jenis ?? 'individual',
+                            'jenis' => $booking->client->jenis ?? 'individu',
                             'pic_name' => $booking->client->pic_name,
                             'phone' => $booking->client->phone ?? '-',
                             'email' => $booking->client->email ?? '-',
@@ -200,7 +200,7 @@
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-60 shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                             </button>
                             <span class="text-[10px] text-[#827299] capitalize block">
-                                {{ $booking->client->jenis ?? 'individual' }}
+                                {{ in_array($booking->client->jenis ?? '', ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}
                                 @if($booking->client->pic_name)
                                 • PIC: {{ $booking->client->pic_name }}
                                 @endif
@@ -259,6 +259,14 @@
                                    ($booking->status === 'lanjutan' ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-600')) }}">
                                 {{ ucfirst(str_replace('_', ' ', $booking->status)) }}
                             </span>
+                            @if($booking->kategori === 'konseling' && $booking->is_realized)
+                            <span class="mt-1 block px-2 py-0.5 rounded text-[10px] font-semibold w-fit
+                                {{ $booking->is_overtime ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-600' }}">
+                                {{ $booking->is_overtime ? '⏱ Overtime' : '✓ Tepat Waktu' }}
+                            </span>
+                            @elseif($booking->kategori === 'konseling')
+                            <span class="mt-1 block text-[10px] text-gray-400">Belum diinput</span>
+                            @endif
                         </td>
 
                         {{-- Konselor / Staff --}}
@@ -313,8 +321,9 @@
                         <div class="flex items-center gap-2 flex-wrap">
                             <h3 class="font-extrabold text-base text-[#2A2035]" x-text="selectedBooking?.client?.name || 'Detail Klien'"></h3>
                             <span 
-                                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-deep/10 text-purple-deep"
-                                x-text="selectedBooking?.client?.jenis || 'individual'"
+                                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                                :class="['industri', 'company', 'perusahaan'].includes(selectedBooking?.client?.jenis) ? 'bg-amber-50 text-amber-700' : 'bg-purple-deep/10 text-purple-deep'"
+                                x-text="['industri', 'company', 'perusahaan'].includes(selectedBooking?.client?.jenis) ? 'INDUSTRI' : 'INDIVIDU'"
                             ></span>
                             <span 
                                 class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
@@ -821,9 +830,9 @@
                         </div>
                     </div>
 
-                    {{-- Peserta (Jika Company / Kelompok) --}}
-                    <div x-show="editForm.client_jenis === 'company'" class="bg-[#FAF8FD] p-4 rounded-2xl border border-[#EDE1FA] space-y-2.5">
-                        <label class="block font-semibold text-[#5B4A73]">Daftar Peserta Perusahaan / Kelompok</label>
+                    {{-- Peserta (Jika Industri) --}}
+                    <div x-show="['industri', 'company'].includes(editForm.client_jenis)" class="bg-[#FAF8FD] p-4 rounded-2xl border border-[#EDE1FA] space-y-2.5">
+                        <label class="block font-semibold text-[#5B4A73]">Daftar Peserta / Karyawan Industri</label>
                         <template x-for="(p, i) in editForm.participants" :key="i">
                             <div class="flex items-center gap-2">
                                 <span class="w-5 h-5 rounded-full bg-purple-deep/10 text-purple-deep font-bold text-[10px] flex items-center justify-center shrink-0" x-text="i + 1"></span>
@@ -899,7 +908,7 @@ function bookingManager() {
         editForm: {
             id: null,
             client_id: '',
-            client_jenis: 'individual',
+            client_jenis: 'individu',
             kategori: 'konseling',
             tanggal_booking_dibuat: '',
             tanggal_dijadwalkan: '',
@@ -932,7 +941,7 @@ function bookingManager() {
         openEdit(booking) {
             this.editForm.id = booking.id;
             this.editForm.client_id = booking.client?.id || '';
-            this.editForm.client_jenis = booking.client?.jenis || 'individual';
+            this.editForm.client_jenis = booking.client?.jenis || 'individu';
             this.editForm.kategori = booking.kategori || 'konseling';
             this.editForm.tanggal_booking_dibuat = booking.tanggal_booking_dibuat || '';
             this.editForm.tanggal_dijadwalkan = booking.tanggal_dijadwalkan || '';
@@ -952,7 +961,7 @@ function bookingManager() {
         onClientChange(event) {
             const opt = event.target.selectedOptions[0];
             if (opt) {
-                this.editForm.client_jenis = opt.dataset.jenis || 'individual';
+                this.editForm.client_jenis = opt.dataset.jenis || 'individu';
             }
         },
 

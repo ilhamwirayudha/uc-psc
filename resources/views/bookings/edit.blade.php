@@ -2,12 +2,11 @@
 
 @section('title', 'Edit Booking — UC PSC')
 @section('page-title', 'Edit Booking #' . $booking->id)
-@section('back-url', route('bookings.show', $booking))
 
 @section('content')
 <div class="max-w-3xl" x-data="{
     kategori: '{{ old('kategori', $booking->kategori) }}',
-    jenisKlien: '{{ $booking->client->jenis ?? 'individual' }}',
+    jenisKlien: '{{ $booking->client->jenis ?? 'individu' }}',
     participants: {{ json_encode($booking->participants->pluck('nama_peserta')->count() > 0 ? $booking->participants->pluck('nama_peserta')->toArray() : ['']) }},
     addParticipant() { this.participants.push('') },
     removeParticipant(i) { this.participants.splice(i, 1) }
@@ -18,7 +17,7 @@
         {{-- Klien --}}
         <div>
             <label class="block text-xs font-medium text-[#6B5B85] mb-1">Klien <span class="text-red-500">*</span></label>
-            <select name="client_id" required @change="jenisKlien = $event.target.selectedOptions[0].dataset.jenis || 'individual'"
+            <select name="client_id" required @change="jenisKlien = $event.target.selectedOptions[0].dataset.jenis || 'individu'"
                 class="w-full px-3 py-2 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep">
                 <option value="">Pilih Klien...</option>
                 @foreach($clients as $client)
@@ -107,9 +106,9 @@
             </div>
         </div>
 
-        {{-- Peserta (Company) --}}
-        <div x-show="jenisKlien === 'company'" x-transition class="space-y-3">
-            <label class="block text-xs font-medium text-[#6B5B85]">Peserta (Company)</label>
+        {{-- Peserta (Industri) --}}
+        <div x-show="jenisKlien === 'industri' || jenisKlien === 'company'" x-transition class="space-y-3">
+            <label class="block text-xs font-medium text-[#6B5B85]">Peserta (Industri)</label>
             <template x-for="(p, i) in participants" :key="i">
                 <div class="flex items-center gap-2">
                     <input type="text" :name="'participants[' + i + ']'" x-model="participants[i]" placeholder="Nama peserta..."

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UC PSC Management System</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-ucpsc.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -31,6 +33,7 @@
     }" 
     @keydown.escape.window="showLogoutModal = false; showUnsavedModal = false; sidebarOpen = false"
     @open-unsaved-modal.window="showUnsavedModal = true; pendingUrl = $event.detail.url; isBrowserBack = $event.detail.isBrowserBack"
+    @open-logout-modal.window="showLogoutModal = true"
 >
     {{-- Splash Screen on Refresh / Load --}}
     <x-splash-screen />
@@ -53,14 +56,14 @@
         {{-- ===== SIDEBAR ===== --}}
         <aside 
             id="sidebar" 
-            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'" 
-            class="fixed inset-y-0 left-0 z-40 w-64 bg-purple-deep text-white shadow-xl transform transition-transform duration-300 select-none flex flex-col justify-between"
+            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
+            class="fixed inset-y-0 left-0 z-40 w-64 bg-purple-deep text-white shadow-xl transition-transform duration-300 ease-in-out lg:translate-x-0 select-none flex flex-col justify-between"
         >
             <div class="flex-1 flex flex-col min-h-0">
                 {{-- Logo Header --}}
-                <div class="px-6 py-5.5 border-b border-white/10 flex items-center flex-shrink-0">
+                <div class="px-5 py-5 border-b border-white/10 flex items-center justify-between flex-shrink-0">
                     <a href="{{ route('dashboard') }}" class="block" onclick="sessionStorage.setItem('show_splash_logo', '1')">
-                        <img src="{{ asset('images/logo-ucpsc-white.png') }}" alt="Logo Resmi UC PSC" class="h-14 sm:h-15 w-auto object-contain">
+                        <img src="{{ asset('images/logo-ucpsc-white.png') }}" alt="Logo Resmi UC PSC" class="h-14 sm:h-16 w-auto object-contain">
                     </a>
                 </div>
 
@@ -77,7 +80,12 @@
 
                     <a href="{{ route('clients.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('clients.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <span>Klien</span>
+                        <span>Daftar Klien</span>
+                    </a>
+
+                    <a href="{{ route('client-forms.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('client-forms.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        <span>Formulir Klien</span>
                     </a>
 
                     <a href="{{ route('counselors.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('counselors.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
@@ -87,7 +95,11 @@
 
                     <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mt-6 mb-2">Operasional</p>
 
-                
+                    <a href="{{ route('calendar.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('calendar.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                        <span>Kalender</span>
+                    </a>
+
                     <a href="{{ route('test-results.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('test-results.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                         <span>Hasil Psikotes</span>
@@ -145,26 +157,20 @@
         </aside>
 
         {{-- ===== MAIN CONTENT ===== --}}
-        <div class="flex-1 lg:ml-64 flex flex-col min-w-0">
+        <div class="flex-1 flex flex-col min-w-0 lg:ml-64">
             {{-- Top Bar --}}
             <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#EDE1FA] px-6 py-3.5">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2.5 sm:gap-3">
-                        {{-- Mobile Hamburger Menu Button --}}
+                        {{-- Mobile Hamburger (Only on mobile < lg) --}}
                         <button 
                             type="button" 
-                            @click="sidebarOpen = !sidebarOpen" 
-                            class="lg:hidden text-purple-deep hover:text-orange p-1.5 -ml-1.5 rounded-xl hover:bg-purple-deep/5 transition cursor-pointer"
+                            @click="sidebarOpen = true" 
+                            class="lg:hidden text-purple-deep hover:text-orange p-1.5 -ml-1.5 rounded-xl hover:bg-purple-deep/5 transition cursor-pointer flex items-center justify-center"
+                            title="Buka Menu"
                         >
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                         </button>
-
-                        {{-- Back Button in Navbar --}}
-                        @hasSection('back-url')
-                            <a href="@yield('back-url')" class="w-8 h-8 rounded-xl bg-[#F7F5FB] hover:bg-purple-deep hover:text-white text-purple-deep border border-[#EDE1FA] flex items-center justify-center transition shadow-2xs cursor-pointer flex-shrink-0 group/back" title="Kembali">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover/back:-translate-x-0.5 transition-transform"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-                            </a>
-                        @endif
 
                         <div>
                             <h1 class="text-lg font-bold text-purple-deep">@yield('page-title', 'Dashboard')</h1>
@@ -293,7 +299,18 @@
                         Batal
                     </button>
                     
-                    <form action="{{ route('logout') }}" method="POST" class="w-full">
+                    <form action="{{ route('logout') }}" method="POST" class="w-full"
+                          @submit.prevent="
+                              fetch('{{ route('logout') }}', {
+                                  method: 'POST',
+                                  headers: {
+                                      'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                      'Accept': 'application/json'
+                                  }
+                              }).finally(() => {
+                                  window.location.replace('{{ route('login') }}');
+                              })
+                          ">
                         @csrf
                         <button 
                             type="submit" 
@@ -377,12 +394,42 @@
     {{-- ===== MODAL BUAT BOOKING (GLOBAL) ===== --}}
     <x-booking-modal />
 
-    {{-- ===== MODAL TAMBAH KLIEN (GLOBAL) ===== --}}
-    <x-client-modal />
-
     {{-- ===== MODAL UPLOAD HASIL PSIKOTES (GLOBAL) ===== --}}
     <x-test-result-modal />
 
+
     @stack('scripts')
+
+    {{-- Prevent bfcache from displaying stale authenticated state --}}
+    <script>
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (window.performance && window.performance.getEntriesByType && window.performance.getEntriesByType("navigation")[0]?.type === "back_forward")) {
+                window.location.reload();
+            }
+        });
+    </script>
+
+    {{-- Intercept browser Back button on Dashboard and offer Logout confirmation --}}
+    @if(request()->routeIs('dashboard'))
+    <script>
+        (function () {
+            if (window.history && window.history.pushState) {
+                history.pushState({ dashboardGuard: true }, '', window.location.href);
+
+                window.addEventListener('popstate', function (e) {
+                    if (window.checkFormDirty && window.checkFormDirty()) {
+                        return;
+                    }
+
+                    try {
+                        history.pushState({ dashboardGuard: true }, '', window.location.href);
+                    } catch (err) {}
+
+                    window.dispatchEvent(new CustomEvent('open-logout-modal'));
+                });
+            }
+        })();
+    </script>
+    @endif
 </body>
 </html>

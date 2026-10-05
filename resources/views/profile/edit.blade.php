@@ -2,7 +2,6 @@
 
 @section('title', 'Profil Pengguna — UC PSC')
 @section('page-title', 'Profil Pengguna')
-@section('back-url', route('dashboard'))
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">

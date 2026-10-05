@@ -1,7 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-<div x-data="{ showForgotModal: false, showPassword: false, remember: false }" class="min-h-screen flex flex-col items-center justify-center bg-[#F3EBF9] px-6 py-12 relative overflow-hidden selection:bg-purple-light selection:text-white">
+<div x-data="{ 
+    showForgotModal: false, 
+    showPassword: false, 
+    remember: false,
+    errorMessage: '',
+    isLoading: false,
+    submitLogin(e) {
+        this.isLoading = true;
+        this.errorMessage = '';
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(async (res) => {
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data.redirect) {
+                window.location.replace(data.redirect);
+            } else if (res.status === 422) {
+                this.errorMessage = data.errors?.email?.[0] || data.message || 'Email atau password yang Anda masukkan salah.';
+                this.isLoading = false;
+            } else {
+                form.submit();
+            }
+        })
+        .catch(() => {
+            form.submit();
+        });
+    }
+}" class="min-h-screen flex flex-col items-center justify-center bg-[#F3EBF9] px-6 py-12 relative overflow-hidden selection:bg-purple-light selection:text-white">
     
     {{-- ===== HIGH-PERFORMANCE STATIC AURORA MESH BACKGROUND (0% CPU/GPU OVERHEAD) ===== --}}
     {{-- Top-Left Purple / Lavender Gradient Glow --}}
@@ -36,14 +71,20 @@
                     <p class="text-[#6B5B85] text-sm font-medium">Sistem Manajemen UC PSC</p>
                 </div>
 
+                {{-- Dynamic AJAX Error Box --}}
+                <div x-show="errorMessage" x-cloak class="bg-red-50/90 text-red-600 p-4 rounded-2xl text-sm mb-6 flex items-center gap-2.5 border border-red-200/80 shadow-xs relative z-10">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    <span x-text="errorMessage"></span>
+                </div>
+
                 @if($errors->any())
-                    <div class="bg-red-50/90 text-red-600 p-4 rounded-2xl text-sm mb-6 flex items-center gap-2.5 border border-red-200/80 shadow-xs relative z-10">
+                    <div x-show="!errorMessage" class="bg-red-50/90 text-red-600 p-4 rounded-2xl text-sm mb-6 flex items-center gap-2.5 border border-red-200/80 shadow-xs relative z-10">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                         <span>{{ $errors->first() }}</span>
                     </div>
                 @endif
 
-                <form action="{{ route('login') }}" method="POST" class="space-y-5 relative z-10">
+                <form action="{{ route('login') }}" method="POST" @submit.prevent="submitLogin($event)" class="space-y-5 relative z-10">
                     @csrf
 
                     {{-- Kolom Email --}}
@@ -135,6 +176,33 @@
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="relative z-10"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </button>
                 </form>
+
+                {{-- Quick Login Role Admin (Development Only) --}}
+                @if(app()->environment('local') || config('app.debug'))
+                    <div class="flex flex-col items-center justify-center pt-3 relative z-10">
+                        <div class="w-full flex items-center gap-3 mb-2.5">
+                            <div class="h-px bg-purple-200/60 flex-1"></div>
+                            <span class="text-[10px] font-bold tracking-wider uppercase text-[#827299]">Quick Login</span>
+                            <div class="h-px bg-purple-200/60 flex-1"></div>
+                        </div>
+
+                        <a 
+                            href="{{ route('dev.quick-login', ['role' => 'admin']) }}"
+                            @click.prevent="window.location.replace('{{ route('dev.quick-login', ['role' => 'admin']) }}')"
+                            target="_self"
+                            title="Quick Login Admin" 
+                            aria-label="Quick Login Admin"
+                            class="w-11 h-11 rounded-2xl bg-white/70 hover:bg-white text-purple-deep hover:text-purple-light border border-white/90 shadow-[0_2px_8px_rgba(74,35,128,0.06),inset_0_1px_2px_rgba(255,255,255,0.9)] hover:shadow-[0_6px_16px_rgba(74,35,128,0.14)] active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center group mb-1.5"
+                        >
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="m9 12 2 2 4-4"/>
+                            </svg>
+                        </a>
+
+                        <span class="text-xs font-bold text-[#4A2380]">Admin</span>
+                    </div>
+                @endif
             </div>
         </div>
 

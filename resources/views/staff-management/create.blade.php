@@ -2,7 +2,6 @@
 
 @section('title', 'Tambah Staff — UC PSC')
 @section('page-title', 'Tambah Staff Baru')
-@section('back-url', route('staff-management.index'))
 
 @section('content')
 <div class="max-w-2xl">

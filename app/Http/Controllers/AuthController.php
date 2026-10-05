@@ -25,7 +25,24 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'redirect' => url('/dashboard'),
+                ]);
+            }
+
             return redirect('/dashboard')->with('show_splash', true);
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'message' => 'Email atau password yang Anda masukkan salah.',
+                'errors' => [
+                    'email' => ['Email atau password yang Anda masukkan salah.']
+                ]
+            ], 422);
         }
 
         return back()->withErrors([
@@ -40,6 +57,50 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('show_splash', true);
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json(['success' => true, 'redirect' => route('login')])
+                ->header('Clear-Site-Data', '"cache", "storage"')
+                ->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
+        }
+
+        return redirect('/login')
+            ->with('show_splash', true)
+            ->header('Clear-Site-Data', '"cache", "storage"');
+    }
+
+    /**
+     * Quick login for local development / testing.
+     */
+    public function quickLogin(Request $request)
+    {
+        if (!app()->environment('local') && !config('app.debug')) {
+            abort(403, 'Akses quick login dinonaktifkan di luar lingkungan development.');
+        }
+
+        $role = $request->input('role', 'admin');
+        $defaultEmail = $role === 'admin' ? 'admin@ucpsc.test' : 'staff@ucpsc.test';
+
+        // Cari user sesuai role (utamakan email default seeder)
+        $user = User::where('role', $role)
+            ->orderByRaw("CASE WHEN email = ? THEN 0 ELSE 1 END", [$defaultEmail])
+            ->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => "Akun dengan role '{$role}' tidak ditemukan dalam database.",
+            ]);
+        }
+
+        Auth::login($user, false);
+        $request->session()->regenerate();
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'redirect' => url('/dashboard'),
+            ]);
+        }
+
+        return redirect('/dashboard')->with('show_splash', true);
     }
 }

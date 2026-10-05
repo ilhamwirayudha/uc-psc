@@ -2,7 +2,6 @@
 
 @section('title', 'Detail Staff — ' . $staff->name . ' — UC PSC')
 @section('page-title', 'Detail & Penugasan Staff')
-@section('back-url', route('staff-management.index'))
 
 @section('content')
 <div x-data="{ 
@@ -116,7 +115,7 @@
                                         {{ $client->name }}
                                     </a>
                                     <span class="text-[11px] text-[#827299]">
-                                        {{ $client->jenis === 'company' ? 'Perusahaan' : 'Perorangan' }} · {{ $client->counseling_type ?? 'Umum' }}
+                                        {{ in_array($client->jenis, ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }} · {{ $client->counseling_type ?? 'Umum' }}
                                     </span>
                                 </div>
                             </div>

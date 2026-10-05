@@ -2,7 +2,6 @@
 
 @section('title', 'Edit Klien — UC PSC')
 @section('page-title', 'Edit Klien')
-@section('back-url', route('clients.show', $client))
 
 @section('content')
 @include('clients.partials.address-script')

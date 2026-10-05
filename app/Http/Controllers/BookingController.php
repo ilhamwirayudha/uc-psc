@@ -150,7 +150,8 @@ class BookingController extends Controller
 
         $clientUpdates = ['service_type' => $validated['kategori']];
         if ($request->filled('jenis')) {
-            $clientUpdates['jenis'] = $request->input('jenis');
+            $rawJ = strtolower($request->input('jenis'));
+            $clientUpdates['jenis'] = in_array($rawJ, ['industri', 'company', 'perusahaan']) ? 'industri' : 'individu';
         }
         if ($request->filled('counseling_type')) {
             $clientUpdates['counseling_type'] = $request->input('counseling_type');
@@ -214,7 +215,7 @@ class BookingController extends Controller
         $clientData = $booking->client ? [
             'id' => $booking->client->id,
             'name' => $booking->client->name,
-            'jenis' => $booking->client->jenis ?? 'individual',
+            'jenis' => $booking->client->jenis ?? 'individu',
             'pic_name' => $booking->client->pic_name,
             'phone' => $booking->client->phone ?? '-',
             'email' => $booking->client->email ?? '-',
@@ -337,22 +338,52 @@ class BookingController extends Controller
     }
 
     /**
-     * Buat booking follow-up dari booking yang sudah ada.
+     * Simpan realisasi sesi (jam masuk, jam keluar, catatan pasca-sesi).
      */
-    public function createFollowUp(Booking $booking)
+    public function storeRealisasi(Request $request, Booking $booking)
     {
-        $newBooking = Booking::create([
-            'client_id' => $booking->client_id,
-            'kategori' => $booking->kategori,
-            'tanggal_booking_dibuat' => now()->toDateString(),
-            'status' => 'lanjutan',
-            'follow_up_of_booking_id' => $booking->id,
-            'counselor_id' => $booking->counselor_id,
-            'staff_penguji_id' => $booking->staff_penguji_id,
-            'staff_koreksi_id' => $booking->staff_koreksi_id,
-            'staff_pelapor_id' => $booking->staff_pelapor_id,
+        $validated = $request->validate([
+            'session_start'             => 'required|date_format:H:i',
+            'session_end'               => 'required|date_format:H:i|after:session_start',
+            'session_duration_standard' => 'nullable|integer|min:1|max:480',
+            'session_notes'             => 'nullable|string|max:2000',
+            'session_type'              => 'nullable|in:tatap_muka,online,whatsapp',
+            'location'                  => 'nullable|string|max:255',
+            'status'                    => 'nullable|in:baru,lanjutan,selesai',
         ]);
 
-        return redirect()->route('bookings.edit', $newBooking)->with('success', 'Booking lanjutan berhasil dibuat.');
+        // Hitung overtime secara otomatis
+        [$sh, $sm] = explode(':', $validated['session_start']);
+        [$eh, $em] = explode(':', $validated['session_end']);
+        $totalMinutes   = ((int)$eh * 60 + (int)$em) - ((int)$sh * 60 + (int)$sm);
+        $standard       = (int)($validated['session_duration_standard'] ?? $booking->session_duration_standard ?? 60);
+        $overtimeMinutes = max(0, $totalMinutes - $standard);
+
+        $booking->update([
+            'session_start'             => $validated['session_start'],
+            'session_end'               => $validated['session_end'],
+            'session_duration_standard' => $standard,
+            'overtime_minutes'          => $overtimeMinutes,
+            'session_notes'             => $validated['session_notes'] ?? null,
+            'session_type'              => $validated['session_type'] ?? null,
+            'location'                  => $validated['location'] ?? null,
+            'status'                    => $validated['status'] ?? $booking->status,
+        ]);
+
+        // Jika diminta follow-up, buat booking lanjutan
+        if ($request->boolean('needs_followup')) {
+            Booking::create([
+                'client_id'               => $booking->client_id,
+                'kategori'                => $booking->kategori,
+                'tanggal_booking_dibuat'  => now()->toDateString(),
+                'status'                  => 'lanjutan',
+                'follow_up_of_booking_id' => $booking->id,
+                'counselor_id'            => $booking->counselor_id,
+                'staff_penguji_id'        => $booking->staff_penguji_id,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Realisasi sesi berhasil disimpan.' .
+            ($overtimeMinutes > 0 ? " Overtime: {$overtimeMinutes} menit." : ''));
     }
 }

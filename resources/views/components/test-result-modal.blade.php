@@ -257,11 +257,10 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
                                                 <template x-if="c.jenis">
                                                     <span class="text-[10px] px-2 py-0.5 rounded-full capitalize"
                                                         :class="{
-                                                            'bg-purple-100 text-purple-700': c.jenis === 'individual',
-                                                            'bg-blue-100 text-blue-700': c.jenis === 'group',
-                                                            'bg-emerald-100 text-emerald-700': c.jenis === 'company'
+                                                            'bg-purple-100 text-purple-700': !['industri', 'company', 'perusahaan'].includes(c.jenis),
+                                                            'bg-amber-100 text-amber-800': ['industri', 'company', 'perusahaan'].includes(c.jenis)
                                                         }"
-                                                        x-text="c.jenis"></span>
+                                                        x-text="['industri', 'company', 'perusahaan'].includes(c.jenis) ? 'Industri' : 'Individu'"></span>
                                                 </template>
                                             </div>
                                             <span class="text-xs text-[#827299]" x-text="c.phone || ''"></span>

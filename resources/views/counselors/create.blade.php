@@ -3,7 +3,6 @@
 @section('title', 'Tambah Konselor — UC PSC')
 @section('page-title', 'Tambah Konselor Baru')
 @section('page-subtitle', 'Daftarkan data psikolog atau konselor pendamping baru')
-@section('back-url', route('counselors.index'))
 
 @section('content')
 @include('clients.partials.address-script')

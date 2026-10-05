@@ -2,12 +2,12 @@
 
 @section('title', 'Detail Booking #' . $booking->id . ' — UC PSC')
 @section('page-title', 'Detail Booking #' . $booking->id)
-@section('back-url', route('bookings.index'))
 
 @section('content')
 <div 
     x-data="{ 
         clientModalOpen: false, 
+        realisasiOpen: false,
         selectedClient: {{ json_encode($clientData) }} 
     }" 
     class="max-w-4xl space-y-6"
@@ -47,7 +47,7 @@
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-60 shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </button>
                 <span class="text-[11px] text-[#827299] capitalize block mt-0.5">
-                    {{ $booking->client->jenis ?? 'individual' }}
+                    {{ in_array($booking->client->jenis ?? '', ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}
                     @if($booking->client->pic_name) • PIC: {{ $booking->client->pic_name }} @endif
                 </span>
                 @else
@@ -141,7 +141,7 @@
             @endif
         </div>
 
-        {{-- Footer Detail Booking: Edit Jadwal, Hapus Data, Tutup --}}
+        {{-- Footer Detail Booking --}}
         <div class="mt-6 pt-5 border-t border-[#EDE1FA] flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-2 flex-wrap">
                 {{-- Tombol Edit Jadwal --}}
@@ -152,6 +152,18 @@
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     <span>Edit Jadwal</span>
                 </a>
+
+                @if($booking->kategori === 'konseling')
+                {{-- Tombol Input Realisasi Sesi --}}
+                <button 
+                    type="button" 
+                    @click="realisasiOpen = true"
+                    class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>{{ $booking->is_realized ? 'Edit Realisasi Sesi' : 'Input Realisasi Sesi' }}</span>
+                </button>
+                @endif
 
                 {{-- Tombol Hapus Data --}}
                 <form action="{{ route('bookings.destroy', $booking) }}" method="POST" class="inline m-0 p-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data booking ini?')">
@@ -176,6 +188,77 @@
             </a>
         </div>
     </div>
+
+    {{-- Panel Realisasi Sesi (hanya konseling) --}}
+    @if($booking->kategori === 'konseling')
+    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+        <div class="px-6 py-4 border-b border-[#EDE1FA] flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-600"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <h3 class="font-bold text-[#2A2035] text-sm">Realisasi Sesi</h3>
+            </div>
+            @if($booking->is_realized)
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold {{ $booking->is_overtime ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200' }}">
+                {{ $booking->is_overtime ? 'Overtime' : 'Tepat Waktu' }}
+            </span>
+            @endif
+        </div>
+        <div class="px-6 py-5">
+            @if($booking->is_realized)
+            <div class="grid sm:grid-cols-3 gap-4 text-sm">
+                <div>
+                    <p class="text-[#6B5B85] text-xs font-medium mb-1">Jam Masuk – Keluar</p>
+                    <p class="font-bold text-[#2A2035] font-mono">
+                        {{ substr($booking->session_start, 0, 5) }} – {{ substr($booking->session_end, 0, 5) }} WIB
+                    </p>
+                </div>
+                <div>
+                    <p class="text-[#6B5B85] text-xs font-medium mb-1">Durasi Total</p>
+                    <p class="font-bold text-[#2A2035]">{{ $booking->session_duration_label }}</p>
+                    @if($booking->is_overtime)
+                    <p class="text-xs text-amber-600 font-semibold mt-0.5">+{{ $booking->overtime_minutes_computed }} menit overtime</p>
+                    @endif
+                </div>
+                <div>
+                    <p class="text-[#6B5B85] text-xs font-medium mb-1">Tipe Sesi</p>
+                    <p class="font-semibold text-[#2A2035]">
+                        {{ match($booking->session_type) {
+                            'online' => 'Online',
+                            'whatsapp' => 'WhatsApp',
+                            default => 'Tatap Muka'
+                        } ?? '-' }}
+                        @if($booking->location)
+                        <span class="text-xs text-[#827299] font-normal block mt-0.5">{{ $booking->location }}</span>
+                        @endif
+                    </p>
+                </div>
+                @if($booking->session_notes)
+                <div class="sm:col-span-3">
+                    <p class="text-[#6B5B85] text-xs font-medium mb-1">Catatan Pasca-Sesi</p>
+                    <div class="p-3 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA] text-xs text-[#2A2035] leading-relaxed whitespace-pre-line">{{ $booking->session_notes }}</div>
+                </div>
+                @endif
+            </div>
+            @else
+            <div class="flex flex-col items-center py-4 text-center">
+                <div class="w-10 h-10 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-3">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-gray-400"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <p class="text-sm text-[#827299]">Realisasi sesi belum diinput</p>
+                <p class="text-xs text-gray-400 mt-0.5">Input setelah sesi konseling selesai dilaksanakan</p>
+                <button 
+                    type="button" 
+                    @click="realisasiOpen = true"
+                    class="mt-3 px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+                >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Input Realisasi Sesi
+                </button>
+            </div>
+            @endif
+        </div>
+    </div>
+    @endif
 
     {{-- Peserta (Company) --}}
     @if($booking->participants->count() > 0)
@@ -218,9 +301,119 @@
     </div>
     @endif
 
-    {{-- ========================================================================= --}}
-    {{-- POP-UP MODAL DETAIL KLIEN (SEMUA AKSES TOMBOL DIUBAH KE DALAM SINI)        --}}
-    {{-- ========================================================================= --}}
+    {{-- ===== MODAL REALISASI SESI ===== --}}
+    @if($booking->kategori === 'konseling')
+    <div 
+        x-show="realisasiOpen"
+        x-cloak
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-2xs"
+        @keydown.escape.window="realisasiOpen = false"
+    >
+        <div 
+            @click.away="realisasiOpen = false"
+            class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-[#EDE1FA] overflow-hidden"
+        >
+            {{-- Header --}}
+            <div class="px-6 py-5 border-b border-[#EDE1FA] flex items-center justify-between bg-[#FAF8FD]">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-600"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-[#2A2035] text-sm">Input Realisasi Sesi</h3>
+                        <p class="text-xs text-[#827299]">Booking #{{ $booking->id }} — {{ $booking->client?->name }}</p>
+                    </div>
+                </div>
+                <button type="button" @click="realisasiOpen = false" class="w-8 h-8 rounded-full hover:bg-gray-100 text-gray-400 flex items-center justify-center cursor-pointer transition">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            {{-- Form Realisasi --}}
+            <form action="{{ route('bookings.realisasi', $booking) }}" method="POST" class="p-6 space-y-4">
+                @csrf
+
+                {{-- Jam Masuk & Keluar --}}
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Jam Masuk <span class="text-red-500">*</span></label>
+                        <input type="time" name="session_start" required
+                            value="{{ $booking->session_start ? substr($booking->session_start, 0, 5) : '' }}"
+                            class="w-full px-3 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Jam Keluar <span class="text-red-500">*</span></label>
+                        <input type="time" name="session_end" required
+                            value="{{ $booking->session_end ? substr($booking->session_end, 0, 5) : '' }}"
+                            class="w-full px-3 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white">
+                    </div>
+                </div>
+
+                {{-- Durasi Standar & Tipe Sesi --}}
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Durasi Standar (menit)</label>
+                        <input type="number" name="session_duration_standard" min="1" max="480"
+                            value="{{ $booking->session_duration_standard ?? 60 }}"
+                            class="w-full px-3 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white">
+                        <p class="text-[11px] text-[#827299] mt-1">Default 60 menit. Lebih = overtime.</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Tipe Sesi</label>
+                        <select name="session_type" class="w-full px-3 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white">
+                            <option value="tatap_muka" {{ $booking->session_type === 'tatap_muka' ? 'selected' : '' }}>Tatap Muka</option>
+                            <option value="online" {{ $booking->session_type === 'online' ? 'selected' : '' }}>Online</option>
+                            <option value="whatsapp" {{ $booking->session_type === 'whatsapp' ? 'selected' : '' }}>WhatsApp</option>
+                        </select>
+                    </div>
+                </div>
+
+                {{-- Lokasi --}}
+                <div>
+                    <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Lokasi / Link Sesi</label>
+                    <input type="text" name="location" placeholder="Contoh: Ruang 3, atau link Zoom"
+                        value="{{ $booking->location ?? '' }}"
+                        class="w-full px-3 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white">
+                </div>
+
+                {{-- Status Booking --}}
+                <div>
+                    <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Perbarui Status Booking</label>
+                    <select name="status" class="w-full px-3 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white">
+                        <option value="baru" {{ $booking->status === 'baru' ? 'selected' : '' }}>Baru / Berlangsung</option>
+                        <option value="selesai" {{ $booking->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                        <option value="lanjutan" {{ $booking->status === 'lanjutan' ? 'selected' : '' }}>Sesi Lanjutan</option>
+                    </select>
+                </div>
+
+                {{-- Catatan Pasca-Sesi --}}
+                <div>
+                    <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Catatan Pasca-Sesi</label>
+                    <textarea name="session_notes" rows="3" placeholder="Catatan dari konselor atau admin setelah sesi..."
+                        class="w-full px-3 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white resize-none">{{ $booking->session_notes ?? '' }}</textarea>
+                </div>
+
+                {{-- Follow-Up Checkbox --}}
+                <label class="flex items-center gap-2.5 cursor-pointer select-none">
+                    <input type="checkbox" name="needs_followup" value="1"
+                        class="w-4 h-4 rounded border-[#D9C2F0] text-emerald-600 focus:ring-emerald-400">
+                    <span class="text-xs font-semibold text-[#5B4A73]">Buat booking sesi lanjutan otomatis</span>
+                </label>
+
+                {{-- Actions --}}
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" @click="realisasiOpen = false" class="px-4 py-2 border border-[#D9C2F0] text-[#5B4A73] text-xs font-bold rounded-xl hover:bg-gray-50 transition cursor-pointer">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        Simpan Realisasi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endif
+
+
     <div 
         x-show="clientModalOpen" 
         x-cloak 
@@ -241,8 +434,9 @@
                         <div class="flex items-center gap-2 flex-wrap">
                             <h3 class="font-extrabold text-base text-[#2A2035]" x-text="selectedClient?.name || 'Detail Klien'"></h3>
                             <span 
-                                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-deep/10 text-purple-deep"
-                                x-text="selectedClient?.jenis || 'individual'"
+                                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                                :class="['industri', 'company', 'perusahaan'].includes(selectedClient?.jenis) ? 'bg-amber-50 text-amber-700' : 'bg-purple-deep/10 text-purple-deep'"
+                                x-text="['industri', 'company', 'perusahaan'].includes(selectedClient?.jenis) ? 'INDUSTRI' : 'INDIVIDU'"
                             ></span>
                             <span 
                                 class="px-2.5 py-0.5 rounded-full text-[10px] font-bold"
