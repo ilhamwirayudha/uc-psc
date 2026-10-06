@@ -1,0 +1,4128 @@
+{
+  "Dewasa": [
+    {
+      "title": "INFORMED CONSENT",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Dengan menyetujui formulir ini, Anda menyatakan:\n* Telah membaca, memahami, dan menerima poin-poin yang tertera di atas.\n* Menyetujui untuk berpartisipasi dalam layanan konseling dengan sadar dan sukarela.",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Setuju",
+        "Tidak Setuju"
+      ]
+    },
+    {
+      "title": "DATA DIRI",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Lengkap",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Tempat, Tanggal Lahir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Sekarang",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Suku Bangsa",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saat Ini",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Hobi",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alasan Anda Ingin Melakukan Konseling",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "DATA KONDISI PSIKOLOGIS",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gambaran Kondisi Anda Saat Ini terhadap Permasalahan yang Anda Rasakan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pikiran-Pikiran Negatif yang Sering Muncul Akhir-Akhir Ini",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Hal-Hal Dalam Hidup Anda yang Ingin Anda Tingkatkan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Karakter Kepribadian",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Ketakutan/Phobia yang Dimiliki",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Rata-Rata Jam Tidur per Malam",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Riwayat Hidup yang Menimbulkan Trauma",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Kesehatan",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "GAMBARAN RELASI",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anda dengan Ayah Anda",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anda dengan Ibu Anda",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anda dengan Saudara Kandung Anda",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anda dengan Pasangan Anda",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anda dengan Anak Anda",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "LAIN-LAIN",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Apakah Anda Pernah Mengikuti Sesi Konseling Sebelumnya?",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Ya",
+        "Tidak"
+      ]
+    },
+    {
+      "title": "Nama Konselor yang Menangani",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kontak Darurat yang Bisa Kami Hubungi Terkait dengan Kondisi Anda",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Bagaimana Anda Mengetahui Tentang UCPSC?",
+      "type": 4,
+      "required": true,
+      "options": [
+        "Referensi dari Kerabat",
+        "Media Sosial",
+        "Website"
+      ]
+    },
+    {
+      "title": "Preferensi Proses Konseling",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Online melalui Zoom",
+        "Offline di UCPSC"
+      ]
+    }
+  ],
+  "Anak": [
+    {
+      "title": "INFORMED CONSENT",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Dengan menyetujui formulir ini, Anda menyatakan:\n* Telah membaca, memahami, dan menerima poin-poin yang tertera di atas.\n* Menyetujui untuk berpartisipasi dalam layanan konseling dengan sadar dan sukarela.",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Setuju",
+        "Tidak Setuju"
+      ]
+    },
+    {
+      "title": "DATA DIRI ANAK",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Lengkap",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Tempat, Tanggal Lahir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Sekarang",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Suku Bangsa",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Status Pernikahan Orang Tua",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Menikah",
+        "Bercerai"
+      ]
+    },
+    {
+      "title": "Alasan Anak Anda Membutuhkan Konseling",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "DATA KONDISI PSIKOLOGIS ANAK",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gambaran Kondisi Anak Anda Saat Ini terhadap Permasalahan yang Anak Anda Alami",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Hal-Hal Dalam Hidup Anak Anda yang Ingin Anda Tingkatkan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Karakter Kepribadian Anak",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Prestasi Anak",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Ketakutan/Phobia yang Dimiliki Anak",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Hidup Anak yang Menimbulkan Trauma",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Kesehatan Anak",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "GAMBARAN RELASI ANAK",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anak Anda dengan Ayah",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anak Anda dengan Ibu",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anak Anda dengan Saudara Kandung",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gambarkan Relasi Anak Anda dengan Teman-Teman",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "DATA ORANG TUA",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Ayah",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pernikahan Ayah ke-",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jumlah Anak Ayah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Status Pernikahan Ayah dengan Ibu",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Menikah",
+        "Bercerai"
+      ]
+    },
+    {
+      "title": "Nama Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Ibu",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pernikahan Ibu ke-",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jumlah Anak Ibu",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Status Pernikahan Ibu dengan Ayah",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Menikah",
+        "Bercerai"
+      ]
+    },
+    {
+      "title": "LAIN-LAIN",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Apakah Anak Anda Pernah Mengikuti Sesi Konseling Sebelumnya?",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Ya",
+        "Tidak"
+      ]
+    },
+    {
+      "title": "Nama Konselor yang Menangani",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kontak Darurat yang Bisa Kami Hubungi Terkait dengan Kondisi Anak Anda",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Bagaimana Anda Mengetahui Tentang UCPSC?",
+      "type": 4,
+      "required": true,
+      "options": [
+        "Referensi dari Kerabat",
+        "Media Sosial",
+        "Website"
+      ]
+    },
+    {
+      "title": "Preferensi Proses Konseling",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Online melalui Zoom",
+        "Offline di UCPSC"
+      ]
+    }
+  ],
+  "Pra-Nikah": [
+    {
+      "title": "INFORMED CONSENT",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Dengan menyetujui formulir ini, Anda menyatakan:\n* Telah membaca, memahami, dan menerima poin-poin yang tertera di atas.\n* Menyetujui untuk berpartisipasi dalam layanan konseling dengan sadar dan sukarela.",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Setuju",
+        "Tidak Setuju"
+      ]
+    },
+    {
+      "title": "DATA DIRI ANDA",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Lengkap",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Tempat, Tanggal Lahir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Sekarang",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Email",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Suku Bangsa",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pernikahan ke-",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jumlah Anak",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alasan Anda Ingin Melakukan Konseling",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "DATA DIRI PASANGAN",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Lengkap Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Pasangan",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Tempat, Tanggal Lahir Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Pasangan Sekarang",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Email Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Suku Bangsa Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pernikahan Pasangan ke-",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jumlah Anak Pasangan",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "DATA PRA NIKAH",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tanggal Rencana Pernikahan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Lama Berkenalan Sebelum Berpacaran",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Lama Berpacaran Sebelum Menikah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "DATA KONDISI PRA NIKAH",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Harapan Pernikahan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Hal-Hal dalam Hidup Anda yang Ingin Anda Tingkatkan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelebihan-Kelebihan dalam Peran Anda sebagai Pasangan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kekurangan-Kekurangan dalam Peran Anda sebagai Pasangan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Keluhan dalam Hubungan",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Hidup Anda yang Menimbulkan Trauma",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Kesehatan Anda",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "LAIN-LAIN",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Apakah Anda Pernah Mengikuti Sesi Konseling Pernikahan Sebelumnya?",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Ya",
+        "Tidak"
+      ]
+    },
+    {
+      "title": "Nama Konselor yang Menangani",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kontak Darurat yang Bisa Kami Hubungi Terkait dengan Kondisi Anda",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Bagaimana Anda Mengetahui Tentang UCPSC?",
+      "type": 4,
+      "required": true,
+      "options": [
+        "Referensi dari Kerabat",
+        "Media Sosial",
+        "Website"
+      ]
+    },
+    {
+      "title": "Preferensi Proses Konseling",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Online melalui Zoom",
+        "Offline di UCPSC"
+      ]
+    }
+  ],
+  "Pernikahan": [
+    {
+      "title": "INFORMED CONSENT",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Dengan menyetujui formulir ini, Anda menyatakan:\n* Telah membaca, memahami, dan menerima poin-poin yang tertera di atas.\n* Menyetujui untuk berpartisipasi dalam layanan konseling dengan sadar dan sukarela.",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Setuju",
+        "Tidak Setuju"
+      ]
+    },
+    {
+      "title": "DATA DIRI ANDA",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Lengkap",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Tempat, Tanggal Lahir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Sekarang",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Email",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Suku Bangsa",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pernikahan ke-",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jumlah Anak",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alasan Anda Ingin Melakukan Konseling",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "DATA DIRI PASANGAN",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Lengkap Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Pasangan",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Tempat, Tanggal Lahir Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Pasangan Sekarang",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Email Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Suku Bangsa Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Pasangan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pernikahan Pasangan ke-",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jumlah Anak Pasangan",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "DATA PERNIKAHAN",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tempat, Tanggal Pernikahan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Lama Pernikahan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Lama Berkenalan Sebelum Berpacaran",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Lama Berpacaran Sebelum Menikah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "DATA KONDISI PERNIKAHAN",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keluhan Utama dalam Pernikahan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kemungkinan Perbaikan Pernikahan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Hal-Hal dalam Pernikahan Anda yang Ingin Anda Tingkatkan",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelebihan-Kelebihan dalam Peran Anda sebagai Suami/Istri",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kekurangan-Kekurangan dalam Peran Anda sebagai Suami/Istri",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Riwayat Hidup Anda yang Menimbulkan Trauma",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Kesehatan Anda",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "DATA ANAK",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Anak 1",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Anak 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alamat Anak 1",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan/Pekerjaan Anak 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Anak 2",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Anak 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alamat Anak 2",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan/Pekerjaan Anak 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Anak 3",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Anak 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alamat Anak 3",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan/Pekerjaan Anak 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "LAIN-LAIN",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Apakah Anda Pernah Mengikuti Sesi Konseling Pernikahan Sebelumnya?",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Ya",
+        "Tidak"
+      ]
+    },
+    {
+      "title": "Nama Konselor yang Menangani",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kontak Darurat yang Bisa Kami Hubungi Terkait dengan Kondisi Anda",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Bagaimana Anda Mengetahui Tentang UCPSC?",
+      "type": 4,
+      "required": true,
+      "options": [
+        "Referensi dari Kerabat",
+        "Media Sosial",
+        "Website"
+      ]
+    },
+    {
+      "title": "Preferensi Proses Konseling",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Online melalui Zoom",
+        "Offline di UCPSC"
+      ]
+    }
+  ],
+  "Non-Industri": [
+    {
+      "title": "Semua keterangan yang saya berikan dalam Formulir Riwayat Hidup ini, saya buat dengan jujur dan sungguh-sungguh.",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Setuju",
+        "Tidak Setuju"
+      ]
+    },
+    {
+      "title": "Data Diri",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Lengkap",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Tempat, Tanggal Lahir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Sekarang",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Asal Kota",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Suku Bangsa",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Terakhir yang Berijazah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Data Keluarga",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Ayah",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Ayah",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Ayah",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Ayah",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Ayah",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Ibu",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Ibu",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Ibu",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Ibu",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Ibu",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 1",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 2",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 3",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 4",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 5",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Pendidikan Formal",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Apakah Anda pernah tidak naik kelas? Jika ya, sebutkan kapan dan alasannya.",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Non Formal",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kursus 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tempat Kursus 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Kursus 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kursus 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tempat Kursus 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Kursus 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kursus 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tempat Kursus 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Kursus 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pengalaman Organisasi",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Organisasi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Posisi/Jabatan Organisasi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Berorganisasi di Organisasi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Organisasi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Posisi/Jabatan Organisasi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Berorganisasi di Organisasi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Organisasi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Posisi/Jabatan Organisasi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Berorganisasi di Organisasi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Prestasi",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jika Anda pernah meraih prestasi, tuliskan prestasi apa saja yang pernah Anda raih. Prestasi di sini, boleh yang sifatnya akademik maupun non-akademik.",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Deskripsi Diri",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tuliskan riwayat hidup yang sifatnya menimbulkan trauma (jika ada).",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tuliskan riwayat penyakit yang sifatnya sampai membutuhkan opname (jika ada).",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Apakah Anda pernah konsultasi dengan psikolog sebelumnya? Jika ya, tuliskan jenis dan tujuan dari konsultasi tersebut.",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kelebihan Diri 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelebihan Diri 2",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelebihan Diri 3",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelemahan Diri 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelemahan Diri 2",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelemahan Diri 3",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Mata Pelajaran dengan Nilai Tertinggi",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Mata Pelajaran dengan Nilai Terendah",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Mata Pelajaran yang Disukai",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Mata Pelajaran yang Tidak Disukai",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Gaya Belajar",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Hal/Kegiatan yang Disenangi",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Hal/Kegiatan yang Tidak Disenangi",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Cita-Cita",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Usaha yang Telah Dilakukan untuk Cita-Cita yang Dimiliki",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Hal yang Akan Dilakukan untuk Cita-Cita yang Dimiliki",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Bidang Pekerjaan yang Disukai",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Bidang Pekerjaan yang Tidak Disukai",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan/Aktivitas yang Disukai namun Kurang Mahir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan/Aktivitas yang Tidak Disukai namun Cukup Mahir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Deskripsikan diri Anda secara bebas dalam 1-2 paragraf.",
+      "type": 1,
+      "required": true,
+      "options": []
+    }
+  ],
+  "Biography": [
+    {
+      "title": "All the information I have provided in this Biography Form is true and made in a good faith.",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Agree",
+        "Disagree"
+      ]
+    },
+    {
+      "title": "Personal Information",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Full Name",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Gender",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "title": "Place and Date of Birth",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Order of Birth",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Address",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "City of Origin",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Mobile Number",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Religion/Belief",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Ethnicity",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Highest Level of Education",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Family Information",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Father's Full Name",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Father's Gender",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "title": "Father's Age",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Highest Level of Father's Education",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Father's Occupation",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Mother's Full Name",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Mother's Gender",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "title": "Mother's Age",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Highest Level of Mother's Education",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Mother's Occupation",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Full Name of Sibling 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gender of Sibling 1",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "title": "Age of Sibling 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Highest Level of Sibling's Education 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Occupation of Sibling 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Full Name of Sibling 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gender of Sibling 2",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "title": "Age of Sibling 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Highest Level of Sibling's Education 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Occupation of Sibling 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Full Name of Sibling 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gender of Sibling 3",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "title": "Age of Sibling 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Highest Level of Sibling's Education 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Occupation of Sibling 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Full Name of Sibling 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gender of Sibling 4",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "title": "Age of Sibling 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Highest Level of Sibling's Education 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Occupation of Sibling 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Full Name of Sibling 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gender of Sibling 5",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "title": "Age of Sibling 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Highest Level of Sibling's Education 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Occupation of Sibling 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Formal Education History",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Name of School 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "City of School 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Year of Entry 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Year of Graduation 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Additional Information 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Name of School 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "City of School 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Year of Entry 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Year of Graduation 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Additional Information 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Name of School 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "City of School 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Year of Entry 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Year of Graduation 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Additional Information 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Name of School 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "City of School 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Year of Entry 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Year of Graduation 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Additional Information 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Name of School 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "City of School 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Year of Entry 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Year of Graduation 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Additional Information 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Have you ever failed a grade? If yes, specify when and the reason for it.",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Non-Formal Education History",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Type of Course 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Course Location 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Duration of Course 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Type of Course 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Course Location 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Duration of Course 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Type of Course 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Course Location 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Duration of Course 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Organizational Experience",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Name of Organization 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Position/Title in the Organization 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Duration of Membership in the Organization 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Name of Organization 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Position/Title in the Organization 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Duration of Membership in the Organization 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Name of Organization 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Position/Title in the Organization 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Duration of Membership in the Organization 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Achievement",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "If you have achieved any accomplishments, please list any achievements you have attained. These achievements can be academic or non-academic.",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Personal Description",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Please write about any life history that has caused trauma (if any).",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Please write about any medical history that required hospitalization (if any).",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Have you ever seen a psychologist for a consultation before? If yes, write down the type and purpose of the consultation.",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Personal Strength 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Personal Strength 2",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Personal Strength 3",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Personal Weakness 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Personal Weakness 2",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Personal Weakness 3",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Other Information",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Subject with Highest Score",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Subject with Lowest Score",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Subject that You Like",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Subject That You Dislike",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Learning Style",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Things/Activities that You Like",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Things/Activities that You Dislike",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Dream Job",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "What You Have Done Related to Achieving Your Dream Job",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "What Will You Do to Achieve Your Dream Job",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Field of Work that You Like",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Field of Work that You Dislike",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Activities that You Like but aren’t Skilled at",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Activities that You Dislike but Quite Skilled at",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Describe yourself freely in 1-2 paragraphs.",
+      "type": 1,
+      "required": true,
+      "options": []
+    }
+  ],
+  "Industri": [
+    {
+      "title": "Semua keterangan yang saya berikan dalam Formulir Riwayat Hidup ini, saya buat dengan jujur dan sungguh-sungguh.",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Setuju",
+        "Tidak Setuju"
+      ]
+    },
+    {
+      "title": "Data Diri",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Lengkap (Beserta Gelar Jika Ada)",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Tempat, Tanggal Lahir",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Urutan Kelahiran",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Alamat Sekarang",
+      "type": 1,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Asal Kota",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "No. Telp/HP",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Agama/Kepercayaan",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Suku Bangsa",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Status Perkawinan",
+      "type": 2,
+      "required": true,
+      "options": [
+        "Belum Menikah",
+        "Menikah",
+        "Bercerai",
+        "Pasangan Meninggal"
+      ]
+    },
+    {
+      "title": "Pendidikan Terakhir",
+      "type": 2,
+      "required": true,
+      "options": [
+        "SMA",
+        "SMK",
+        "D3",
+        "D4",
+        "S1",
+        "S2",
+        "S3"
+      ]
+    },
+    {
+      "title": "Pekerjaan Saat Ini",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Posisi yang Dituju",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Untitled Section",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "1. Dalam sebulan terakhir, seberapa sering Anda merasa kecewa karena sesuatu yang terjadi secara tidak terduga?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "2. Dalam sebulan terakhir, seberapa sering Anda merasa tidak mampu mengendalikan hal-hal penting dalam hidup Anda?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "3. Dalam sebulan terakhir, seberapa sering Anda merasa gelisah dan stres?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "4. Dalam sebulan terakhir, seberapa sering Anda merasa percaya diri dengan kemampuan Anda untuk menyelesaikan masalah pribadi Anda?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "5. Dalam sebulan terakhir, seberapa sering Anda merasa segala sesuatu berjalan sesuai keinginan Anda?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "6. Dalam sebulan terakhir, seberapa sering Anda mengetahui bahwa Anda tidak bisa mengatasi hal-hal yang harus Anda lakukan?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "7. Dalam sebulan terakhir, seberapa sering Anda mampu mengendalikan hal-hal yang menjengkelkan dalam hidup Anda?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "8. Dalam sebulan terakhir, seberapa sering Anda merasa mampu mengendalikan permasalahan Anda?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "9. Dalam sebulan terakhir, seberapa sering Anda marah karena hal-hal yang terjadi di luar kendali Anda?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "10. Dalam sebulan terakhir, seberapa sering Anda merasa tidak mampu menyelesaikan permasalahan permasalahan yang menumpuk dalam hidup Anda?",
+      "type": 5,
+      "required": true,
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "title": "Data Keluarga",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Ayah",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Ayah",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Ayah",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Ayah",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Ayah",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Ibu",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Ibu",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Ibu",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Ibu",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Ibu",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Suami/Istri",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Suami/Istri",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Suami/Istri",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Suami/Istri",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Suami/Istri",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 1",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 2",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 3",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 4",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Saudara 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Saudara 5",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Saudara 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Saudara 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Saudara 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Anak 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Anak 1",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Anak 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Anak 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Anak 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Anak 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Anak 2",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Anak 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Anak 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Anak 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Anak 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Anak 3",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Anak 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Anak 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Anak 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Anak 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Anak 4",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Anak 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Anak 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Anak 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Anak 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kelamin Anak 5",
+      "type": 2,
+      "required": false,
+      "options": [
+        "Laki-Laki",
+        "Perempuan"
+      ]
+    },
+    {
+      "title": "Usia Anak 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Anak 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pekerjaan Anak 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Pendidikan Formal",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "IPK Terakhir (Jika Ada)",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kota Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Keterangan Sekolah 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Pendidikan Non Formal",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kursus 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tempat Kursus 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Kursus 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kursus 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tempat Kursus 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Kursus 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jenis Kursus 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tempat Kursus 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Kursus 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Riwayat Pekerjaan",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Instansi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jabatan Instansi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Instansi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Instansi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Ringkasan Tugas Instansi 1",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gaji dan Tunjangan Instansi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alasan Berhenti Instansi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Instansi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jabatan Instansi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Instansi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Instansi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Ringkasan Tugas Instansi 2",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gaji dan Tunjangan Instansi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alasan Berhenti Instansi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Instansi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jabatan Instansi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Instansi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Instansi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Ringkasan Tugas Instansi 3",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gaji dan Tunjangan Instansi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alasan Berhenti Instansi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Instansi 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jabatan Instansi 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Instansi 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Instansi 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Ringkasan Tugas Instansi 4",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gaji dan Tunjangan Instansi 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alasan Berhenti Instansi 4",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Instansi 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jabatan Instansi 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Masuk Instansi 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tahun Keluar Instansi 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Ringkasan Tugas Instansi 5",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Gaji dan Tunjangan Instansi 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Alasan Berhenti Instansi 5",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Ekspektasi Gaji dan Tunjangan pada Perusahaan Ini",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Pengalaman Organisasi",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Organisasi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Posisi/Jabatan Organisasi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Berorganisasi di Organisasi 1",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Organisasi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Posisi/Jabatan Organisasi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Berorganisasi di Organisasi 2",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Nama Organisasi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Posisi/Jabatan Organisasi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Lama Berorganisasi di Organisasi 3",
+      "type": 0,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Prestasi",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Jika Anda pernah meraih prestasi, tuliskan prestasi apa saja yang pernah Anda raih. Prestasi di sini, boleh yang sifatnya akademik maupun non-akademik.",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Deskripsi Diri",
+      "type": 8,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tuliskan riwayat hidup yang sifatnya menimbulkan trauma (jika ada).",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Tuliskan riwayat penyakit yang sifatnya sampai membutuhkan opname (jika ada).",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Apakah Anda pernah konsultasi dengan psikolog sebelumnya? Jika ya, tuliskan jenis dan tujuan dari konsultasi tersebut.",
+      "type": 1,
+      "required": false,
+      "options": []
+    },
+    {
+      "title": "Kelebihan Diri 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelebihan Diri 2",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelebihan Diri 3",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelemahan Diri 1",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelemahan Diri 2",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Kelemahan Diri 3",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Hobi",
+      "type": 0,
+      "required": true,
+      "options": []
+    },
+    {
+      "title": "Deskripsikan diri Anda secara bebas dalam 1-2 paragraf.",
+      "type": 1,
+      "required": true,
+      "options": []
+    }
+  ]
+}

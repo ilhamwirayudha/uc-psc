@@ -160,9 +160,11 @@ class PublicClientFormController extends Controller
 
                 // 1. Create or Find Client
                 $client = Client::firstOrNew([
-                    'name' => trim($request->nama_lengkap),
                     'phone' => trim($primaryPhone),
                 ]);
+                if (!$client->exists || empty($client->name)) {
+                    $client->name = trim($request->nama_lengkap);
+                }
 
                 $client->jenis = 'individu';
                 $client->gender = $gender;
@@ -175,11 +177,6 @@ class PublicClientFormController extends Controller
                 $client->counseling_type = $counselingType;
                 $client->source = $sourceEnum;
                 $client->status = 'unassigned';
-                
-                // Add rich intake note
-                $notePrefix = "[Pendaftaran Mandiri Web - Konseling Anak]\n";
-                $noteContent = "Nama Orang Tua: Ayah ({$request->nama_ayah} - {$request->phone_ayah}), Ibu ({$request->nama_ibu} - {$request->phone_ibu})\nAlasan Konseling: {$request->alasan_konseling}";
-                $client->notes = $notePrefix . $noteContent;
                 $client->save();
 
                 // 2. Create ClientForm Record with JSON answers (Tanpa Booking Otomatis)
@@ -238,7 +235,7 @@ class PublicClientFormController extends Controller
             'agama' => 'required|string|max:50',
             'suku_bangsa' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
-            'pekerjaan' => 'required|string|max:150',
+            'pekerjaan' => 'nullable|string|max:150',
             'hobi' => 'required|string|max:150',
             'alasan_konseling' => 'required|string',
 
@@ -263,7 +260,7 @@ class PublicClientFormController extends Controller
             'pernah_konseling' => 'required|string|in:Ya,Tidak',
             'nama_konselor' => 'nullable|string|max:150',
             'kontak_darurat' => 'required|string|max:255',
-            'sumber_info' => 'nullable|string|max:150',
+            'sumber_info' => 'required|string|max:150',
             'preferensi_konseling' => 'required|string',
         ], [
             'consent_agree.required' => 'Anda wajib menyetujui lembar Informed Consent untuk melanjutkan.',
@@ -277,7 +274,6 @@ class PublicClientFormController extends Controller
             'agama.required' => 'Agama / kepercayaan wajib dipilih atau diisi.',
             'suku_bangsa.required' => 'Suku bangsa wajib diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir wajib dipilih atau diisi.',
-            'pekerjaan.required' => 'Pekerjaan saat ini wajib diisi.',
             'hobi.required' => 'Hobi atau minat kegemaran wajib diisi.',
             'alasan_konseling.required' => 'Alasan ingin melakukan konseling wajib diisi.',
             'kondisi_saat_ini.required' => 'Gambaran kondisi saat ini wajib diisi.',
@@ -289,6 +285,7 @@ class PublicClientFormController extends Controller
             'relasi_ibu.required' => 'Gambaran relasi dengan Ibu wajib diisi.',
             'pernah_konseling.required' => 'Pilihan riwayat konseling sebelumnya wajib diisi.',
             'kontak_darurat.required' => 'Kontak darurat wajib diisi untuk keselamatan & protokol darurat.',
+            'sumber_info.required' => 'Silakan pilih dari mana Anda mengetahui tentang UC PSC.',
             'preferensi_konseling.required' => 'Preferensi proses konseling wajib dipilih.',
         ]);
 
@@ -308,9 +305,9 @@ class PublicClientFormController extends Controller
 
                 // 1. Create or Find Client
                 $client = Client::firstOrNew([
-                    'name' => trim($request->nama_lengkap),
                     'phone' => trim($request->phone),
                 ]);
+                $client->name = trim($request->nama_lengkap);
 
                 $client->jenis = 'individu';
                 $client->gender = $gender;
@@ -320,15 +317,11 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
                 $client->occupation = $request->pekerjaan;
+                $client->email = $request->email ?? null;
                 $client->service_type = 'Konseling Dewasa';
                 $client->counseling_type = $counselingType;
                 $client->source = $sourceEnum;
                 $client->status = 'unassigned';
-
-                // Add rich intake note
-                $notePrefix = "[Pendaftaran Mandiri Web - Konseling Dewasa]\n";
-                $noteContent = "Pekerjaan: {$request->pekerjaan}\nAlasan Konseling: {$request->alasan_konseling}\nKontak Darurat: {$request->kontak_darurat}";
-                $client->notes = $notePrefix . $noteContent;
                 $client->save();
 
                 // 2. Create ClientForm Record
@@ -384,13 +377,13 @@ class PublicClientFormController extends Controller
             'urutan_kelahiran' => 'required|string|max:100',
             'alamat' => 'required|string',
             'phone' => 'required|string|max:50',
-            'email' => 'nullable|email|max:150',
+            'email' => 'required|email|max:150',
             'agama' => 'required|string|max:50',
             'suku_bangsa' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
             'pekerjaan' => 'required|string|max:150',
             'pernikahan_ke' => 'required|string|max:50',
-            'jumlah_anak' => 'required|string|max:50',
+            'jumlah_anak' => 'nullable|string|max:50',
             'alasan_konseling' => 'required|string',
 
             // 3. Data Diri Pasangan
@@ -401,13 +394,13 @@ class PublicClientFormController extends Controller
             'urutan_kelahiran_pasangan' => 'required|string|max:100',
             'alamat_pasangan' => 'required|string',
             'phone_pasangan' => 'required|string|max:50',
-            'email_pasangan' => 'nullable|email|max:150',
+            'email_pasangan' => 'required|email|max:150',
             'agama_pasangan' => 'required|string|max:50',
             'suku_bangsa_pasangan' => 'required|string|max:50',
             'pendidikan_terakhir_pasangan' => 'required|string|max:100',
             'pekerjaan_pasangan' => 'required|string|max:150',
             'pernikahan_pasangan_ke' => 'required|string|max:50',
-            'jumlah_anak_pasangan' => 'required|string|max:50',
+            'jumlah_anak_pasangan' => 'nullable|string|max:50',
 
             // 4. Data Pra Nikah
             'tanggal_rencana_pernikahan' => 'required|string|max:100',
@@ -427,20 +420,23 @@ class PublicClientFormController extends Controller
             'pernah_konseling' => 'required|string|in:Ya,Tidak',
             'nama_konselor' => 'nullable|string|max:150',
             'kontak_darurat' => 'required|string|max:255',
-            'sumber_info' => 'nullable|string|max:150',
+            'sumber_info' => 'required|string|max:150',
             'preferensi_konseling' => 'required|string',
         ], [
             'consent_agree.required' => 'Anda wajib menyetujui Lembar Persetujuan (Informed Consent).',
             'nama_lengkap.required' => 'Nama lengkap Anda wajib diisi.',
             'jenis_kelamin.required' => 'Pilih jenis kelamin Anda.',
             'phone.required' => 'Nomor WhatsApp / HP Anda wajib diisi.',
+            'email.required' => 'Alamat email aktif Anda wajib diisi.',
             'nama_pasangan.required' => 'Nama lengkap calon pasangan wajib diisi.',
             'phone_pasangan.required' => 'Nomor WhatsApp / HP calon pasangan wajib diisi.',
+            'email_pasangan.required' => 'Alamat email calon pasangan wajib diisi.',
             'tanggal_rencana_pernikahan.required' => 'Tanggal rencana pernikahan wajib diisi.',
             'harapan_pernikahan.required' => 'Harapan pernikahan wajib diisi.',
             'kelebihan_peran.required' => 'Kelebihan peran Anda wajib diisi.',
             'kekurangan_peran.required' => 'Kekurangan peran Anda wajib diisi.',
             'kontak_darurat.required' => 'Kontak darurat wajib diisi.',
+            'sumber_info.required' => 'Silakan pilih dari mana Anda mengetahui tentang UC PSC.',
             'preferensi_konseling.required' => 'Preferensi proses konseling wajib dipilih.',
         ]);
 
@@ -451,9 +447,11 @@ class PublicClientFormController extends Controller
                 $counselingType = $isOnline ? 'online' : 'offline';
 
                 $client = Client::firstOrNew([
-                    'name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
                     'phone' => trim($request->phone),
                 ]);
+                if (!$client->exists || empty($client->name)) {
+                    $client->name = trim($request->nama_lengkap);
+                }
 
                 $client->jenis = 'individu';
                 $client->gender = $gender;
@@ -463,14 +461,11 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
                 $client->occupation = $request->pekerjaan;
+                $client->email = $request->email;
                 $client->service_type = 'Konseling Pra-Nikah';
                 $client->counseling_type = $counselingType;
                 $client->source = 'other';
                 $client->status = 'unassigned';
-
-                $notePrefix = "[Pendaftaran Mandiri Web - Konseling Pra-Nikah]\n";
-                $noteContent = "Pasangan: {$request->nama_pasangan} ({$request->phone_pasangan})\nRencana Nikah: {$request->tanggal_rencana_pernikahan}\nAlasan: {$request->alasan_konseling}\nKontak Darurat: {$request->kontak_darurat}";
-                $client->notes = $notePrefix . $noteContent;
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('pra_nikah');
@@ -479,7 +474,7 @@ class PublicClientFormController extends Controller
                     'form_type' => 'pra_nikah',
                     'client_id' => $client->id,
                     'booking_id' => null,
-                    'client_name' => $client->name,
+                    'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
@@ -522,13 +517,13 @@ class PublicClientFormController extends Controller
             'urutan_kelahiran' => 'required|string|max:100',
             'alamat' => 'required|string',
             'phone' => 'required|string|max:50',
-            'email' => 'nullable|email|max:150',
+            'email' => 'required|email|max:150',
             'agama' => 'required|string|max:50',
             'suku_bangsa' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
             'pekerjaan' => 'required|string|max:150',
             'pernikahan_ke' => 'required|string|max:50',
-            'jumlah_anak' => 'required|string|max:50',
+            'jumlah_anak' => 'nullable|string|max:50',
             'alasan_konseling' => 'required|string',
 
             // 3. Data Diri Pasangan
@@ -539,13 +534,13 @@ class PublicClientFormController extends Controller
             'urutan_kelahiran_pasangan' => 'required|string|max:100',
             'alamat_pasangan' => 'required|string',
             'phone_pasangan' => 'required|string|max:50',
-            'email_pasangan' => 'nullable|email|max:150',
+            'email_pasangan' => 'required|email|max:150',
             'agama_pasangan' => 'required|string|max:50',
             'suku_bangsa_pasangan' => 'required|string|max:50',
             'pendidikan_terakhir_pasangan' => 'required|string|max:100',
             'pekerjaan_pasangan' => 'required|string|max:150',
             'pernikahan_pasangan_ke' => 'required|string|max:50',
-            'jumlah_anak_pasangan' => 'required|string|max:50',
+            'jumlah_anak_pasangan' => 'nullable|string|max:50',
 
             // 4. Data Pernikahan
             'tempat_tanggal_pernikahan' => 'required|string|max:150',
@@ -555,7 +550,7 @@ class PublicClientFormController extends Controller
 
             // 5. Data Kondisi Pernikahan
             'keluhan_utama' => 'required|string',
-            'kemungkinan_perbaikan' => 'nullable|string',
+            'kemungkinan_perbaikan' => 'required|string',
             'hal_ingin_ditingkatkan' => 'required|string',
             'kelebihan_peran' => 'required|string',
             'kekurangan_peran' => 'required|string',
@@ -566,18 +561,22 @@ class PublicClientFormController extends Controller
             'pernah_konseling' => 'required|string|in:Ya,Tidak',
             'nama_konselor' => 'nullable|string|max:150',
             'kontak_darurat' => 'required|string|max:255',
-            'sumber_info' => 'nullable|string|max:150',
+            'sumber_info' => 'required|string|max:150',
             'preferensi_konseling' => 'required|string',
         ], [
             'consent_agree.required' => 'Anda wajib menyetujui Lembar Persetujuan (Informed Consent).',
             'nama_lengkap.required' => 'Nama lengkap Anda wajib diisi.',
             'phone.required' => 'Nomor WhatsApp / HP Anda wajib diisi.',
+            'email.required' => 'Alamat email aktif Anda wajib diisi.',
             'nama_pasangan.required' => 'Nama lengkap pasangan wajib diisi.',
             'phone_pasangan.required' => 'Nomor WhatsApp / HP pasangan wajib diisi.',
+            'email_pasangan.required' => 'Alamat email pasangan wajib diisi.',
             'tempat_tanggal_pernikahan.required' => 'Tempat & tanggal pernikahan wajib diisi.',
             'lama_pernikahan.required' => 'Lama usia pernikahan wajib diisi.',
             'keluhan_utama.required' => 'Keluhan utama dalam pernikahan wajib diisi.',
+            'kemungkinan_perbaikan.required' => 'Kemungkinan perbaikan pernikahan wajib diisi.',
             'kontak_darurat.required' => 'Kontak darurat wajib diisi.',
+            'sumber_info.required' => 'Silakan pilih dari mana Anda mengetahui tentang UC PSC.',
             'preferensi_konseling.required' => 'Preferensi proses konseling wajib dipilih.',
         ]);
 
@@ -588,9 +587,11 @@ class PublicClientFormController extends Controller
                 $counselingType = $isOnline ? 'online' : 'offline';
 
                 $client = Client::firstOrNew([
-                    'name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
                     'phone' => trim($request->phone),
                 ]);
+                if (!$client->exists || empty($client->name)) {
+                    $client->name = trim($request->nama_lengkap);
+                }
 
                 $client->jenis = 'individu';
                 $client->gender = $gender;
@@ -600,14 +601,11 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
                 $client->occupation = $request->pekerjaan;
+                $client->email = $request->email;
                 $client->service_type = 'Konseling Pernikahan';
                 $client->counseling_type = $counselingType;
                 $client->source = 'other';
                 $client->status = 'unassigned';
-
-                $notePrefix = "[Pendaftaran Mandiri Web - Konseling Pernikahan]\n";
-                $noteContent = "Pasangan: {$request->nama_pasangan}\nLama Pernikahan: {$request->lama_pernikahan}\nKeluhan: {$request->keluhan_utama}\nKontak Darurat: {$request->kontak_darurat}";
-                $client->notes = $notePrefix . $noteContent;
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('pernikahan');
@@ -616,7 +614,7 @@ class PublicClientFormController extends Controller
                     'form_type' => 'pernikahan',
                     'client_id' => $client->id,
                     'booking_id' => null,
-                    'client_name' => $client->name,
+                    'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
@@ -659,12 +657,22 @@ class PublicClientFormController extends Controller
             'religion' => 'required|string|max:50',
             'ethnicity' => 'required|string|max:50',
             'last_education' => 'required|string|max:100',
+            'school_history' => 'required|string',
+            'strengths_weaknesses' => 'required|string',
+            'dream_job' => 'required|string',
+            'emergency_contact' => 'required|string',
+            'preferred_counseling' => 'required|string',
         ], [
             'consent_agree.required' => 'You must agree to the Informed Consent to continue.',
             'full_name.required' => 'Full name is required.',
             'gender.required' => 'Please select your gender.',
             'phone.required' => 'Active WhatsApp/Phone number is required.',
             'current_address.required' => 'Current address is required.',
+            'school_history.required' => 'School history is required.',
+            'strengths_weaknesses.required' => 'Personal strengths and weaknesses are required.',
+            'dream_job.required' => 'Dream job information is required.',
+            'emergency_contact.required' => 'Emergency contact information is required.',
+            'preferred_counseling.required' => 'Please select your preferred counseling method.',
         ]);
 
         try {
@@ -674,9 +682,9 @@ class PublicClientFormController extends Controller
                 $counselingType = str_contains($pref, 'online') ? 'online' : 'offline';
 
                 $client = Client::firstOrNew([
-                    'name' => trim($request->full_name),
                     'phone' => trim($request->phone),
                 ]);
+                $client->name = trim($request->full_name);
 
                 $client->jenis = 'individu';
                 $client->gender = $gender;
@@ -685,12 +693,11 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->religion;
                 $client->education = $request->last_education;
                 $client->occupation = $request->occupation ?? 'General Client';
+                $client->email = $request->email ?? null;
                 $client->service_type = 'Biography Form (English)';
                 $client->counseling_type = $counselingType;
                 $client->source = 'other';
                 $client->status = 'unassigned';
-
-                $client->notes = "[Web Intake - English Biography Form]\nEducation: {$request->last_education}\nDream Job: " . ($request->dream_job ?? '-');
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('biography_en');
@@ -742,6 +749,12 @@ class PublicClientFormController extends Controller
             'agama' => 'required|string|max:50',
             'suku_bangsa' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
+            'riwayat_pendidikan_formal' => 'required|string',
+            'kelebihan_diri' => 'required|string',
+            'kekurangan_diri' => 'required|string',
+            'cita_cita' => 'required|string',
+            'tujuan_asesmen' => 'required|string',
+            'kontak_darurat' => 'required|string',
         ], [
             'consent_agree.required' => 'Anda wajib menyetujui pernyataan kejujuran untuk melanjutkan.',
             'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
@@ -751,6 +764,12 @@ class PublicClientFormController extends Controller
             'asal_kota.required' => 'Asal kota wajib diisi.',
             'phone.required' => 'Nomor Telp/HP/WhatsApp aktif wajib diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir berijazah wajib diisi.',
+            'riwayat_pendidikan_formal.required' => 'Riwayat pendidikan formal wajib diisi.',
+            'kelebihan_diri.required' => 'Kelebihan diri wajib diisi.',
+            'kekurangan_diri.required' => 'Kelemahan diri wajib diisi.',
+            'cita_cita.required' => 'Cita-cita wajib diisi.',
+            'tujuan_asesmen.required' => 'Tujuan asesmen wajib diisi.',
+            'kontak_darurat.required' => 'Kontak darurat wajib diisi.',
         ]);
 
         try {
@@ -758,9 +777,9 @@ class PublicClientFormController extends Controller
                 $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
 
                 $client = Client::firstOrNew([
-                    'name' => trim($request->nama_lengkap),
                     'phone' => trim($request->phone),
                 ]);
+                $client->name = trim($request->nama_lengkap);
 
                 $client->jenis = 'individu';
                 $client->gender = $gender;
@@ -769,12 +788,11 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
                 $client->occupation = 'Peserta Non-Industri';
+                $client->email = $request->email ?? null;
                 $client->service_type = 'Layanan Non-Industri';
                 $client->counseling_type = 'offline';
                 $client->source = 'other';
                 $client->status = 'unassigned';
-
-                $client->notes = "[Asesmen Non-Industri]\nAsal Kota: {$request->asal_kota}\nPendidikan: {$request->pendidikan_terakhir}\nCita-cita: " . ($request->cita_cita ?? '-');
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('non_industri');
@@ -815,29 +833,82 @@ class PublicClientFormController extends Controller
     public function storeIndustri(Request $request)
     {
         $validated = $request->validate([
+            // 1. Pernyataan Kejujuran
             'consent_agree' => 'required|in:Setuju,setuju,1',
+
+            // 2. Data Diri
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|string|in:Laki-Laki,Perempuan',
             'tempat_tanggal_lahir' => 'required|string|max:150',
             'urutan_kelahiran' => 'required|string|max:100',
-            'alamat_sekarang' => 'required|string',
+            'alamat_sekarang' => 'nullable|string',
             'asal_kota' => 'required|string|max:100',
             'phone' => 'required|string|max:50',
-            'agama' => 'required|string|max:50',
+            'agama' => 'nullable|string|max:50',
             'suku_bangsa' => 'required|string|max:50',
             'status_perkawinan' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
-            'pekerjaan_saat_ini' => 'required|string|max:150',
+            'pekerjaan_saat_ini' => 'nullable|string|max:150',
             'posisi_dituju' => 'required|string|max:150',
+
+            // 3. Kuesioner Stres (PSS-10)
+            'pss_1' => 'required',
+            'pss_2' => 'required',
+            'pss_3' => 'required',
+            'pss_4' => 'required',
+            'pss_5' => 'required',
+            'pss_6' => 'required',
+            'pss_7' => 'required',
+            'pss_8' => 'required',
+            'pss_9' => 'required',
+            'pss_10' => 'required',
+
+            // 5. Riwayat Pendidikan Formal (Sekolah 1 Wajib)
+            'nama_sekolah_1' => 'required|string|max:255',
+            'kota_sekolah_1' => 'required|string|max:100',
+            'tahun_masuk_sekolah_1' => 'required|string|max:50',
+            'tahun_keluar_sekolah_1' => 'required|string|max:50',
+            'keterangan_sekolah_1' => 'required|string|max:255',
+
+            // 7. Riwayat Pekerjaan (Ekspektasi Gaji Wajib)
+            'ekspektasi_gaji_tunjangan' => 'required|string',
+
+            // 10. Deskripsi Diri (Kelebihan, Kelemahan, Hobi, Deskripsi Bebas Wajib)
+            'kelebihan_1' => 'required|string|max:255',
+            'kelebihan_2' => 'required|string|max:255',
+            'kelebihan_3' => 'required|string|max:255',
+            'kelemahan_1' => 'required|string|max:255',
+            'kelemahan_2' => 'required|string|max:255',
+            'kelemahan_3' => 'required|string|max:255',
+            'hobi' => 'required|string|max:255',
+            'deskripsi_diri_bebas' => 'required|string',
         ], [
             'consent_agree.required' => 'Anda wajib menyetujui pernyataan kejujuran untuk melanjutkan.',
             'nama_lengkap.required' => 'Nama lengkap beserta gelar (jika ada) wajib diisi.',
             'jenis_kelamin.required' => 'Pilih jenis kelamin.',
             'tempat_tanggal_lahir.required' => 'Tempat & tanggal lahir wajib diisi.',
-            'alamat_sekarang.required' => 'Alamat tempat tinggal sekarang wajib diisi.',
+            'urutan_kelahiran.required' => 'Urutan kelahiran wajib diisi.',
+            'asal_kota.required' => 'Asal kota wajib diisi.',
             'phone.required' => 'Nomor Telp/HP/WhatsApp aktif wajib diisi.',
+            'suku_bangsa.required' => 'Suku bangsa wajib diisi.',
+            'status_perkawinan.required' => 'Status perkawinan wajib dipilih.',
+            'pendidikan_terakhir.required' => 'Pendidikan terakhir wajib dipilih.',
             'posisi_dituju.required' => 'Posisi pekerjaan yang dituju wajib diisi.',
-            'pekerjaan_saat_ini.required' => 'Pekerjaan saat ini wajib diisi.',
+            'pss_1.required' => 'Semua butir pertanyaan skala stres PSS-10 wajib diisi.',
+            'nama_sekolah_1.required' => 'Nama sekolah / universitas terakhir wajib diisi.',
+            'kota_sekolah_1.required' => 'Kota sekolah / universitas terakhir wajib diisi.',
+            'tahun_masuk_sekolah_1.required' => 'Tahun masuk sekolah terakhir wajib diisi.',
+            'tahun_keluar_sekolah_1.required' => 'Tahun keluar sekolah terakhir wajib diisi.',
+            'keterangan_sekolah_1.required' => 'Jurusan / keterangan sekolah terakhir wajib diisi.',
+            'ekspektasi_gaji_tunjangan.required' => 'Ekspektasi gaji dan tunjangan wajib diisi.',
+            'kelebihan_1.required' => 'Kelebihan diri butir 1 wajib diisi.',
+            'kelebihan_2.required' => 'Kelebihan diri butir 2 wajib diisi.',
+            'kelebihan_3.required' => 'Kelebihan diri butir 3 wajib diisi.',
+            'kelemahan_1.required' => 'Kelemahan diri butir 1 wajib diisi.',
+            'kelemahan_2.required' => 'Kelemahan diri butir 2 wajib diisi.',
+            'kelemahan_3.required' => 'Kelemahan diri butir 3 wajib diisi.',
+            'hobi.required' => 'Hobi wajib diisi.',
+            'deskripsi_diri_bebas.required' => 'Deskripsi diri bebas (1-2 paragraf) wajib diisi.',
         ]);
 
         try {
@@ -845,9 +916,9 @@ class PublicClientFormController extends Controller
                 $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
 
                 $client = Client::firstOrNew([
-                    'name' => trim($request->nama_lengkap),
                     'phone' => trim($request->phone),
                 ]);
+                $client->name = trim($request->nama_lengkap);
 
                 $client->jenis = 'industri';
                 $client->gender = $gender;
@@ -855,13 +926,12 @@ class PublicClientFormController extends Controller
                 $client->address = $request->alamat_sekarang;
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
-                $client->occupation = $request->pekerjaan_saat_ini;
+                $client->occupation = $request->pekerjaan_saat_ini ?? 'Pelamar / Karyawan';
+                $client->email = $request->email ?? null;
                 $client->service_type = 'Layanan Industri';
                 $client->counseling_type = 'offline';
                 $client->source = 'other';
                 $client->status = 'unassigned';
-
-                $client->notes = "[Asesmen Industri & Korporat]\nPosisi Dituju: {$request->posisi_dituju}\nKota: {$request->asal_kota}\nPekerjaan Saat Ini: {$request->pekerjaan_saat_ini}\nEkspektasi Gaji: " . ($request->ekspektasi_gaji ?? '-');
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('industri');

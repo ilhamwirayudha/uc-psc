@@ -273,7 +273,6 @@
 
                 {{-- 4. ALAMAT LENGKAP --}}
                 <div class="sm:col-span-3">
-                    <label for="address" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Alamat Lengkap <span class="text-[#827299] font-normal">(Jalan, Nomor, RT/RW, Kelurahan, Kecamatan, Kode Pos)</span></label>
                     <textarea id="address" name="address" rows="2" x-model="address"
                         placeholder="Contoh: Jl. CitraLand CBD Boulevard No. 8, Sambikerep, Surabaya, 60219"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] transition"></textarea>

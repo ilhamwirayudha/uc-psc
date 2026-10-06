@@ -567,7 +567,6 @@
                     </div>
 
                     <div class="sm:col-span-3">
-                        <label for="address" class="block text-sm font-semibold text-[#5B4A73] mb-1.5">Alamat Lengkap <span class="text-red-500">*</span> <span class="text-xs text-[#827299] font-normal">(Jalan, Nomor, RT/RW, Kelurahan, Kecamatan, Kode Pos)</span></label>
                         <textarea id="address" name="address" rows="2" required
                             x-model="address"
                             :disabled="!isAddressEnabled"

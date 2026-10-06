@@ -63,6 +63,44 @@ class Client extends Model
         return null;
     }
 
+    public function getCompanyNameAttribute(): ?string
+    {
+        if (!$this->isIndustri()) {
+            return null;
+        }
+
+        if (!empty($this->occupation)) {
+            if (preg_match('/(?:PT|CV|UD|Firma|Yayasan|Corp|Ltd|Inc)\b/i', $this->occupation)) {
+                if (str_contains($this->occupation, ' - ')) {
+                    $parts = explode(' - ', $this->occupation);
+                    return trim(end($parts));
+                }
+                return trim($this->occupation);
+            }
+        }
+
+        if (!empty($this->attributes['pic_name'])) {
+            if (preg_match('/(?:PT|CV|UD|Firma|Yayasan|Corp|Ltd|Inc)\b/i', $this->attributes['pic_name'])) {
+                return trim($this->attributes['pic_name']);
+            }
+        }
+
+        if (!empty($this->occupation) && str_contains($this->occupation, ' - ')) {
+            $parts = explode(' - ', $this->occupation);
+            return trim(end($parts));
+        }
+
+        if (!empty($this->occupation)) {
+            return trim($this->occupation);
+        }
+
+        if (!empty($this->attributes['pic_name'])) {
+            return trim($this->attributes['pic_name']);
+        }
+
+        return null;
+    }
+
     public function getJenisLabelAttribute(): string
     {
         return in_array(strtolower($this->jenis ?? ''), ['industri', 'company', 'perusahaan'])

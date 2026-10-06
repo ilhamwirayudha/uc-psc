@@ -261,7 +261,6 @@
                 if (!this.agama) this.errors['agama'] = 'Pertanyaan ini wajib diisi';
                 if (!this.suku_bangsa.trim()) this.errors['suku_bangsa'] = 'Pertanyaan ini wajib diisi';
                 if (!this.pendidikan_terakhir) this.errors['pendidikan_terakhir'] = 'Pertanyaan ini wajib diisi';
-                if (!this.pekerjaan.trim()) this.errors['pekerjaan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.hobi.trim()) this.errors['hobi'] = 'Pertanyaan ini wajib diisi';
                 if (!this.alasan_konseling.trim()) this.errors['alasan_konseling'] = 'Pertanyaan ini wajib diisi';
             } else if (this.page === 3) {
@@ -276,6 +275,7 @@
             } else if (this.page === 5) {
                 if (!this.pernah_konseling) this.errors['pernah_konseling'] = 'Pertanyaan ini wajib diisi';
                 if (!this.kontak_darurat.trim()) this.errors['kontak_darurat'] = 'Pertanyaan ini wajib diisi';
+                if (!this.sumber_info) this.errors['sumber_info'] = 'Pertanyaan ini wajib diisi';
                 if (!this.preferensi_konseling) this.errors['preferensi_konseling'] = 'Pertanyaan ini wajib diisi';
             }
 
@@ -627,10 +627,9 @@
                     </div>
 
                     {{-- 10. Pekerjaan Saat Ini --}}
-                    <div id="card_pekerjaan" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
-                         :class="errors['pekerjaan'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
+                    <div id="card_pekerjaan" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition border-[#EDE1FA]">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
-                            Pekerjaan Saat Ini <span class="text-rose-500">*</span>
+                            Pekerjaan Saat Ini <span class="text-xs font-normal text-slate-500">(Opsional)</span>
                         </label>
                         <input type="text" name="pekerjaan" x-model="pekerjaan" @input="delete errors['pekerjaan']"
                                placeholder="Jawaban Anda" 
@@ -941,27 +940,31 @@
                     </div>
 
                     {{-- 4. Bagaimana Anda Mengetahui Tentang UCPSC? --}}
-                    <div id="card_sumber_info" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div id="card_sumber_info" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                         :class="errors['sumber_info'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
-                            Bagaimana Anda Mengetahui Tentang UCPSC?
+                            Bagaimana Anda Mengetahui Tentang UCPSC? <span class="text-rose-500">*</span>
                         </label>
                         <div class="space-y-2.5">
                             <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3"
                                    :class="sumber_info === 'Referensi dari Kerabat' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD]'">
-                                <input type="radio" name="sumber_info" value="Referensi dari Kerabat" x-model="sumber_info" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
+                                <input type="radio" name="sumber_info" value="Referensi dari Kerabat" x-model="sumber_info" @change="delete errors['sumber_info']" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
                                 <span class="text-sm">Referensi dari Kerabat</span>
                             </label>
                             <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3"
                                    :class="sumber_info === 'Media Sosial' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD]'">
-                                <input type="radio" name="sumber_info" value="Media Sosial" x-model="sumber_info" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
+                                <input type="radio" name="sumber_info" value="Media Sosial" x-model="sumber_info" @change="delete errors['sumber_info']" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
                                 <span class="text-sm">Media Sosial</span>
                             </label>
                             <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3"
                                    :class="sumber_info === 'Website' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD]'">
-                                <input type="radio" name="sumber_info" value="Website" x-model="sumber_info" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
+                                <input type="radio" name="sumber_info" value="Website" x-model="sumber_info" @change="delete errors['sumber_info']" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
                                 <span class="text-sm">Website</span>
                             </label>
                         </div>
+                        <template x-if="errors['sumber_info']">
+                            <p class="text-xs text-rose-600 font-medium" x-text="errors['sumber_info']"></p>
+                        </template>
                     </div>
 
                     {{-- 5. Preferensi Proses Konseling --}}

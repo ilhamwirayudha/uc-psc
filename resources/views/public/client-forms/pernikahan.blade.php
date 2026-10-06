@@ -276,12 +276,12 @@
                 if (!this.urutan_kelahiran.trim()) this.errors['urutan_kelahiran'] = 'Pertanyaan ini wajib diisi';
                 if (!this.alamat.trim()) this.errors['alamat'] = 'Pertanyaan ini wajib diisi';
                 if (!this.phone.trim()) this.errors['phone'] = 'Pertanyaan ini wajib diisi';
+                if (!this.email.trim()) this.errors['email'] = 'Alamat email aktif wajib diisi';
                 if (!this.agama.trim()) this.errors['agama'] = 'Pertanyaan ini wajib diisi';
                 if (!this.suku_bangsa.trim()) this.errors['suku_bangsa'] = 'Pertanyaan ini wajib diisi';
                 if (!this.pendidikan_terakhir.trim()) this.errors['pendidikan_terakhir'] = 'Pertanyaan ini wajib diisi';
                 if (!this.pekerjaan.trim()) this.errors['pekerjaan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.pernikahan_ke.trim()) this.errors['pernikahan_ke'] = 'Pertanyaan ini wajib diisi';
-                if (!this.jumlah_anak.trim()) this.errors['jumlah_anak'] = 'Pertanyaan ini wajib diisi';
                 if (!this.alasan_konseling.trim()) this.errors['alasan_konseling'] = 'Pertanyaan ini wajib diisi';
             } else if (this.page === 3) {
                 if (!this.nama_pasangan.trim()) this.errors['nama_pasangan'] = 'Pertanyaan ini wajib diisi';
@@ -291,12 +291,12 @@
                 if (!this.urutan_kelahiran_pasangan.trim()) this.errors['urutan_kelahiran_pasangan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.alamat_pasangan.trim()) this.errors['alamat_pasangan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.phone_pasangan.trim()) this.errors['phone_pasangan'] = 'Pertanyaan ini wajib diisi';
+                if (!this.email_pasangan.trim()) this.errors['email_pasangan'] = 'Alamat email pasangan wajib diisi';
                 if (!this.agama_pasangan.trim()) this.errors['agama_pasangan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.suku_bangsa_pasangan.trim()) this.errors['suku_bangsa_pasangan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.pendidikan_terakhir_pasangan.trim()) this.errors['pendidikan_terakhir_pasangan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.pekerjaan_pasangan.trim()) this.errors['pekerjaan_pasangan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.pernikahan_pasangan_ke.trim()) this.errors['pernikahan_pasangan_ke'] = 'Pertanyaan ini wajib diisi';
-                if (!this.jumlah_anak_pasangan.trim()) this.errors['jumlah_anak_pasangan'] = 'Pertanyaan ini wajib diisi';
             } else if (this.page === 4) {
                 if (!this.tempat_tanggal_pernikahan.trim()) this.errors['tempat_tanggal_pernikahan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.lama_pernikahan.trim()) this.errors['lama_pernikahan'] = 'Pertanyaan ini wajib diisi';
@@ -304,12 +304,14 @@
                 if (!this.lama_berpacaran.trim()) this.errors['lama_berpacaran'] = 'Pertanyaan ini wajib diisi';
             } else if (this.page === 5) {
                 if (!this.keluhan_utama.trim()) this.errors['keluhan_utama'] = 'Pertanyaan ini wajib diisi';
+                if (!this.kemungkinan_perbaikan.trim()) this.errors['kemungkinan_perbaikan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.hal_ingin_ditingkatkan.trim()) this.errors['hal_ingin_ditingkatkan'] = 'Pertanyaan ini wajib diisi';
                 if (!this.kelebihan_peran.trim()) this.errors['kelebihan_peran'] = 'Pertanyaan ini wajib diisi';
                 if (!this.kekurangan_peran.trim()) this.errors['kekurangan_peran'] = 'Pertanyaan ini wajib diisi';
             } else if (this.page === 6) {
                 if (!this.pernah_konseling) this.errors['pernah_konseling'] = 'Pertanyaan ini wajib diisi';
                 if (!this.kontak_darurat.trim()) this.errors['kontak_darurat'] = 'Pertanyaan ini wajib diisi';
+                if (!this.sumber_info.trim()) this.errors['sumber_info'] = 'Pertanyaan ini wajib diisi';
                 if (!this.preferensi_konseling) this.errors['preferensi_konseling'] = 'Pertanyaan ini wajib diisi';
             }
 
@@ -559,10 +561,13 @@
                                 </template>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1">Alamat Email:</span>
-                                <input type="email" name="email" x-model="email"
+                                <span class="text-xs text-slate-500 block mb-1">Alamat Email: <span class="text-rose-500">*</span></span>
+                                <input type="email" name="email" x-model="email" @input="delete errors['email']"
                                        placeholder="nama@email.com" 
                                        class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <template x-if="errors['email']">
+                                    <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['email']"></p>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -625,13 +630,13 @@
 
                     {{-- 9. Pernikahan Ke- & Jumlah Anak --}}
                     <div id="card_pernikahan_ke" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
-                         :class="errors['pernikahan_ke'] || errors['jumlah_anak'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
+                         :class="errors['pernikahan_ke'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Riwayat Pernikahan Anda <span class="text-rose-500">*</span>
                         </label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1">Pernikahan Anda yang ke:</span>
+                                <span class="text-xs text-slate-500 block mb-1">Pernikahan Anda yang ke: <span class="text-rose-500">*</span></span>
                                 <input type="text" name="pernikahan_ke" x-model="pernikahan_ke" @input="delete errors['pernikahan_ke']"
                                        placeholder="Contoh: 1" 
                                        class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
@@ -640,13 +645,10 @@
                                 </template>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1">Jumlah Anak Anda Saat Ini:</span>
-                                <input type="text" name="jumlah_anak" x-model="jumlah_anak" @input="delete errors['jumlah_anak']"
+                                <span class="text-xs text-slate-500 block mb-1">Jumlah Anak Anda Saat Ini (opsional):</span>
+                                <input type="text" name="jumlah_anak" x-model="jumlah_anak"
                                        placeholder="Contoh: 2" 
                                        class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
-                                <template x-if="errors['jumlah_anak']">
-                                    <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['jumlah_anak']"></p>
-                                </template>
                             </div>
                         </div>
                     </div>
@@ -796,10 +798,13 @@
                                 </template>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1">Alamat Email:</span>
-                                <input type="email" name="email_pasangan" x-model="email_pasangan"
+                                <span class="text-xs text-slate-500 block mb-1">Alamat Email: <span class="text-rose-500">*</span></span>
+                                <input type="email" name="email_pasangan" x-model="email_pasangan" @input="delete errors['email_pasangan']"
                                        placeholder="email@pasangan.com" 
                                        class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <template x-if="errors['email_pasangan']">
+                                    <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['email_pasangan']"></p>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -862,13 +867,13 @@
 
                     {{-- 9. Riwayat Pernikahan Pasangan --}}
                     <div id="card_pernikahan_pasangan_ke" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
-                         :class="errors['pernikahan_pasangan_ke'] || errors['jumlah_anak_pasangan'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
+                         :class="errors['pernikahan_pasangan_ke'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Riwayat Pernikahan Pasangan <span class="text-rose-500">*</span>
                         </label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1">Pernikahan Pasangan yang ke:</span>
+                                <span class="text-xs text-slate-500 block mb-1">Pernikahan Pasangan yang ke: <span class="text-rose-500">*</span></span>
                                 <input type="text" name="pernikahan_pasangan_ke" x-model="pernikahan_pasangan_ke" @input="delete errors['pernikahan_pasangan_ke']"
                                        placeholder="Contoh: 1" 
                                        class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
@@ -877,13 +882,10 @@
                                 </template>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1">Jumlah Anak Pasangan:</span>
-                                <input type="text" name="jumlah_anak_pasangan" x-model="jumlah_anak_pasangan" @input="delete errors['jumlah_anak_pasangan']"
+                                <span class="text-xs text-slate-500 block mb-1">Jumlah Anak Pasangan (opsional):</span>
+                                <input type="text" name="jumlah_anak_pasangan" x-model="jumlah_anak_pasangan"
                                        placeholder="Contoh: 2" 
                                        class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
-                                <template x-if="errors['jumlah_anak_pasangan']">
-                                    <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['jumlah_anak_pasangan']"></p>
-                                </template>
                             </div>
                         </div>
                     </div>
@@ -1003,14 +1005,18 @@
                     </div>
 
                     {{-- 2. Kemungkinan Perbaikan Hubungan --}}
-                    <div id="card_kemungkinan_perbaikan" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_kemungkinan_perbaikan" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                         :class="errors['kemungkinan_perbaikan'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
-                            Upaya yang Pernah Dilakukan untuk Memperbaiki Hubungan
+                            Upaya yang Pernah Dilakukan untuk Memperbaiki Hubungan <span class="text-rose-500">*</span>
                         </label>
-                        <p class="text-xs text-slate-500">Opsional. Jelaskan upaya yang pernah dicoba oleh Anda atau pasangan sebelumnya.</p>
-                        <textarea name="kemungkinan_perbaikan" x-model="kemungkinan_perbaikan" rows="2"
+                        <p class="text-xs text-slate-500">Jelaskan upaya atau langkah yang pernah dicoba oleh Anda atau pasangan sebelumnya.</p>
+                        <textarea name="kemungkinan_perbaikan" x-model="kemungkinan_perbaikan" @input="delete errors['kemungkinan_perbaikan']" rows="2"
                                   placeholder="Contoh: Pernah berdiskusi keluarga, membaca buku pernikahan, mencoba mediasi..." 
                                   class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                        <template x-if="errors['kemungkinan_perbaikan']">
+                            <p class="text-xs text-rose-600 font-medium" x-text="errors['kemungkinan_perbaikan']"></p>
+                        </template>
                     </div>
 
                     {{-- 3. Hal-hal yang Ingin Ditingkatkan --}}
@@ -1145,13 +1151,17 @@
                     </div>
 
                     {{-- 3. Sumber Informasi --}}
-                    <div id="card_sumber_info" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_sumber_info" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                         :class="errors['sumber_info'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
-                            Dari Mana Anda Mengetahui Layanan UC PSC?
+                            Dari Mana Anda Mengetahui Layanan UC PSC? <span class="text-rose-500">*</span>
                         </label>
-                        <input type="text" name="sumber_info" x-model="sumber_info"
+                        <input type="text" name="sumber_info" x-model="sumber_info" @input="delete errors['sumber_info']"
                                placeholder="Contoh: Media Sosial, Rekan Kerja, Website, dll" 
                                class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                        <template x-if="errors['sumber_info']">
+                            <p class="text-xs text-rose-600 font-medium" x-text="errors['sumber_info']"></p>
+                        </template>
                     </div>
 
                     {{-- 4. Preferensi Proses Konseling --}}

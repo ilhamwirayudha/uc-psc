@@ -8,7 +8,6 @@
 @section('content')
 <div x-data="{
     search: '{{ addslashes(request('search', '')) }}',
-    jenis: '{{ request('jenis', '') }}',
     sort: '{{ request('sort', 'created_at') }}',
     direction: '{{ request('direction', 'desc') }}',
     perPage: '{{ request('per_page', $perPage ?? 25) }}',
@@ -71,7 +70,6 @@
         try {
             const params = new URLSearchParams();
             if (this.search && this.search.trim() !== '') params.set('search', this.search.trim());
-            if (this.jenis && this.jenis !== '') params.set('jenis', this.jenis);
             if (this.sort) params.set('sort', this.sort);
             if (this.direction) params.set('direction', this.direction);
             if (this.perPage) params.set('per_page', this.perPage);
@@ -115,7 +113,7 @@
                     x-model="search"
                     @input="onSearch()"
                     @keydown.enter.prevent="fetchResults()"
-                    placeholder="Cari nama klien..."
+                    placeholder="Cari nama, no. HP, atau email klien..."
                     class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
 
                 {{-- Clear button saat ada teks --}}
@@ -133,24 +131,21 @@
                     <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
                 </div>
             </div>
-
-            {{-- Filter Tipe Klien --}}
-            <select name="jenis"
-                x-model="jenis"
-                @change="fetchResults()"
-                class="px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#5B4A73] flex-shrink-0">
-                <option value="">Semua Tipe Klien</option>
-                <option value="individu">Individu</option>
-                <option value="industri">Industri</option>
-            </select>
         </form>
+
+        {{-- Tombol Tambah Klien Baru --}}
+        <a href="{{ route('clients.create') }}"
+            class="px-4 py-2.5 bg-orange text-white text-sm font-semibold rounded-xl hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center justify-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Tambah Klien Baru</span>
+        </a>
     </div>
 
 
     {{-- Dynamic Content Area (Filter Indicator + Table + Pagination) --}}
     <div id="client-data-container" :class="{ 'opacity-70 pointer-events-none transition-opacity duration-150': loading }">
         {{-- Active Filter / Sort Indicators --}}
-        @if(request('sort') || request('search') || request('jenis'))
+        @if(request('sort') || request('search'))
         <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-[#6B5B85] bg-white px-4 py-2.5 rounded-xl border border-[#EDE1FA]">
             <span class="font-semibold text-[#5B4A73] flex items-center gap-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
@@ -159,27 +154,20 @@
             @if(request('search'))
                 <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Cari: "{{ request('search') }}"</span>
             @endif
-            @if(request('jenis'))
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">
-                    Tipe: {{ in_array(request('jenis'), ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}
-                </span>
-            @endif
             @if(request('sort') === 'id')
                 <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut ID: {{ $direction === 'asc' ? 'Terkecil (1 → 9)' : 'Terbesar (9 → 1)' }}</span>
             @elseif(request('sort') === 'name')
                 <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut Nama: {{ $direction === 'asc' ? 'A → Z' : 'Z → A' }}</span>
             @elseif(request('sort') === 'jenis')
                 <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">
-                    @if($direction === 'group')
-                        Urut Tipe: Kelompok → Individu → Perusahaan
-                    @elseif($direction === 'company' || $direction === 'desc')
-                        Urut Tipe: Perusahaan → Kelompok → Individu
-                    @else
-                        Urut Tipe: Individu → Kelompok → Perusahaan
-                    @endif
+                    Urut Industri: {{ $direction === 'desc' ? 'Industri Terlebih Dahulu' : 'Bukan Industri Terlebih Dahulu' }}
                 </span>
             @elseif(request('sort') === 'creator')
                 <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut Pembuat: {{ $direction === 'asc' ? 'A → Z' : 'Z → A' }}</span>
+            @elseif(request('sort') === 'phone')
+                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut No. HP: {{ $direction === 'asc' ? '0 → 9' : '9 → 0' }}</span>
+            @elseif(request('sort') === 'email')
+                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut Email: {{ $direction === 'asc' ? 'A → Z' : 'Z → A' }}</span>
             @elseif(request('sort') === 'created_at')
                 <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut Waktu: {{ $direction === 'asc' ? 'Paling Awal (Terlama)' : 'Paling Baru (Terkini)' }}</span>
             @endif
@@ -240,31 +228,70 @@
                                 </a>
                             </th>
 
-                            {{-- Tipe Klien Column Sort (2-State: Individu <-> Industri) --}}
-                            <th class="text-center align-middle px-4 py-3.5 font-semibold">
-                                <div class="flex items-center justify-center">
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'jenis', 'direction' => ($sort === 'jenis' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
-                                        @click.prevent="goToUrl($event.currentTarget.href)"
-                                        class="inline-flex items-center justify-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
-                                        title="Urutkan tipe klien: Individu atau Industri">
-                                        <span class="w-5 shrink-0" aria-hidden="true"></span>
-                                        <span class="{{ $sort === 'jenis' ? 'text-purple-deep font-bold' : '' }}">Tipe Klien</span>
-                                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'jenis' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
-                                            @if($sort === 'jenis')
-                                                 @if($direction === 'asc')
-                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                                                 @else
-                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-                                                 @endif
-                                            @else
-                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
-                                            @endif
-                                        </span>
-                                    </a>
-                                </div>
+                            {{-- Kolom Industri --}}
+                            <th class="text-left align-middle px-4 py-3.5 font-semibold">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'jenis', 'direction' => ($sort === 'jenis' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                    @click.prevent="goToUrl($event.currentTarget.href)"
+                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                    title="Urutkan klien industri">
+                                    <span class="{{ $sort === 'jenis' ? 'text-purple-deep font-bold' : '' }}">Industri</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'jenis' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                        @if($sort === 'jenis')
+                                             @if($direction === 'asc')
+                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                                             @else
+                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                                             @endif
+                                        @else
+                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                                        @endif
+                                    </span>
+                                </a>
                             </th>
 
 
+
+                            {{-- No. HP Column Sort --}}
+                            <th class="text-left align-middle px-4 py-3.5 font-semibold">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'phone', 'direction' => ($sort === 'phone' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                    @click.prevent="goToUrl($event.currentTarget.href)"
+                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                    title="Urutkan nomor HP">
+                                    <span class="{{ $sort === 'phone' ? 'text-purple-deep font-bold' : '' }}">No. HP</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'phone' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                        @if($sort === 'phone')
+                                             @if($direction === 'asc')
+                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                                             @else
+                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                                             @endif
+                                        @else
+                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                                        @endif
+                                    </span>
+                                </a>
+                            </th>
+
+                            {{-- Email Column Sort --}}
+                            <th class="text-left align-middle px-4 py-3.5 font-semibold">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'email', 'direction' => ($sort === 'email' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                    @click.prevent="goToUrl($event.currentTarget.href)"
+                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                    title="Urutkan alamat email">
+                                    <span class="{{ $sort === 'email' ? 'text-purple-deep font-bold' : '' }}">Email</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'email' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                        @if($sort === 'email')
+                                             @if($direction === 'asc')
+                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                                             @else
+                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                                             @endif
+                                        @else
+                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                                        @endif
+                                    </span>
+                                </a>
+                            </th>
 
                             {{-- Waktu Pendaftaran Column with Oldest/Newest Sort --}}
                             <th class="text-center align-middle px-4 py-3.5 font-semibold">
@@ -301,19 +328,43 @@
                             <td class="text-left align-middle px-6 py-3.5">
                                 <a href="{{ route('clients.show', $client) }}" class="font-semibold text-purple-deep hover:text-orange transition block">{{ $client->name }}</a>
                             </td>
-                            <td class="text-center align-middle px-4 py-3.5 text-[#6B5B85] whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold {{ in_array($client->jenis, ['industri', 'company', 'perusahaan']) ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-purple-50 text-purple-deep border border-[#EDE1FA]' }}">
-                                    {{ in_array($client->jenis, ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}
-                                </span>
+                            <td class="text-left align-middle px-4 py-3.5 whitespace-nowrap">
+                                @if($client->company_name)
+                                    <span class="font-semibold text-purple-deep block">
+                                        {{ $client->company_name }}
+                                    </span>
+                                @endif
+                            </td>
+
+                            {{-- No. HP --}}
+                            <td class="text-left align-middle px-4 py-3.5 whitespace-nowrap">
+                                @if($client->phone)
+                                    <span class="font-semibold text-purple-deep block">
+                                        {{ $client->phone }}
+                                    </span>
+                                @else
+                                    <span class="font-semibold text-[#827299]">-</span>
+                                @endif
+                            </td>
+
+                            {{-- Email --}}
+                            <td class="text-left align-middle px-4 py-3.5 whitespace-nowrap">
+                                @if($client->email)
+                                    <span class="font-semibold text-purple-deep block">
+                                        {{ $client->email }}
+                                    </span>
+                                @else
+                                    <span class="font-semibold text-[#827299]">-</span>
+                                @endif
                             </td>
 
                             <td class="text-center align-middle px-4 py-3.5 text-[#6B5B85] whitespace-nowrap">
-                                {{ $client->created_at ? $client->created_at->format('d M Y, H:i') : '-' }}
+                                {{ $client->created_at ? $client->created_at->format('d/m/Y H:i:s') : '-' }}
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-12 text-center text-[#6B5B85]">
+                            <td colspan="6" class="px-6 py-12 text-center text-[#6B5B85]">
                                 <svg class="mx-auto mb-3 text-[#D9C2F0]" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                                 Belum ada data klien.
                             </td>

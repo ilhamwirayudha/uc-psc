@@ -1076,7 +1076,6 @@
 
                             {{-- 4. ALAMAT LENGKAP --}}
                             <div class="sm:col-span-3">
-                                <label for="create_address" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Alamat Lengkap <span class="text-[#827299] font-normal">(Jalan, Nomor, RT/RW, Kelurahan, Kecamatan, Kode Pos)</span></label>
                                 <textarea id="create_address" name="address" rows="2" x-model="newCounselor.address"
                                     :disabled="!isAddressEnabled"
                                     :class="isAddressEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
@@ -1586,7 +1585,6 @@
 
                             {{-- 4. ALAMAT LENGKAP --}}
                             <div class="sm:col-span-3">
-                                <label for="edit_address" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Alamat Lengkap <span class="text-[#827299] font-normal">(Jalan, Nomor, RT/RW, Kelurahan, Kecamatan, Kode Pos)</span></label>
                                 <textarea id="edit_address" name="address" rows="2" x-model="editingCounselor.address"
                                     placeholder="Contoh: Jl. CitraLand CBD Boulevard No. 8, Sambikerep, Surabaya, 60219"
                                     class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] transition"></textarea>
