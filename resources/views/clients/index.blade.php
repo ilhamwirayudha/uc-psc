@@ -181,18 +181,18 @@
         {{-- Table --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-sm">
+                <table class="w-full text-sm font-medium">
                     <thead>
-                        <tr class="bg-[#F7F5FB] text-[#5B4A73] select-none">
+                        <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
                             {{-- No. Column with Numeric Sort --}}
                             <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16">
                                 <div class="flex items-center justify-center">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'direction' => ($sort === 'id' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
                                         @click.prevent="goToUrl($event.currentTarget.href)"
-                                        class="inline-flex items-center gap-1 hover:text-purple-deep group transition cursor-pointer"
+                                        class="inline-flex items-center gap-1 hover:text-white group transition cursor-pointer"
                                         title="Urutkan nomor urut angka: 1→9 atau 9→1">
-                                        <span class="{{ $sort === 'id' ? 'text-purple-deep font-bold' : 'text-[#827299]' }}">No.</span>
-                                        <span class="inline-flex items-center justify-center w-4 h-4 rounded-md transition {{ $sort === 'id' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                        <span class="text-white font-semibold">No.</span>
+                                        <span class="inline-flex items-center justify-center w-4 h-4 rounded-md transition {{ $sort === 'id' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                             @if($sort === 'id')
                                                  @if($direction === 'asc')
                                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -211,10 +211,10 @@
                             <th class="text-left align-middle px-6 py-3.5 font-semibold">
                                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'direction' => ($sort === 'name' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
                                     @click.prevent="goToUrl($event.currentTarget.href)"
-                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
+                                    class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer"
                                     title="Urutkan alfabetis A-Z / Z-A">
-                                    <span class="{{ $sort === 'name' ? 'text-purple-deep font-bold' : '' }}">Nama Klien</span>
-                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition {{ $sort === 'name' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                    <span class="text-white font-semibold">Nama Klien</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition {{ $sort === 'name' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'name')
                                              @if($direction === 'asc')
                                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -232,10 +232,10 @@
                             <th class="text-left align-middle px-4 py-3.5 font-semibold">
                                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'jenis', 'direction' => ($sort === 'jenis' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
                                     @click.prevent="goToUrl($event.currentTarget.href)"
-                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                    class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
                                     title="Urutkan klien industri">
-                                    <span class="{{ $sort === 'jenis' ? 'text-purple-deep font-bold' : '' }}">Industri</span>
-                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'jenis' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                    <span class="text-white font-semibold">Industri</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'jenis' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'jenis')
                                              @if($direction === 'asc')
                                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -249,16 +249,14 @@
                                 </a>
                             </th>
 
-
-
                             {{-- No. HP Column Sort --}}
                             <th class="text-left align-middle px-4 py-3.5 font-semibold">
                                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'phone', 'direction' => ($sort === 'phone' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
                                     @click.prevent="goToUrl($event.currentTarget.href)"
-                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                    class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
                                     title="Urutkan nomor HP">
-                                    <span class="{{ $sort === 'phone' ? 'text-purple-deep font-bold' : '' }}">No. HP</span>
-                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'phone' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                    <span class="text-white font-semibold">No. HP</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'phone' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'phone')
                                              @if($direction === 'asc')
                                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -276,10 +274,10 @@
                             <th class="text-left align-middle px-4 py-3.5 font-semibold">
                                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'email', 'direction' => ($sort === 'email' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
                                     @click.prevent="goToUrl($event.currentTarget.href)"
-                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                    class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
                                     title="Urutkan alamat email">
-                                    <span class="{{ $sort === 'email' ? 'text-purple-deep font-bold' : '' }}">Email</span>
-                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'email' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                    <span class="text-white font-semibold">Email</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'email' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'email')
                                              @if($direction === 'asc')
                                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -298,11 +296,11 @@
                                 <div class="flex items-center justify-center">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => ($sort === 'created_at' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
                                         @click.prevent="goToUrl($event.currentTarget.href)"
-                                        class="inline-flex items-center justify-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                        class="inline-flex items-center justify-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
                                         title="Urutkan waktu pendaftaran: Paling Baru atau Paling Awal/Tua">
                                         <span class="w-5 shrink-0" aria-hidden="true"></span>
-                                        <span class="{{ $sort === 'created_at' ? 'text-purple-deep font-bold' : '' }}">Waktu Pendaftaran</span>
-                                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'created_at' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                        <span class="text-white font-semibold">Waktu Pendaftaran</span>
+                                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'created_at' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                             @if($sort === 'created_at')
                                                  @if($direction === 'asc')
                                                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -322,49 +320,51 @@
                     <tbody class="divide-y divide-[#F3EAFB]">
                         @forelse($clients as $client)
                         <tr class="hover:bg-[#FDFBFF] transition">
-                            <td class="text-center align-middle px-3 py-3.5 text-[#6B5B85] font-medium">
+                            <td class="text-center align-middle px-3 py-3.5 text-black font-medium">
                                 {{ $loop->iteration + ($clients->currentPage() - 1) * $clients->perPage() }}
                             </td>
                             <td class="text-left align-middle px-6 py-3.5">
-                                <a href="{{ route('clients.show', $client) }}" class="font-semibold text-purple-deep hover:text-orange transition block">{{ $client->name }}</a>
+                                <a href="{{ route('clients.show', $client) }}" class="font-medium text-black hover-orange hover:text-orange transition block cursor-pointer">{{ $client->name }}</a>
                             </td>
                             <td class="text-left align-middle px-4 py-3.5 whitespace-nowrap">
                                 @if($client->company_name)
-                                    <span class="font-semibold text-purple-deep block">
+                                    <span class="font-medium text-black block">
                                         {{ $client->company_name }}
                                     </span>
+                                @else
+                                    <span class="font-medium text-gray-400">-</span>
                                 @endif
                             </td>
 
                             {{-- No. HP --}}
                             <td class="text-left align-middle px-4 py-3.5 whitespace-nowrap">
                                 @if($client->phone)
-                                    <span class="font-semibold text-purple-deep block">
+                                    <span class="font-medium text-black block">
                                         {{ $client->phone }}
                                     </span>
                                 @else
-                                    <span class="font-semibold text-[#827299]">-</span>
+                                    <span class="font-medium text-gray-400">-</span>
                                 @endif
                             </td>
 
                             {{-- Email --}}
                             <td class="text-left align-middle px-4 py-3.5 whitespace-nowrap">
                                 @if($client->email)
-                                    <span class="font-semibold text-purple-deep block">
+                                    <span class="font-medium text-black block">
                                         {{ $client->email }}
                                     </span>
                                 @else
-                                    <span class="font-semibold text-[#827299]">-</span>
+                                    <span class="font-medium text-gray-400">-</span>
                                 @endif
                             </td>
 
-                            <td class="text-center align-middle px-4 py-3.5 text-[#6B5B85] whitespace-nowrap">
+                            <td class="text-center align-middle px-4 py-3.5 text-black font-medium whitespace-nowrap">
                                 {{ $client->created_at ? $client->created_at->format('d/m/Y H:i:s') : '-' }}
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-[#6B5B85]">
+                            <td colspan="6" class="px-6 py-12 text-center text-black font-medium">
                                 <svg class="mx-auto mb-3 text-[#D9C2F0]" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                                 Belum ada data klien.
                             </td>
@@ -405,41 +405,40 @@
                 }
             @endphp
 
-            <div class="px-6 py-4 border-t border-[#EDE1FA] bg-white flex flex-col sm:flex-row items-center justify-between gap-4">
-                {{-- Left Side: Item Counter & Per-Page Selector --}}
-                <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-[#6B5B85] w-full sm:w-auto justify-between sm:justify-start">
-                    <div>
-                        Menampilkan
-                        <span class="font-bold text-[#5B4A73]">{{ $clients->firstItem() ?? 0 }}</span>–<span class="font-bold text-[#5B4A73]">{{ $clients->lastItem() ?? 0 }}</span>
-                        dari
-                        <span class="font-bold text-[#5B4A73]">{{ $total }}</span> klien
-                    </div>
-                    <span class="text-[#D9C2F0] hidden sm:inline">•</span>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-[#827299]">Tampilkan</span>
-                        <select
-                            @change="setPerPage($event.target.value)"
-                            class="px-2.5 py-1 text-xs rounded-lg border border-[#D9C2F0] bg-white text-[#5B4A73] font-semibold focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
-                            <option value="25" {{ ($perPage ?? 25) == 25 ? 'selected' : '' }}>25</option>
-                            <option value="50" {{ ($perPage ?? 25) == 50 ? 'selected' : '' }}>50</option>
-                            <option value="100" {{ ($perPage ?? 25) == 100 ? 'selected' : '' }}>100</option>
-                        </select>
-                        <span class="text-xs text-[#827299]">per hal.</span>
-                    </div>
+            <div class="px-6 py-4 border-t border-[#EDE1FA] bg-white relative flex flex-col md:flex-row items-center justify-between gap-4">
+                {{-- Left Side: Per-Page Selector --}}
+                <div class="flex items-center gap-2 text-xs text-black font-medium w-full md:w-auto justify-start">
+                    <span class="text-xs font-medium text-black">Tampilkan</span>
+                    <select
+                        @change="setPerPage($event.target.value)"
+                        class="px-2.5 py-1 text-xs rounded-lg border border-[#D9C2F0] bg-white text-black font-medium focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
+                        <option value="25" {{ ($perPage ?? 25) == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ ($perPage ?? 25) == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ ($perPage ?? 25) == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    <span class="text-xs font-medium text-black">per hal.</span>
+                </div>
+
+                {{-- Center: Item Counter (Posisi tepat di tengah diantara per-page dan pagination) --}}
+                <div class="text-xs text-black font-medium text-center md:absolute md:left-1/2 md:-translate-x-1/2">
+                    Menampilkan
+                    <span class="font-medium text-black">{{ $clients->firstItem() ?? 0 }}</span>–<span class="font-medium text-black">{{ $clients->lastItem() ?? 0 }}</span>
+                    dari
+                    <span class="font-medium text-black">{{ $total }}</span> klien
                 </div>
 
                 {{-- Right Side: Numbered Pagination with Total Pages Indicator --}}
-                <div class="flex items-center gap-1.5 flex-wrap justify-center">
+                <div class="flex items-center gap-1.5 flex-wrap justify-center font-medium">
                     {{-- Previous Page Button --}}
                     @if ($clients->onFirstPage())
-                        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EDE1FA] bg-gray-50 text-[#B4A5C7] text-xs font-medium cursor-not-allowed select-none" title="Halaman pertama">
+                        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EDE1FA] bg-gray-50 text-gray-400 text-xs font-medium cursor-not-allowed select-none" title="Halaman pertama">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
                             <span class="hidden md:inline">Prev</span>
                         </span>
                     @else
                         <a href="{{ $clients->previousPageUrl() }}"
                            @click.prevent="goToUrl('{{ $clients->previousPageUrl() }}')"
-                           class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EDE1FA] bg-white text-[#5B4A73] hover:text-purple-deep hover:bg-purple-deep/5 hover:border-purple-deep/30 text-xs font-medium transition cursor-pointer select-none"
+                           class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EDE1FA] bg-white text-black hover:bg-gray-100 hover:border-gray-300 text-xs font-medium transition cursor-pointer select-none"
                            title="Halaman sebelumnya">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
                             <span class="hidden md:inline">Prev</span>
@@ -449,15 +448,15 @@
                     {{-- Page Numbers --}}
                     @foreach ($pageNumbers as $p)
                         @if ($p === '...')
-                            <span class="w-8 h-8 flex items-center justify-center text-xs text-[#827299] select-none">…</span>
+                            <span class="w-8 h-8 flex items-center justify-center text-xs text-gray-400 font-medium select-none">…</span>
                         @elseif ($p == $currentPage)
-                            <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-purple-deep text-white text-xs font-bold shadow-sm select-none" aria-current="page">
+                            <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-purple-deep text-white text-xs font-medium shadow-sm select-none" aria-current="page">
                                 {{ $p }}
                             </span>
                         @else
                             <a href="{{ $clients->url($p) }}"
                                @click.prevent="goToUrl('{{ $clients->url($p) }}')"
-                               class="w-8 h-8 flex items-center justify-center rounded-lg border border-[#EDE1FA] bg-white text-[#5B4A73] hover:text-purple-deep hover:bg-purple-deep/5 hover:border-purple-deep/30 text-xs font-medium transition cursor-pointer select-none"
+                               class="w-8 h-8 flex items-center justify-center rounded-lg border border-[#EDE1FA] bg-white text-black hover:bg-gray-100 hover:border-gray-300 text-xs font-medium transition cursor-pointer select-none"
                                title="Halaman {{ $p }}">
                                 {{ $p }}
                             </a>
@@ -468,21 +467,21 @@
                     @if ($clients->hasMorePages())
                         <a href="{{ $clients->nextPageUrl() }}"
                            @click.prevent="goToUrl('{{ $clients->nextPageUrl() }}')"
-                           class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EDE1FA] bg-white text-[#5B4A73] hover:text-purple-deep hover:bg-purple-deep/5 hover:border-purple-deep/30 text-xs font-medium transition cursor-pointer select-none"
+                           class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EDE1FA] bg-white text-black hover:bg-gray-100 hover:border-gray-300 text-xs font-medium transition cursor-pointer select-none"
                            title="Halaman berikutnya">
                             <span class="hidden md:inline">Next</span>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                         </a>
                     @else
-                        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EDE1FA] bg-gray-50 text-[#B4A5C7] text-xs font-medium cursor-not-allowed select-none" title="Halaman terakhir">
+                        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EDE1FA] bg-gray-50 text-gray-400 text-xs font-medium cursor-not-allowed select-none" title="Halaman terakhir">
                             <span class="hidden md:inline">Next</span>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                         </span>
                     @endif
 
                     {{-- Total Pages indicator badge --}}
-                    <span class="text-xs text-[#827299] ml-1.5 px-2.5 py-1 rounded-md bg-[#F7F5FB] border border-[#EDE1FA] whitespace-nowrap">
-                        Hal. <span class="font-bold text-[#5B4A73]">{{ $currentPage }}</span> dari <span class="font-bold text-[#5B4A73]">{{ $lastPage }}</span>
+                    <span class="text-xs text-black font-medium ml-1.5 px-2.5 py-1 rounded-md bg-[#F7F5FB] border border-[#EDE1FA] whitespace-nowrap">
+                        Hal. <span class="font-medium text-black">{{ $currentPage }}</span> dari <span class="font-medium text-black">{{ $lastPage }}</span>
                     </span>
                 </div>
             </div>

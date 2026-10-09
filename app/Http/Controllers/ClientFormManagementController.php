@@ -320,6 +320,16 @@ class ClientFormManagementController extends Controller
     }
 
     /**
+     * Tampilkan dan cetak / download laporan PDF resmi untuk berkas jawaban formulir klien.
+     */
+    public function downloadPdf(ClientForm $clientForm)
+    {
+        $clientForm->load(['client', 'booking']);
+
+        return view('client-forms.pdf', compact('clientForm'));
+    }
+
+    /**
      * Update submission status or notes.
      */
     public function updateStatus(Request $request, ClientForm $clientForm)

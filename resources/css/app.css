@@ -1,12 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-    --color-purple-deep: #4A2380;
-    --color-purple-light: #7C4DBE;
+    /* Palet Ungu Baru (User Defined Scale 50 - 950) */
+    --color-purple-50: #F1EDF7;
+    --color-purple-100: #D9CEE9;
+    --color-purple-200: #C0AEDB;
+    --color-purple-300: #A78ECC;
+    --color-purple-400: #8F6FBE;
+    --color-purple-500: #764FB0;
+    --color-purple-600: #5C3E8A;
+    --color-purple-700: #4B3371;
+    --color-purple-800: #362451;
+    --color-purple-900: #211631;
+    --color-purple-950: #0C0812;
+
+    /* Semantik Sistem */
+    --color-purple-deep: #5C3E8A;
+    --color-purple-light: #764FB0;
     --color-orange: #E38B2C;
-    --color-lavender: #F3EAFB;
-    --color-lavender-mid: #E4D2F5;
-    --color-navy-footer: #2E1655;
+    --color-lavender: #F1EDF7;
+    --color-lavender-mid: #D9CEE9;
+    --color-navy-footer: #211631;
 
     --font-display: "Montserrat", sans-serif;
     --font-sans: "Montserrat", sans-serif;
@@ -70,6 +84,12 @@ h6 {
     .hover-nav-item:hover {
         color: var(--color-orange) !important;
         transform: translateY(-4px) !important;
+    }
+
+    .hover-orange:hover,
+    a.hover-orange:hover,
+    button.hover-orange:hover {
+        color: var(--color-orange, #E38B2C) !important;
     }
 
     .hover-lift:hover {

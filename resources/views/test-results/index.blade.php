@@ -133,48 +133,48 @@
 {{-- ========================================================================= --}}
 <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
     <div class="overflow-x-auto">
-        <table class="w-full text-xs sm:text-sm">
+        <table class="w-full text-xs sm:text-sm font-medium">
             <thead>
-                <tr class="bg-[#F7F5FB] text-[#5B4A73] border-b border-[#EDE1FA]">
-                    <th class="text-center px-4 py-3.5 font-semibold w-12">No.</th>
-                    <th class="text-left px-5 py-3.5 font-semibold">Klien</th>
-                    <th class="text-left px-5 py-3.5 font-semibold">Nama Tes</th>
-                    <th class="text-center px-4 py-3.5 font-semibold">Pelaksanaan</th>
-                    <th class="text-center px-3 py-3.5 font-semibold">Metode</th>
-                    <th class="text-left px-4 py-3.5 font-semibold">Tim Staff</th>
-                    <th class="text-center px-4 py-3.5 font-semibold">Target Hasil</th>
-                    <th class="text-center px-4 py-3.5 font-semibold">Status</th>
-                    <th class="text-center px-4 py-3.5 font-semibold w-28">Aksi</th>
+                <tr class="bg-purple-deep text-white font-semibold border-b border-purple-900/40 select-none">
+                    <th class="text-center px-4 py-3.5 font-semibold text-white w-12">No.</th>
+                    <th class="text-left px-5 py-3.5 font-semibold text-white">Klien</th>
+                    <th class="text-left px-5 py-3.5 font-semibold text-white">Nama Tes</th>
+                    <th class="text-center px-4 py-3.5 font-semibold text-white">Pelaksanaan</th>
+                    <th class="text-center px-3 py-3.5 font-semibold text-white">Metode</th>
+                    <th class="text-left px-4 py-3.5 font-semibold text-white">Tim Staff</th>
+                    <th class="text-center px-4 py-3.5 font-semibold text-white">Target Hasil</th>
+                    <th class="text-center px-4 py-3.5 font-semibold text-white">Status</th>
+                    <th class="text-center px-4 py-3.5 font-semibold text-white w-28">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-[#F3EAFB]">
                 @forelse($testResults as $test)
                 <tr class="hover:bg-[#FDFBFF] transition">
                     {{-- 1. No --}}
-                    <td class="text-center px-4 py-3.5 text-[#6B5B85] font-medium">
+                    <td class="text-center px-4 py-3.5 text-black font-medium">
                         {{ $loop->iteration + ($testResults->currentPage() - 1) * $testResults->perPage() }}
                     </td>
 
                     {{-- 2. Klien --}}
                     <td class="px-5 py-3.5">
-                        <a href="{{ route('clients.show', $test->client) }}" class="font-bold text-[#2A2035] hover:text-purple-deep hover:underline block truncate max-w-[160px]">
+                        <a href="{{ route('clients.show', $test->client) }}" class="font-medium text-black hover-orange hover:text-orange transition block truncate max-w-[160px] cursor-pointer">
                             {{ $test->client->name ?? '-' }}
                         </a>
-                        <span class="text-[10px] text-[#827299]">{{ in_array(strtolower($test->client->jenis ?? ''), ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}</span>
+                        <span class="text-[10px] text-gray-500 font-medium">{{ in_array(strtolower($test->client->jenis ?? ''), ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}</span>
                     </td>
 
                     {{-- 3. Nama Tes --}}
                     <td class="px-5 py-3.5">
-                        <a href="{{ route('test-results.show', $test) }}" class="font-bold text-purple-deep hover:underline block truncate max-w-[170px]">
+                        <a href="{{ route('test-results.show', $test) }}" class="font-medium text-black hover:text-orange transition block truncate max-w-[170px]">
                             {{ $test->test_name }}
                         </a>
                         @if($test->result_summary)
-                        <span class="text-[10px] text-[#827299] truncate block max-w-[170px]">{{ $test->result_summary }}</span>
+                        <span class="text-[10px] text-gray-500 font-medium truncate block max-w-[170px]">{{ $test->result_summary }}</span>
                         @endif
                     </td>
 
                     {{-- 4. Tanggal Tes --}}
-                    <td class="text-center px-4 py-3.5 text-[#6B5B85] whitespace-nowrap">
+                    <td class="text-center px-4 py-3.5 text-black font-medium whitespace-nowrap">
                         {{ $test->tested_at ? $test->tested_at->format('d M Y') : '-' }}
                     </td>
 
@@ -186,10 +186,10 @@
                     </td>
 
                     {{-- 6. Tim Staff --}}
-                    <td class="px-4 py-3.5 text-[11px] leading-tight">
+                    <td class="px-4 py-3.5 text-[11px] leading-tight font-medium">
                         <div class="space-y-0.5">
-                            <div><span class="text-[#827299]">Koreksi:</span> <strong class="text-[#2A2035]">{{ $test->staff_koreksi->name ?? 'Belum diassign' }}</strong></div>
-                            <div><span class="text-[#827299]">Pelapor:</span> <strong class="text-[#2A2035]">{{ $test->staff_pelapor->name ?? 'Belum diassign' }}</strong></div>
+                            <div><span class="text-gray-500">Koreksi:</span> <strong class="text-black font-medium">{{ $test->staff_koreksi->name ?? 'Belum diassign' }}</strong></div>
+                            <div><span class="text-gray-500">Pelapor:</span> <strong class="text-black font-medium">{{ $test->staff_pelapor->name ?? 'Belum diassign' }}</strong></div>
                         </div>
                     </td>
 
@@ -199,7 +199,7 @@
                             {{ $test->sla_badge['label'] }}
                         </span>
                         @if($test->result_due_date)
-                        <span class="text-[10px] text-[#827299] block mt-0.5">{{ $test->result_due_date->format('d M Y') }}</span>
+                        <span class="text-[10px] text-gray-500 font-medium block mt-0.5">{{ $test->result_due_date->format('d M Y') }}</span>
                         @endif
                     </td>
 
@@ -229,7 +229,7 @@
                             @if(auth()->user()->isAdmin())
                             <form action="{{ route('test-results.destroy', $test) }}" method="POST" class="inline-flex items-center m-0 p-0" onsubmit="return confirm('Yakin ingin menghapus kasus asesmen psikotes ini beserta seluruh berkasnya?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="p-1.5 rounded-lg text-[#827299] hover:text-red-600 hover:bg-red-50 transition cursor-pointer border-0 bg-transparent" title="Hapus Kasus">
+                                <button type="submit" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition cursor-pointer border-0 bg-transparent" title="Hapus Kasus">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                 </button>
                             </form>
@@ -239,9 +239,9 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="9" class="px-6 py-12 text-center text-[#827299]">
-                        <p class="font-bold text-[#2A2035] mb-1">Belum ada kasus asesmen psikotes yang sesuai</p>
-                        <p class="text-xs">Klik tombol "+ Upload Hasil / Buat Kasus" di atas untuk menambahkan data baru.</p>
+                    <td colspan="9" class="px-6 py-12 text-center text-black font-medium">
+                        <p class="font-medium text-black mb-1">Belum ada kasus asesmen psikotes yang sesuai</p>
+                        <p class="text-xs text-gray-500 font-medium">Klik tombol "+ Upload Hasil / Buat Kasus" di atas untuk menambahkan data baru.</p>
                     </td>
                 </tr>
                 @endforelse

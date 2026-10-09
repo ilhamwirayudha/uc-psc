@@ -95,21 +95,21 @@
     {{-- Main Table Card (Exact same design language as Data Klien & Data Konselor) --}}
     <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full text-sm font-medium">
                 <thead>
-                    <tr class="bg-[#F7F5FB] text-[#5B4A73] select-none border-b border-[#EDE1FA]">
+                    <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
                         {{-- No. --}}
-                        <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16">
+                        <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16 text-white">
                             No.
                         </th>
 
                         {{-- Nama Formulir --}}
-                        <th class="text-left align-middle px-6 py-3.5 font-semibold">
+                        <th class="text-left align-middle px-6 py-3.5 font-semibold text-white">
                             Nama Formulir
                         </th>
 
                         {{-- Aksi (Paling Kanan) --}}
-                        <th class="text-center align-middle px-6 py-3.5 font-semibold w-64 min-w-[220px]">
+                        <th class="text-center align-middle px-6 py-3.5 font-semibold w-64 min-w-[220px] text-white">
                             <span class="sr-only">Aksi</span>
                         </th>
                     </tr>
@@ -121,13 +121,13 @@
                     @endphp
                     <tr class="hover:bg-[#FDFBFF] transition group">
                         {{-- No. --}}
-                        <td class="text-center align-middle px-3 py-3.5 text-[#6B5B85] font-medium">
+                        <td class="text-center align-middle px-3 py-3.5 text-black font-medium">
                             {{ $loop->iteration }}
                         </td>
 
                         {{-- Nama Formulir --}}
                         <td class="text-left align-middle px-6 py-3.5">
-                            <a href="{{ $form['url'] }}" target="_blank" class="font-semibold text-purple-deep hover:text-orange transition block">
+                            <a href="{{ $form['url'] }}" target="_blank" class="font-medium text-black hover:text-orange transition block">
                                 {{ $form['title'] }}
                             </a>
                         </td>
@@ -213,7 +213,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="3" class="text-center py-12 text-[#827299]">
+                        <td colspan="3" class="text-center py-12 text-black font-medium">
                             Tidak ada formulir yang sesuai dengan pencarian.
                         </td>
                     </tr>
@@ -229,8 +229,7 @@
     {{-- ============================================================== --}}
     <div x-show="editModalOpen" x-cloak 
          class="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-        <div @click.away="editModalOpen = false" 
-             class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-scale-up">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-scale-up">
             
             {{-- Modal Header --}}
             <div class="p-6 bg-gradient-to-r from-purple-deep to-[#4A2F85] text-white flex items-center justify-between">

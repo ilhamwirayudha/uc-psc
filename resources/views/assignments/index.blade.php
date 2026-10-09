@@ -28,39 +28,39 @@
     {{-- 1. BAGIAN ATAS: DAFTAR KLIEN YANG SEDANG DITUGASKAN                       --}}
     {{-- ========================================================================= --}}
     <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
-        <div class="px-6 py-4 border-b border-[#EDE1FA] flex items-center justify-between">
-            <h3 class="font-bold text-base text-purple-deep">Daftar Klien yang Sedang Ditugaskan</h3>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-deep/10 text-purple-deep">
+        <div class="px-6 py-4 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
+            <h3 class="font-bold text-base text-white">Daftar Klien yang Sedang Ditugaskan</h3>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">
                 {{ $assignedClients->count() }} Klien Ter-assign
             </span>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full text-sm font-medium">
                 <thead>
-                    <tr class="bg-[#F7F5FB] text-[#5B4A73]">
-                        <th class="text-center px-4 py-3.5 font-semibold w-14">No.</th>
-                        <th class="text-left px-5 py-3.5 font-semibold">Nama Klien</th>
-                        <th class="text-center px-4 py-3.5 font-semibold">Layanan</th>
-                        <th class="text-left px-5 py-3.5 font-semibold">Staff Penanggung Jawab</th>
-                        <th class="text-center px-4 py-3.5 font-semibold">Status Klien</th>
-                        <th class="text-center px-5 py-3.5 font-semibold">Aksi Pengelolaan</th>
+                    <tr class="bg-slate-50 text-black font-semibold select-none border-b border-[#EDE1FA]">
+                        <th class="text-center px-4 py-3.5 font-semibold text-black w-14">No.</th>
+                        <th class="text-left px-5 py-3.5 font-semibold text-black">Nama Klien</th>
+                        <th class="text-center px-4 py-3.5 font-semibold text-black">Layanan</th>
+                        <th class="text-left px-5 py-3.5 font-semibold text-black">Staff Penanggung Jawab</th>
+                        <th class="text-center px-4 py-3.5 font-semibold text-black">Status Klien</th>
+                        <th class="text-center px-5 py-3.5 font-semibold text-black">Aksi Pengelolaan</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#F3EAFB]">
                     @forelse($assignedClients as $aClient)
                     <tr class="hover:bg-[#FDFBFF] transition">
-                        <td class="text-center px-4 py-3.5 text-[#6B5B85] font-medium">{{ $loop->iteration }}</td>
+                        <td class="text-center px-4 py-3.5 text-black font-medium">{{ $loop->iteration }}</td>
                         <td class="px-5 py-3.5">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-purple-deep/10 flex items-center justify-center text-purple-deep text-xs font-bold flex-shrink-0">
                                     {{ substr($aClient->name, 0, 1) }}
                                 </div>
                                 <div class="min-w-0">
-                                    <a href="{{ route('clients.show', $aClient) }}" class="font-bold text-[#2A2035] hover:text-purple-deep transition truncate block">
+                                    <a href="{{ route('clients.show', $aClient) }}" class="font-medium text-black hover:text-orange transition truncate block">
                                         {{ $aClient->name }}
                                     </a>
-                                    <p class="text-[11px] text-[#827299] truncate">{{ $aClient->phone ?? 'Tanpa nomor' }}</p>
+                                    <p class="text-[11px] text-gray-500 font-medium truncate">{{ $aClient->phone ?? 'Tanpa nomor' }}</p>
                                 </div>
                             </div>
                         </td>
@@ -76,11 +76,11 @@
                                 </div>
                                 <div class="min-w-0">
                                     @if($aClient->assignedStaff)
-                                    <a href="{{ route('staff-management.show', $aClient->assignedStaff) }}" class="text-xs font-bold text-purple-deep hover:underline truncate block">
+                                    <a href="{{ route('staff-management.show', $aClient->assignedStaff) }}" class="text-xs font-medium text-black hover:text-orange truncate block">
                                         {{ $aClient->assignedStaff->name }}
                                     </a>
                                     @else
-                                    <span class="text-xs text-gray-400">-</span>
+                                    <span class="text-xs text-gray-400 font-medium">-</span>
                                     @endif
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                             <div class="inline-flex items-center justify-center gap-1.5">
                                 {{-- Detail Klien --}}
                                 <a href="{{ route('clients.show', $aClient) }}" 
-                                    class="p-1.5 rounded-lg text-[#6B5B85] hover:text-purple-deep hover:bg-purple-deep/10 transition" title="Lihat Detail Klien">
+                                    class="p-1.5 rounded-lg text-gray-400 hover:text-purple-deep hover:bg-purple-deep/10 transition" title="Lihat Detail Klien">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </a>
 
@@ -121,7 +121,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="px-6 py-10 text-center text-[#6B5B85]">Belum ada klien yang ditugaskan ke staff.</td>
+                        <td colspan="6" class="px-6 py-10 text-center text-black font-medium">Belum ada klien yang ditugaskan ke staff.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -135,9 +135,9 @@
     <div class="grid lg:grid-cols-3 gap-6">
         {{-- Ringkasan Staff --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden flex flex-col">
-            <div class="px-6 py-4 border-b border-[#EDE1FA] flex items-center justify-between">
-                <h3 class="font-bold text-purple-deep">Ringkasan per Staff</h3>
-                <a href="{{ route('staff-management.index') }}" class="text-xs text-orange font-semibold hover:underline">Kelola Staff →</a>
+            <div class="px-6 py-4 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
+                <h3 class="font-bold text-white">Ringkasan per Staff</h3>
+                <a href="{{ route('staff-management.index') }}" class="text-xs text-purple-200 font-semibold hover:text-white hover:underline transition">Kelola Staff →</a>
             </div>
             <div class="divide-y divide-[#F3EAFB] max-h-96 overflow-y-auto custom-scrollbar">
                 @forelse($staffSummary as $staff)
@@ -166,9 +166,9 @@
 
         {{-- Klien Belum Ditugaskan --}}
         <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden flex flex-col">
-            <div class="px-6 py-4 border-b border-[#EDE1FA] flex items-center justify-between">
-                <h3 class="font-bold text-purple-deep">Klien Menunggu Penugasan</h3>
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold {{ $unassignedClients->count() > 0 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800' }}">
+            <div class="px-6 py-4 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
+                <h3 class="font-bold text-white">Klien Menunggu Penugasan</h3>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold {{ $unassignedClients->count() > 0 ? 'bg-amber-300 text-amber-950' : 'bg-white/20 text-white' }}">
                     {{ $unassignedClients->count() }} Klien
                 </span>
             </div>
@@ -231,7 +231,7 @@
 
     {{-- ===== MODAL REASSIGN ===== --}}
     <div x-show="reassignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity" @click="reassignModalOpen = false"></div>
+        <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
         <div class="flex min-h-full items-center justify-center p-4">
             <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-[#EDE1FA]">
@@ -286,7 +286,7 @@
 
     {{-- ===== MODAL UNASSIGN ===== --}}
     <div x-show="unassignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity" @click="unassignModalOpen = false"></div>
+        <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
         <div class="flex min-h-full items-center justify-center p-4">
             <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
                 <div class="flex items-start gap-3 pb-3 border-b border-[#EDE1FA]">

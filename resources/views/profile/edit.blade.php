@@ -38,9 +38,9 @@
 
                 {{-- Detail Nama & Role --}}
                 <div class="space-y-1.5">
-                    <h1 class="text-xl sm:text-2xl font-extrabold text-[#2A2035] leading-tight">{{ $user->name }}</h1>
+                    <h1 class="text-xl font-bold text-black leading-tight">{{ $user->name }}</h1>
                     <div>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider {{ $user->isAdmin() ? 'bg-orange/15 text-orange border border-orange/20' : 'bg-purple-deep/10 text-purple-deep border border-purple-deep/20' }}">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider {{ $user->isAdmin() ? 'bg-orange/15 text-orange border border-orange/20' : 'bg-purple-deep/10 text-purple-deep border border-purple-deep/20' }}">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                             <span>{{ $user->isAdmin() ? 'Administrator' : 'Staff Layanan' }}</span>
                         </span>
@@ -67,7 +67,7 @@
                                 }
                             "
                         >
-                        <label for="avatar_input" class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white text-xs font-bold transition cursor-pointer inline-flex items-center gap-2 shadow-2xs">
+                        <label for="avatar_input" class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white text-xs font-semibold transition cursor-pointer inline-flex items-center gap-2 shadow-2xs">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                             <span>Ganti Foto</span>
                         </label>
@@ -77,7 +77,7 @@
                     <form method="POST" action="{{ route('profile.avatar.delete') }}" onsubmit="return confirm('Hapus foto profil dan gunakan inisial nama?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="px-3 py-2 rounded-xl bg-red-50 hover:bg-red-500 text-red-500 hover:text-white text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow-2xs" title="Hapus Foto">
+                        <button type="submit" class="px-3 py-2 rounded-xl bg-red-50 hover:bg-red-500 text-red-500 hover:text-white text-xs font-semibold transition cursor-pointer flex items-center gap-1.5 shadow-2xs" title="Hapus Foto">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                             <span>Hapus</span>
                         </button>
@@ -104,7 +104,7 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                     </div>
                     <div>
-                        <h2 class="text-base font-bold text-[#2A2035]">Ganti Alamat Email</h2>
+                        <h2 class="text-base font-semibold text-black">Ganti Alamat Email</h2>
                     </div>
                 </div>
 
@@ -113,7 +113,7 @@
                     @method('PUT')
 
                     <div>
-                        <label for="email" class="block text-xs font-bold text-[#2A2035] mb-1.5">Alamat Email <span class="text-red-500">*</span></label>
+                        <label for="email" class="block text-xs font-medium text-gray-500 mb-1.5">Alamat Email <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <input 
                                 type="email" 
@@ -136,7 +136,7 @@
                     <div class="pt-2">
                         <button 
                             type="submit" 
-                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-deep text-white font-bold text-xs hover:bg-[#3D1D66] transition shadow-xs cursor-pointer"
+                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-deep text-white font-semibold text-sm hover:bg-[#3D1D66] transition shadow-xs cursor-pointer"
                         >
                             Simpan Email Baru
                         </button>
@@ -153,7 +153,7 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     </div>
                     <div>
-                        <h2 class="text-base font-bold text-[#2A2035]">Ganti Kata Sandi</h2>
+                        <h2 class="text-base font-semibold text-black">Ganti Kata Sandi</h2>
                     </div>
                 </div>
 
@@ -163,7 +163,7 @@
 
                     {{-- Kata Sandi Saat Ini --}}
                     <div>
-                        <label for="current_password" class="block text-xs font-bold text-[#2A2035] mb-1.5">Kata Sandi Saat Ini <span class="text-red-500">*</span></label>
+                        <label for="current_password" class="block text-xs font-medium text-gray-500 mb-1.5">Kata Sandi Saat Ini <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <input 
                                 :type="showCurrent ? 'text' : 'password'" 
@@ -190,7 +190,7 @@
 
                     {{-- Kata Sandi Baru --}}
                     <div>
-                        <label for="password" class="block text-xs font-bold text-[#2A2035] mb-1.5">Kata Sandi Baru <span class="text-red-500">*</span></label>
+                        <label for="password" class="block text-xs font-medium text-gray-500 mb-1.5">Kata Sandi Baru <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <input 
                                 :type="showNew ? 'text' : 'password'" 
@@ -217,7 +217,7 @@
 
                     {{-- Konfirmasi Kata Sandi Baru --}}
                     <div>
-                        <label for="password_confirmation" class="block text-xs font-bold text-[#2A2035] mb-1.5">Konfirmasi Kata Sandi Baru <span class="text-red-500">*</span></label>
+                        <label for="password_confirmation" class="block text-xs font-medium text-gray-500 mb-1.5">Konfirmasi Kata Sandi Baru <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <input 
                                 :type="showConfirm ? 'text' : 'password'" 
@@ -242,7 +242,7 @@
                     <div class="pt-2">
                         <button 
                             type="submit" 
-                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-deep text-white font-bold text-xs hover:bg-[#3D1D66] transition shadow-xs cursor-pointer"
+                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-deep text-white font-semibold text-sm hover:bg-[#3D1D66] transition shadow-xs cursor-pointer"
                         >
                             Perbarui Kata Sandi
                         </button>

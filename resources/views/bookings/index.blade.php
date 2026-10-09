@@ -40,16 +40,16 @@
     {{-- Table --}}
     <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full text-sm font-medium">
                 <thead>
-                    <tr class="bg-[#F7F5FB] text-[#6B5B85] text-xs uppercase tracking-wider">
-                        <th class="px-6 py-3.5 text-left font-semibold">ID</th>
-                        <th class="px-6 py-3.5 text-left font-semibold">Klien</th>
-                        <th class="px-6 py-3.5 text-left font-semibold">Kategori</th>
-                        <th class="px-6 py-3.5 text-left font-semibold">Tanggal & Jam Dibuat</th>
-                        <th class="px-6 py-3.5 text-left font-semibold">Jadwal & Jam Pelaksanaan</th>
-                        <th class="px-6 py-3.5 text-left font-semibold">Status</th>
-                        <th class="px-6 py-3.5 text-left font-semibold">Konselor/Staff</th>
+                    <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
+                        <th class="px-6 py-3.5 text-left font-semibold text-white">ID</th>
+                        <th class="px-6 py-3.5 text-left font-semibold text-white">Klien</th>
+                        <th class="px-6 py-3.5 text-left font-semibold text-white">Kategori</th>
+                        <th class="px-6 py-3.5 text-left font-semibold text-white">Tanggal & Jam Dibuat</th>
+                        <th class="px-6 py-3.5 text-left font-semibold text-white">Jadwal & Jam Pelaksanaan</th>
+                        <th class="px-6 py-3.5 text-left font-semibold text-white">Status</th>
+                        <th class="px-6 py-3.5 text-left font-semibold text-white">Konselor/Staff</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#F3EAFB]">
@@ -180,10 +180,10 @@
                     @endphp
                     <tr class="hover:bg-[#FDFCFE] transition group cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
                         {{-- ID Booking (Teks Biasa, Bukan Tombol Terpisah) --}}
-                        <td class="px-6 py-3.5 font-bold text-[#5B4A73]">
+                        <td class="px-6 py-3.5 font-medium text-black">
                             <span>#{{ $booking->id }}</span>
                             @if($booking->follow_up_of_booking_id)
-                            <span class="text-[10px] text-[#827299] block font-normal mt-0.5">↳ dari #{{ $booking->follow_up_of_booking_id }}</span>
+                            <span class="text-[10px] text-gray-400 block font-normal mt-0.5">↳ dari #{{ $booking->follow_up_of_booking_id }}</span>
                             @endif
                         </td>
 
@@ -193,24 +193,24 @@
                             <button 
                                 type="button" 
                                 @click="openDetail({{ json_encode($bookingData) }})"
-                                class="font-extrabold text-purple-deep hover:underline text-left transition cursor-pointer flex items-center gap-1.5"
+                                class="font-medium text-black hover-orange hover:text-orange text-left transition cursor-pointer flex items-center gap-1.5"
                                 title="Klik untuk Buka Detail Klien & Jadwal"
                             >
                                 <span>{{ $booking->client->name }}</span>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-60 shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400 shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                             </button>
-                            <span class="text-[10px] text-[#827299] capitalize block">
+                            <span class="text-[10px] text-gray-500 capitalize block">
                                 {{ in_array($booking->client->jenis ?? '', ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}
                                 @if($booking->client->pic_name)
                                 • PIC: {{ $booking->client->pic_name }}
                                 @endif
                             </span>
                             @else
-                            <span class="text-gray-400 italic">-</span>
+                            <span class="text-gray-400 italic font-medium">-</span>
                             @endif
 
                             @if($booking->participants->count() > 0)
-                            <p class="text-[10px] text-[#827299] mt-0.5">{{ $booking->participants->count() }} peserta tercatat</p>
+                            <p class="text-[10px] text-gray-500 mt-0.5">{{ $booking->participants->count() }} peserta tercatat</p>
                             @endif
                         </td>
 
@@ -224,8 +224,8 @@
 
                         {{-- Tanggal Dibuat & Jam Booking Dibuat --}}
                         <td class="px-6 py-3.5 cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
-                            <div class="font-medium text-[#2A2035]">{{ $booking->tanggal_booking_dibuat->format('d M Y') }}</div>
-                            <div class="text-[11px] text-[#827299] flex items-center gap-1 mt-0.5 font-mono">
+                            <div class="font-medium text-black">{{ $booking->tanggal_booking_dibuat->format('d M Y') }}</div>
+                            <div class="text-[11px] text-gray-500 flex items-center gap-1 mt-0.5 font-mono">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0 text-purple-deep"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                 <span>{{ $jamDibuat }}</span>
                             </div>
@@ -234,20 +234,20 @@
                         {{-- Tanggal Dijadwalkan & Jam Sesi --}}
                         <td class="px-6 py-3.5 cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
                             @if($booking->tanggal_dijadwalkan)
-                                <div class="font-medium text-[#2A2035]">{{ $booking->tanggal_dijadwalkan->format('d M Y') }}</div>
+                                <div class="font-medium text-black">{{ $booking->tanggal_dijadwalkan->format('d M Y') }}</div>
                                 @if($jamSesi)
                                     <div class="text-[11px] text-purple-deep font-semibold flex items-center gap-1 mt-0.5 font-mono bg-purple-50 px-1.5 py-0.5 rounded-md w-fit">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                         <span>{{ $jamSesi }}</span>
                                     </div>
                                 @else
-                                    <div class="text-[11px] text-[#827299] flex items-center gap-1 mt-0.5 font-mono">
+                                    <div class="text-[11px] text-gray-500 flex items-center gap-1 mt-0.5 font-mono">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0 opacity-40"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                         <span>Jam belum diatur</span>
                                     </div>
                                 @endif
                             @else
-                                <span class="text-gray-400 italic text-xs">Belum Dijadwalkan</span>
+                                <span class="text-gray-400 italic text-xs font-medium">Belum Dijadwalkan</span>
                             @endif
                         </td>
 
@@ -265,27 +265,27 @@
                                 {{ $booking->is_overtime ? '⏱ Overtime' : '✓ Tepat Waktu' }}
                             </span>
                             @elseif($booking->kategori === 'konseling')
-                            <span class="mt-1 block text-[10px] text-gray-400">Belum diinput</span>
+                            <span class="mt-1 block text-[10px] text-gray-400 font-medium">Belum diinput</span>
                             @endif
                         </td>
 
                         {{-- Konselor / Staff --}}
-                        <td class="px-6 py-3.5 text-[#6B5B85] text-xs cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
+                        <td class="px-6 py-3.5 text-black text-xs font-medium cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
                             @if($booking->kategori === 'konseling' && $booking->counselor)
-                                <div class="font-medium text-[#2A2035]">{{ $booking->counselor->name }}</div>
-                                <span class="text-[10px] text-[#827299] block">{{ $booking->counselor->specialization ?? 'Konselor' }}</span>
+                                <div class="font-medium text-black">{{ $booking->counselor->name }}</div>
+                                <span class="text-[10px] text-gray-500 block">{{ $booking->counselor->specialization ?? 'Konselor' }}</span>
                             @elseif($booking->kategori === 'psikotes')
-                                @if($booking->staffPenguji) <div><span class="font-bold text-orange text-[10px]">P:</span> {{ $booking->staffPenguji->name }}</div> @endif
-                                @if($booking->staffKoreksi) <div><span class="font-bold text-amber-600 text-[10px]">K:</span> {{ $booking->staffKoreksi->name }}</div> @endif
-                                @if($booking->staffPelapor) <div><span class="font-bold text-emerald-600 text-[10px]">L:</span> {{ $booking->staffPelapor->name }}</div> @endif
+                                @if($booking->staffPenguji) <div class="font-medium text-black"><span class="font-bold text-orange text-[10px]">P:</span> {{ $booking->staffPenguji->name }}</div> @endif
+                                @if($booking->staffKoreksi) <div class="font-medium text-black"><span class="font-bold text-amber-600 text-[10px]">K:</span> {{ $booking->staffKoreksi->name }}</div> @endif
+                                @if($booking->staffPelapor) <div class="font-medium text-black"><span class="font-bold text-emerald-600 text-[10px]">L:</span> {{ $booking->staffPelapor->name }}</div> @endif
                             @else
-                                <span class="text-gray-400 italic">-</span>
+                                <span class="text-gray-400 italic font-medium">-</span>
                             @endif
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-10 text-center text-[#6B5B85]">Belum ada data booking.</td>
+                        <td colspan="7" class="px-6 py-10 text-center text-black font-medium">Belum ada data booking.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -308,7 +308,6 @@
         @keydown.escape.window="detailModalOpen = false"
     >
         <div 
-            @click.away="detailModalOpen = false"
             class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-[#EDE1FA] overflow-hidden flex flex-col max-h-[92vh]"
         >
             {{-- Header Pop-Up: Avatar Klien, Nama Klien, Badge Booking & Status --}}
@@ -663,7 +662,6 @@
         @keydown.escape.window="editModalOpen = false"
     >
         <div 
-            @click.away="editModalOpen = false"
             class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-[#EDE1FA] overflow-hidden flex flex-col max-h-[90vh]"
         >
             {{-- Header Edit --}}

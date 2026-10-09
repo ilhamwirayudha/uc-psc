@@ -95,11 +95,11 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
     {{-- Modal panel --}}
     <div x-show="bookingModalOpen" x-transition class="fixed inset-0 z-10 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <div @click.outside="bookingModalOpen = false" class="relative transform overflow-hidden rounded-2xl bg-[#F7F5FB] text-left shadow-2xl transition-all sm:my-8 w-full sm:max-w-4xl">
+            <div class="relative transform overflow-hidden rounded-2xl bg-[#F7F5FB] text-left shadow-2xl transition-all sm:my-8 w-full sm:max-w-4xl">
                 
                 <!-- Header -->
                 <div class="bg-purple-deep px-6 py-4 rounded-t-2xl flex items-center justify-between shadow-sm">
-                    <h3 class="text-lg font-bold leading-6 text-white" id="modal-title">Buat Booking / Jadwal Sesi</h3>
+                    <h3 class="text-base font-semibold leading-6 text-white" id="modal-title">Buat Booking / Jadwal Sesi</h3>
                     <button type="button" @click="bookingModalOpen = false" class="text-white hover:text-gray-200 transition cursor-pointer">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -141,7 +141,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- CARD 1: PILIH KLIEN TERDAFTAR (SEARCHABLE DROPDOWN) --}}
                         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                             <div class="pb-3 border-b border-[#EDE1FA]">
-                                <h3 class="text-base font-bold text-purple-deep">Pilih Klien Terdaftar</h3>
+                                <h3 class="text-base font-semibold text-black">Pilih Klien Terdaftar</h3>
                             </div>
 
                             <div class="space-y-4">
@@ -226,7 +226,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- CARD 2: PILIHAN LAYANAN SESUAI TIPE KLIEN --}}
                             <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                                 <div class="pb-3 border-b border-[#EDE1FA]">
-                                    <h3 class="text-base font-bold text-purple-deep"
+                                    <h3 class="text-base font-semibold text-black"
                                         x-text="(jenis === 'industri' || jenis === 'company') ? 'Pilihan Layanan Industri' : 'Pilihan Layanan Individu'"></h3>
                                 </div>
 
@@ -310,7 +310,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
 
                                 {{-- DROPDOWN PAKET LAYANAN SPESIFIK --}}
                                 <div class="pt-2">
-                                    <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Pilih Paket Layanan Spesifik <span class="text-red-500">*</span></label>
+                                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Pilih Paket Layanan Spesifik <span class="text-red-500">*</span></label>
                                     
                                     {{-- Paket Konseling Individu --}}
                                     <div x-show="serviceType === 'konseling' && (jenis === 'individu' || jenis === 'individual')">
@@ -367,13 +367,13 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- CARD 3: PENUGASAN PELAKSANA (KONSELOR / STAFF) --}}
                             <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                                 <div class="pb-3 border-b border-[#EDE1FA]">
-                                    <h3 class="text-base font-bold text-purple-deep">Penugasan Konselor / Staff Pelaksana</h3>
+                                    <h3 class="text-base font-semibold text-black">Penugasan Konselor / Staff Pelaksana</h3>
                                 </div>
 
                                 {{-- Konseling: Konselor --}}
                                 <div x-show="serviceType === 'konseling'" class="space-y-3">
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Pilih Psikolog / Konselor Bertugas <span class="text-red-500">*</span></label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Pilih Psikolog / Konselor Bertugas <span class="text-red-500">*</span></label>
                                         <select name="counselor_id" :required="selectedClient && serviceType === 'konseling'"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                             <option value="">-- Pilih Konselor --</option>
@@ -389,7 +389,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                                 {{-- Psikotes: Staff Penguji, Koreksi, Pelapor --}}
                                 <div x-show="serviceType === 'psikotes'" class="grid sm:grid-cols-3 gap-4">
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Staff Penguji / Tester</label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Staff Penguji / Tester</label>
                                         <select name="staff_penguji_id"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                             <option value="">-- Pilih Staff --</option>
@@ -399,7 +399,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Staff Koreksi / Skoring</label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Staff Koreksi / Skoring</label>
                                         <select name="staff_koreksi_id"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                             <option value="">-- Pilih Staff --</option>
@@ -409,7 +409,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Staff Pelapor / Pembuat Hasil</label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Staff Pelapor / Pembuat Hasil</label>
                                         <select name="staff_pelapor_id"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                             <option value="">-- Pilih Staff --</option>
@@ -424,40 +424,40 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- CARD 4: JADWAL, WAKTU & METODE SESI --}}
                             <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                                 <div class="pb-3 border-b border-[#EDE1FA]">
-                                    <h3 class="text-base font-bold text-purple-deep">Jadwal, Waktu & Lokasi Sesi</h3>
+                                    <h3 class="text-base font-semibold text-black">Jadwal, Waktu & Lokasi Sesi</h3>
                                 </div>
 
                                 <div class="grid sm:grid-cols-2 gap-4">
                                     {{-- Tanggal Permintaan Booking --}}
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Tanggal Permintaan Booking <span class="text-red-500">*</span></label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Tanggal Permintaan Booking <span class="text-red-500">*</span></label>
                                         <input type="date" name="tanggal_booking_dibuat" :min="today" value="{{ old('tanggal_booking_dibuat') }}" :required="selectedClient != null"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                     </div>
 
                                     {{-- Tanggal Sesi Dijadwalkan --}}
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Tanggal Sesi Dijadwalkan <span class="text-red-500">*</span></label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Tanggal Sesi Dijadwalkan <span class="text-red-500">*</span></label>
                                         <input type="date" name="tanggal_dijadwalkan" :min="today" value="{{ old('tanggal_dijadwalkan') }}" :required="selectedClient != null"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                     </div>
 
                                     {{-- Jam Mulai & Selesai --}}
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Jam Mulai Sesi</label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Jam Mulai Sesi</label>
                                         <input type="time" name="start_time" value="{{ old('start_time') }}"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                     </div>
 
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Jam Selesai Sesi</label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Jam Selesai Sesi</label>
                                         <input type="time" name="end_time" value="{{ old('end_time') }}"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                     </div>
 
                                     {{-- Metode Sesi --}}
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Metode Pertemuan / Sesi</label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Metode Pertemuan / Sesi</label>
                                         <select name="session_type" x-model="sessionType"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                             <option value="">-- Pilih Metode Pertemuan --</option>
@@ -469,7 +469,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
 
                                     {{-- Ruangan / Lokasi --}}
                                     <div>
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Ruangan / Lokasi / Link Meeting</label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Ruangan / Lokasi / Link Meeting</label>
                                         <input type="text" name="location" value="{{ old('location') }}" 
                                             :placeholder="sessionType === 'online' ? 'https://meet.google.com/xxx-xxxx-xxx' : 'Contoh: Ruang Konseling A / Lab Psikodiagnostik'"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
@@ -481,10 +481,10 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                             <div x-show="jenis === 'industri' || jenis === 'company'" class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
                                 <div class="pb-3 border-b border-[#EDE1FA] flex items-center justify-between">
                                     <div>
-                                        <h3 class="text-base font-bold text-purple-deep">Daftar Karyawan / Peserta Asesmen</h3>
+                                        <h3 class="text-base font-semibold text-black">Daftar Karyawan / Peserta Asesmen</h3>
                                         <p class="text-xs text-[#827299]">Masukkan nama masing-masing peserta atau kandidat (opsional)</p>
                                     </div>
-                                    <button type="button" @click="addParticipant()" class="text-xs font-bold text-purple-deep hover:underline cursor-pointer flex items-center gap-1">
+                                    <button type="button" @click="addParticipant()" class="text-xs font-semibold text-purple-deep hover:underline cursor-pointer flex items-center gap-1">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                         <span>Tambah Peserta</span>
                                     </button>
@@ -510,12 +510,12 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- CARD 6: STATUS & CATATAN BOOKING --}}
                             <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
                                 <div class="pb-3 border-b border-[#EDE1FA]">
-                                    <h3 class="text-base font-bold text-purple-deep">Status & Catatan Sesi Booking</h3>
+                                    <h3 class="text-base font-semibold text-black">Status & Catatan Sesi Booking</h3>
                                 </div>
 
                                 <div class="grid sm:grid-cols-2 gap-4">
                                     <div class="sm:col-span-2">
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Status Booking <span class="text-red-500">*</span></label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Status Booking <span class="text-red-500">*</span></label>
                                         <select name="status" :required="selectedClient != null"
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                             <option value="">-- Pilih Status Booking --</option>
@@ -526,7 +526,7 @@ aria-labelledby="modal-title" role="dialog" aria-modal="true" x-cloak>
                                     </div>
 
                                     <div class="sm:col-span-2">
-                                        <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Catatan Khusus Sesi <span class="text-[#827299] font-normal">(Opsional)</span></label>
+                                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Catatan Khusus Sesi <span class="text-[#827299] font-normal">(Opsional)</span></label>
                                         <textarea name="notes" rows="3" placeholder="Informasi kebutuhan khusus klien, paket yang diambil, atau instruksi ruangan..."
                                             class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('notes') }}</textarea>
                                     </div>

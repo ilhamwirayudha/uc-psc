@@ -10,35 +10,35 @@
             @csrf
 
             <div>
-                <label for="name" class="block text-sm font-semibold text-[#5B4A73] mb-2">Nama <span class="text-red-400">*</span></label>
+                <label for="name" class="block text-xs font-medium text-gray-500 mb-1.5">Nama <span class="text-red-400">*</span></label>
                 <input type="text" id="name" name="name" value="{{ old('name') }}" required
-                    class="w-full px-4 py-3 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm @error('name') border-red-300 @enderror">
+                    class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('name') border-red-300 @enderror">
                 @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
-                <label for="email" class="block text-sm font-semibold text-[#5B4A73] mb-2">Email <span class="text-red-400">*</span></label>
+                <label for="email" class="block text-xs font-medium text-gray-500 mb-1.5">Email <span class="text-red-400">*</span></label>
                 <input type="email" id="email" name="email" value="{{ old('email') }}" required
-                    class="w-full px-4 py-3 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm @error('email') border-red-300 @enderror">
+                    class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('email') border-red-300 @enderror">
                 @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-semibold text-[#5B4A73] mb-2">Password <span class="text-red-400">*</span></label>
+                <label for="password" class="block text-xs font-medium text-gray-500 mb-1.5">Password <span class="text-red-400">*</span></label>
                 <input type="password" id="password" name="password" required
-                    class="w-full px-4 py-3 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm @error('password') border-red-300 @enderror">
+                    class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('password') border-red-300 @enderror">
                 @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
-                <label for="password_confirmation" class="block text-sm font-semibold text-[#5B4A73] mb-2">Konfirmasi Password <span class="text-red-400">*</span></label>
+                <label for="password_confirmation" class="block text-xs font-medium text-gray-500 mb-1.5">Konfirmasi Password <span class="text-red-400">*</span></label>
                 <input type="password" id="password_confirmation" name="password_confirmation" required
-                    class="w-full px-4 py-3 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm">
+                    class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black">
             </div>
 
             <div class="flex items-center gap-3 pt-2">
-                <button type="submit" class="bg-purple-deep text-white px-6 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition">Buat Staff</button>
-                <a href="{{ route('staff-management.index') }}" class="px-6 py-3 rounded-xl text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">Batal</a>
+                <button type="submit" class="bg-purple-deep text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition">Buat Staff</button>
+                <a href="{{ route('staff-management.index') }}" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">Batal</a>
             </div>
         </form>
     </div>

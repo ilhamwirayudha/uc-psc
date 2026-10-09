@@ -122,7 +122,6 @@
          @keydown.escape.window="showConfirmModal = false">
         
         <div class="w-full max-w-sm bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-purple-100 text-center relative"
-             @click.away="showConfirmModal = false"
              x-transition:enter="transition ease-out duration-200"
              x-transition:enter-start="opacity-0 scale-95"
              x-transition:enter-end="opacity-100 scale-100"

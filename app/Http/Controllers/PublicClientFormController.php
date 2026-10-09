@@ -921,12 +921,20 @@ class PublicClientFormController extends Controller
                 $client->name = trim($request->nama_lengkap);
 
                 $client->jenis = 'industri';
+                $company = trim($request->nama_perusahaan ?? $request->instansi_1_nama ?? '');
+                if (!empty($company)) {
+                    $client->pic_name = $company;
+                    $client->occupation = !empty($request->pekerjaan_saat_ini)
+                        ? trim($request->pekerjaan_saat_ini) . ' - ' . $company
+                        : $company;
+                } else {
+                    $client->occupation = $request->pekerjaan_saat_ini ?? 'Pelamar / Karyawan';
+                }
                 $client->gender = $gender;
                 $client->birth_place = $request->tempat_tanggal_lahir;
                 $client->address = $request->alamat_sekarang;
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
-                $client->occupation = $request->pekerjaan_saat_ini ?? 'Pelamar / Karyawan';
                 $client->email = $request->email ?? null;
                 $client->service_type = 'Layanan Industri';
                 $client->counseling_type = 'offline';

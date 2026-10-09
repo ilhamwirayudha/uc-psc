@@ -22,35 +22,35 @@
 
 <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
     <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+        <table class="w-full text-sm font-medium">
             <thead>
-                <tr class="bg-[#F7F5FB] text-[#5B4A73]">
-                    <th class="text-center px-4 py-3.5 font-semibold w-14">No.</th>
-                    <th class="text-left px-6 py-3.5 font-semibold">Nama Staff</th>
-                    <th class="text-left px-6 py-3.5 font-semibold">Email</th>
-                    <th class="text-center px-6 py-3.5 font-semibold">Klien Ditugaskan</th>
-                    <th class="text-center px-6 py-3.5 font-semibold">Tanggal Dibuat</th>
-                    <th class="text-center px-6 py-3.5 font-semibold">Aksi</th>
+                <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
+                    <th class="text-center px-4 py-3.5 font-semibold text-white w-14">No.</th>
+                    <th class="text-left px-6 py-3.5 font-semibold text-white">Nama Staff</th>
+                    <th class="text-left px-6 py-3.5 font-semibold text-white">Email</th>
+                    <th class="text-center px-6 py-3.5 font-semibold text-white">Klien Ditugaskan</th>
+                    <th class="text-center px-6 py-3.5 font-semibold text-white">Tanggal Dibuat</th>
+                    <th class="text-center px-6 py-3.5 font-semibold text-white">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-[#F3EAFB]">
                 @forelse($staffs as $staff)
                 <tr class="hover:bg-[#FDFBFF] transition">
-                    <td class="text-center px-4 py-3.5 text-[#6B5B85]">{{ $loop->iteration + ($staffs->currentPage() - 1) * $staffs->perPage() }}</td>
+                    <td class="text-center px-4 py-3.5 text-black font-medium">{{ $loop->iteration + ($staffs->currentPage() - 1) * $staffs->perPage() }}</td>
                     <td class="px-6 py-3.5">
                         <div class="flex items-center gap-3">
                             <div class="w-8 h-8 rounded-full bg-purple-deep/10 flex items-center justify-center text-purple-deep text-xs font-bold">{{ substr($staff->name, 0, 1) }}</div>
-                            <span class="font-semibold text-[#2A2035]">{{ $staff->name }}</span>
+                            <span class="font-medium text-black">{{ $staff->name }}</span>
                         </div>
                     </td>
-                    <td class="px-6 py-3.5 text-[#6B5B85]">{{ $staff->email }}</td>
+                    <td class="px-6 py-3.5 text-black font-medium">{{ $staff->email }}</td>
                     <td class="text-center px-6 py-3.5">
                         <a href="{{ route('staff-management.show', $staff) }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold {{ ($staff->assigned_clients_count ?? 0) > 0 ? 'bg-purple-deep/10 text-purple-deep hover:bg-purple-deep/20' : 'bg-gray-100 text-gray-500 hover:bg-gray-200' }} transition">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             <span>{{ $staff->assigned_clients_count ?? 0 }} Klien</span>
                         </a>
                     </td>
-                    <td class="text-center px-6 py-3.5 text-[#6B5B85]">{{ $staff->created_at->format('d M Y') }}</td>
+                    <td class="text-center px-6 py-3.5 text-black font-medium">{{ $staff->created_at->format('d M Y') }}</td>
                     <td class="px-6 py-3.5">
                         <div class="flex items-center justify-center gap-2">
                             <a href="{{ route('staff-management.show', $staff) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-deep text-white hover:opacity-90 transition shadow-xs" title="Kelola detail & penugasan klien">
@@ -59,7 +59,7 @@
                             </a>
                             <form action="{{ route('staff-management.destroy', $staff) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus staff {{ $staff->name }}? Seluruh penugasan aktif staff ini akan otomatis dilepaskan.')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="p-1.5 rounded-lg text-[#6B5B85] hover:text-red-500 hover:bg-red-50 transition cursor-pointer" title="Hapus Akun Staff">
+                                <button type="submit" class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition cursor-pointer" title="Hapus Akun Staff">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                 </button>
                             </form>
@@ -67,7 +67,7 @@
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="6" class="px-6 py-12 text-center text-[#6B5B85]">Belum ada staff.</td></tr>
+                <tr><td colspan="6" class="px-6 py-12 text-center text-black font-medium">Belum ada staff.</td></tr>
                 @endforelse
             </tbody>
         </table>

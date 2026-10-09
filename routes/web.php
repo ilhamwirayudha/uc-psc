@@ -68,6 +68,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password.update');
 
     // Clients
+    Route::post('clients/{client}/notes', [ClientController::class, 'storeNote'])->name('clients.notes.store');
+    Route::put('clients/{client}/notes/{noteId}', [ClientController::class, 'updateNote'])->name('clients.notes.update');
+    Route::delete('clients/{client}/notes/{noteId}', [ClientController::class, 'destroyNote'])->name('clients.notes.destroy');
     Route::resource('clients', ClientController::class);
 
     // Counselors
@@ -77,6 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::get('client-forms', [ClientFormManagementController::class, 'index'])->name('client-forms.index');
     Route::get('client-forms/results', [ClientFormManagementController::class, 'results'])->name('client-forms.results');
     Route::get('client-forms/{clientForm}', [ClientFormManagementController::class, 'show'])->name('client-forms.show');
+    Route::get('client-forms/{clientForm}/pdf', [ClientFormManagementController::class, 'downloadPdf'])->name('client-forms.pdf');
     Route::patch('client-forms/{clientForm}/status', [ClientFormManagementController::class, 'updateStatus'])->name('client-forms.status.update');
 
 

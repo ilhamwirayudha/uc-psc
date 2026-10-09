@@ -112,15 +112,15 @@
                     1
                 </div>
                 <div>
-                    <h3 class="text-base font-bold text-purple-deep">Data Identitas & Kontak</h3>
-                    <p class="text-xs text-[#6B5B85]">Informasi nama lengkap dan kontak aktif konselor</p>
+                    <h3 class="text-base font-semibold text-black">Data Identitas & Kontak</h3>
+                    <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif konselor</p>
                 </div>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
                 {{-- Nama Konselor --}}
                 <div class="sm:col-span-2">
-                    <label for="name" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
+                    <label for="name" class="block text-xs font-medium text-gray-500 mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
                     <input type="text" id="name" name="name" x-model="name" required
                         placeholder="Contoh: Dr. Amanda Wijaya, M.Psi., Psikolog"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('name') border-red-300 @enderror">
@@ -129,7 +129,7 @@
 
                 {{-- No Telepon / WA --}}
                 <div>
-                    <label for="phone" class="block text-xs font-bold text-[#5B4A73] mb-1.5">No. Telepon / WhatsApp</label>
+                    <label for="phone" class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon / WhatsApp</label>
                     <input type="text" id="phone" name="phone" x-model="phone"
                         inputmode="numeric"
                         maxlength="13"
@@ -141,7 +141,7 @@
 
                 {{-- Email --}}
                 <div>
-                    <label for="email" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Email</label>
+                    <label for="email" class="block text-xs font-medium text-gray-500 mb-1.5">Email</label>
                     <input type="email" id="email" name="email" x-model="email"
                         placeholder="Contoh: amanda.wijaya@uc.ac.id"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
@@ -157,15 +157,15 @@
                     2
                 </div>
                 <div>
-                    <h3 class="text-base font-bold text-purple-deep">Alamat Domisili</h3>
-                    <p class="text-xs text-[#6B5B85]">Informasi domisili dan alamat lengkap tempat tinggal</p>
+                    <h3 class="text-base font-semibold text-black">Alamat Domisili</h3>
+                    <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat lengkap tempat tinggal</p>
                 </div>
             </div>
 
             <div class="grid sm:grid-cols-3 gap-4 pt-1">
                 {{-- 1. NEGARA --}}
                 <div class="relative" @click.outside="countryOpen = false">
-                    <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Negara <span class="text-red-500">*</span></label>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Negara <span class="text-red-500">*</span></label>
                     <input type="hidden" name="country" :value="country">
                     <button type="button" @click="countryOpen ? (countryOpen = false) : openCountry()"
                         class="w-full px-4 py-2.5 rounded-xl text-sm flex items-center justify-between text-left transition bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep">
@@ -189,7 +189,7 @@
 
                 {{-- 2. PROVINSI --}}
                 <div class="relative" @click.outside="provinceOpen = false">
-                    <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
                         Provinsi
                         <span x-show="country === 'Indonesia'" class="text-red-500">*</span>
                         <span x-show="country !== 'Indonesia'" class="text-[11px] font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
@@ -218,7 +218,7 @@
 
                 {{-- 3. KOTA / KABUPATEN --}}
                 <div class="relative" @click.outside="cityOpen = false">
-                    <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
                         Kota / Kabupaten
                         <span x-show="country === 'Indonesia'" class="text-red-500">*</span>
                         <span x-show="country !== 'Indonesia'" class="text-[11px] font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
@@ -262,15 +262,15 @@
                     3
                 </div>
                 <div>
-                    <h3 class="text-base font-bold text-purple-deep">Kualifikasi, Izin Praktik & Status</h3>
-                    <p class="text-xs text-[#6B5B85]">Bidang keahlian, nomor izin legalitas psikolog, dan status keaktifan</p>
+                    <h3 class="text-base font-semibold text-black">Kualifikasi, Izin Praktik & Status</h3>
+                    <p class="text-xs font-medium text-gray-500">Bidang keahlian, nomor izin legalitas psikolog, dan status keaktifan</p>
                 </div>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
                 {{-- Spesialisasi --}}
                 <div class="sm:col-span-2">
-                    <label for="specialization" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Bidang Spesialisasi / Keahlian</label>
+                    <label for="specialization" class="block text-xs font-medium text-gray-500 mb-1.5">Bidang Spesialisasi / Keahlian</label>
                     <select id="specialization" name="specialization" x-model="specialization"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                         <option value="">-- Pilih Bidang Spesialisasi / Keahlian --</option>
@@ -283,7 +283,7 @@
 
                 {{-- Nomor SIPP --}}
                 <div>
-                    <label for="sipp_number" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Nomor SIPP (Surat Izin Praktik Psikologi)</label>
+                    <label for="sipp_number" class="block text-xs font-medium text-gray-500 mb-1.5">Nomor SIPP (Surat Izin Praktik Psikologi)</label>
                     <input type="text" id="sipp_number" name="sipp_number" x-model="sipp_number"
                         placeholder="Contoh: SIPP-12345/2024"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
@@ -292,7 +292,7 @@
 
                 {{-- Nomor STR --}}
                 <div>
-                    <label for="str_number" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Nomor STR (Surat Tanda Registrasi)</label>
+                    <label for="str_number" class="block text-xs font-medium text-gray-500 mb-1.5">Nomor STR (Surat Tanda Registrasi)</label>
                     <input type="text" id="str_number" name="str_number" x-model="str_number"
                         placeholder="Contoh: STR-98765/2024"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
@@ -301,7 +301,7 @@
 
                 {{-- Status Keaktifan Konselor --}}
                 <div class="sm:col-span-2">
-                    <label for="status" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
+                    <label for="status" class="block text-xs font-medium text-gray-500 mb-1.5">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
                     <select id="status" name="status" x-model="status" required
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                         <option value="active" class="text-emerald-600 font-semibold">Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
@@ -319,8 +319,8 @@
                     4
                 </div>
                 <div>
-                    <h3 class="text-base font-bold text-purple-deep">Catatan & Keterangan Tambahan</h3>
-                    <p class="text-xs text-[#6B5B85]">Informasi jadwal ketersediaan atau catatan khusus konselor (opsional)</p>
+                    <h3 class="text-base font-semibold text-black">Catatan & Keterangan Tambahan</h3>
+                    <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus konselor (opsional)</p>
                 </div>
             </div>
 
@@ -339,7 +339,7 @@
                 Batal
             </a>
             <button type="submit" 
-                class="px-6 py-2.5 rounded-xl text-sm font-bold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
+                class="px-6 py-2.5 rounded-xl text-sm font-semibold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 <span>Simpan Konselor</span>
             </button>

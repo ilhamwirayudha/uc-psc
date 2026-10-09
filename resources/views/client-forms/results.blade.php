@@ -9,6 +9,7 @@
     copiedKey: null,
     selectedForm: null,
     showDossierModal: false,
+    isPrintingPdf: false,
 
     copyToClipboard(url, key) {
         navigator.clipboard.writeText(url);
@@ -19,6 +20,71 @@
     openDossier(form) {
         this.selectedForm = form;
         this.showDossierModal = true;
+    },
+
+    printPdf(formOrId) {
+        const formId = typeof formOrId === 'object' && formOrId !== null ? formOrId.id : (formOrId || (this.selectedForm ? this.selectedForm.id : null));
+        if (!formId) return;
+        this.isPrintingPdf = true;
+
+        const formObj = typeof formOrId === 'object' && formOrId !== null ? formOrId : this.selectedForm;
+        const targetFilename = (formObj && formObj.pdf_filename) ? formObj.pdf_filename : null;
+
+        const existingFrame = document.getElementById('pdf-print-iframe');
+        if (existingFrame) {
+            existingFrame.remove();
+        }
+
+        const frame = document.createElement('iframe');
+        frame.id = 'pdf-print-iframe';
+        frame.style.position = 'fixed';
+        frame.style.right = '0';
+        frame.style.bottom = '0';
+        frame.style.width = '0';
+        frame.style.height = '0';
+        frame.style.border = '0';
+        frame.style.visibility = 'hidden';
+        document.body.appendChild(frame);
+
+        frame.onload = () => {
+            setTimeout(() => {
+                const originalTitle = document.title;
+                try {
+                    const finalTitle = (frame.contentDocument && frame.contentDocument.title) 
+                        ? frame.contentDocument.title 
+                        : (targetFilename || originalTitle);
+
+                    document.title = finalTitle;
+                    if (frame.contentDocument) {
+                        frame.contentDocument.title = finalTitle;
+                    }
+
+                    frame.contentWindow.focus();
+                    frame.contentWindow.print();
+
+                    const restoreTitle = () => {
+                        document.title = originalTitle;
+                        window.removeEventListener('afterprint', restoreTitle);
+                        if (frame.contentWindow) {
+                            frame.contentWindow.removeEventListener('afterprint', restoreTitle);
+                        }
+                    };
+
+                    window.addEventListener('afterprint', restoreTitle);
+                    if (frame.contentWindow) {
+                        frame.contentWindow.addEventListener('afterprint', restoreTitle);
+                    }
+                    setTimeout(restoreTitle, 3500);
+                } catch (err) {
+                    console.error('Gagal mencetak dokumen:', err);
+                    document.title = originalTitle;
+                } finally {
+                    this.isPrintingPdf = false;
+                }
+            }, 350);
+        };
+
+        frame.src = `/client-forms/${formId}/pdf`;
     },
 
     switchCategory(catKey) {
@@ -66,7 +132,7 @@
                 </div>
                 
                 <div>
-                    <h2 class="text-base sm:text-lg font-extrabold text-slate-900">
+                    <h2 class="text-base font-semibold text-black">
                         {{ $activeCategory['title'] }} (Responses)
                     </h2>
                 </div>
@@ -81,7 +147,7 @@
                 </form>
 
                 <button type="button" @click="exportToCSV()" 
-                        class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep border border-[#EDE1FA] font-bold text-xs transition flex items-center gap-1.5 shadow-2xs cursor-pointer"
+                        class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep border border-[#EDE1FA] font-semibold text-xs transition flex items-center gap-1.5 shadow-2xs cursor-pointer"
                         title="Unduh seluruh respon dalam format CSV">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     <span>Download CSV</span>
@@ -101,12 +167,12 @@
         @else
             <div class="overflow-x-auto max-h-[580px] border-b border-slate-200 relative">
                 <table id="sheetsResponseTable" class="min-w-full text-left border-collapse text-[11px] font-sans">
-                    <thead class="sticky top-0 z-20 bg-[#F1F3F4] text-slate-700 uppercase tracking-wider font-bold shadow-xs select-none">
+                    <thead class="sticky top-0 z-20 bg-[#F7F5FB] text-black uppercase tracking-wider font-semibold shadow-xs select-none">
                         <tr class="divide-x divide-slate-300 border-b-2 border-slate-300">
                             <th class="py-2.5 px-3 bg-[#E8EAED] text-center w-12 font-mono text-slate-500 no-export">#</th>
-                            <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px] text-slate-800">Timestamp</th>
+                            <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px] text-black">Timestamp</th>
                             <th class="py-2.5 px-3 whitespace-nowrap min-w-[90px] text-center">Informed Consent</th>
-                            <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] text-slate-800 font-bold">Nama Lengkap</th>
+                            <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] text-black font-semibold">Nama Lengkap</th>
                             <th class="py-2.5 px-3 whitespace-nowrap min-w-[100px]">Jenis Kelamin</th>
                             <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">TTL</th>
                             <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Urutan Kelahiran</th>
@@ -128,11 +194,11 @@
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">Ketakutan / Fobia</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">Riwayat Trauma</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">Riwayat Kesehatan</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[160px] bg-blue-50/70 text-blue-900 font-extrabold">Nama Ayah</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[160px] bg-blue-50/70 text-blue-900 font-semibold">Nama Ayah</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[80px]">Usia Ayah</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan Ayah</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No HP Ayah</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[160px] bg-pink-50/70 text-pink-900 font-extrabold">Nama Ibu</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[160px] bg-pink-50/70 text-pink-900 font-semibold">Nama Ibu</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[80px]">Usia Ibu</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan Ibu</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No HP Ibu</th>
@@ -169,11 +235,11 @@
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Agama</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-rose-50/70 text-rose-900 font-extrabold">Nama Pasangan</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-rose-50/70 text-rose-900 font-semibold">Nama Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">TTL Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">HP Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan Pasangan</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px] text-purple-900 font-bold">Rencana Pernikahan</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px] text-purple-900 font-semibold">Rencana Pernikahan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Lama Kenal</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Lama Pacaran</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[250px]">Alasan Konseling</th>
@@ -186,7 +252,7 @@
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Agama</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-rose-50/70 text-rose-900 font-extrabold">Nama Pasangan</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-rose-50/70 text-rose-900 font-semibold">Nama Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">TTL Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">HP Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan Pasangan</th>
@@ -234,9 +300,9 @@
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Status Nikah</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px]">Pendidikan & IPK</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-purple-50/70 text-purple-900 font-extrabold">Posisi Dituju</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-purple-50/70 text-purple-900 font-semibold">Posisi Dituju</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px]">Pekerjaan Saat Ini</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px] bg-amber-50/70 text-amber-900 font-extrabold text-center">Skor PSS (Stres)</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px] bg-amber-50/70 text-amber-900 font-semibold text-center">Skor PSS (Stres)</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[220px]">Pengalaman Kerja</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px]">Ekspektasi Gaji</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[200px]">Kelebihan & Kelemahan</th>
@@ -467,19 +533,40 @@
     {{-- ============================================================== --}}
     <div x-show="showDossierModal" x-cloak 
          class="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-        <div @click.away="showDossierModal = false" 
-             class="bg-white rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-scale-up">
+        <div class="bg-white rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-scale-up">
             
             {{-- Modal Header --}}
-            <div class="p-6 bg-gradient-to-r from-purple-deep to-[#4A2F85] text-white flex items-center justify-between">
+            <div class="p-6 bg-purple-deep text-white flex items-center justify-between">
                 <div>
-                    <span class="text-xs font-bold text-white/70 uppercase" x-text="selectedForm && selectedForm.created_at ? 'Waktu Pengisian: ' + selectedForm.created_at.slice(0, 19).replace('T', ' ') : ''"></span>
-                    <h3 class="text-xl font-extrabold" x-text="selectedForm ? selectedForm.client_name : ''"></h3>
-                    <p class="text-xs text-white/80" x-text="selectedForm ? selectedForm.form_type_label : ''"></p>
+                    <span class="text-xs font-bold text-purple-200 uppercase" x-text="selectedForm && selectedForm.created_at ? 'Waktu Pengisian: ' + selectedForm.created_at.slice(0, 19).replace('T', ' ') : ''"></span>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight" x-text="selectedForm ? selectedForm.client_name : ''"></h3>
+                    <p class="text-sm sm:text-base font-semibold text-purple-200" x-text="selectedForm ? selectedForm.form_type_label : ''"></p>
                 </div>
-                <button type="button" @click="showDossierModal = false" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition">
-                    &times;
-                </button>
+                <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+                    <button type="button" 
+                            @click="printPdf(selectedForm)"
+                            :disabled="isPrintingPdf || !selectedForm"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition cursor-pointer shadow-xs backdrop-blur-xs select-none disabled:opacity-60 disabled:cursor-not-allowed"
+                            title="Download / Cetak Laporan PDF">
+                        <template x-if="!isPrintingPdf">
+                            <svg class="w-3.5 h-3.5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                        </template>
+                        <template x-if="isPrintingPdf">
+                            <svg class="w-3.5 h-3.5 text-white animate-spin shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </template>
+                        <span x-text="isPrintingPdf ? 'Menyiapkan...' : 'Download PDF'"></span>
+                    </button>
+                    <button type="button" @click="showDossierModal = false" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition cursor-pointer" title="Tutup">
+                        &times;
+                    </button>
+                </div>
             </div>
 
             {{-- Modal Body (Answers List) --}}

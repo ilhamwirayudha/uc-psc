@@ -160,7 +160,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
     
     {{-- Modal panel --}}
     <div x-show="testResultModalOpen" x-transition class="fixed inset-0 z-10 overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0" @click.self="requestClose()">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <div class="relative transform overflow-hidden rounded-2xl bg-[#F7F5FB] text-left shadow-2xl transition-all sm:my-8 w-full sm:max-w-2xl">
                 
                 <!-- Header -->
@@ -176,7 +176,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-base sm:text-lg font-bold leading-6 text-white" id="test-result-modal-title">Kasus Asesmen & Hasil Psikotes</h3>
+                            <h3 class="text-base font-semibold leading-6 text-white" id="test-result-modal-title">Kasus Asesmen & Hasil Psikotes</h3>
                             <p class="text-[11px] text-white/70">Registrasi pelaksanaan dan berkas dokumen hasil tes klien</p>
                         </div>
                     </div>
@@ -215,7 +215,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
 
                         {{-- FIELD 1: PILIH KLIEN (SEARCHABLE DROPDOWN) --}}
                         <div>
-                            <label for="modal_client_id" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                            <label for="modal_client_id" class="block text-xs font-medium text-gray-500 mb-1.5">
                                 Klien <span class="text-red-500">*</span>
                             </label>
                             <input type="hidden" id="modal_client_id" name="client_id" :value="clientId" required>
@@ -276,7 +276,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
 
                         {{-- FIELD 2: KAITKAN DENGAN BOOKING PSIKOTES (JIKA ADA) --}}
                         <div x-show="clientId && clientBookings.length > 0">
-                            <label for="modal_booking_id" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                            <label for="modal_booking_id" class="block text-xs font-medium text-gray-500 mb-1.5">
                                 Tiket Booking Terkait (Opsional)
                             </label>
                             <select id="modal_booking_id" name="booking_id" x-model="bookingId"
@@ -292,7 +292,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
                         {{-- FIELD 3: NAMA TES & METODE PELAKSANAAN --}}
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div class="sm:col-span-2">
-                                <label for="modal_test_name" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                                <label for="modal_test_name" class="block text-xs font-medium text-gray-500 mb-1.5">
                                     Nama Tes <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" id="modal_test_name" name="test_name" x-model="testName" required
@@ -302,16 +302,16 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
                             </div>
 
                             <div>
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                                <label class="block text-xs font-medium text-gray-500 mb-1.5">
                                     Metode <span class="text-red-500">*</span>
                                 </label>
                                 <div class="grid grid-cols-2 gap-1.5 p-1 bg-white border border-[#D9C2F0] rounded-xl">
-                                    <label class="text-center py-1.5 rounded-lg text-xs font-bold cursor-pointer transition"
+                                    <label class="text-center py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition"
                                         :class="method === 'offline' ? 'bg-purple-deep text-white shadow-2xs' : 'text-[#6B5B85] hover:text-purple-deep'">
                                         <input type="radio" name="method" value="offline" x-model="method" class="hidden">
                                         Offline
                                     </label>
-                                    <label class="text-center py-1.5 rounded-lg text-xs font-bold cursor-pointer transition"
+                                    <label class="text-center py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition"
                                         :class="method === 'online' ? 'bg-purple-deep text-white shadow-2xs' : 'text-[#6B5B85] hover:text-purple-deep'">
                                         <input type="radio" name="method" value="online" x-model="method" class="hidden">
                                         Online
@@ -323,7 +323,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
                         {{-- FIELD 4: TANGGAL TES & TARGET HASIL --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <label for="modal_tested_at" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                                <label for="modal_tested_at" class="block text-xs font-medium text-gray-500 mb-1.5">
                                     Tanggal Pelaksanaan Tes
                                 </label>
                                 <input type="date" id="modal_tested_at" name="tested_at" x-model="testedAt"
@@ -331,7 +331,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
                             </div>
 
                             <div>
-                                <label for="modal_result_due_date" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                                <label for="modal_result_due_date" class="block text-xs font-medium text-gray-500 mb-1.5">
                                     Target Hasil (Opsional)
                                 </label>
                                 <input type="date" id="modal_result_due_date" name="result_due_date"
@@ -343,7 +343,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
 
                         {{-- FIELD 5: FILE HASIL / LEMBAR DOKUMEN --}}
                         <div>
-                            <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                            <label class="block text-xs font-medium text-gray-500 mb-1.5">
                                 Berkas Dokumen Hasil / Lembar Tes (Opsional)
                             </label>
                             <div class="relative border-2 border-dashed border-[#D9C2F0] hover:border-purple-deep/60 rounded-2xl p-4 text-center bg-white transition cursor-pointer group"
@@ -377,7 +377,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
 
                         {{-- FIELD 6: RINGKASAN HASIL --}}
                         <div>
-                            <label for="modal_result_summary" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                            <label for="modal_result_summary" class="block text-xs font-medium text-gray-500 mb-1.5">
                                 Ringkasan Hasil / Catatan Awal
                             </label>
                             <textarea id="modal_result_summary" name="result_summary" rows="2" x-model="resultSummary"
@@ -394,7 +394,7 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
                             </button>
 
                             <button type="submit"
-                                class="px-6 py-2.5 bg-purple-deep text-white text-xs sm:text-sm font-bold rounded-xl hover:bg-purple-deep/90 transition shadow-sm cursor-pointer flex items-center justify-center gap-2">
+                                class="px-6 py-2.5 bg-purple-deep text-white text-xs sm:text-sm font-semibold rounded-xl hover:bg-purple-deep/90 transition shadow-sm cursor-pointer flex items-center justify-center gap-2">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                                 <span>Simpan Kasus Psikotes</span>
                             </button>
@@ -408,17 +408,16 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
     {{-- ========================================================================= --}}
     {{-- MODAL KONFIRMASI BATALKAN PENGISIAN DATA (PELINDUNG DATA INPUT)          --}}
     {{-- ========================================================================= --}}
-    <div x-cloak x-show="confirmDiscardModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4" @click.self="cancelDiscard()">
+    <div x-cloak x-show="confirmDiscardModalOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4">
         {{-- Backdrop --}}
         <div x-show="confirmDiscardModalOpen" 
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0" 
             x-transition:enter-end="opacity-100" 
-            x-transition:leave="ease-in duration-150"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-[#1F0E38]/60 backdrop-blur-sm" 
-            @click.stop="cancelDiscard()"></div>
+            x-transition:leave="ease-in duration-150" 
+            x-transition:leave-start="opacity-100" 
+            x-transition:leave-end="opacity-0" 
+            class="fixed inset-0 bg-[#1F0E38]/60 backdrop-blur-sm"></div>
 
         {{-- Dialog Box --}}
         <div x-show="confirmDiscardModalOpen" 
@@ -452,11 +451,11 @@ aria-labelledby="test-result-modal-title" role="dialog" aria-modal="true" x-cloa
 
             <div class="grid grid-cols-2 gap-3 pt-2">
                 <button type="button" @click.stop="cancelDiscard()" 
-                    class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-[#F7F5FB] hover:bg-[#EDE1FA] border border-[#D9C2F0] transition cursor-pointer">
+                    class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold text-purple-deep hover:text-[#260E45] bg-[#F7F5FB] hover:bg-[#EDE1FA] border border-[#D9C2F0] transition cursor-pointer">
                     Lanjut Mengisi
                 </button>
                 <button type="button" @click.stop="executeDiscard()" 
-                    class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 transition shadow-xs cursor-pointer">
+                    class="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 transition shadow-xs cursor-pointer">
                     Ya, Batalkan
                 </button>
             </div>

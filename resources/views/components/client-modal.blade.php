@@ -58,7 +58,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
     
     {{-- Modal panel --}}
     <div x-show="clientModalOpen" x-transition class="fixed inset-0 z-10 overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-3 text-center sm:items-center sm:p-4" @click.self="requestClose()">
+        <div class="flex min-h-full items-end justify-center p-3 text-center sm:items-center sm:p-4">
             <div class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-6 w-full max-w-5xl border border-purple-100">
                 
                 <!-- Header -->
@@ -68,7 +68,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
                         </div>
                         <div>
-                            <h3 class="text-lg sm:text-xl font-extrabold leading-6 text-white" id="client-modal-title">Tambah Klien Baru</h3>
+                            <h3 class="text-base font-semibold leading-6 text-white" id="client-modal-title">Tambah Klien Baru</h3>
                             <p class="text-xs text-purple-200 mt-0.5">Pendaftaran klien berdasarkan jenis formulir layanan UC Psychological Service Center</p>
                         </div>
                     </div>
@@ -113,7 +113,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                             
                             {{-- Baris 1: Toggle Individu vs Industri --}}
                             <div>
-                                <label class="block text-xs font-bold uppercase tracking-wider text-[#827299] mb-2.5">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2.5">
                                     1. Pilih Tipe Pemohon / Klien
                                 </label>
                                 <div class="grid grid-cols-2 gap-3 p-1.5 bg-[#F7F5FB] rounded-2xl border border-[#EDE1FA]">
@@ -121,7 +121,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                     <button type="button"
                                         @click="setJenis('individu')"
                                         :class="jenis === 'individu' ? 'bg-white text-purple-deep shadow-xs border border-[#D9C2F0]' : 'text-[#6B5B85] hover:text-purple-deep'"
-                                        class="flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl text-sm sm:text-base font-bold cursor-pointer transition">
+                                        class="flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl text-sm font-semibold cursor-pointer transition">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                         <span>Individu</span>
                                     </button>
@@ -130,7 +130,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                     <button type="button"
                                         @click="setJenis('industri')"
                                         :class="jenis === 'industri' ? 'bg-white text-purple-deep shadow-xs border border-[#D9C2F0]' : 'text-[#6B5B85] hover:text-purple-deep'"
-                                        class="flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl text-sm sm:text-base font-bold cursor-pointer transition">
+                                        class="flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl text-sm font-semibold cursor-pointer transition">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                                         <span>Industri</span>
                                     </button>
@@ -139,7 +139,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
 
                             {{-- Baris 2: Pemilihan Formulir Spesifik Layanan --}}
                             <div>
-                                <label class="block text-xs font-bold uppercase tracking-wider text-[#827299] mb-2.5">
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2.5">
                                     2. Pilih Formulir Layanan Klien
                                 </label>
 
@@ -159,7 +159,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                             </span>
                                         </div>
                                         <div>
-                                            <h5 class="text-sm font-bold text-slate-900 leading-snug">Konseling - Dewasa</h5>
+                                            <h5 class="text-sm font-semibold text-black leading-snug">Konseling - Dewasa</h5>
                                             <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">Evaluasi psikologis, trauma, dan relasi klien perorangan dewasa.</p>
                                         </div>
                                     </button>
@@ -177,7 +177,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                             </span>
                                         </div>
                                         <div>
-                                            <h5 class="text-sm font-bold text-slate-900 leading-snug">Konseling - Anak</h5>
+                                            <h5 class="text-sm font-semibold text-black leading-snug">Konseling - Anak</h5>
                                             <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">Tumbuh kembang anak, relasi keluarga, dan data orang tua/wali.</p>
                                         </div>
                                     </button>
@@ -195,7 +195,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                             </span>
                                         </div>
                                         <div>
-                                            <h5 class="text-sm font-bold text-slate-900 leading-snug">Konseling - Pra Nikah</h5>
+                                            <h5 class="text-sm font-semibold text-black leading-snug">Konseling - Pra Nikah</h5>
                                             <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">Kesiapan mental, ekspektasi bersama, dan data calon pasangan.</p>
                                         </div>
                                     </button>
@@ -213,7 +213,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                             </span>
                                         </div>
                                         <div>
-                                            <h5 class="text-sm font-bold text-slate-900 leading-snug">Konseling - Pernikahan</h5>
+                                            <h5 class="text-sm font-semibold text-black leading-snug">Konseling - Pernikahan</h5>
                                             <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">Dinamika relasi suami istri, resolusi konflik, dan keharmonisan.</p>
                                         </div>
                                     </button>
@@ -231,7 +231,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                             </span>
                                         </div>
                                         <div>
-                                            <h5 class="text-sm font-bold text-slate-900 leading-snug">Riwayat Hidup - Non-Industri</h5>
+                                            <h5 class="text-sm font-semibold text-black leading-snug">Riwayat Hidup - Non-Industri</h5>
                                             <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">Asesmen penelusuran minat bakat sekolah, komunitas & pendidikan.</p>
                                         </div>
                                     </button>
@@ -249,7 +249,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                             </span>
                                         </div>
                                         <div>
-                                            <h5 class="text-sm font-bold text-slate-900 leading-snug">Biography Form (English)</h5>
+                                            <h5 class="text-sm font-semibold text-black leading-snug">Biography Form (English)</h5>
                                             <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">Intake form for international clients and expatriates.</p>
                                         </div>
                                     </button>
@@ -264,7 +264,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                         </div>
                                         <div>
                                             <div class="flex items-center gap-2">
-                                                <h5 class="text-sm font-bold text-slate-900">Formulir Riwayat Hidup - Industri</h5>
+                                                <h5 class="text-sm font-semibold text-black">Formulir Riwayat Hidup - Industri</h5>
                                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-deep text-white">Terpilih</span>
                                             </div>
                                             <p class="text-xs text-slate-600 mt-1">Formulir seleksi, rekrutmen perusahaan, kuesioner stres PSS-10, dan riwayat pekerjaan.</p>
@@ -326,7 +326,7 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                                     Batal
                                 </button>
                                 <button type="submit"
-                                    class="w-1/2 sm:w-auto px-6 py-2.5 bg-gradient-to-r from-orange to-[#ff7d1a] hover:from-orange/90 hover:to-[#ff7d1a]/90 text-white text-sm font-bold rounded-xl shadow-md shadow-orange/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                                    class="w-1/2 sm:w-auto px-6 py-2.5 bg-gradient-to-r from-orange to-[#ff7d1a] hover:from-orange/90 hover:to-[#ff7d1a]/90 text-white text-sm font-semibold rounded-xl shadow-md shadow-orange/20 transition flex items-center justify-center gap-2 cursor-pointer">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                                         <polyline points="17 21 17 13 7 13 7 21"/>

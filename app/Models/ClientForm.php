@@ -29,6 +29,11 @@ class ClientForm extends Model
         'answers' => 'array',
     ];
 
+    protected $appends = [
+        'form_type_label',
+        'pdf_filename',
+    ];
+
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
@@ -37,6 +42,38 @@ class ClientForm extends Model
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class);
+    }
+
+    public function getPdfFilenameAttribute(): string
+    {
+        $clientName = trim($this->client_name ?? $this->client?->name ?? ($this->answers['nama_lengkap'] ?? ''));
+        if (empty($clientName)) {
+            $clientName = $this->answers['nama_lengkap'] 
+                ?? $this->answers['fullname'] 
+                ?? $this->answers['full_name'] 
+                ?? $this->answers['nama'] 
+                ?? ($this->client?->name ?? 'Pasien');
+        }
+
+        $serviceLabel = $this->form_type_label ?? 'Layanan Konseling';
+
+        $dateSource = $this->created_at ?? $this->consent_agreed_at ?? now();
+        // Format tanggal dan jam: dd-mm-yyyy HH.ii.ss (contoh: 07-10-2026 15.06.55)
+        // Catatan: Karakter '/' dan ':' dilarang oleh OS Windows/Mac/Linux pada nama file, sehingga digunakan '-' dan '.'
+        $dateFormatted = $dateSource->format('d-m-Y H.i.s');
+
+        // Bersihkan karakter yang dilarang pada penamaan file Windows: / \ : * ? " < > |
+        $cleanName = trim(str_replace(['/', '\\', ':', '*', '?', '"', '<', '>', '|'], '', $clientName));
+        $cleanService = trim(str_replace(['/', '\\', ':', '*', '?', '"', '<', '>', '|'], '', $serviceLabel));
+
+        if (empty($cleanName)) {
+            $cleanName = 'Pasien';
+        }
+        if (empty($cleanService)) {
+            $cleanService = 'Layanan Konseling';
+        }
+
+        return "{$cleanName} - {$cleanService} - {$dateFormatted}";
     }
 
     public function getFormTypeLabelAttribute(): string

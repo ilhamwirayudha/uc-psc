@@ -33,9 +33,9 @@
 }">
 
     {{-- Tombol Kembali --}}
-    <div class="flex items-center justify-end pb-2">
+    <div class="flex items-center justify-start pb-2">
         <a href="{{ route('clients.index') }}"
-            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-semibold text-[#5B4A73] hover:text-purple-deep hover:border-purple-deep shadow-xs transition cursor-pointer w-fit">
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-semibold text-black hover:text-purple-deep hover:border-purple-deep shadow-xs transition cursor-pointer w-fit">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             <span>Kembali ke Daftar Klien</span>
         </a>
@@ -49,8 +49,8 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             </div>
             <div class="flex-1">
-                <h4 class="text-sm font-bold text-rose-800 mb-1">Mohon lengkapi isian formulir berikut:</h4>
-                <ul class="list-disc list-inside text-xs text-rose-700 space-y-1">
+                <h4 class="text-sm font-semibold text-rose-800 mb-1">Mohon lengkapi isian formulir berikut:</h4>
+                <ul class="list-disc list-inside text-xs font-medium text-rose-700 space-y-1">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -72,13 +72,13 @@
                 
                 {{-- Dropdown 1: Tipe Pemohon / Klien --}}
                 <div>
-                    <label for="select_jenis" class="block text-base font-bold text-purple-deep mb-2.5">
+                    <label for="select_jenis" class="block text-xs font-medium text-gray-500 mb-1.5">
                         Tipe Pemohon / Klien
                     </label>
                     <select id="select_jenis"
                         x-model="jenis"
                         @change="setJenis($event.target.value)"
-                        class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-semibold text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
+                        class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
                         <option value="">-- Pilih Tipe Pemohon / Klien --</option>
                         <option value="individu">Individu</option>
                         <option value="industri">Industri</option>
@@ -87,14 +87,14 @@
 
                 {{-- Dropdown 2: Formulir Layanan Klien --}}
                 <div>
-                    <label for="select_form_type" class="block text-base font-bold text-purple-deep mb-2.5">
+                    <label for="select_form_type" class="block text-xs font-medium text-gray-500 mb-1.5">
                         Formulir Layanan Klien
                     </label>
 
                     {{-- Saat Belum Memilih Tipe Pemohon --}}
                     <div x-show="!jenis">
                         <select disabled
-                            class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-slate-50 text-sm font-semibold text-slate-400 cursor-not-allowed">
+                            class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-slate-50 text-sm font-medium text-gray-400 cursor-not-allowed">
                             <option value="">-- Pilih Tipe Pemohon Terlebih Dahulu --</option>
                         </select>
                     </div>
@@ -104,7 +104,7 @@
                         <select id="select_form_type_individu"
                             x-model="form_type"
                             @change="setFormType($event.target.value)"
-                            class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-semibold text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
+                            class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
                             <option value="">-- Pilih Formulir Layanan Klien --</option>
                             <option value="dewasa">Formulir Riwayat Hidup Konseling - Dewasa</option>
                             <option value="anak">Formulir Riwayat Hidup Konseling - Anak</option>
@@ -120,7 +120,7 @@
                         <select id="select_form_type_industri"
                             x-model="form_type"
                             @change="setFormType($event.target.value)"
-                            class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-semibold text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
+                            class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
                             <option value="">-- Pilih Formulir Layanan Klien --</option>
                             <option value="industri">Formulir Riwayat Hidup - Industri</option>
                         </select>
@@ -131,12 +131,12 @@
         </div>
 
         {{-- EMPTY STATE: TAMPILKAN SAAT BELUM MEMILIH FORMULIR --}}
-        <div x-show="!form_type" class="bg-white rounded-2xl border border-dashed border-[#D9C2F0] p-10 text-center text-[#6B5B85] space-y-3 shadow-xs">
+        <div x-show="!form_type" class="bg-white rounded-2xl border border-dashed border-[#D9C2F0] p-10 text-center space-y-3 shadow-xs">
             <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-deep flex items-center justify-center mx-auto">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
             </div>
-            <h4 class="text-base font-bold text-purple-deep">Pilih Tipe dan Formulir Layanan Klien</h4>
-            <p class="text-sm text-[#6B5B85] max-w-md mx-auto">Silakan tentukan tipe pemohon dan formulir layanan klien pada pilihan di atas untuk menampilkan lembar formulir pendaftaran.</p>
+            <h4 class="text-base font-semibold text-black">Pilih Tipe dan Formulir Layanan Klien</h4>
+            <p class="text-xs font-medium text-gray-500 max-w-md mx-auto">Silakan tentukan tipe pemohon dan formulir layanan klien pada pilihan di atas untuk menampilkan lembar formulir pendaftaran.</p>
         </div>
 
         {{-- CONTAINER KARTU ISIAN LENGKAP FORMULIR TERPILIH --}}

@@ -69,33 +69,48 @@ class Client extends Model
             return null;
         }
 
-        if (!empty($this->occupation)) {
-            if (preg_match('/(?:PT|CV|UD|Firma|Yayasan|Corp|Ltd|Inc)\b/i', $this->occupation)) {
-                if (str_contains($this->occupation, ' - ')) {
-                    $parts = explode(' - ', $this->occupation);
-                    return trim(end($parts));
-                }
-                return trim($this->occupation);
-            }
-        }
-
+        // 1. Cek pic_name (pada klien industri digunakan untuk menyimpan nama perusahaan)
         if (!empty($this->attributes['pic_name'])) {
-            if (preg_match('/(?:PT|CV|UD|Firma|Yayasan|Corp|Ltd|Inc)\b/i', $this->attributes['pic_name'])) {
-                return trim($this->attributes['pic_name']);
-            }
+            return trim($this->attributes['pic_name']);
         }
 
+        // 2. Jika occupation berformat "Jabatan - Nama Perusahaan", ambil bagian perusahaan setelah " - "
         if (!empty($this->occupation) && str_contains($this->occupation, ' - ')) {
             $parts = explode(' - ', $this->occupation);
-            return trim(end($parts));
+            $candidate = trim(end($parts));
+            if (!empty($candidate)) {
+                return $candidate;
+            }
         }
 
-        if (!empty($this->occupation)) {
+        // 3. Jika occupation sendiri mengandung entitas nama perusahaan (PT, CV, dll.)
+        if (!empty($this->occupation) && preg_match('/(?:PT|CV|UD|Firma|Yayasan|Corp|Ltd|Inc)\b/i', $this->occupation)) {
             return trim($this->occupation);
         }
 
-        if (!empty($this->attributes['pic_name'])) {
-            return trim($this->attributes['pic_name']);
+        // 4. Cari dari data formulir industri (clientForms) jika tersedia
+        if ($this->relationLoaded('clientForms') || $this->exists) {
+            $industriForm = $this->relationLoaded('clientForms')
+                ? $this->clientForms->firstWhere('form_type', 'industri')
+                : $this->clientForms()->where('form_type', 'industri')->latest()->first();
+
+            if ($industriForm && !empty($industriForm->answers)) {
+                $answers = $industriForm->answers;
+                if (!empty($answers['nama_perusahaan'])) {
+                    return trim($answers['nama_perusahaan']);
+                }
+                if (!empty($answers['perusahaan'])) {
+                    return trim($answers['perusahaan']);
+                }
+                if (!empty($answers['instansi_1_nama'])) {
+                    return trim($answers['instansi_1_nama']);
+                }
+            }
+        }
+
+        // 5. Cek notes jika mencantumkan info perusahaan
+        if (!empty($this->notes) && preg_match('/(?:Nama Perusahaan|Perusahaan|Instansi)\s*:\s*([^\n\r]+)/i', $this->notes, $matches)) {
+            return trim($matches[1]);
         }
 
         return null;
@@ -247,5 +262,115 @@ class Client extends Model
         }
 
         return !empty($parts) ? implode(', ', $parts) : '-';
+    }
+
+    /**
+     * Mengambil daftar seluruh catatan klien terstruktur per entri tanggal.
+     * Mendukung data JSON array, teks terformat [tanggal] catatan, maupun legacy plain text.
+     */
+    public function getNotesListAttribute(): array
+    {
+        if (empty($this->notes)) {
+            return [];
+        }
+
+        $raw = trim($this->notes);
+
+        // 1. Coba decode sebagai JSON
+        if (str_starts_with($raw, '[') || str_starts_with($raw, '{')) {
+            $decoded = json_decode($raw, true);
+            if (is_array($decoded)) {
+                $list = [];
+                foreach ($decoded as $index => $item) {
+                    if (is_array($item)) {
+                        $dateStr = $item['date'] ?? null;
+                        try {
+                            $carbonDate = $dateStr ? \Carbon\Carbon::parse($dateStr) : ($this->created_at ?? now());
+                        } catch (\Exception $e) {
+                            $carbonDate = $this->created_at ?? now();
+                        }
+
+                        $content = trim($item['note'] ?? ($item['content'] ?? ($item['text'] ?? '')));
+                        if (!empty($content)) {
+                            $list[] = [
+                                'id' => (string) ($item['id'] ?? ('note_' . ($index + 1))),
+                                'date' => $carbonDate->format('Y-m-d H:i:s'),
+                                'date_display' => $carbonDate->format('d M Y, H:i') . ' WIB',
+                                'date_input' => $carbonDate->format('Y-m-d\TH:i'),
+                                'note' => $content,
+                            ];
+                        }
+                    }
+                }
+                if (!empty($list)) {
+                    usort($list, fn($a, $b) => strcmp($b['date'], $a['date']));
+                    return $list;
+                }
+            }
+        }
+
+        // 2. Cek apakah ada penanda waktu bertanda kurung siku, misal: [07/10/2026 15:06] atau [07 Oct 2026, 15:06]
+        $pattern = '/(?:^|\n\s*|\r\n\s*)\[([0-9]{1,2}[-\/][0-9]{1,2}[-\/][0-9]{2,4}[^\]]*|[0-9]{1,2}\s+[A-Za-z]{3,}\s+[0-9]{2,4}[^\]]*)\]\s*/u';
+        $splits = preg_split($pattern, $raw, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+        if (count($splits) > 1) {
+            $list = [];
+            for ($i = 0; $i < count($splits); $i += 2) {
+                $datePart = $splits[$i] ?? '';
+                $textPart = trim($splits[$i + 1] ?? '');
+
+                try {
+                    $cleanDatePart = trim(str_replace(['WIB', 'WITA', 'WIT'], '', $datePart));
+                    $carbonDate = \Carbon\Carbon::parse($cleanDatePart);
+                } catch (\Exception $e) {
+                    $carbonDate = $this->created_at ?? now();
+                }
+
+                if (!empty($textPart)) {
+                    $list[] = [
+                        'id' => 'note_' . ($i / 2 + 1),
+                        'date' => $carbonDate->format('Y-m-d H:i:s'),
+                        'date_display' => $carbonDate->format('d M Y, H:i') . ' WIB',
+                        'date_input' => $carbonDate->format('Y-m-d\TH:i'),
+                        'note' => $textPart,
+                    ];
+                }
+            }
+            if (!empty($list)) {
+                usort($list, fn($a, $b) => strcmp($b['date'], $a['date']));
+                return $list;
+            }
+        }
+
+        // 3. Fallback: Data tunggal konvensional
+        $singleDate = $this->updated_at ?? ($this->created_at ?? now());
+        return [
+            [
+                'id' => 'note_1',
+                'date' => $singleDate->format('Y-m-d H:i:s'),
+                'date_display' => $singleDate->format('d M Y, H:i') . ' WIB',
+                'date_input' => $singleDate->format('Y-m-d\TH:i'),
+                'note' => $raw,
+            ]
+        ];
+    }
+
+    /**
+     * Representasi teks bersih dari seluruh catatan klien.
+     */
+    public function getNotesTextAttribute(): string
+    {
+        $list = $this->notes_list;
+        if (empty($list)) {
+            return '';
+        }
+        if (count($list) === 1 && !str_starts_with(trim($this->notes), '[') && !str_starts_with(trim($this->notes), '{')) {
+            return $list[0]['note'];
+        }
+        $lines = [];
+        foreach ($list as $item) {
+            $lines[] = "[{$item['date_display']}]\n{$item['note']}";
+        }
+        return implode("\n\n", $lines);
     }
 }

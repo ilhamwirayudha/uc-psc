@@ -20,14 +20,14 @@
                     {{ $booking->kategori === 'konseling' ? 'bg-purple-deep/10 text-purple-deep' : 'bg-orange/10 text-orange' }}">
                     {{ $booking->kategori }}
                 </span>
-                <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold
+                <span class="px-2.5 py-1 rounded-full text-xs font-semibold
                     {{ $booking->status === 'selesai' ? 'bg-emerald-50 text-emerald-600' :
                        ($booking->status === 'baru' ? 'bg-blue-50 text-blue-600' :
                        ($booking->status === 'lanjutan' ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-600')) }}">
                     {{ ucfirst(str_replace('_', ' ', $booking->status)) }}
                 </span>
             </div>
-            <div class="text-xs text-[#827299]">
+            <div class="text-xs font-medium text-gray-500">
                 Booking #{{ $booking->id }}
             </div>
         </div>
@@ -35,32 +35,32 @@
         <div class="grid md:grid-cols-2 gap-4 text-sm">
             {{-- Klien: Klik Nama Klien Langsung Muncul Pop-Up Detail Klien --}}
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Klien</p>
+                <p class="text-xs font-medium text-gray-500 mb-1">Klien</p>
                 @if($booking->client)
                 <button 
                     type="button" 
                     @click="clientModalOpen = true"
-                    class="font-bold text-purple-deep hover:underline cursor-pointer flex items-center gap-1.5 text-sm text-left transition"
+                    class="font-medium text-black hover:text-orange hover:underline cursor-pointer flex items-center gap-1.5 text-sm text-left transition"
                     title="Klik untuk Buka Detail Klien"
                 >
                     <span>{{ $booking->client->name }}</span>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-60 shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </button>
-                <span class="text-[11px] text-[#827299] capitalize block mt-0.5">
+                <span class="text-xs font-medium text-gray-500 capitalize block mt-0.5">
                     {{ in_array($booking->client->jenis ?? '', ['industri', 'company', 'perusahaan']) ? 'Industri' : 'Individu' }}
                     @if($booking->client->pic_name) • PIC: {{ $booking->client->pic_name }} @endif
                 </span>
                 @else
-                <p class="text-[#2A2035] font-semibold">-</p>
+                <p class="text-sm font-medium text-black">-</p>
                 @endif
             </div>
 
             {{-- Tanggal & Jam Dibuat --}}
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Tanggal & Jam Dibuat</p>
-                <p class="text-[#2A2035] font-semibold flex items-center gap-2">
+                <p class="text-xs font-medium text-gray-500 mb-1">Tanggal & Jam Dibuat</p>
+                <p class="text-sm font-medium text-black flex items-center gap-2">
                     <span>{{ $booking->tanggal_booking_dibuat->format('d M Y') }}</span>
-                    <span class="text-xs text-[#827299] font-mono bg-gray-50 px-2 py-0.5 rounded-md border border-gray-200">
+                    <span class="text-xs text-gray-500 font-mono bg-gray-50 px-2 py-0.5 rounded-md border border-gray-200">
                         {{ $jamDibuat }}
                     </span>
                 </p>
@@ -68,9 +68,9 @@
 
             {{-- Tanggal & Jam Dijadwalkan --}}
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Tanggal & Jam Dijadwalkan</p>
+                <p class="text-xs font-medium text-gray-500 mb-1">Tanggal & Jam Dijadwalkan</p>
                 @if($booking->tanggal_dijadwalkan)
-                <p class="text-[#2A2035] font-semibold flex items-center gap-2 flex-wrap">
+                <p class="text-sm font-medium text-black flex items-center gap-2 flex-wrap">
                     <span>{{ $booking->tanggal_dijadwalkan->format('d M Y') }}</span>
                     @if($jamSesi)
                     <span class="text-xs text-purple-deep font-semibold font-mono bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200 flex items-center gap-1">
@@ -78,20 +78,20 @@
                         <span>{{ $jamSesi }}</span>
                     </span>
                     @else
-                    <span class="text-xs text-[#827299] font-mono bg-gray-50 px-2 py-0.5 rounded-md border border-gray-200">
+                    <span class="text-xs text-gray-500 font-mono bg-gray-50 px-2 py-0.5 rounded-md border border-gray-200">
                         Jam belum diatur
                     </span>
                     @endif
                 </p>
                 @else
-                <p class="text-gray-400 italic">Belum Dijadwalkan</p>
+                <p class="text-sm font-medium text-gray-400 italic">Belum Dijadwalkan</p>
                 @endif
             </div>
 
             @if($booking->followUpOf)
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Lanjutan Dari</p>
-                <p class="text-[#2A2035] font-semibold">
+                <p class="text-xs font-medium text-gray-500 mb-1">Lanjutan Dari</p>
+                <p class="text-sm font-medium text-black">
                     <a href="{{ route('bookings.show', $booking->followUpOf) }}" class="text-purple-deep hover:underline">Booking #{{ $booking->follow_up_of_booking_id }}</a>
                 </p>
             </div>
@@ -99,33 +99,33 @@
 
             @if($booking->kategori === 'konseling' && $booking->counselor)
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Konselor</p>
-                <p class="text-[#2A2035] font-semibold">{{ $booking->counselor->name }}</p>
-                <p class="text-xs text-[#827299]">{{ $booking->counselor->specialization ?? 'Konselor' }}</p>
+                <p class="text-xs font-medium text-gray-500 mb-1">Konselor</p>
+                <p class="text-sm font-medium text-black">{{ $booking->counselor->name }}</p>
+                <p class="text-xs font-medium text-gray-500">{{ $booking->counselor->specialization ?? 'Konselor' }}</p>
             </div>
             @endif
 
             @if($booking->kategori === 'psikotes')
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Staff Penguji</p>
-                <p class="text-[#2A2035] font-semibold">{{ $booking->staffPenguji->name ?? '-' }}</p>
+                <p class="text-xs font-medium text-gray-500 mb-1">Staff Penguji</p>
+                <p class="text-sm font-medium text-black">{{ $booking->staffPenguji->name ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Staff Koreksi</p>
-                <p class="text-[#2A2035] font-semibold">{{ $booking->staffKoreksi->name ?? '-' }}</p>
+                <p class="text-xs font-medium text-gray-500 mb-1">Staff Koreksi</p>
+                <p class="text-sm font-medium text-black">{{ $booking->staffKoreksi->name ?? '-' }}</p>
             </div>
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Staff Pelapor</p>
-                <p class="text-[#2A2035] font-semibold">{{ $booking->staffPelapor->name ?? '-' }}</p>
+                <p class="text-xs font-medium text-gray-500 mb-1">Staff Pelapor</p>
+                <p class="text-sm font-medium text-black">{{ $booking->staffPelapor->name ?? '-' }}</p>
             </div>
             @endif
 
             @if($booking->paymentTransaction)
             <div>
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Pembayaran</p>
-                <p class="text-[#2A2035] font-semibold">
+                <p class="text-xs font-medium text-gray-500 mb-1">Pembayaran</p>
+                <p class="text-sm font-medium text-black">
                     Rp {{ number_format($booking->paymentTransaction->jumlah, 0, ',', '.') }}
-                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold ml-1
+                    <span class="px-2 py-0.5 rounded text-xs font-semibold ml-1
                         {{ $booking->paymentTransaction->status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600' }}">
                         {{ ucfirst($booking->paymentTransaction->status) }}
                     </span>
@@ -135,8 +135,8 @@
 
             @if($booking->notes)
             <div class="md:col-span-2">
-                <p class="text-[#6B5B85] text-xs font-medium mb-1">Catatan</p>
-                <div class="p-3 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA] text-xs leading-relaxed text-[#2A2035] whitespace-pre-line font-mono">{{ $booking->notes }}</div>
+                <p class="text-xs font-medium text-gray-500 mb-1">Catatan</p>
+                <div class="p-3 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA] text-xs leading-relaxed text-black whitespace-pre-line font-mono">{{ $booking->notes }}</div>
             </div>
             @endif
         </div>
@@ -195,10 +195,10 @@
         <div class="px-6 py-4 border-b border-[#EDE1FA] flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-600"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <h3 class="font-bold text-[#2A2035] text-sm">Realisasi Sesi</h3>
+                <h3 class="font-semibold text-black text-sm">Realisasi Sesi</h3>
             </div>
             @if($booking->is_realized)
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold {{ $booking->is_overtime ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200' }}">
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold {{ $booking->is_overtime ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200' }}">
                 {{ $booking->is_overtime ? 'Overtime' : 'Tepat Waktu' }}
             </span>
             @endif
@@ -207,35 +207,35 @@
             @if($booking->is_realized)
             <div class="grid sm:grid-cols-3 gap-4 text-sm">
                 <div>
-                    <p class="text-[#6B5B85] text-xs font-medium mb-1">Jam Masuk – Keluar</p>
-                    <p class="font-bold text-[#2A2035] font-mono">
+                    <p class="text-xs font-medium text-gray-500 mb-1">Jam Masuk – Keluar</p>
+                    <p class="font-medium text-black font-mono">
                         {{ substr($booking->session_start, 0, 5) }} – {{ substr($booking->session_end, 0, 5) }} WIB
                     </p>
                 </div>
                 <div>
-                    <p class="text-[#6B5B85] text-xs font-medium mb-1">Durasi Total</p>
-                    <p class="font-bold text-[#2A2035]">{{ $booking->session_duration_label }}</p>
+                    <p class="text-xs font-medium text-gray-500 mb-1">Durasi Total</p>
+                    <p class="font-medium text-black">{{ $booking->session_duration_label }}</p>
                     @if($booking->is_overtime)
-                    <p class="text-xs text-amber-600 font-semibold mt-0.5">+{{ $booking->overtime_minutes_computed }} menit overtime</p>
+                    <p class="text-xs text-amber-600 font-medium mt-0.5">+{{ $booking->overtime_minutes_computed }} menit overtime</p>
                     @endif
                 </div>
                 <div>
-                    <p class="text-[#6B5B85] text-xs font-medium mb-1">Tipe Sesi</p>
-                    <p class="font-semibold text-[#2A2035]">
+                    <p class="text-xs font-medium text-gray-500 mb-1">Tipe Sesi</p>
+                    <p class="font-medium text-black">
                         {{ match($booking->session_type) {
                             'online' => 'Online',
                             'whatsapp' => 'WhatsApp',
                             default => 'Tatap Muka'
                         } ?? '-' }}
                         @if($booking->location)
-                        <span class="text-xs text-[#827299] font-normal block mt-0.5">{{ $booking->location }}</span>
+                        <span class="text-xs text-gray-500 font-normal block mt-0.5">{{ $booking->location }}</span>
                         @endif
                     </p>
                 </div>
                 @if($booking->session_notes)
                 <div class="sm:col-span-3">
-                    <p class="text-[#6B5B85] text-xs font-medium mb-1">Catatan Pasca-Sesi</p>
-                    <div class="p-3 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA] text-xs text-[#2A2035] leading-relaxed whitespace-pre-line">{{ $booking->session_notes }}</div>
+                    <p class="text-xs font-medium text-gray-500 mb-1">Catatan Pasca-Sesi</p>
+                    <div class="p-3 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA] text-xs text-black leading-relaxed whitespace-pre-line">{{ $booking->session_notes }}</div>
                 </div>
                 @endif
             </div>
@@ -244,12 +244,12 @@
                 <div class="w-10 h-10 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-3">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-gray-400"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 </div>
-                <p class="text-sm text-[#827299]">Realisasi sesi belum diinput</p>
-                <p class="text-xs text-gray-400 mt-0.5">Input setelah sesi konseling selesai dilaksanakan</p>
+                <p class="text-sm font-medium text-gray-500">Realisasi sesi belum diinput</p>
+                <p class="text-xs font-medium text-gray-400 mt-0.5">Input setelah sesi konseling selesai dilaksanakan</p>
                 <button 
                     type="button" 
                     @click="realisasiOpen = true"
-                    class="mt-3 px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+                    class="mt-3 px-4 py-2 bg-emerald-600 text-white text-xs font-semibold rounded-xl hover:bg-emerald-700 transition cursor-pointer flex items-center gap-1.5 shadow-xs"
                 >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     Input Realisasi Sesi
@@ -264,13 +264,13 @@
     @if($booking->participants->count() > 0)
     <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
         <div class="px-6 py-4 border-b border-[#EDE1FA]">
-            <h3 class="font-bold text-purple-deep">Peserta ({{ $booking->participants->count() }} orang)</h3>
+            <h3 class="font-semibold text-black text-sm">Peserta ({{ $booking->participants->count() }} orang)</h3>
         </div>
         <div class="divide-y divide-[#F3EAFB]">
             @foreach($booking->participants as $i => $p)
             <div class="px-6 py-3 flex items-center gap-3">
-                <span class="w-6 h-6 rounded-full bg-purple-deep/10 flex items-center justify-center text-purple-deep text-[10px] font-bold flex-shrink-0">{{ $i + 1 }}</span>
-                <p class="text-sm text-[#2A2035]">{{ $p->nama_peserta }}</p>
+                <span class="w-6 h-6 rounded-full bg-purple-deep/10 flex items-center justify-center text-purple-deep text-xs font-semibold flex-shrink-0">{{ $i + 1 }}</span>
+                <p class="text-sm font-medium text-black">{{ $p->nama_peserta }}</p>
             </div>
             @endforeach
         </div>
@@ -281,16 +281,16 @@
     @if($booking->followUps->count() > 0)
     <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
         <div class="px-6 py-4 border-b border-[#EDE1FA]">
-            <h3 class="font-bold text-purple-deep">Follow-Up ({{ $booking->followUps->count() }})</h3>
+            <h3 class="font-semibold text-black text-sm">Follow-Up ({{ $booking->followUps->count() }})</h3>
         </div>
         <div class="divide-y divide-[#F3EAFB]">
             @foreach($booking->followUps as $fu)
             <div class="px-6 py-3.5 flex items-center justify-between">
                 <div>
                     <a href="{{ route('bookings.show', $fu) }}" class="text-sm font-semibold text-purple-deep hover:underline">Booking #{{ $fu->id }}</a>
-                    <p class="text-xs text-[#6B5B85]">{{ $fu->tanggal_booking_dibuat->format('d M Y') }}</p>
+                    <p class="text-xs font-medium text-gray-500">{{ $fu->tanggal_booking_dibuat->format('d M Y') }}</p>
                 </div>
-                <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold
+                <span class="px-2.5 py-1 rounded-full text-xs font-semibold
                     {{ $fu->status === 'selesai' ? 'bg-emerald-50 text-emerald-600' :
                        ($fu->status === 'baru' ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600') }}">
                     {{ ucfirst(str_replace('_', ' ', $fu->status)) }}
@@ -310,7 +310,6 @@
         @keydown.escape.window="realisasiOpen = false"
     >
         <div 
-            @click.away="realisasiOpen = false"
             class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-[#EDE1FA] overflow-hidden"
         >
             {{-- Header --}}
@@ -421,7 +420,6 @@
         @keydown.escape.window="clientModalOpen = false"
     >
         <div 
-            @click.away="clientModalOpen = false"
             class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-[#EDE1FA] overflow-hidden flex flex-col max-h-[92vh]"
         >
             {{-- Header Detail Klien --}}

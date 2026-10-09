@@ -563,17 +563,17 @@
         {{-- Table Card --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-sm">
+                <table class="w-full text-sm font-medium">
                     <thead>
-                        <tr class="bg-[#F7F5FB] text-[#5B4A73] select-none">
+                        <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
                             {{-- No. Column with Numeric Sort --}}
                             <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16">
                                 <div class="flex items-center justify-center">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'direction' => ($sort === 'id' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
-                                        class="inline-flex items-center gap-1 hover:text-purple-deep group transition cursor-pointer"
+                                        class="inline-flex items-center gap-1 hover:text-white group transition cursor-pointer"
                                         title="Urutkan nomor urut: 1→9 atau 9→1">
-                                        <span class="{{ $sort === 'id' ? 'text-purple-deep font-bold' : 'text-[#827299]' }}">No.</span>
-                                        <span class="inline-flex items-center justify-center w-4 h-4 rounded-md transition {{ $sort === 'id' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                        <span class="text-white font-semibold">No.</span>
+                                        <span class="inline-flex items-center justify-center w-4 h-4 rounded-md transition {{ $sort === 'id' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                             @if($sort === 'id')
                                                 @if($direction === 'asc')
                                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -591,10 +591,10 @@
                             {{-- Nama Konselor Column with Alphabetical Sort --}}
                             <th class="text-left align-middle px-6 py-3.5 font-semibold">
                                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'direction' => ($sort === 'name' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
-                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
+                                    class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer"
                                     title="Urutkan alfabetis A-Z / Z-A">
-                                    <span class="{{ $sort === 'name' ? 'text-purple-deep font-bold' : '' }}">Nama Konselor</span>
-                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition {{ $sort === 'name' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                    <span class="text-white font-semibold">Nama Konselor</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition {{ $sort === 'name' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'name')
                                             @if($direction === 'asc')
                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -609,17 +609,17 @@
                             </th>
 
                             {{-- Kontak (Telepon & Email) --}}
-                            <th class="text-left align-middle px-5 py-3.5 font-semibold">
+                            <th class="text-left align-middle px-5 py-3.5 font-semibold text-white">
                                 Kontak
                             </th>
 
                             {{-- Spesialisasi --}}
                             <th class="text-left align-middle px-5 py-3.5 font-semibold">
                                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'specialization', 'direction' => ($sort === 'specialization' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
-                                    class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
+                                    class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer"
                                     title="Urutkan berdasarkan spesialisasi">
-                                    <span class="{{ $sort === 'specialization' ? 'text-purple-deep font-bold' : '' }}">Spesialisasi</span>
-                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition {{ $sort === 'specialization' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                    <span class="text-white font-semibold">Spesialisasi</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition {{ $sort === 'specialization' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'specialization')
                                             @if($direction === 'asc')
                                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -637,11 +637,11 @@
                             <th class="text-center align-middle px-4 py-3.5 font-semibold">
                                 <div class="flex items-center justify-center">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'status', 'direction' => ($sort === 'status' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
-                                        class="inline-flex items-center justify-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                        class="inline-flex items-center justify-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
                                         title="Urutkan status konselor">
                                         <span class="w-5 shrink-0" aria-hidden="true"></span>
-                                        <span class="{{ $sort === 'status' ? 'text-purple-deep font-bold' : '' }}">Status</span>
-                                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'status' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                        <span class="text-white font-semibold">Status</span>
+                                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'status' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                             @if($sort === 'status')
                                                 @if($direction === 'asc')
                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -660,11 +660,11 @@
                             <th class="text-center align-middle px-4 py-3.5 font-semibold">
                                 <div class="flex items-center justify-center">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => ($sort === 'created_at' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
-                                        class="inline-flex items-center justify-center gap-1.5 hover:text-purple-deep group transition cursor-pointer whitespace-nowrap"
+                                        class="inline-flex items-center justify-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
                                         title="Urutkan waktu terdaftar">
                                         <span class="w-5 shrink-0" aria-hidden="true"></span>
-                                        <span class="{{ $sort === 'created_at' ? 'text-purple-deep font-bold' : '' }}">Waktu Terdaftar</span>
-                                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'created_at' ? 'bg-purple-deep/10 text-purple-deep' : 'text-[#B4A5C7] group-hover:text-purple-deep group-hover:bg-purple-deep/5' }}">
+                                        <span class="text-white font-semibold">Waktu Terdaftar</span>
+                                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'created_at' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                             @if($sort === 'created_at')
                                                 @if($direction === 'asc')
                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -708,26 +708,26 @@
                                     this.updating = true;
                                     try {
                                         const res = await fetch('{{ route('counselors.update', $counselor) }}', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                'X-Requested-With': 'XMLHttpRequest',
-                                                'Accept': 'application/json'
-                                            },
-                                            body: JSON.stringify({
-                                                _method: 'PUT',
-                                                status: newStatus
-                                            })
+                                             method: 'POST',
+                                             headers: {
+                                                 'Content-Type': 'application/json',
+                                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                 'X-Requested-With': 'XMLHttpRequest',
+                                                 'Accept': 'application/json'
+                                             },
+                                             body: JSON.stringify({
+                                                 _method: 'PUT',
+                                                 status: newStatus
+                                             })
                                         });
                                         if (res.ok) {
-                                            this.counselorData.status = newStatus;
-                                            if (editingCounselor && editingCounselor.id === this.counselorData.id) {
-                                                editingCounselor.status = newStatus;
-                                                originalCounselor.status = newStatus;
-                                            }
+                                             this.counselorData.status = newStatus;
+                                             if (editingCounselor && editingCounselor.id === this.counselorData.id) {
+                                                 editingCounselor.status = newStatus;
+                                                 originalCounselor.status = newStatus;
+                                             }
                                         } else {
-                                            alert('Gagal memperbarui status konselor.');
+                                             alert('Gagal memperbarui status konselor.');
                                         }
                                     } catch (e) {
                                         console.error(e);
@@ -738,7 +738,7 @@
                                 }
                             }">
                             {{-- No. --}}
-                            <td class="text-center align-middle px-3 py-3.5 text-[#6B5B85] font-medium">
+                            <td class="text-center align-middle px-3 py-3.5 text-black font-medium">
                                 {{ $loop->iteration + ($counselors->currentPage() - 1) * $counselors->perPage() }}
                             </td>
 
@@ -755,7 +755,7 @@
                                     <div class="min-w-0">
                                         <button type="button"
                                             @click="openEditModal(counselorData)"
-                                            class="font-semibold text-purple-deep hover:text-orange transition truncate block text-left cursor-pointer">
+                                            class="font-medium text-black hover-orange hover:text-orange transition truncate block text-left cursor-pointer">
                                             {{ $counselor->name }}
                                         </button>
                                     </div>
@@ -763,22 +763,22 @@
                             </td>
 
                             {{-- Kontak --}}
-                            <td class="text-left align-middle px-5 py-3.5 text-sm text-[#6B5B85]">
+                            <td class="text-left align-middle px-5 py-3.5 text-sm text-black font-medium">
                                 <div class="space-y-1">
-                                    <p class="font-medium text-[#2A2035] flex items-center gap-2">
-                                        <svg class="text-[#827299] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                                        <span>{{ $counselor->phone ?: '-' }}</span>
+                                    <p class="font-medium text-black flex items-center gap-2">
+                                        <svg class="text-gray-400 shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                        <span class="{{ $counselor->phone ? 'text-black font-medium' : 'text-gray-400 font-medium' }}">{{ $counselor->phone ?: '-' }}</span>
                                     </p>
-                                    <p class="text-[#827299] truncate flex items-center gap-2 text-sm">
-                                        <svg class="text-[#827299] shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                                        <span>{{ $counselor->email ?: '-' }}</span>
+                                    <p class="text-black font-medium truncate flex items-center gap-2 text-sm">
+                                        <svg class="text-gray-400 shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                        <span class="{{ $counselor->email ? 'text-black font-medium' : 'text-gray-400 font-medium' }}">{{ $counselor->email ?: '-' }}</span>
                                     </p>
                                 </div>
                             </td>
 
                             {{-- Spesialisasi --}}
-                            <td class="text-left align-middle px-5 py-3.5 text-sm text-[#2A2035] font-medium">
-                                {{ $counselor->specialization ?: '-' }}
+                            <td class="text-left align-middle px-5 py-3.5 text-sm font-medium">
+                                <span class="{{ $counselor->specialization ? 'text-black font-medium' : 'text-gray-400 font-medium' }}">{{ $counselor->specialization ?: '-' }}</span>
                             </td>
 
                             {{-- Status Konselor (Custom Dropdown Pilihan Hijau & Merah) --}}
@@ -847,13 +847,13 @@
                             </td>
 
                             {{-- Waktu Terdaftar --}}
-                            <td class="text-center align-middle px-4 py-3.5 text-[#6B5B85] whitespace-nowrap text-sm font-medium">
+                            <td class="text-center align-middle px-4 py-3.5 text-black whitespace-nowrap text-sm font-medium">
                                 {{ $counselor->created_at ? $counselor->created_at->format('d M Y, H:i') : '-' }}
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-[#6B5B85]">
+                            <td colspan="6" class="px-6 py-12 text-center text-black font-medium">
                                 <svg class="mx-auto mb-3 text-[#D9C2F0]" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                 Belum ada data konselor.
                             </td>
@@ -879,8 +879,7 @@
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0" 
             x-transition:enter-end="opacity-100" 
-            class="fixed inset-0 bg-black/50 backdrop-blur-xs" 
-            @click="closeCreateModal()"></div>
+            class="fixed inset-0 bg-black/50 backdrop-blur-xs"></div>
 
         <div class="min-h-full flex items-center justify-center p-4">
             <div x-show="createModalOpen" 
@@ -1185,8 +1184,7 @@
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0" 
             x-transition:enter-end="opacity-100" 
-            class="fixed inset-0 bg-black/60 backdrop-blur-xs" 
-            @click="createDiscardModalOpen = false"></div>
+            class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
         
         <div x-show="createDiscardModalOpen" 
             x-transition:enter="ease-out duration-200" 
@@ -1230,8 +1228,7 @@
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0" 
             x-transition:enter-end="opacity-100" 
-            class="fixed inset-0 bg-black/50 backdrop-blur-xs" 
-            @click="closeEditModal()"></div>
+            class="fixed inset-0 bg-black/50 backdrop-blur-xs"></div>
 
         <div class="min-h-full flex items-center justify-center p-4">
             <div x-show="editModalOpen" 
@@ -1676,8 +1673,7 @@
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0" 
             x-transition:enter-end="opacity-100" 
-            class="fixed inset-0 bg-black/60 backdrop-blur-xs" 
-            @click="editDiscardModalOpen = false"></div>
+            class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
         
         <div x-show="editDiscardModalOpen" 
             x-transition:enter="ease-out duration-200" 
@@ -1720,8 +1716,7 @@
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0" 
             x-transition:enter-end="opacity-100" 
-            class="fixed inset-0 bg-black/60 backdrop-blur-xs" 
-            @click="deleteCounselorModalOpen = false"></div>
+            class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
         
         <div x-show="deleteCounselorModalOpen" 
             x-transition:enter="ease-out duration-200" 

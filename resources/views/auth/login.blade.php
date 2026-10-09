@@ -220,7 +220,6 @@
             x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            @click="showForgotModal = false"
             class="fixed inset-0 bg-[#2A2035]/50 backdrop-blur-md transition-opacity"></div>
 
         <div class="flex min-h-full items-center justify-center p-4 text-center">

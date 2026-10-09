@@ -16,23 +16,23 @@
     <div class="bg-white rounded-3xl border border-[#EDE1FA] shadow-sm overflow-hidden flex flex-col">
         
         {{-- ===== TOOLBAR ATAS (GOOGLE CALENDAR STYLE) ===== --}}
-        <div class="p-4 sm:p-5 border-b border-[#EDE1FA] flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+        <div class="p-4 sm:p-5 bg-purple-deep border-b border-purple-900/40 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
             
             {{-- Kelompok Kiri: Navigasi Periode & Hari Ini --}}
             <div class="flex items-center gap-2.5 flex-wrap">
                 <button 
                     type="button" 
                     @click="goToday()" 
-                    class="px-4 py-2 rounded-xl text-xs font-bold border border-[#D9C2F0] hover:bg-[#F7F5FB] text-[#2A2035] transition cursor-pointer shadow-2xs"
+                    class="px-4 py-2 rounded-xl text-xs font-semibold bg-white text-purple-deep hover:bg-purple-50 transition cursor-pointer shadow-xs"
                 >
                     Hari Ini
                 </button>
 
-                <div class="flex items-center gap-1 bg-[#F7F5FB] rounded-xl p-1 border border-[#EDE1FA]">
+                <div class="flex items-center gap-1 bg-white/15 rounded-xl p-1 border border-white/20">
                     <button 
                         type="button" 
                         @click="prev()" 
-                        class="p-1.5 rounded-lg hover:bg-white hover:text-purple-deep transition text-[#6B5B85] cursor-pointer"
+                        class="p-1.5 rounded-lg hover:bg-white/20 hover:text-white transition text-white/90 cursor-pointer"
                         title="Periode Sebelumnya"
                     >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
@@ -40,7 +40,7 @@
                     <button 
                         type="button" 
                         @click="next()" 
-                        class="p-1.5 rounded-lg hover:bg-white hover:text-purple-deep transition text-[#6B5B85] cursor-pointer"
+                        class="p-1.5 rounded-lg hover:bg-white/20 hover:text-white transition text-white/90 cursor-pointer"
                         title="Periode Berikutnya"
                     >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
@@ -48,7 +48,7 @@
                 </div>
 
                 {{-- Judul Periode Aktif --}}
-                <h2 class="text-lg sm:text-xl font-extrabold text-[#2A2035] min-w-[180px]" x-text="headerPeriodTitle"></h2>
+                <h2 class="text-lg font-bold text-white min-w-[180px]" x-text="headerPeriodTitle"></h2>
             </div>
 
             {{-- Kelompok Tengah & Kanan: Filter & Switcher --}}
@@ -58,7 +58,7 @@
                 <div class="w-40 sm:w-48">
                     <select 
                         x-model="filterCounselorId" 
-                        class="w-full px-3 py-2 rounded-xl border border-[#D9C2F0] bg-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]"
+                        class="w-full px-3 py-2 rounded-xl border border-white/20 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-white text-purple-deep"
                     >
                         <option value="">-- Semua Konselor --</option>
                         @foreach($counselors as $counselor)
@@ -71,7 +71,7 @@
                 <div class="w-36 sm:w-44">
                     <select 
                         x-model="filterStaffId" 
-                        class="w-full px-3 py-2 rounded-xl border border-[#D9C2F0] bg-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]"
+                        class="w-full px-3 py-2 rounded-xl border border-white/20 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-white text-purple-deep"
                     >
                         <option value="">-- Semua Staff Tim --</option>
                         @foreach($staffList as $staff)
@@ -81,11 +81,11 @@
                 </div>
 
                 {{-- Switcher Tampilan (Bulan, Minggu, Agenda) --}}
-                <div class="flex items-center bg-[#F7F5FB] p-1 rounded-xl border border-[#EDE1FA] text-xs font-bold text-[#6B5B85]">
+                <div class="flex items-center bg-black/20 p-1 rounded-xl border border-white/15 text-xs font-semibold text-purple-200">
                     <button 
                         type="button" 
                         @click="viewMode = 'month'" 
-                        :class="viewMode === 'month' ? 'bg-white text-purple-deep shadow-xs' : 'hover:text-purple-deep'"
+                        :class="viewMode === 'month' ? 'bg-white text-purple-deep shadow-xs' : 'hover:text-white'"
                         class="px-3 py-1.5 rounded-lg transition cursor-pointer"
                     >
                         Bulan
@@ -93,7 +93,7 @@
                     <button 
                         type="button" 
                         @click="viewMode = 'week'" 
-                        :class="viewMode === 'week' ? 'bg-white text-purple-deep shadow-xs' : 'hover:text-purple-deep'"
+                        :class="viewMode === 'week' ? 'bg-white text-purple-deep shadow-xs' : 'hover:text-white'"
                         class="px-3 py-1.5 rounded-lg transition cursor-pointer"
                     >
                         Minggu
@@ -101,7 +101,7 @@
                     <button 
                         type="button" 
                         @click="viewMode = 'agenda'" 
-                        :class="viewMode === 'agenda' ? 'bg-white text-purple-deep shadow-xs' : 'hover:text-purple-deep'"
+                        :class="viewMode === 'agenda' ? 'bg-white text-purple-deep shadow-xs' : 'hover:text-white'"
                         class="px-3 py-1.5 rounded-lg transition cursor-pointer"
                     >
                         Agenda
@@ -115,14 +115,14 @@
         {{-- ===== TAMPILAN 1: BULAN (MONTH VIEW GRID) ===== --}}
         <div x-show="viewMode === 'month'" class="flex-1 flex flex-col">
             {{-- Header 7 Hari --}}
-            <div class="grid grid-cols-7 border-b border-[#EDE1FA] bg-[#FAF8FD] text-center text-xs font-bold text-[#5B4A73]">
+            <div class="grid grid-cols-7 border-b border-[#EDE1FA] bg-slate-50 text-center text-xs font-semibold text-black">
                 <div class="py-2.5 border-r border-[#EDE1FA]">Senin</div>
                 <div class="py-2.5 border-r border-[#EDE1FA]">Selasa</div>
                 <div class="py-2.5 border-r border-[#EDE1FA]">Rabu</div>
                 <div class="py-2.5 border-r border-[#EDE1FA]">Kamis</div>
                 <div class="py-2.5 border-r border-[#EDE1FA]">Jumat</div>
-                <div class="py-2.5 border-r border-[#EDE1FA] text-purple-deep">Sabtu</div>
-                <div class="py-2.5 text-rose-600">Minggu</div>
+                <div class="py-2.5 border-r border-[#EDE1FA]">Sabtu</div>
+                <div class="py-2.5 text-rose-600 font-semibold">Minggu</div>
             </div>
 
             {{-- Grid Tanggal --}}
@@ -186,10 +186,10 @@
 
         {{-- ===== TAMPILAN 2: MINGGU (WEEK VIEW) ===== --}}
         <div x-show="viewMode === 'week'" class="flex-1 flex flex-col overflow-x-auto">
-            <div class="grid grid-cols-7 min-w-[700px] border-b border-[#EDE1FA] bg-[#FAF8FD] text-center text-xs font-bold text-[#5B4A73]">
+            <div class="grid grid-cols-7 min-w-[700px] border-b border-[#EDE1FA] bg-slate-50 text-center text-xs font-semibold text-black">
                 <template x-for="(wDay, index) in weekDays" :key="index">
                     <div class="py-3 border-r border-[#EDE1FA] flex flex-col items-center gap-1">
-                        <span class="text-[11px] text-[#827299]" x-text="['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'][index]"></span>
+                        <span class="text-[11px] text-[#827299] font-medium" x-text="['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'][index]"></span>
                         <span 
                             :class="wDay.isToday ? 'bg-purple-deep text-white shadow-xs' : 'text-[#2A2035]'"
                             class="w-7 h-7 rounded-full flex items-center justify-center font-extrabold text-sm"
@@ -320,7 +320,6 @@
         @keydown.escape.window="eventModalOpen = false"
     >
         <div 
-            @click.away="eventModalOpen = false"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100"
@@ -412,7 +411,6 @@
         @keydown.escape.window="selectedDateModalOpen = false"
     >
         <div 
-            @click.away="selectedDateModalOpen = false"
             class="bg-white w-full max-w-md rounded-3xl shadow-xl border border-[#EDE1FA] overflow-hidden"
         >
             <div class="p-4 border-b border-[#EDE1FA] flex items-center justify-between bg-[#F7F5FB]">

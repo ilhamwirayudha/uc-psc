@@ -1069,5 +1069,96 @@ class ClientController extends Controller
         $client->delete();
         return redirect()->route('clients.index')->with('success', 'Klien berhasil dihapus.');
     }
+
+    /**
+     * Tambahkan catatan baru untuk klien dengan tanggal tertentu.
+     */
+    public function storeNote(Request $request, Client $client)
+    {
+        $request->validate([
+            'note' => 'required|string',
+            'date' => 'nullable|date',
+        ], [
+            'note.required' => 'Isi catatan tidak boleh kosong.',
+        ]);
+
+        $notes = $client->notes_list;
+        $date = !empty($request->date) ? \Carbon\Carbon::parse($request->date) : now();
+
+        $notes[] = [
+            'id' => 'note_' . time() . '_' . substr(bin2hex(random_bytes(2)), 0, 4),
+            'date' => $date->format('Y-m-d H:i:s'),
+            'note' => trim($request->note),
+        ];
+
+        usort($notes, fn($a, $b) => strcmp($b['date'], $a['date']));
+
+        $client->update([
+            'notes' => json_encode($notes, JSON_UNESCAPED_UNICODE),
+        ]);
+
+        return redirect()->to(route('clients.show', $client) . '?tab=notes')
+            ->with('success', 'Catatan baru berhasil ditambahkan.');
+    }
+
+    /**
+     * Perbarui catatan yang sudah ada berdasarkan ID catatan.
+     */
+    public function updateNote(Request $request, Client $client, string $noteId)
+    {
+        $request->validate([
+            'note' => 'required|string',
+            'date' => 'nullable|date',
+        ], [
+            'note.required' => 'Isi catatan tidak boleh kosong.',
+        ]);
+
+        $notes = $client->notes_list;
+        $found = false;
+
+        foreach ($notes as &$item) {
+            if ($item['id'] === $noteId) {
+                if (!empty($request->date)) {
+                    $item['date'] = \Carbon\Carbon::parse($request->date)->format('Y-m-d H:i:s');
+                }
+                $item['note'] = trim($request->note);
+                $found = true;
+                break;
+            }
+        }
+        unset($item);
+
+        if (!$found) {
+            return redirect()->to(route('clients.show', $client) . '?tab=notes')
+                ->with('error', 'Catatan tidak ditemukan.');
+        }
+
+        usort($notes, fn($a, $b) => strcmp($b['date'], $a['date']));
+
+        $client->update([
+            'notes' => json_encode($notes, JSON_UNESCAPED_UNICODE),
+        ]);
+
+        return redirect()->to(route('clients.show', $client) . '?tab=notes')
+            ->with('success', 'Catatan berhasil diperbarui.');
+    }
+
+    /**
+     * Hapus satu catatan berdasarkan ID catatan.
+     */
+    public function destroyNote(Client $client, string $noteId)
+    {
+        $notes = array_values(array_filter(
+            $client->notes_list,
+            fn($item) => $item['id'] !== $noteId
+        ));
+
+        $client->update([
+            'notes' => empty($notes) ? null : json_encode($notes, JSON_UNESCAPED_UNICODE),
+        ]);
+
+        return redirect()->to(route('clients.show', $client) . '?tab=notes')
+            ->with('success', 'Catatan berhasil dihapus.');
+    }
 }
 

@@ -127,8 +127,8 @@
                 </div>
 
                 <div class="flex-1 text-center sm:text-left space-y-2">
-                    <h3 class="text-base font-bold text-purple-deep">Foto Profil Konselor</h3>
-                    <p class="text-xs text-[#827299]">Format foto JPG, PNG, atau WebP. Resolusi rasio 1:1 direkomendasikan. Maksimal 2 MB.</p>
+                    <h3 class="text-base font-semibold text-black">Foto Profil Konselor</h3>
+                    <p class="text-xs font-medium text-gray-500">Format foto JPG, PNG, atau WebP. Resolusi rasio 1:1 direkomendasikan. Maksimal 2 MB.</p>
                     
                     <div class="pt-1">
                         <input type="file" id="edit_photo_input" name="photo" accept="image/*" class="hidden" @change="handlePhotoSelect($event)">
@@ -145,14 +145,14 @@
         {{-- CARD 1: DATA IDENTITAS & KONTAK --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
-                <h3 class="text-base font-bold text-purple-deep">Data Identitas & Kontak</h3>
-                <p class="text-xs text-[#6B5B85]">Informasi nama lengkap dan kontak aktif konselor</p>
+                <h3 class="text-base font-semibold text-black">Data Identitas & Kontak</h3>
+                <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif konselor</p>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
                 {{-- Nama Konselor --}}
                 <div class="sm:col-span-2">
-                    <label for="name" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
+                    <label for="name" class="block text-xs font-medium text-gray-500 mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
                     <input type="text" id="name" name="name" value="{{ old('name', $counselor->name) }}" required
                         placeholder="Contoh: Dr. Amanda Wijaya, M.Psi., Psikolog"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('name') border-red-300 @enderror">
@@ -161,7 +161,7 @@
 
                 {{-- No Telepon / WA --}}
                 <div>
-                    <label for="phone" class="block text-xs font-bold text-[#5B4A73] mb-1.5">No. Telepon / WhatsApp</label>
+                    <label for="phone" class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon / WhatsApp</label>
                     <input type="text" id="phone" name="phone" value="{{ old('phone', $counselor->phone) }}"
                         inputmode="numeric"
                         maxlength="13"
@@ -174,7 +174,7 @@
 
                 {{-- Email --}}
                 <div>
-                    <label for="email" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Email</label>
+                    <label for="email" class="block text-xs font-medium text-gray-500 mb-1.5">Email</label>
                     <input type="email" id="email" name="email" value="{{ old('email', $counselor->email) }}"
                         placeholder="Contoh: amanda.wijaya@uc.ac.id"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
@@ -186,14 +186,14 @@
         {{-- CARD 2: ALAMAT DOMISILI --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
-                <h3 class="text-base font-bold text-purple-deep">Alamat Domisili</h3>
-                <p class="text-xs text-[#6B5B85]">Informasi domisili dan alamat lengkap tempat tinggal</p>
+                <h3 class="text-base font-semibold text-black">Alamat Domisili</h3>
+                <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat lengkap tempat tinggal</p>
             </div>
 
             <div class="grid sm:grid-cols-3 gap-4 pt-1">
                 {{-- 1. NEGARA --}}
                 <div class="relative" @click.outside="countryOpen = false">
-                    <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">Negara</label>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Negara</label>
                     <input type="hidden" name="country" :value="country">
                     <button type="button" @click="countryOpen ? (countryOpen = false) : openCountry()"
                         class="w-full px-4 py-2.5 rounded-xl text-sm flex items-center justify-between text-left transition bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep">
@@ -217,7 +217,7 @@
 
                 {{-- 2. PROVINSI --}}
                 <div class="relative" @click.outside="provinceOpen = false">
-                    <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
                         Provinsi
                         <span x-show="country !== 'Indonesia'" class="text-[11px] font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
                     </label>
@@ -245,7 +245,7 @@
 
                 {{-- 3. KOTA / KABUPATEN --}}
                 <div class="relative" @click.outside="cityOpen = false">
-                    <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
                         Kota / Kabupaten
                         <span x-show="country !== 'Indonesia'" class="text-[11px] font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
                     </label>
@@ -284,14 +284,14 @@
         {{-- CARD 3: KUALIFIKASI & LEGALITAS PROFESI --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
-                <h3 class="text-base font-bold text-purple-deep">Kualifikasi, Izin Praktik & Status</h3>
-                <p class="text-xs text-[#6B5B85]">Bidang keahlian, nomor izin legalitas psikolog, dan status keaktifan</p>
+                <h3 class="text-base font-semibold text-black">Kualifikasi, Izin Praktik & Status</h3>
+                <p class="text-xs font-medium text-gray-500">Bidang keahlian, nomor izin legalitas psikolog, dan status keaktifan</p>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
                 {{-- Spesialisasi --}}
                 <div class="sm:col-span-2">
-                    <label for="specialization" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Bidang Spesialisasi / Keahlian</label>
+                    <label for="specialization" class="block text-xs font-medium text-gray-500 mb-1.5">Bidang Spesialisasi / Keahlian</label>
                     <select id="specialization" name="specialization"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                         <option value="">-- Pilih Bidang Spesialisasi / Keahlian --</option>
@@ -304,7 +304,7 @@
 
                 {{-- Nomor SIPP --}}
                 <div>
-                    <label for="sipp_number" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Nomor SIPP (Surat Izin Praktik Psikologi)</label>
+                    <label for="sipp_number" class="block text-xs font-medium text-gray-500 mb-1.5">Nomor SIPP (Surat Izin Praktik Psikologi)</label>
                     <input type="text" id="sipp_number" name="sipp_number" value="{{ old('sipp_number', $counselor->sipp_number) }}"
                         placeholder="Contoh: SIPP-12345/2024"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
@@ -313,7 +313,7 @@
 
                 {{-- Nomor STR --}}
                 <div>
-                    <label for="str_number" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Nomor STR (Surat Tanda Registrasi)</label>
+                    <label for="str_number" class="block text-xs font-medium text-gray-500 mb-1.5">Nomor STR (Surat Tanda Registrasi)</label>
                     <input type="text" id="str_number" name="str_number" value="{{ old('str_number', $counselor->str_number) }}"
                         placeholder="Contoh: STR-98765/2024"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
@@ -322,7 +322,7 @@
 
                 {{-- Status Keaktifan Konselor --}}
                 <div class="sm:col-span-2">
-                    <label for="status" class="block text-xs font-bold text-[#5B4A73] mb-1.5">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
+                    <label for="status" class="block text-xs font-medium text-gray-500 mb-1.5">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
                     <select id="status" name="status" required
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                         <option value="active" class="text-emerald-600 font-semibold" {{ old('status', $counselor->status) === 'active' ? 'selected' : '' }}>Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
@@ -336,8 +336,8 @@
         {{-- CARD 4: CATATAN TAMBAHAN --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
             <div class="pb-3 border-b border-[#EDE1FA]">
-                <h3 class="text-base font-bold text-purple-deep">Catatan & Keterangan Tambahan</h3>
-                <p class="text-xs text-[#6B5B85]">Informasi jadwal ketersediaan atau catatan khusus konselor (opsional)</p>
+                <h3 class="text-base font-semibold text-black">Catatan & Keterangan Tambahan</h3>
+                <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus konselor (opsional)</p>
             </div>
 
             <div>
@@ -355,7 +355,7 @@
                 Batal
             </a>
             <button type="submit" 
-                class="px-6 py-2.5 rounded-xl text-sm font-bold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
+                class="px-6 py-2.5 rounded-xl text-sm font-semibold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 <span>Simpan Perubahan</span>
             </button>

@@ -57,7 +57,7 @@
         <aside 
             id="sidebar" 
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
-            class="fixed inset-y-0 left-0 z-40 w-64 bg-purple-deep text-white shadow-xl transition-transform duration-300 ease-in-out lg:translate-x-0 select-none flex flex-col justify-between"
+            class="fixed inset-y-0 left-0 z-40 w-64 bg-purple-700 text-white shadow-xl transition-transform duration-300 ease-in-out lg:translate-x-0 select-none flex flex-col justify-between"
         >
             <div class="flex-1 flex flex-col min-h-0">
                 {{-- Logo Header --}}
@@ -260,7 +260,6 @@
             x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            @click="showLogoutModal = false"
             class="fixed inset-0 bg-[#1F0E38]/50 backdrop-blur-md transition-opacity"></div>
 
         <div class="flex min-h-full items-center justify-center p-4 text-center">
@@ -335,7 +334,6 @@
             x-transition:leave="ease-in duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            @click="showUnsavedModal = false"
             class="fixed inset-0 bg-[#1F0E38]/50 backdrop-blur-md transition-opacity"></div>
 
         <div class="flex min-h-full items-center justify-center p-4 text-center">
