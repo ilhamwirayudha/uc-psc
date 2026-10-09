@@ -468,8 +468,8 @@
         <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
             <div class="px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                 <div>
-                    <h3 class="font-semibold text-white text-base">Catatan Klien & Administrasi</h3>
-                    <p class="text-xs font-medium text-purple-200">Riwayat catatan internal staf, instruksi operasional, dan perkembangan klien terstruktur per tanggal</p>
+                    <h3 class="font-semibold text-white text-base">Catatan Klien</h3>
+                    <p class="text-xs font-medium text-purple-200">Daftar catatan dan keterangan hasil inputan formulir pendaftaran klien terstruktur per tanggal</p>
                 </div>
                 <button type="button" @click="showAddNoteModal = true"
                         class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
@@ -539,7 +539,7 @@
             @else
             <div class="py-12 text-center text-slate-400 space-y-3">
                 <svg class="w-12 h-12 mx-auto text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                <p class="text-sm font-medium text-black">Belum ada riwayat catatan untuk klien ini.</p>
+                <p class="text-sm font-medium text-black">Belum ada catatan hasil inputan formulir untuk klien ini.</p>
                 <button type="button" @click="showAddNoteModal = true"
                         class="px-4 py-2 rounded-xl bg-purple-deep text-white text-xs font-semibold hover:opacity-90 transition inline-flex items-center gap-1.5 shadow-xs cursor-pointer">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -558,8 +558,8 @@
                 {{-- Header Modal --}}
                 <div class="px-6 py-4.5 bg-purple-deep text-white flex items-center justify-between">
                     <div>
-                        <h3 class="text-lg font-bold text-white tracking-tight">Tambah Catatan Klien</h3>
-                        <p class="text-xs font-semibold text-purple-200">Tambahkan catatan baru dengan tanggal yang dapat disesuaikan</p>
+                        <h3 class="text-lg font-bold text-white tracking-tight">Tambah Catatan Formulir Klien</h3>
+                        <p class="text-xs font-semibold text-purple-200">Tambahkan catatan atau keterangan dari hasil formulir pendaftaran klien</p>
                     </div>
                     <button type="button" @click="showAddNoteModal = false" 
                             class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition cursor-pointer shrink-0 text-lg font-bold"
@@ -572,17 +572,17 @@
                 <form action="{{ route('clients.notes.store', $client) }}" method="POST" class="p-6 space-y-4">
                     @csrf
                     <div>
-                        <label class="block text-xs font-semibold text-black mb-1.5">Tanggal & Waktu Catatan:</label>
+                        <label class="block text-xs font-semibold text-black mb-1.5">Tanggal & Waktu Input Formulir:</label>
                         <input type="datetime-local" name="date" value="{{ now()->format('Y-m-d\TH:i') }}" required
                                class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                        <span class="text-2xs text-gray-500 font-medium mt-1 block">Anda dapat memilih tanggal lampau untuk mendokumentasikan riwayat sebelum-sebelumnya.</span>
+                        <span class="text-2xs text-gray-500 font-medium mt-1 block">Sesuaikan dengan tanggal dan waktu pengisian/masuk formulir pendaftaran klien.</span>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-black mb-1.5">Isi Catatan Administrasi / Operasional:</label>
+                        <label class="block text-xs font-semibold text-black mb-1.5">Isi Catatan / Keterangan Formulir:</label>
                         <textarea name="note" rows="5" required
                                   class="w-full p-4 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white resize-y leading-relaxed"
-                                  placeholder="Tuliskan isi catatan, riwayat sesi, instruksi operasional, atau perkembangan klien..."></textarea>
+                                  placeholder="Tuliskan catatan keluhan, alasan konseling, tujuan asesmen, atau keterangan penting hasil isian formulir klien..."></textarea>
                     </div>
 
                     {{-- Footer Modal --}}
@@ -594,7 +594,7 @@
                         <button type="submit"
                                 class="px-5 py-2.5 rounded-xl bg-purple-deep text-white text-xs font-semibold hover:opacity-95 transition shadow-xs cursor-pointer flex items-center gap-1.5">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                            <span>Simpan Catatan</span>
+                            <span>Simpan Catatan Formulir</span>
                         </button>
                     </div>
                 </form>
@@ -610,8 +610,8 @@
                 {{-- Header Modal --}}
                 <div class="px-6 py-4.5 bg-purple-deep text-white flex items-center justify-between">
                     <div>
-                        <h3 class="text-lg font-bold text-white tracking-tight">Edit Catatan Klien</h3>
-                        <p class="text-xs font-semibold text-purple-200">Perbarui tanggal atau isi catatan</p>
+                        <h3 class="text-lg font-bold text-white tracking-tight">Edit Catatan Formulir Klien</h3>
+                        <p class="text-xs font-semibold text-purple-200">Perbarui tanggal atau isi catatan formulir klien</p>
                     </div>
                     <button type="button" @click="showEditNoteModal = false" 
                             class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition cursor-pointer shrink-0 text-lg font-bold"
@@ -625,15 +625,16 @@
                     @csrf
                     @method('PUT')
                     <div>
-                        <label class="block text-xs font-semibold text-black mb-1.5">Tanggal & Waktu Catatan:</label>
+                        <label class="block text-xs font-semibold text-black mb-1.5">Tanggal & Waktu Input Formulir:</label>
                         <input type="datetime-local" name="date" x-model="editNoteDate" required
                                class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-black mb-1.5">Isi Catatan Administrasi / Operasional:</label>
+                        <label class="block text-xs font-semibold text-black mb-1.5">Isi Catatan / Keterangan Formulir:</label>
                         <textarea name="note" rows="5" x-model="editNoteText" required
-                                  class="w-full p-4 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white resize-y leading-relaxed"></textarea>
+                                  class="w-full p-4 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white resize-y leading-relaxed"
+                                  placeholder="Tuliskan catatan keluhan, alasan konseling, tujuan asesmen, atau keterangan penting hasil isian formulir klien..."></textarea>
                     </div>
 
                     {{-- Footer Modal --}}
@@ -645,7 +646,7 @@
                         <button type="submit"
                                 class="px-5 py-2.5 rounded-xl bg-purple-deep text-white text-xs font-semibold hover:opacity-95 transition shadow-xs cursor-pointer flex items-center gap-1.5">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                            <span>Perbarui Catatan</span>
+                            <span>Perbarui Catatan Formulir</span>
                         </button>
                     </div>
                 </form>

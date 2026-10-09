@@ -34,7 +34,7 @@ class ClientSeeder extends Seeder
             'service_type' => 'konseling',
             'counseling_type' => 'Konseling Individu',
             'status' => 'assigned',
-            'notes' => 'Klien mendaftar untuk konseling manajemen stres perkuliahan semester akhir. Sudah dijadwalkan sesi besok.',
+            'notes' => 'Formulir Konseling Individu: Klien mengeluhkan beban manajemen stres perkuliahan semester akhir dan kecemasan menghadapi tugas akhir skripsi.',
             'created_by' => $staff->id,
             'created_at' => Carbon::now()->subDays(2),
         ]);
@@ -70,7 +70,7 @@ class ClientSeeder extends Seeder
             'service_type' => 'konseling',
             'counseling_type' => 'Konseling Dewasa & Karir',
             'status' => 'ongoing',
-            'notes' => 'Konsultasi perencanaan karir dan penanganan burn-out pekerjaan.',
+            'notes' => 'Formulir Konseling Dewasa & Karir: Konsultasi perencanaan karir, kejenuhan kerja (burnout), dan evaluasi keseimbangan kerja-kehidupan pribadi.',
             'created_by' => $staff->id,
             'created_at' => Carbon::now()->subDays(3),
         ]);
@@ -106,7 +106,7 @@ class ClientSeeder extends Seeder
             'service_type' => 'konseling',
             'counseling_type' => 'Konseling Pernikahan & Pasangan',
             'status' => 'unpaid',
-            'notes' => 'Sesi konseling telah selesai tadi pagi, menunggu konfirmasi bukti transfer pembayaran dari klien.',
+            'notes' => 'Formulir Konseling Pernikahan: Keluhan hambatan komunikasi pasangan dan perbedaan ekspektasi pembagian peran rumah tangga.',
             'created_by' => $staff->id,
             'created_at' => Carbon::now()->subDays(4),
         ]);
@@ -142,7 +142,7 @@ class ClientSeeder extends Seeder
             'service_type' => 'psikotes',
             'counseling_type' => 'Tes Minat Bakat (Holland/RIASEC)',
             'status' => 'paid',
-            'notes' => 'Biaya asesmen psikotes telah dibayar lunas via transfer bank. Menunggu laporan hasil psikogram keluar.',
+            'notes' => 'Formulir Asesmen Psikotes: Permohonan tes minat bakat (Holland/RIASEC) dan inventori kepribadian untuk rekomendasi penjurusan kuliah.',
             'created_by' => $staff->id,
             'created_at' => Carbon::now()->subDays(5),
         ]);
@@ -188,7 +188,7 @@ class ClientSeeder extends Seeder
             'service_type' => 'konseling',
             'counseling_type' => 'Konseling Keluarga',
             'status' => 'needs_followup',
-            'notes' => 'Konselor merekomendasikan sesi tindak lanjut minggu depan untuk memantau evaluasi dinamika keluarga.',
+            'notes' => 'Formulir Konseling Keluarga: Keluhan dinamika relasi dalam keluarga, perbedaan gaya komunikasi antar generasi, dan pengelolaan stres keluarga.',
             'created_by' => $staff->id,
             'created_at' => Carbon::now()->subDays(6),
         ]);
@@ -224,7 +224,7 @@ class ClientSeeder extends Seeder
             'service_type' => 'psikotes',
             'counseling_type' => 'Tes Kesiapan Masuk Sekolah (TK/SD)',
             'status' => 'completed',
-            'notes' => 'Seluruh rangkaian asesmen kesiapan sekolah, laporan psikologis, dan pembayaran telah tuntas.',
+            'notes' => 'Formulir Asesmen Psikotes Anak: Permohonan tes kesiapan masuk sekolah (NST) untuk evaluasi kematangan kognitif, motorik, dan sosial-emosional.',
             'created_by' => $staff->id,
             'created_at' => Carbon::now()->subDays(8),
         ]);
@@ -270,7 +270,7 @@ class ClientSeeder extends Seeder
             'service_type' => 'konseling',
             'counseling_type' => 'Konseling Remaja & Anak',
             'status' => 'unassigned',
-            'notes' => 'Klien baru mendaftar mandiri via WhatsApp, membutuhkan konsultasi terkait adaptasi perkuliahan baru. Belum dipasangkan konselor.',
+            'notes' => 'Formulir Konseling Remaja: Keluhan kesulitan adaptasi sosial dan manajemen waktu di lingkungan transisi masa perkuliahan baru.',
             'created_by' => $staff->id,
             'created_at' => Carbon::now()->subHours(2),
         ]);
@@ -286,7 +286,7 @@ class ClientSeeder extends Seeder
             'service_type' => 'psikotes',
             'counseling_type' => 'Tes IQ / Kecerdasan (WISC / WAIS / CPM)',
             'status' => 'unassigned',
-            'notes' => 'Pendaftaran walk-in untuk tes inteligensi kebutuhan persyaratan beasiswa S2. Menunggu penugasan tester.',
+            'notes' => 'Formulir Asesmen Inteligensi: Permohonan tes inteligensi umum (IQ) untuk pemenuhan kelengkapan dokumen beasiswa pascasarjana S2.',
             'created_by' => $staff->id,
             'created_at' => Carbon::now()->subHours(5),
         ]);

@@ -271,6 +271,32 @@ class Client extends Model
     public function getNotesListAttribute(): array
     {
         if (empty($this->notes)) {
+            // Ambil catatan otomatis dari formulir pendaftaran jika ada
+            $forms = $this->relationLoaded('clientForms')
+                ? $this->clientForms
+                : ($this->exists ? $this->clientForms()->latest()->get() : collect());
+
+            if ($forms->isNotEmpty()) {
+                $list = [];
+                foreach ($forms as $form) {
+                    $noteContent = $this->extractFormNoteContent($form);
+                    if (!empty($noteContent)) {
+                        $formDate = $form->created_at ?? ($form->consent_agreed_at ?? now());
+                        $list[] = [
+                            'id' => 'form_note_' . $form->id,
+                            'date' => $formDate->format('Y-m-d H:i:s'),
+                            'date_display' => $formDate->format('d M Y, H:i') . ' WIB',
+                            'date_input' => $formDate->format('Y-m-d\TH:i'),
+                            'note' => $noteContent,
+                        ];
+                    }
+                }
+                if (!empty($list)) {
+                    usort($list, fn($a, $b) => strcmp($b['date'], $a['date']));
+                    return $list;
+                }
+            }
+
             return [];
         }
 
@@ -364,7 +390,7 @@ class Client extends Model
         if (empty($list)) {
             return '';
         }
-        if (count($list) === 1 && !str_starts_with(trim($this->notes), '[') && !str_starts_with(trim($this->notes), '{')) {
+        if (count($list) === 1 && !str_starts_with(trim($this->notes ?? ''), '[') && !str_starts_with(trim($this->notes ?? ''), '{')) {
             return $list[0]['note'];
         }
         $lines = [];
@@ -372,5 +398,132 @@ class Client extends Model
             $lines[] = "[{$item['date_display']}]\n{$item['note']}";
         }
         return implode("\n\n", $lines);
+    }
+
+    /**
+     * Mengekstrak intisari catatan/keluhan/alasan pendaftaran dari data formulir klien.
+     */
+    public function extractFormNoteContent($form): ?string
+    {
+        if (!$form) {
+            return null;
+        }
+
+        $answers = $form->answers ?? [];
+        $formType = $form->form_type ?? '';
+        $formTitle = $form->form_type_label ?? 'Formulir Pendaftaran';
+
+        $items = [];
+
+        // 1. Ekstraksi spesifik per jenis formulir
+        if ($formType === 'dewasa') {
+            if (!empty($answers['alasan_konseling'])) {
+                $items[] = "Alasan Konseling: " . trim($answers['alasan_konseling']);
+            }
+            if (!empty($answers['kondisi_saat_ini'])) {
+                $items[] = "Kondisi Saat Ini: " . trim($answers['kondisi_saat_ini']);
+            }
+            if (!empty($answers['pikiran_negatif'])) {
+                $items[] = "Keluhan / Pikiran Mengganggu: " . trim($answers['pikiran_negatif']);
+            }
+            if (!empty($answers['hal_ingin_ditingkatkan'])) {
+                $items[] = "Harapan / Hal yang Ingin Ditingkatkan: " . trim($answers['hal_ingin_ditingkatkan']);
+            }
+        } elseif ($formType === 'anak') {
+            if (!empty($answers['alasan_konseling'])) {
+                $items[] = "Alasan Konseling: " . trim($answers['alasan_konseling']);
+            }
+            if (!empty($answers['kondisi_anak_saat_ini'])) {
+                $items[] = "Kondisi Anak Saat Ini: " . trim($answers['kondisi_anak_saat_ini']);
+            }
+            if (!empty($answers['hal_ingin_ditingkatkan'])) {
+                $items[] = "Harapan / Hal yang Ingin Ditingkatkan: " . trim($answers['hal_ingin_ditingkatkan']);
+            }
+        } elseif ($formType === 'pra_nikah') {
+            if (!empty($answers['alasan_konseling'])) {
+                $items[] = "Alasan Konseling: " . trim($answers['alasan_konseling']);
+            }
+            if (!empty($answers['keluhan_hubungan'])) {
+                $items[] = "Dinamika / Keluhan Relasi: " . trim($answers['keluhan_hubungan']);
+            }
+            if (!empty($answers['hal_ingin_ditingkatkan'])) {
+                $items[] = "Target Pembahasan: " . trim($answers['hal_ingin_ditingkatkan']);
+            }
+        } elseif ($formType === 'pernikahan') {
+            if (!empty($answers['alasan_konseling'])) {
+                $items[] = "Alasan Konseling: " . trim($answers['alasan_konseling']);
+            }
+            if (!empty($answers['keluhan_utama'])) {
+                $items[] = "Keluhan Utama: " . trim($answers['keluhan_utama']);
+            }
+            if (!empty($answers['hal_ingin_ditingkatkan'])) {
+                $items[] = "Harapan Perbaikan: " . trim($answers['hal_ingin_ditingkatkan']);
+            }
+        } elseif ($formType === 'industri') {
+            if (!empty($answers['posisi_dituju'])) {
+                $items[] = "Posisi yang Dituju: " . trim($answers['posisi_dituju']);
+            }
+            if (!empty($answers['tujuan_pemeriksaan'])) {
+                $items[] = "Tujuan Asesmen: " . trim($answers['tujuan_pemeriksaan']);
+            }
+            if (!empty($answers['alasan_melamar'])) {
+                $items[] = "Alasan Melamar: " . trim($answers['alasan_melamar']);
+            }
+            if (!empty($answers['instansi_1_alasan_berhenti'])) {
+                $items[] = "Alasan Berhenti Kerja Terakhir: " . trim($answers['instansi_1_alasan_berhenti']);
+            }
+        } elseif ($formType === 'non_industri') {
+            if (!empty($answers['cita_cita'])) {
+                $items[] = "Cita-cita / Peminatan: " . trim($answers['cita_cita']);
+            }
+            if (!empty($answers['rencana_cita_cita'])) {
+                $items[] = "Rencana Karir/Studi: " . trim($answers['rencana_cita_cita']);
+            }
+            if (!empty($answers['usaha_cita_cita'])) {
+                $items[] = "Usaha yang Dilakukan: " . trim($answers['usaha_cita_cita']);
+            }
+            if (!empty($answers['tujuan_pemeriksaan'])) {
+                $items[] = "Tujuan Asesmen: " . trim($answers['tujuan_pemeriksaan']);
+            }
+        } elseif ($formType === 'biography_en') {
+            if (!empty($answers['dream_job'])) {
+                $items[] = "Career Goal / Dream Job: " . trim($answers['dream_job']);
+            }
+            if (!empty($answers['dream_job_future'])) {
+                $items[] = "Future Aspirations: " . trim($answers['dream_job_future']);
+            }
+            if (!empty($answers['purpose_of_assessment'])) {
+                $items[] = "Purpose of Assessment: " . trim($answers['purpose_of_assessment']);
+            }
+        }
+
+        // 2. Fallback generic
+        if (empty($items)) {
+            $candidates = [
+                'alasan_konseling' => 'Alasan Konseling',
+                'keluhan_utama' => 'Keluhan Utama',
+                'keluhan' => 'Keluhan',
+                'kondisi_saat_ini' => 'Kondisi Saat Ini',
+                'tujuan_pemeriksaan' => 'Tujuan Pemeriksaan',
+                'posisi_dituju' => 'Posisi Dituju',
+                'dream_job' => 'Career Goal',
+                'notes' => 'Catatan',
+                'catatan' => 'Catatan',
+            ];
+            foreach ($candidates as $k => $lbl) {
+                if (!empty($answers[$k]) && is_string($answers[$k])) {
+                    $items[] = "{$lbl}: " . trim($answers[$k]);
+                }
+            }
+        }
+
+        if (empty($items)) {
+            if (!empty($form->admin_notes)) {
+                return "Formulir {$formTitle}:\n• " . trim($form->admin_notes);
+            }
+            return "Pendaftaran formulir {$formTitle} telah terisi lengkap.";
+        }
+
+        return "Formulir {$formTitle}:\n• " . implode("\n• ", $items);
     }
 }
