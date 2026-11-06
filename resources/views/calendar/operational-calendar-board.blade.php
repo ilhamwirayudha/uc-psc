@@ -1,8 +1,8 @@
-@extends('layouts.dashboard')
+﻿@extends('layouts.dashboard')
 
 @section('title', 'Kalender Operasional & Jadwal Praktik — UC PSC')
 @section('page-title', 'Kalender Operasional')
-@section('page-subtitle', 'Monitoring jadwal praktik konselor dan penugasan staff harian')
+@section('page-subtitle', 'Monitoring jadwal praktik psikolog dan penugasan staff harian')
 
 @section('content')
 <div 
@@ -60,7 +60,7 @@
                         x-model="filterCounselorId" 
                         class="w-full px-3 py-2 rounded-xl border border-white/20 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-white text-purple-deep"
                     >
-                        <option value="">-- Semua Konselor --</option>
+                        <option value="">-- Semua Psikolog --</option>
                         @foreach($counselors as $counselor)
                         <option value="{{ $counselor->id }}">{{ $counselor->name }}</option>
                         @endforeach
@@ -218,7 +218,7 @@
                                 <h4 class="text-xs font-bold text-[#2A2035] group-hover:text-purple-deep line-clamp-2" x-text="event.title"></h4>
                                 <div class="text-[10px] text-[#827299]">
                                     <template x-if="event.category === 'counseling'">
-                                        <p>Konselor: <strong class="text-[#2A2035]" x-text="event.counselor_name"></strong></p>
+                                        <p>Psikolog: <strong class="text-[#2A2035]" x-text="event.counselor_name"></strong></p>
                                     </template>
                                     <template x-if="event.category !== 'counseling'">
                                         <p>Staff: <strong class="text-[#2A2035]" x-text="event.staff_name"></strong> (<span x-text="event.role_label"></span>)</p>
@@ -359,7 +359,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-2xl bg-[#F7F5FB] border border-[#EDE1FA]">
                     <div>
                         <span class="text-[10px] font-bold text-[#827299] block">
-                            <span x-text="selectedEvent?.category === 'counseling' ? 'Konselor yang Praktik:' : 'Staff yang Bertugas:'"></span>
+                            <span x-text="selectedEvent?.category === 'counseling' ? 'Psikolog yang Praktik:' : 'Staff yang Bertugas:'"></span>
                         </span>
                         <strong class="text-sm font-extrabold text-purple-deep" x-text="selectedEvent?.category === 'counseling' ? selectedEvent?.counselor_name : selectedEvent?.staff_name"></strong>
                         <span class="text-[10px] text-[#827299] block" x-text="selectedEvent?.role_label"></span>

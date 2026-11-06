@@ -1,8 +1,8 @@
-@extends('layouts.dashboard')
+﻿@extends('layouts.dashboard')
 
-@section('title', 'Konselor — UC PSC')
-@section('page-title', 'Data Konselor')
-@section('page-subtitle', 'Kelola data psikolog & konselor pendamping UC PSC')
+@section('title', 'Psikolog — UC PSC')
+@section('page-title', 'Data Psikolog')
+@section('page-subtitle', 'Kelola data psikolog pendamping UC PSC')
 
 @section('content')
 @include('clients.partials.address-script')
@@ -10,7 +10,7 @@
 <div x-data="{
     search: '{{ addslashes(request('search', '')) }}',
     status: '{{ request('status', '') }}',
-    sort: '{{ request('sort', 'created_at') }}',
+    sort: '{{ request('sort', '') }}',
     direction: '{{ request('direction', 'desc') }}',
     loading: false,
     timer: null,
@@ -510,7 +510,7 @@
                 x-model="status"
                 @change="fetchResults()"
                 class="px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#5B4A73] flex-shrink-0">
-                <option value="">Semua Status Konselor</option>
+                <option value="">Semua Status Psikolog</option>
                 <option value="active">Aktif</option>
                 <option value="inactive">Nonaktif</option>
             </select>
@@ -521,7 +521,7 @@
             @click="openCreateModal()" 
             class="bg-orange text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition flex items-center gap-2 whitespace-nowrap shadow-xs cursor-pointer">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <span>Tambah Konselor</span>
+            <span>Tambah Psikolog</span>
         </button>
     </div>
 
@@ -560,6 +560,18 @@
         </div>
         @endif
 
+        {{-- Helper fungsi 3-state sort: unselected -> asc -> desc -> unselected (default) --}}
+        @php
+            $getNextCounselorSortUrl = function($column) use ($sort, $direction) {
+                if ($sort !== $column) {
+                    return request()->fullUrlWithQuery(['sort' => $column, 'direction' => 'asc', 'page' => 1]);
+                }
+                if ($direction === 'asc') {
+                    return request()->fullUrlWithQuery(['sort' => $column, 'direction' => 'desc', 'page' => 1]);
+                }
+                return request()->fullUrlWithQuery(['sort' => null, 'direction' => null, 'page' => 1]);
+            };
+        @endphp
         {{-- Table Card --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
             <div class="overflow-x-auto">
@@ -569,7 +581,7 @@
                             {{-- No. Column with Numeric Sort --}}
                             <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16">
                                 <div class="flex items-center justify-center">
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'direction' => ($sort === 'id' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                    <a href="{{ $getNextCounselorSortUrl('id') }}"
                                         class="inline-flex items-center gap-1 hover:text-white group transition cursor-pointer"
                                         title="Urutkan nomor urut: 1→9 atau 9→1">
                                         <span class="text-white font-semibold">No.</span>
@@ -590,10 +602,10 @@
                             
                             {{-- Nama Konselor Column with Alphabetical Sort --}}
                             <th class="text-left align-middle px-6 py-3.5 font-semibold">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'direction' => ($sort === 'name' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                <a href="{{ $getNextCounselorSortUrl('name') }}"
                                     class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer"
                                     title="Urutkan alfabetis A-Z / Z-A">
-                                    <span class="text-white font-semibold">Nama Konselor</span>
+                                    <span class="text-white font-semibold">Nama Psikolog</span>
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition {{ $sort === 'name' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'name')
                                             @if($direction === 'asc')
@@ -615,7 +627,7 @@
 
                             {{-- Spesialisasi --}}
                             <th class="text-left align-middle px-5 py-3.5 font-semibold">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'specialization', 'direction' => ($sort === 'specialization' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                <a href="{{ $getNextCounselorSortUrl('specialization') }}"
                                     class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer"
                                     title="Urutkan berdasarkan spesialisasi">
                                     <span class="text-white font-semibold">Spesialisasi</span>
@@ -636,9 +648,9 @@
                             {{-- Status Konselor Column Sort --}}
                             <th class="text-center align-middle px-4 py-3.5 font-semibold">
                                 <div class="flex items-center justify-center">
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'status', 'direction' => ($sort === 'status' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                    <a href="{{ $getNextCounselorSortUrl('status') }}"
                                         class="inline-flex items-center justify-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
-                                        title="Urutkan status konselor">
+                                        title="Urutkan status psikolog">
                                         <span class="w-5 shrink-0" aria-hidden="true"></span>
                                         <span class="text-white font-semibold">Status</span>
                                         <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'status' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
@@ -659,7 +671,7 @@
                             {{-- Waktu Terdaftar Column Sort --}}
                             <th class="text-center align-middle px-4 py-3.5 font-semibold">
                                 <div class="flex items-center justify-center">
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => ($sort === 'created_at' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                    <a href="{{ $getNextCounselorSortUrl('created_at') }}"
                                         class="inline-flex items-center justify-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
                                         title="Urutkan waktu terdaftar">
                                         <span class="w-5 shrink-0" aria-hidden="true"></span>
@@ -682,7 +694,7 @@
                     </thead>
                     <tbody class="divide-y divide-[#F3EAFB]">
                         @forelse($counselors as $counselor)
-                        <tr class="hover:bg-[#FDFBFF] transition"
+                        <tr class="transition-colors duration-150"
                             x-data="{
                                 counselorData: {
                                     id: {{ $counselor->id }},
@@ -727,7 +739,7 @@
                                                  originalCounselor.status = newStatus;
                                              }
                                         } else {
-                                             alert('Gagal memperbarui status konselor.');
+                                             alert('Gagal memperbarui status psikolog.');
                                         }
                                     } catch (e) {
                                         console.error(e);
@@ -848,14 +860,14 @@
 
                             {{-- Waktu Terdaftar --}}
                             <td class="text-center align-middle px-4 py-3.5 text-black whitespace-nowrap text-sm font-medium">
-                                {{ $counselor->created_at ? $counselor->created_at->format('d M Y, H:i') : '-' }}
+                                {{ $counselor->created_at ? $counselor->created_at->format('d/m/Y H:i') : '-' }}
                             </td>
                         </tr>
                         @empty
                         <tr>
                             <td colspan="6" class="px-6 py-12 text-center text-black font-medium">
                                 <svg class="mx-auto mb-3 text-[#D9C2F0]" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                Belum ada data konselor.
+                                Belum ada data psikolog.
                             </td>
                         </tr>
                         @endforelse
@@ -892,7 +904,7 @@
                 {{-- Modal Header --}}
                 <div class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white rounded-t-2xl">
                     <div>
-                        <h3 class="text-base sm:text-lg font-bold text-purple-deep">Tambah Konselor Baru</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-purple-deep">Tambah Psikolog Baru</h3>
                         <p class="text-xs sm:text-[13px] text-[#6B5B85] mt-0.5">Daftarkan data psikolog atau konselor pendamping baru ke UC PSC</p>
                     </div>
                     <button type="button" @click="closeCreateModal()" class="w-8 h-8 rounded-lg text-[#827299] hover:text-purple-deep hover:bg-purple-deep/10 flex items-center justify-center transition cursor-pointer" title="Tutup">
@@ -910,7 +922,7 @@
                             <h3 class="text-base font-bold text-purple-deep">Data Identitas & Kontak</h3>
                         </div>
 
-                        {{-- Foto Profil Konselor --}}
+                        {{-- Foto Profil Psikolog --}}
                         <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-xl bg-gray-50 border border-gray-200">
                             <div class="relative group flex-shrink-0">
                                 <template x-if="photoPreview">
@@ -932,7 +944,7 @@
                             </div>
 
                             <div class="flex-1 text-center sm:text-left space-y-1.5">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#2A2035]">Foto Profil Konselor</label>
+                                <label class="block text-xs sm:text-[13px] font-bold text-[#2A2035]">Foto Profil Psikolog</label>
                                 <p class="text-xs text-gray-500">Format JPG, PNG, atau WebP. Ukuran maksimal 2 MB.</p>
                                 
                                 <div class="pt-1">
@@ -946,7 +958,7 @@
                             </div>
                         </div>
 
-                        {{-- Field: Nama Konselor --}}
+                        {{-- Field: Nama Psikolog --}}
                         <div>
                             <label for="create_name" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
                             <input type="text" id="create_name" name="name" x-model="newCounselor.name" required
@@ -958,7 +970,7 @@
                         {{-- Kontak: No Telepon & Email --}}
                         <div class="grid sm:grid-cols-2 gap-4">
                             <div>
-                                <label for="create_phone" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">No. Telepon / WhatsApp <span class="text-red-500">*</span></label>
+                                <label for="create_phone" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">No. Telepon <span class="text-red-500">*</span></label>
                                 <input type="text" id="create_phone" name="phone" x-model="newCounselor.phone"
                                     inputmode="numeric"
                                     maxlength="13"
@@ -1168,7 +1180,7 @@
                         <button type="submit" 
                             class="px-6 py-2.5 rounded-xl text-sm font-bold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                            <span>Simpan Konselor</span>
+                            <span>Simpan Psikolog</span>
                         </button>
                     </div>
                 </form>
@@ -1202,7 +1214,7 @@
             </div>
             
             <div class="text-center space-y-2">
-                <h3 class="text-lg font-bold text-purple-deep">Batalkan Tambah Konselor?</h3>
+                <h3 class="text-lg font-bold text-purple-deep">Batalkan Tambah Psikolog?</h3>
                 <p class="text-sm text-[#6B5B85] leading-relaxed">
                     Data isian yang telah Anda masukkan belum disimpan dan akan hilang jika Anda keluar.
                 </p>
@@ -1241,7 +1253,7 @@
                 {{-- Modal Header (View Mode) --}}
                 <div x-show="!isEditing" class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white rounded-t-2xl">
                     <div>
-                        <h3 class="text-base sm:text-lg font-bold text-purple-deep">Detail Data Konselor</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-purple-deep">Detail Data Psikolog</h3>
                         <p class="text-xs sm:text-[13px] text-[#6B5B85] mt-0.5">Informasi profil, kualifikasi, dan status konselor</p>
                     </div>
                     <button type="button" @click="closeEditModal()" class="w-8 h-8 rounded-lg text-[#827299] hover:text-purple-deep hover:bg-purple-deep/10 flex items-center justify-center transition cursor-pointer" title="Tutup">
@@ -1252,7 +1264,7 @@
                 {{-- Modal Header (Edit Mode) --}}
                 <div x-show="isEditing" class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white rounded-t-2xl">
                     <div>
-                        <h3 class="text-base sm:text-lg font-bold text-purple-deep">Edit Data Konselor</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-purple-deep">Edit Data Psikolog</h3>
                         <p class="text-xs sm:text-[13px] text-[#6B5B85] mt-0.5">Perbarui data identitas, kualifikasi, atau status konselor</p>
                     </div>
                     <button type="button" @click="closeEditModal()" class="w-8 h-8 rounded-lg text-[#827299] hover:text-purple-deep hover:bg-purple-deep/10 flex items-center justify-center transition cursor-pointer" title="Tutup">
@@ -1304,7 +1316,7 @@
 
                         <div class="grid sm:grid-cols-2 gap-4 pt-1">
                             <div class="p-3.5 rounded-xl bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">No. Telepon / WhatsApp</span>
+                                <span class="block text-xs font-semibold text-[#827299] mb-1">No. Telepon</span>
                                 <p class="text-sm font-semibold text-[#2A2035] flex items-center gap-2">
                                     <svg class="text-purple-deep shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                                     <span x-text="editingCounselor.phone || '-'"></span>
@@ -1392,7 +1404,7 @@
                                 <p class="text-sm text-[#4A3E5C] leading-relaxed whitespace-pre-line" x-text="editingCounselor.notes"></p>
                             </template>
                             <template x-if="!editingCounselor.notes">
-                                <p class="text-xs text-gray-400 italic">Tidak ada catatan tambahan untuk konselor ini.</p>
+                                <p class="text-xs text-gray-400 italic">Tidak ada catatan tambahan untuk psikolog ini.</p>
                             </template>
                         </div>
                     </div>
@@ -1427,7 +1439,7 @@
                             <h3 class="text-base font-bold text-purple-deep">Data Identitas &amp; Kontak</h3>
                         </div>
 
-                        {{-- Foto Profil Konselor --}}
+                        {{-- Foto Profil Psikolog --}}
                         <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-xl bg-gray-50 border border-gray-200">
                             <div class="relative group flex-shrink-0">
                                 <template x-if="editPhotoPreview">
@@ -1449,7 +1461,7 @@
                             </div>
 
                             <div class="flex-1 text-center sm:text-left space-y-1.5">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#2A2035]">Foto Profil Konselor</label>
+                                <label class="block text-xs sm:text-[13px] font-bold text-[#2A2035]">Foto Profil Psikolog</label>
                                 <p class="text-xs text-gray-500">Format JPG, PNG, atau WebP. Ukuran maksimal 2 MB.</p>
                                 
                                 <div class="pt-1">
@@ -1462,9 +1474,9 @@
                             </div>
                         </div>
 
-                        {{-- Field: Nama Konselor --}}
+                        {{-- Field: Nama Psikolog --}}
                         <div>
-                            <label for="edit_name" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
+                            <label for="edit_name" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nama Psikolog / Psikolog <span class="text-red-500">*</span></label>
                             <input type="text" id="edit_name" name="name" x-model="editingCounselor.name" required
                                 placeholder="Contoh: Dr. Amanda Wijaya, M.Psi., Psikolog"
                                 class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
@@ -1473,7 +1485,7 @@
                         {{-- Kontak: No Telepon & Email --}}
                         <div class="grid sm:grid-cols-2 gap-4">
                             <div>
-                                <label for="edit_phone" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">No. Telepon / WhatsApp</label>
+                                <label for="edit_phone" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">No. Telepon</label>
                                 <input type="text" id="edit_phone" name="phone" x-model="editingCounselor.phone"
                                     inputmode="numeric"
                                     maxlength="13"
@@ -1693,7 +1705,7 @@
             <div class="text-center space-y-2">
                 <h3 class="text-lg font-bold text-purple-deep">Batalkan Perubahan?</h3>
                 <p class="text-sm text-[#6B5B85] leading-relaxed">
-                    Perubahan data konselor yang telah Anda masukkan belum disimpan dan akan hilang jika Anda keluar.
+                    Perubahan data psikolog yang telah Anda masukkan belum disimpan dan akan hilang jika Anda keluar.
                 </p>
             </div>
 
@@ -1735,9 +1747,9 @@
             </div>
             
             <div class="text-center space-y-2">
-                <h3 class="text-lg font-bold text-red-600">Hapus Data Konselor?</h3>
+                <h3 class="text-lg font-bold text-red-600">Hapus Data Psikolog?</h3>
                 <p class="text-sm text-[#6B5B85] leading-relaxed">
-                    Apakah Anda yakin ingin menghapus data konselor <strong class="text-purple-deep" x-text="editingCounselor.name"></strong>? Data yang dihapus bersifat permanen dan tidak dapat dipulihkan kembali.
+                    Apakah Anda yakin ingin menghapus data psikolog <strong class="text-purple-deep" x-text="editingCounselor.name"></strong>? Data yang dihapus bersifat permanen dan tidak dapat dipulihkan kembali.
                 </p>
             </div>
 

@@ -12,7 +12,13 @@ class Booking extends Model
 
     protected $fillable = [
         'client_id',
+        'client_form_id',
         'kategori',
+        'service_tier',
+        'service_package_key',
+        'service_package_name',
+        'price',
+        'overtime_price',
         'tanggal_booking_dibuat',
         'tanggal_dijadwalkan',
         'status',
@@ -23,15 +29,84 @@ class Booking extends Model
         'follow_up_of_booking_id',
         'payment_transaction_id',
         'notes',
-        // Realisasi sesi
+        // Realisasi sesi & kalkulasi overtime
         'session_start',
         'session_end',
         'session_duration_standard',
         'overtime_minutes',
+        'actual_duration_minutes',
+        'is_overtime',
+        'payment_workflow_status',
+        'va_number',
         'session_notes',
         'session_type',
         'location',
     ];
+
+    /**
+     * Buat data booking awal otomatis ketika formulir layanan klien disubmit.
+     * Detail penugasan konselor/staff, jadwal, waktu, lokasi, status, dan catatan
+     * dibiarkan kosong/default agar dapat diisi menyusul oleh admin/user.
+     */
+    public static function createInitialForForm(Client $client, string $formType, ?string $servicePreference = null, ?int $clientFormId = null): self
+    {
+        $isKonseling = in_array($formType, ['dewasa', 'anak', 'pra_nikah', 'pernikahan']);
+        $isPsikotes = in_array($formType, ['industri', 'non_industri']);
+        $isBiography = ($formType === 'biography_en');
+
+        $kategori = null;
+        $serviceTier = null;
+
+        if ($isKonseling) {
+            $kategori = 'konseling';
+        } elseif ($isPsikotes) {
+            $kategori = 'psikotes';
+            $serviceTier = ($formType === 'industri' ? 'industri' : 'non_industri_bakat_minat');
+        } elseif ($isBiography) {
+            // Biography Form (English) fleksibel untuk WNA (Konseling WNA atau Psikotes)
+            $kategori = 'pending';
+        }
+
+        $sessionType = null;
+        if ($isKonseling && !empty($servicePreference)) {
+            $sessionType = str_contains(strtolower($servicePreference), 'online') ? 'online' : 'tatap_muka';
+        }
+
+        $booking = self::create([
+            'client_id' => $client->id,
+            'client_form_id' => $clientFormId,
+            'kategori' => $kategori,
+            'service_tier' => $serviceTier,
+            'tanggal_booking_dibuat' => now()->toDateString(),
+            'tanggal_dijadwalkan' => null,
+            'session_start' => null,
+            'session_end' => null,
+            'session_duration_standard' => 60,
+            'overtime_minutes' => 0,
+            'session_notes' => null,
+            'session_type' => $sessionType,
+            'location' => null,
+            'status' => 'belum_assign',
+            'staff_penguji_id' => null,
+            'staff_koreksi_id' => null,
+            'staff_pelapor_id' => null,
+            'counselor_id' => null,
+            'notes' => null,
+        ]);
+
+        if ($formType === 'industri' && !empty($client->name)) {
+            BookingParticipant::create([
+                'booking_id' => $booking->id,
+                'nama_peserta' => $client->name,
+            ]);
+            ClientParticipant::firstOrCreate([
+                'client_id' => $client->id,
+                'nama_peserta' => $client->name,
+            ]);
+        }
+
+        return $booking;
+    }
 
     protected function casts(): array
     {
@@ -152,14 +227,16 @@ class Booking extends Model
 
     // --- Relasi ke hasil psikotes / assessment ---
 
-    public function testResults(): HasMany
+    // --- Relasi ke formulir klien ---
+
+    public function clientForms(): HasMany
     {
-        return $this->hasMany(TestResult::class);
+        return $this->hasMany(ClientForm::class);
     }
 
-    public function testResult(): HasOne
+    public function clientForm(): BelongsTo
     {
-        return $this->hasOne(TestResult::class)->latestOfMany();
+        return $this->belongsTo(ClientForm::class, 'client_form_id');
     }
 }
 

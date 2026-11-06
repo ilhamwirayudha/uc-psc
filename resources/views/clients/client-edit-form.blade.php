@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+﻿@extends('layouts.dashboard')
 
 @section('title', 'Edit Klien — UC PSC')
 @section('page-title', 'Edit Klien')
@@ -275,11 +275,12 @@
                                 :class="isEducationEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
                                 class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('education') border-red-300 @enderror">
                                 <option value="" x-text="isEducationEnabled ? '-- Pilih Pendidikan Terakhir --' : ''"></option>
-                                <option value="sd" {{ old('education', $client->education) === 'sd' ? 'selected' : '' }}>SD / Sederajat</option>
+                                <option value="tk" {{ in_array(strtolower((string)old('education', $client->education)), ['tk', 'paud', 'paud_tk', 'paud / tk']) ? 'selected' : '' }}>TK</option>
+                                <option value="sd" {{ in_array(strtolower((string)old('education', $client->education)), ['sd', 'sd / sederajat']) ? 'selected' : '' }}>SD / Sederajat</option>
                                 <option value="smp" {{ old('education', $client->education) === 'smp' ? 'selected' : '' }}>SMP / Sederajat</option>
-                                <option value="sma_smk" {{ old('education', $client->education) === 'sma_smk' ? 'selected' : '' }}>SMA / SMK / Sederajat</option>
+                                <option value="sma_smk" {{ old('education', $client->education) === 'sma_smk' ? 'selected' : '' }}>SMA / SMK</option>
                                 <option value="d3" {{ old('education', $client->education) === 'd3' ? 'selected' : '' }}>Diploma / D3</option>
-                                <option value="s1" {{ old('education', $client->education) === 's1' ? 'selected' : '' }}>Sarjana / S1 / D4</option>
+                                <option value="s1" {{ old('education', $client->education) === 's1' ? 'selected' : '' }}>Sarjana / S1</option>
                                 <option value="s2" {{ old('education', $client->education) === 's2' ? 'selected' : '' }}>Magister / S2</option>
                                 <option value="s3" {{ old('education', $client->education) === 's3' ? 'selected' : '' }}>Doktor / S3</option>
                                 <option value="lainnya" {{ old('education', $client->education) === 'lainnya' ? 'selected' : '' }}>Lainnya</option>
@@ -309,9 +310,9 @@
                             </select>
                         </div>
 
-                        {{-- 3. No. Telepon / WA --}}
+                        {{-- 3. No. Telepon --}}
                         <div>
-                            <label for="phone" class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon / WA <span class="text-red-400">*</span></label>
+                            <label for="phone" class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon <span class="text-red-400">*</span></label>
                             <input type="text" id="phone" name="phone" x-model="phone"
                                 :disabled="!isPhoneEnabled"
                                 :class="isPhoneEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
@@ -591,9 +592,9 @@
             </div>
         </div>
 
-        {{-- Right Column: Jadwal, Konselor & Catatan (5 cols on lg) --}}
+        {{-- Right Column: Jadwal, Psikolog & Catatan (5 cols on lg) --}}
         <div class="lg:col-span-5 space-y-6">
-            {{-- Card 2: Jadwal & Konselor --}}
+            {{-- Card 2: Jadwal & Psikolog --}}
             @php
                 $currentCounselorId = old('counselor_id', $upcomingRecord?->counselor_id ?? $activePairing?->counselor_id ?? '');
                 $currentScheduledAt = old('scheduled_at', $upcomingRecord?->scheduled_at?->format('Y-m-d\TH:i') ?? '');
@@ -614,13 +615,13 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label for="counselor_id" class="block text-xs font-medium text-gray-500 mb-1.5" x-text="serviceType === 'psikotes' ? 'Pilih Konselor / Tester' : 'Pilih Konselor'">Pilih Konselor</label>
+                        <label for="counselor_id" class="block text-xs font-medium text-gray-500 mb-1.5" x-text="serviceType === 'psikotes' ? 'Pilih Psikolog / Tester' : 'Pilih Psikolog'">Pilih Konselor</label>
                         <select id="counselor_id" name="counselor_id"
                             class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
                             <option value="">Belum Ditentukan (Unassigned)</option>
                             @foreach($counselors as $counselor)
                             <option value="{{ $counselor->id }}" {{ $currentCounselorId == $counselor->id ? 'selected' : '' }}>
-                                {{ $counselor->name }} ({{ $counselor->specialization ?? 'Umum' }})
+                                {{ $counselor->name }}
                             </option>
                             @endforeach
                         </select>

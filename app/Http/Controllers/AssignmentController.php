@@ -33,7 +33,7 @@ class AssignmentController extends Controller
 
         $allStaff = User::where('role', 'staff')->orderBy('name')->get();
 
-        return view('assignments.index', compact('unassignedClients', 'assignedClients', 'staffSummary', 'allStaff'));
+        return view('assignments.staff-assignment-board', compact('unassignedClients', 'assignedClients', 'staffSummary', 'allStaff'));
     }
 
     /**

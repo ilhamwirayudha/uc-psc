@@ -5,7 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CounselorController;
-use App\Http\Controllers\TestResultController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\BookingController;
@@ -81,19 +80,11 @@ Route::middleware('auth')->group(function () {
     Route::get('client-forms/results', [ClientFormManagementController::class, 'results'])->name('client-forms.results');
     Route::get('client-forms/{clientForm}', [ClientFormManagementController::class, 'show'])->name('client-forms.show');
     Route::get('client-forms/{clientForm}/pdf', [ClientFormManagementController::class, 'downloadPdf'])->name('client-forms.pdf');
-    Route::patch('client-forms/{clientForm}/status', [ClientFormManagementController::class, 'updateStatus'])->name('client-forms.status.update');
+    Route::post('client-forms/{clientForm}/schedule', [BookingController::class, 'scheduleFromForm'])->name('bookings.schedule-form');
 
-
-    // Test Results / Psychological Assessment Case Management
-    Route::post('test-results/{testResult}/status', [TestResultController::class, 'updateStatus'])->name('test-results.status');
-    Route::post('test-results/{testResult}/assign-staff', [TestResultController::class, 'assignStaff'])->name('test-results.assign-staff');
-    Route::post('test-results/{testResult}/documents', [TestResultController::class, 'uploadDocument'])->name('test-results.documents.store');
-    Route::get('test-results/{testResult}/download', [TestResultController::class, 'download'])->name('test-results.download');
-    Route::get('test-results/{testResult}/documents/{document}/download', [TestResultController::class, 'downloadDocument'])->name('test-results.documents.download');
-    Route::post('test-results/{testResult}/deliver', [TestResultController::class, 'deliver'])->name('test-results.deliver');
-    Route::resource('test-results', TestResultController::class)->except(['edit', 'update']);
-
-    // Bookings
+    // Bookings - Layanan Terpisah (Konseling & Psikotes)
+    Route::get('bookings/counseling', [BookingController::class, 'counseling'])->name('bookings.counseling');
+    Route::get('bookings/psychotest', [BookingController::class, 'psychotest'])->name('bookings.psychotest');
     Route::post('bookings/{booking}/follow-up', [BookingController::class, 'createFollowUp'])->name('bookings.follow-up');
     Route::post('bookings/{booking}/realisasi', [BookingController::class, 'storeRealisasi'])->name('bookings.realisasi');
     Route::resource('bookings', BookingController::class);

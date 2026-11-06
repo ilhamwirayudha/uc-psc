@@ -1,8 +1,8 @@
-@extends('layouts.dashboard')
+﻿@extends('layouts.dashboard')
 
-@section('title', 'Tambah Konselor — UC PSC')
-@section('page-title', 'Tambah Konselor Baru')
-@section('page-subtitle', 'Daftarkan data psikolog atau konselor pendamping baru')
+@section('title', 'Tambah Psikolog — UC PSC')
+@section('page-title', 'Tambah Psikolog Baru')
+@section('page-subtitle', 'Daftarkan data psikolog atau psikolog pendamping baru')
 
 @section('content')
 @include('clients.partials.address-script')
@@ -113,23 +113,23 @@
                 </div>
                 <div>
                     <h3 class="text-base font-semibold text-black">Data Identitas & Kontak</h3>
-                    <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif konselor</p>
+                    <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif psikolog</p>
                 </div>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
-                {{-- Nama Konselor --}}
+                {{-- Nama Psikolog --}}
                 <div class="sm:col-span-2">
-                    <label for="name" class="block text-xs font-medium text-gray-500 mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
+                    <label for="name" class="block text-xs font-medium text-gray-500 mb-1.5">Nama Psikolog / Psikolog <span class="text-red-500">*</span></label>
                     <input type="text" id="name" name="name" x-model="name" required
                         placeholder="Contoh: Dr. Amanda Wijaya, M.Psi., Psikolog"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('name') border-red-300 @enderror">
                     @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- No Telepon / WA --}}
+                {{-- No. Telepon --}}
                 <div>
-                    <label for="phone" class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon / WhatsApp</label>
+                    <label for="phone" class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon</label>
                     <input type="text" id="phone" name="phone" x-model="phone"
                         inputmode="numeric"
                         maxlength="13"
@@ -158,7 +158,7 @@
                 </div>
                 <div>
                     <h3 class="text-base font-semibold text-black">Alamat Domisili</h3>
-                    <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat lengkap tempat tinggal</p>
+                    <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat</p>
                 </div>
             </div>
 
@@ -299,9 +299,9 @@
                     @error('str_number') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Status Keaktifan Konselor --}}
+                {{-- Status Keaktifan Psikolog --}}
                 <div class="sm:col-span-2">
-                    <label for="status" class="block text-xs font-medium text-gray-500 mb-1.5">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
+                    <label for="status" class="block text-xs font-medium text-gray-500 mb-1.5">Status Keaktifan Psikolog <span class="text-red-500">*</span></label>
                     <select id="status" name="status" x-model="status" required
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                         <option value="active" class="text-emerald-600 font-semibold">Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
@@ -320,7 +320,7 @@
                 </div>
                 <div>
                     <h3 class="text-base font-semibold text-black">Catatan & Keterangan Tambahan</h3>
-                    <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus konselor (opsional)</p>
+                    <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus psikolog (opsional)</p>
                 </div>
             </div>
 
@@ -341,7 +341,7 @@
             <button type="submit" 
                 class="px-6 py-2.5 rounded-xl text-sm font-semibold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                <span>Simpan Konselor</span>
+                <span>Simpan Psikolog</span>
             </button>
         </div>
     </form>

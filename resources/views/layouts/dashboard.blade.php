@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -57,7 +57,7 @@
         <aside 
             id="sidebar" 
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
-            class="fixed inset-y-0 left-0 z-40 w-64 bg-purple-700 text-white shadow-xl transition-transform duration-300 ease-in-out lg:translate-x-0 select-none flex flex-col justify-between"
+            class="fixed inset-y-0 left-0 z-40 w-64 bg-purple-700 text-white shadow-xl max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out lg:translate-x-0 select-none flex flex-col justify-between"
         >
             <div class="flex-1 flex flex-col min-h-0">
                 {{-- Logo Header --}}
@@ -71,54 +71,89 @@
                 <nav class="px-4 py-6 space-y-1.5 overflow-y-auto flex-1">
                     <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mb-2">Menu Utama</p>
 
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('dashboard') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('dashboard') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
                         <span>Dashboard</span>
                     </a>
 
                     <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mt-6 mb-2">Data</p>
 
-                    <a href="{{ route('clients.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('clients.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                    <a href="{{ route('clients.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('clients.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         <span>Daftar Klien</span>
                     </a>
 
-                    <a href="{{ route('client-forms.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('client-forms.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                    <a href="{{ route('client-forms.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('client-forms.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                         <span>Formulir Klien</span>
                     </a>
 
-                    <a href="{{ route('counselors.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('counselors.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                    <a href="{{ route('counselors.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('counselors.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        <span>Konselor</span>
+                        <span>Psikolog</span>
                     </a>
 
                     <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mt-6 mb-2">Operasional</p>
 
-                    <a href="{{ route('calendar.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('calendar.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                    <a href="{{ route('calendar.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('calendar.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
                         <span>Kalender</span>
                     </a>
 
-                    <a href="{{ route('test-results.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('test-results.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                        <span>Hasil Psikotes</span>
-                    </a>
+                    {{-- Dropdown Menu: Booking Layanan --}}
+                    <div id="booking-sidebar-menu"
+                        x-data="{ 
+                            open: (localStorage.getItem('booking_menu_open') !== null 
+                                ? localStorage.getItem('booking_menu_open') === 'true' 
+                                : true) || {{ request()->routeIs('bookings.*') ? 'true' : 'false' }},
+                            toggle() {
+                                this.open = !this.open;
+                                localStorage.setItem('booking_menu_open', this.open ? 'true' : 'false');
+                            }
+                        }" class="space-y-1">
+                        <button type="button" 
+                            @click="toggle()" 
+                            class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium cursor-pointer {{ request()->routeIs('bookings.*') ? 'bg-white/15 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
+                            <div class="flex items-center gap-3">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                <span>Booking Layanan</span>
+                            </div>
+                            {{-- Chevron Icon: Static toggle without CSS transition rotation --}}
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-white">
+                                <polyline points="18 15 12 9 6 15" x-show="open"></polyline>
+                                <polyline points="6 9 12 15 18 9" x-show="!open" style="display: none;"></polyline>
+                            </svg>
+                        </button>
 
-                    <a href="{{ route('bookings.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('bookings.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        <span>Booking</span>
-                    </a>
+                        {{-- Submenu: Layanan Konseling & Layanan Psikotes (Seragam dengan teks sidebar lainnya) --}}
+                        <div x-show="open" 
+                            id="booking-submenu"
+                            class="pl-4 space-y-1 pt-0.5">
+                            {{-- 1. Layanan Konseling --}}
+                            <a href="{{ route('bookings.counseling') }}" 
+                                class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition font-medium whitespace-nowrap {{ request()->routeIs('bookings.counseling') ? 'bg-white/20 text-white font-semibold shadow-xs ring-1 ring-white/10' : 'text-white hover:bg-white/10' }}">
+                                <span class="w-2 h-2 rounded-full shrink-0 {{ request()->routeIs('bookings.counseling') ? 'bg-white ring-2 ring-white/30' : 'bg-white/60' }}"></span>
+                                <span>Layanan Konseling</span>
+                            </a>
+
+                            {{-- 2. Layanan Psikotes --}}
+                            <a href="{{ route('bookings.psychotest') }}" 
+                                class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition font-medium whitespace-nowrap {{ request()->routeIs('bookings.psychotest') ? 'bg-white/20 text-white font-semibold shadow-xs ring-1 ring-white/10' : 'text-white hover:bg-white/10' }}">
+                                <span class="w-2 h-2 rounded-full shrink-0 {{ request()->routeIs('bookings.psychotest') ? 'bg-white ring-2 ring-white/30' : 'bg-white/60' }}"></span>
+                                <span>Layanan Psikotes</span>
+                            </a>
+                        </div>
+                    </div>
 
                     @if(auth()->user()->isAdmin())
                     <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mt-6 mb-2">Pengaturan</p>
 
-                    <a href="{{ route('assignments.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('assignments.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                    <a href="{{ route('assignments.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('assignments.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
                         <span>Kelola Penugasan</span>
                     </a>
 
-                    <a href="{{ route('staff-management.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('staff-management.*') ? 'bg-white/20 text-white font-semibold' : 'text-white/70 hover:text-white hover:bg-white/10' }}">
+                    <a href="{{ route('staff-management.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('staff-management.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                         <span>Kelola Staff</span>
                     </a>
@@ -147,7 +182,7 @@
                     <button 
                         type="button" 
                         @click="showLogoutModal = true" 
-                        class="p-2 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition cursor-pointer flex-shrink-0 group" 
+                        class="p-2 rounded-xl text-white hover:bg-white/10 transition cursor-pointer flex-shrink-0 group" 
                         title="Keluar"
                     >
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white/70 group-hover:text-red-400 transition-colors duration-200"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -212,7 +247,7 @@
             </div>
             @endif
 
-            @if(session('error'))
+            @if(session('error') || $errors->any())
             <div x-data="{ show: true }"
                 x-init="setTimeout(() => show = false, 4000)"
                 x-show="show"
@@ -233,7 +268,7 @@
                         </div>
                         <div class="flex flex-wrap items-center gap-x-2 min-w-0 text-sm">
                             <span class="font-bold">Terjadi Kesalahan!</span>
-                            <span class="text-rose-50 font-normal">{{ session('error') }}</span>
+                            <span class="text-rose-50 font-normal">{{ session('error') ?: $errors->first() }}</span>
                         </div>
                     </div>
                     <button @click="show = false" type="button" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer flex-shrink-0" title="Tutup">
@@ -393,7 +428,7 @@
     <x-booking-modal />
 
     {{-- ===== MODAL UPLOAD HASIL PSIKOTES (GLOBAL) ===== --}}
-    <x-test-result-modal />
+    
 
 
     @stack('scripts')

@@ -503,7 +503,7 @@
                         </label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1">WhatsApp / Phone Number: <span class="text-rose-500">*</span></span>
+                                <span class="text-xs text-slate-500 block mb-1">No. Telepon: <span class="text-rose-500">*</span></span>
                                 <input type="tel" name="phone" x-model="phone" @input="delete errors['phone']"
                                        placeholder="e.g. +62 812 3456 7890" 
                                        class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">

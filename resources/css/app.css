@@ -31,11 +31,17 @@
 }
 
 html {
-    font-size: 90%;
-    /* Penskalaan native 0.9x untuk semua unit rem Tailwind (spacing, text, sizing) */
+    font-size: 75%;
+    /* Penskalaan proporsional 0.75x agar lebih banyak informasi & densitas data tampil optimal */
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 640px) {
+    html {
+        font-size: 82.5%;
+    }
 }
 
 body {
@@ -127,4 +133,54 @@ h6 {
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
+}
+
+/* ==========================================================================
+   GLOBAL SCROLLBAR STYLING (Strict Rule: Neutral Gray Only)
+   ========================================================================== */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #CBD5E1 transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #CBD5E1;
+    border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #94A3B8;
+}
+
+*::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+
+/* ==========================================================================
+   CLICKABLE TABLE ROW STYLING (Strict Rule: Hover Darkens Row)
+   ========================================================================== */
+.table-row-clickable,
+tr.table-row-clickable {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.table-row-clickable:hover,
+tr.table-row-clickable:hover {
+    background-color: #F1F5F9 !important; /* slate-100 */
+}
+
+.table-row-clickable:active,
+tr.table-row-clickable:active {
+    background-color: #E2E8F0 !important; /* slate-200 */
 }

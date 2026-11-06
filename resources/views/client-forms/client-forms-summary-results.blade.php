@@ -1,3 +1,38 @@
+@php
+    $formatBirthPlaceDate = function($place, $date, $fallback = null) {
+        $p = trim((string)($place ?? ''));
+        $d = trim((string)($date ?? ''));
+        if (empty($p) && empty($d) && !empty($fallback)) {
+            $fb = trim((string)$fallback);
+            if (str_contains($fb, ',')) {
+                $parts = explode(',', $fb, 2);
+                $p = trim($parts[0]);
+                $d = trim($parts[1]);
+            } else {
+                return $fb;
+            }
+        }
+
+        $formattedDate = '';
+        if (!empty($d)) {
+            try {
+                $carbon = \Carbon\Carbon::parse($d);
+                $formattedDate = $carbon->locale('id')->isoFormat('D MMMM Y');
+            } catch (\Exception $e) {
+                $formattedDate = $d;
+            }
+        }
+
+        if (!empty($p) && !empty($formattedDate)) {
+            return "{$p}, {$formattedDate}";
+        } elseif (!empty($p)) {
+            return $p;
+        } elseif (!empty($formattedDate)) {
+            return $formattedDate;
+        }
+        return '-';
+    };
+@endphp
 @extends('layouts.dashboard')
 
 @section('title', 'Hasil Respon Formulir Klien — UC PSC')
@@ -11,6 +46,42 @@
     showDossierModal: false,
     isPrintingPdf: false,
 
+        formatBirthPlaceDate(place, date, fallback) {
+        let p = (place || '').trim();
+        let d = (date || '').trim();
+
+        if (fallback && !p && !d) {
+            let fb = (fallback || '').trim();
+            if (!fb) return '-';
+            if (fb.includes(',')) {
+                let parts = fb.split(',');
+                p = parts[0].trim();
+                d = parts.slice(1).join(',').trim();
+            } else {
+                return fb;
+            }
+        }
+
+        let formattedDate = '';
+        if (d) {
+            let dateObj = new Date(d.replace(' ', 'T'));
+            if (!isNaN(dateObj.getTime())) {
+                const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                formattedDate = `${dateObj.getDate()} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+            } else {
+                formattedDate = d;
+            }
+        }
+
+        if (p && formattedDate) {
+            return `${p}, ${formattedDate}`;
+        } else if (p) {
+            return p;
+        } else if (formattedDate) {
+            return formattedDate;
+        }
+        return '-';
+    },
     copyToClipboard(url, key) {
         navigator.clipboard.writeText(url);
         this.copiedKey = key;
@@ -182,7 +253,7 @@
                                 {{-- Kolom Khusus Anak (58 Pertanyaan GForm Anak) --}}
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px]">Status Nikah Ortu</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[220px]">Alamat Tinggal</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. Telepon</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Agama</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[100px]">Suku</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">Pendidikan</th>
@@ -209,7 +280,7 @@
                             @elseif($activeKey === 'dewasa')
                                 {{-- Kolom Khusus Dewasa --}}
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[220px]">Alamat Sekarang</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. Telepon</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Agama</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[100px]">Suku</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">Pendidikan</th>
@@ -232,10 +303,10 @@
                             @elseif($activeKey === 'pra_nikah')
                                 {{-- Kolom Khusus Pra-Nikah --}}
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[200px]">Alamat Klien</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. Telepon</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Agama</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-rose-50/70 text-rose-900 font-semibold">Nama Pasangan</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-rose-50/70 text-black font-semibold">Nama Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">TTL Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">HP Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan Pasangan</th>
@@ -249,10 +320,10 @@
                             @elseif($activeKey === 'pernikahan')
                                 {{-- Kolom Khusus Pernikahan --}}
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[200px]">Alamat Klien</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. Telepon</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Agama</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-rose-50/70 text-rose-900 font-semibold">Nama Pasangan</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-rose-50/70 text-black font-semibold">Nama Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">TTL Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">HP Pasangan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px]">Pekerjaan Pasangan</th>
@@ -282,7 +353,7 @@
                                 {{-- Kolom Khusus Non-Industri --}}
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[200px]">Alamat</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Asal Kota</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. Telepon</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Agama</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Pendidikan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[150px]">Nama Ayah</th>
@@ -297,19 +368,19 @@
                                 {{-- Kolom Khusus Industri --}}
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[200px]">Alamat</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Asal Kota</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. Telepon</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[110px]">Status Nikah</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px]">Pendidikan & IPK</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] bg-purple-50/70 text-purple-900 font-semibold">Posisi Dituju</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px]">Pekerjaan Saat Ini</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px] bg-amber-50/70 text-amber-900 font-semibold text-center">Skor PSS (Stres)</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px] bg-amber-50/70 text-black font-semibold text-center">Skor PSS (Stres)</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[220px]">Pengalaman Kerja</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px]">Ekspektasi Gaji</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[200px]">Kelebihan & Kelemahan</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[250px]">Deskripsi Diri</th>
                             @else
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[220px]">Alamat</th>
-                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. HP</th>
+                                <th class="py-2.5 px-3 whitespace-nowrap min-w-[120px]">No. Telepon</th>
                                 <th class="py-2.5 px-3 whitespace-nowrap min-w-[250px]">Keterangan</th>
                             @endif
 
@@ -327,22 +398,22 @@
                         @endphp
                         <tr class="divide-x divide-slate-200 hover:bg-slate-50 transition font-mono text-[11px] group">
                             {{-- Row Number --}}
-                            <td class="py-2 px-2.5 bg-[#F8F9FA] text-center font-bold text-slate-400 select-none no-export">
+                            <td class="py-2 px-2.5 bg-[#F8F9FA] text-center font-medium text-slate-400 select-none no-export">
                                 {{ $submissions->firstItem() + $index }}
                             </td>
 
                             {{-- Timestamp --}}
                             <td class="py-2 px-3 whitespace-nowrap text-slate-600">
-                                {{ $sub->created_at->format('Y-m-d H:i:s') }}
+                                {{ $sub->created_at->format('d/m/Y H:i') }}
                             </td>
 
                             {{-- Consent --}}
-                            <td class="py-2 px-3 whitespace-nowrap text-center text-slate-700 font-semibold">
+                            <td class="py-2 px-3 whitespace-nowrap text-center text-slate-700 font-medium">
                                 {{ $sub->consent_agreed ? 'Setuju' : 'Tidak' }}
                             </td>
 
                             {{-- Nama Klien --}}
-                            <td class="py-2 px-3 whitespace-nowrap font-sans font-bold text-slate-900">
+                            <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-900">
                                 {{ $sub->client_name }}
                             </td>
 
@@ -353,7 +424,7 @@
 
                             {{-- TTL --}}
                             <td class="py-2 px-3 whitespace-nowrap font-sans">
-                                {{ $ans['birth_place_date'] ?? $ans['tempat_tanggal_lahir'] ?? (($ans['tempat_lahir'] ?? '') . ($ans['tempat_lahir'] && $ans['tanggal_lahir'] ? ', ' : '') . ($ans['tanggal_lahir'] ?? '-')) }}
+                                {{ $formatBirthPlaceDate($ans['tempat_lahir'] ?? null, $ans['tanggal_lahir'] ?? null, $ans['birth_place_date'] ?? ($ans['tempat_tanggal_lahir'] ?? null)) }}
                             </td>
 
                             {{-- Urutan Kelahiran --}}
@@ -376,11 +447,11 @@
                                 <td class="py-2 px-3 font-sans truncate max-w-[150px]">{{ $ans['ketakutan_phobia'] ?? '-' }}</td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[150px]">{{ $ans['riwayat_trauma'] ?? '-' }}</td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[150px]">{{ $ans['riwayat_kesehatan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-bold text-slate-800 bg-blue-50/20">{{ $ans['nama_ayah'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-800 bg-blue-50/20">{{ $ans['nama_ayah'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap text-center">{{ $ans['usia_ayah'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan_ayah'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $ans['phone_ayah'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-bold text-slate-800 bg-pink-50/20">{{ $ans['nama_ibu'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-800 bg-pink-50/20">{{ $ans['nama_ibu'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap text-center">{{ $ans['usia_ibu'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan_ibu'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $ans['phone_ibu'] ?? '-' }}</td>
@@ -415,11 +486,11 @@
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $sub->client_phone }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['agama'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-bold text-slate-800 bg-rose-50/20">{{ $ans['nama_pasangan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans">{{ ($ans['tempat_lahir_pasangan'] ?? '') . ', ' . ($ans['tanggal_lahir_pasangan'] ?? '') }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-800 bg-rose-50/20">{{ $ans['nama_pasangan'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $formatBirthPlaceDate($ans['tempat_lahir_pasangan'] ?? null, $ans['tanggal_lahir_pasangan'] ?? null, null) }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $ans['phone_pasangan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan_pasangan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-bold text-purple-deep">{{ $ans['tanggal_rencana_pernikahan'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-purple-deep">{{ $ans['tanggal_rencana_pernikahan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans text-center">{{ $ans['lama_berkenalan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans text-center">{{ $ans['lama_berpacaran'] ?? '-' }}</td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[250px]" title="{{ $ans['alasan_konseling'] ?? '-' }}">{{ $ans['alasan_konseling'] ?? '-' }}</td>
@@ -431,8 +502,8 @@
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $sub->client_phone }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['agama'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-bold text-slate-800 bg-rose-50/20">{{ $ans['nama_pasangan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans">{{ ($ans['tempat_lahir_pasangan'] ?? '') . ', ' . ($ans['tanggal_lahir_pasangan'] ?? '') }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-800 bg-rose-50/20">{{ $ans['nama_pasangan'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $formatBirthPlaceDate($ans['tempat_lahir_pasangan'] ?? null, $ans['tanggal_lahir_pasangan'] ?? null, null) }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $ans['phone_pasangan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan_pasangan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['tempat_tanggal_pernikahan'] ?? '-' }}</td>
@@ -482,9 +553,9 @@
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $sub->client_phone }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['status_perkawinan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ ($ans['pendidikan_terakhir'] ?? '-') . ' (IPK: ' . ($ans['ipk_terakhir'] ?? '-') . ')' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-bold text-purple-deep bg-purple-50/20">{{ $ans['posisi_dituju'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-purple-deep bg-purple-50/20">{{ $ans['posisi_dituju'] ?? '-' }}</td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[180px]">{{ $ans['pekerjaan_saat_ini'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap text-center font-bold {{ $pssTotal >= 27 ? 'text-rose-600 bg-rose-50/30' : ($pssTotal >= 14 ? 'text-amber-600 bg-amber-50/30' : 'text-slate-700 bg-slate-50/50') }}">
+                                <td class="py-2 px-3 whitespace-nowrap text-center font-medium {{ $pssTotal >= 27 ? 'text-rose-600 bg-rose-50/30' : ($pssTotal >= 14 ? 'text-amber-600 bg-amber-50/30' : 'text-slate-700 bg-slate-50/50') }}">
                                     {{ $pssTotal }} / 40
                                 </td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[220px]">{{ ($ans['pengalaman_kerja_1'] ?? '-') }}</td>
@@ -501,7 +572,7 @@
                             <td class="py-2 px-3 whitespace-nowrap font-sans text-center">{{ $ans['pernah_konseling'] ?? '-' }}</td>
                             <td class="py-2 px-3 font-sans truncate max-w-[160px]" title="{{ $ans['kontak_darurat'] ?? '-' }}">{{ $ans['kontak_darurat'] ?? '-' }}</td>
                             <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['sumber_info'] ?? '-' }}</td>
-                            <td class="py-2 px-3 whitespace-nowrap font-sans font-bold text-purple-deep">{{ $ans['preferensi_konseling'] ?? $sub->service_preference }}</td>
+                            <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-purple-deep">{{ !empty($ans['preferensi_konseling']) ? $ans['preferensi_konseling'] : '-' }}</td>
 
                             {{-- Action Sticky Column --}}
                             <td class="py-2 px-2.5 whitespace-nowrap text-center no-export sticky right-0 bg-white group-hover:bg-[#f2faf5] shadow-xs">
@@ -574,17 +645,17 @@
                 <template x-if="selectedForm && selectedForm.answers">
                     <div class="space-y-6">
                         {{-- 1. Ringkasan Identitas Klien --}}
-                        <div class="bg-purple-50/60 rounded-2xl p-4 border border-purple-100">
-                            <h4 class="font-bold text-purple-deep text-xs uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                            <h4 class="font-bold text-black text-xs uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                <span>1. Data Diri Klien</span>
+                                <span>Data Diri Klien</span>
                             </h4>
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
                                 <div><span class="text-slate-400 block font-medium">Nama Lengkap:</span> <strong class="text-slate-900" x-text="selectedForm.client_name || selectedForm.answers.nama_lengkap || selectedForm.answers.full_name || '-'"></strong></div>
                                 <div><span class="text-slate-400 block font-medium">Jenis Kelamin:</span> <span class="font-semibold text-slate-800" x-text="selectedForm.answers.jenis_kelamin || selectedForm.answers.gender || '-'"></span></div>
-                                <div><span class="text-slate-400 block font-medium">TTL:</span> <span class="font-semibold text-slate-800" x-text="selectedForm.answers.birth_place_date || selectedForm.answers.tempat_tanggal_lahir || `${selectedForm.answers.tempat_lahir || ''}${selectedForm.answers.tempat_lahir && selectedForm.answers.tanggal_lahir ? ', ' : ''}${selectedForm.answers.tanggal_lahir || '-'}`"></span></div>
+                                <div><span class="text-slate-400 block font-medium">TTL:</span> <span class="font-semibold text-slate-800" x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.birth_place_date || selectedForm.answers.tempat_tanggal_lahir)"></span></div>
                                 <div><span class="text-slate-400 block font-medium">Urutan Kelahiran:</span> <span class="text-slate-800" x-text="selectedForm.answers.urutan_kelahiran || selectedForm.answers.birth_order || '-'"></span></div>
-                                <div><span class="text-slate-400 block font-medium">No. Telp / HP:</span> <strong class="text-purple-deep" x-text="selectedForm.client_phone || selectedForm.answers.phone || '-'"></strong></div>
+                                <div><span class="text-slate-400 block font-medium">No. Telepon:</span> <strong class="text-purple-deep" x-text="selectedForm.client_phone || selectedForm.answers.phone || '-'"></strong></div>
                                 <div><span class="text-slate-400 block font-medium">Email:</span> <span class="text-slate-800" x-text="selectedForm.answers.email || '-'"></span></div>
                                 <div><span class="text-slate-400 block font-medium">Agama / Religion:</span> <span class="text-slate-800" x-text="selectedForm.answers.agama || selectedForm.answers.religion || '-'"></span></div>
                                 <div><span class="text-slate-400 block font-medium">Suku / Ethnicity:</span> <span class="text-slate-800" x-text="selectedForm.answers.suku_bangsa || selectedForm.answers.ethnicity || '-'"></span></div>
@@ -604,21 +675,21 @@
 
                         {{-- 2. Data Pasangan (Khusus Pra-Nikah & Pernikahan) --}}
                         <template x-if="selectedForm.answers.nama_pasangan">
-                            <div class="bg-rose-50/50 rounded-2xl p-4 border border-rose-100 space-y-3">
-                                <h4 class="font-bold text-rose-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3">
+                                <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                                    <span>2. Data Pasangan & Riwayat Hubungan</span>
+                                    <span>Data Pasangan & Riwayat Hubungan</span>
                                 </h4>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                                    <div><span class="text-slate-400 block">Nama Pasangan:</span> <strong class="text-rose-900" x-text="selectedForm.answers.nama_pasangan || '-'"></strong></div>
+                                    <div><span class="text-slate-400 block">Nama Pasangan:</span> <strong class="text-black" x-text="selectedForm.answers.nama_pasangan || '-'"></strong></div>
                                     <div><span class="text-slate-400 block">Jenis Kelamin:</span> <span x-text="selectedForm.answers.jenis_kelamin_pasangan || '-'"></span></div>
-                                    <div><span class="text-slate-400 block">TTL Pasangan:</span> <span x-text="`${selectedForm.answers.tempat_lahir_pasangan || ''}${selectedForm.answers.tempat_lahir_pasangan && selectedForm.answers.tanggal_lahir_pasangan ? ', ' : ''}${selectedForm.answers.tanggal_lahir_pasangan || '-'}`"></span></div>
+                                    <div><span class="text-slate-400 block">TTL Pasangan:</span> <span x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir_pasangan, selectedForm.answers.tanggal_lahir_pasangan, null)"></span></div>
                                     <div><span class="text-slate-400 block">HP Pasangan:</span> <strong class="text-slate-900" x-text="selectedForm.answers.phone_pasangan || '-'"></strong></div>
                                     <div><span class="text-slate-400 block">Pekerjaan:</span> <span x-text="selectedForm.answers.pekerjaan_pasangan || '-'"></span></div>
                                     <div><span class="text-slate-400 block">Agama:</span> <span x-text="selectedForm.answers.agama_pasangan || '-'"></span></div>
                                     <template x-if="selectedForm.answers.tanggal_rencana_pernikahan">
-                                        <div class="col-span-2 sm:col-span-3 bg-white p-2.5 rounded-xl border border-rose-200">
-                                            <span class="text-rose-800 font-bold block mb-0.5">Rencana Pernikahan:</span>
+                                        <div class="col-span-2 sm:col-span-3 bg-white p-2.5 rounded-xl border border-slate-100">
+                                            <span class="text-black font-bold block mb-0.5">Rencana Pernikahan:</span>
                                             <p class="text-slate-800" x-text="selectedForm.answers.tanggal_rencana_pernikahan"></p>
                                         </div>
                                     </template>
@@ -640,16 +711,16 @@
                                 </div>
 
                                 <template x-if="selectedForm.answers.harapan_pernikahan || selectedForm.answers.keluhan_hubungan || selectedForm.answers.keluhan_utama">
-                                    <div class="space-y-2 pt-2 border-t border-rose-100 text-xs">
+                                    <div class="space-y-2 pt-2 border-t border-slate-100 text-xs">
                                         <template x-if="selectedForm.answers.harapan_pernikahan">
                                             <div>
-                                                <span class="text-rose-800 font-semibold block">Harapan dari Pernikahan:</span>
+                                                <span class="text-black font-semibold block">Harapan dari Pernikahan:</span>
                                                 <p class="text-slate-800 font-medium" x-text="selectedForm.answers.harapan_pernikahan"></p>
                                             </div>
                                         </template>
                                         <template x-if="selectedForm.answers.keluhan_hubungan || selectedForm.answers.keluhan_utama">
                                             <div>
-                                                <span class="text-rose-800 font-semibold block">Keluhan / Masalah Hubungan:</span>
+                                                <span class="text-black font-semibold block">Keluhan / Masalah Hubungan:</span>
                                                 <p class="text-slate-800 font-medium" x-text="selectedForm.answers.keluhan_hubungan || selectedForm.answers.keluhan_utama"></p>
                                             </div>
                                         </template>
@@ -660,21 +731,21 @@
 
                         {{-- 3. Data Industri & Stres PSS (Khusus Formulir Industri) --}}
                         <template x-if="selectedForm.form_type === 'industri' || selectedForm.answers.posisi_dituju">
-                            <div class="bg-amber-50/50 rounded-2xl p-4 border border-amber-200 space-y-3 text-xs">
-                                <h4 class="font-bold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3 text-xs">
+                                <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                                     <span>Posisi Dilamar & Pengalaman Industri</span>
                                 </h4>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                    <div class="col-span-2 sm:col-span-1 bg-white p-2.5 rounded-xl border border-amber-200">
+                                    <div class="col-span-2 sm:col-span-1 bg-white p-2.5 rounded-xl border border-slate-100">
                                         <span class="text-slate-400 block font-medium">Posisi yang Dituju:</span>
                                         <strong class="text-purple-deep text-sm" x-text="selectedForm.answers.posisi_dituju || '-'"></strong>
                                     </div>
-                                    <div class="bg-white p-2.5 rounded-xl border border-amber-200">
+                                    <div class="bg-white p-2.5 rounded-xl border border-slate-100">
                                         <span class="text-slate-400 block font-medium">Pekerjaan Saat Ini:</span>
                                         <strong class="text-slate-800" x-text="selectedForm.answers.pekerjaan_saat_ini || '-'"></strong>
                                     </div>
-                                    <div class="bg-white p-2.5 rounded-xl border border-amber-200">
+                                    <div class="bg-white p-2.5 rounded-xl border border-slate-100">
                                         <span class="text-slate-400 block font-medium">Ekspektasi Gaji:</span>
                                         <strong class="text-purple-deep" x-text="selectedForm.answers.ekspektasi_gaji || '-'"></strong>
                                     </div>
@@ -686,7 +757,7 @@
 
                                 {{-- PSS Stress Score Summary --}}
                                 <template x-if="selectedForm.answers.pss_1 !== undefined">
-                                    <div class="mt-3 pt-3 border-t border-amber-200">
+                                    <div class="mt-3 pt-3 border-t border-slate-100">
                                         <h5 class="font-bold text-slate-800 mb-2">Hasil Kuesioner Stres (PSS 10 Butir):</h5>
                                         <div class="grid grid-cols-5 sm:grid-cols-10 gap-1 text-center font-mono">
                                             <template x-for="n in 10" :key="n">
@@ -833,7 +904,7 @@
                                 </div>
                                 <div class="p-3 rounded-xl border bg-purple-50/50 border-purple-100">
                                     <span class="text-purple-deep block font-semibold">Preferensi Proses Konseling:</span>
-                                    <strong class="text-purple-deep" x-text="selectedForm.answers.preferensi_konseling || selectedForm.answers.preferred_counseling || selectedForm.service_preference"></strong>
+                                    <strong class="text-purple-deep" x-text="selectedForm.answers.preferensi_konseling || selectedForm.answers.preferred_counseling || '-'"></strong>
                                 </div>
                             </div>
                         </div>

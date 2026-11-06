@@ -255,8 +255,9 @@
                         <button type="button" @click="assignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
                             Batal
                         </button>
-                        <button type="submit" class="bg-purple-deep text-white px-5 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition shadow-xs">
-                            Simpan Penugasan
+                        <button type="submit" class="bg-purple-deep text-white px-5 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition shadow-xs flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                            <span>Simpan Penugasan</span>
                         </button>
                     </div>
                 </form>

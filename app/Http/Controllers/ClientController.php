@@ -60,10 +60,12 @@ class ClientController extends Controller
             $query->where('service_type', $request->service_type);
         }
 
-        $sort = $request->get('sort', 'created_at');
+        $sort = $request->get('sort');
         $direction = $request->get('direction', 'desc');
 
-        if (in_array($sort, ['creator', 'created_by'])) {
+        if (empty($sort)) {
+            $query->orderBy('clients.created_at', 'desc');
+        } elseif (in_array($sort, ['creator', 'created_by'])) {
             $query->leftJoin('users', 'clients.created_by', '=', 'users.id')
                   ->orderBy('users.name', $direction)
                   ->select('clients.*');
@@ -91,14 +93,17 @@ class ClientController extends Controller
 
         $clients = $query->paginate($perPage)->withQueryString();
 
-        return view('clients.index', compact('clients', 'sort', 'direction', 'perPage'));
+        return view('clients.client-list-table', compact('clients', 'sort', 'direction', 'perPage'));
     }
 
     public function create(Request $request)
     {
         $initialJenis = $request->get('jenis', '');
         $initialFormType = $request->get('form_type', '');
-        return view('clients.create', compact('initialJenis', 'initialFormType'));
+        $clientId = $request->get('client_id');
+        $existingClient = $clientId ? Client::find($clientId) : null;
+
+        return view('clients.client-registration-form', compact('initialJenis', 'initialFormType', 'existingClient'));
     }
 
     public function store(Request $request)
@@ -252,8 +257,9 @@ class ClientController extends Controller
             'nama_konselor' => 'nullable|string|max:150',
             'kontak_darurat' => 'nullable|string|max:255',
             'sumber_info' => 'nullable|string|max:150',
-            'preferensi_konseling' => 'nullable|string',
+            'preferensi_konseling' => 'required|string',
         ], [
+            'preferensi_konseling.required' => 'Preferensi proses konseling wajib dipilih.',
             'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
             'jenis_kelamin.required' => 'Jenis kelamin wajib dipilih.',
             'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
@@ -268,8 +274,7 @@ class ClientController extends Controller
 
         return DB::transaction(function () use ($request) {
             $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
-            $isOnline = str_contains(strtolower($request->preferensi_konseling ?? ''), 'online');
-            $counselingType = $isOnline ? 'online' : 'offline';
+            $counselingType = $request->filled('preferensi_konseling') ? (str_contains(strtolower($request->preferensi_konseling), 'online') ? 'online' : 'offline') : null;
 
             $client = Client::firstOrNew(['phone' => trim($request->phone)]);
             $client->name = trim($request->nama_lengkap);
@@ -290,20 +295,26 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('dewasa');
+            $booking = Booking::createInitialForForm($client, 'dewasa', $counselingType);
+
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'dewasa',
                 'client_id' => $client->id,
-                'booking_id' => null,
+                'booking_id' => $booking->id,
                 'client_name' => $client->name,
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => $counselingType,
-                'status' => 'baru',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+
+            if ($request->filled('existing_client_id')) {
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'konseling'])
+                    ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Formulir Riwayat Hidup Konseling - Dewasa (Tiket: ' . $ticketNumber . ').');
+            }
 
             return redirect()->route('clients.index')
                 ->with('success', 'Klien ' . $client->name . ' berhasil ditambahkan melalui Formulir Riwayat Hidup Konseling - Dewasa (Tiket: ' . $ticketNumber . ').');
@@ -366,8 +377,9 @@ class ClientController extends Controller
             'nama_konselor_lama' => 'nullable|string|max:255',
             'kontak_darurat' => 'nullable|string|max:255',
             'sumber_info' => 'nullable|string|max:100',
-            'preferensi_konseling' => 'nullable|string|max:100',
+            'preferensi_konseling' => 'required|string|max:100',
         ], [
+            'preferensi_konseling.required' => 'Preferensi proses konseling wajib dipilih.',
             'nama_lengkap.required' => 'Nama lengkap anak wajib diisi.',
             'jenis_kelamin.required' => 'Pilih jenis kelamin anak.',
             'tempat_lahir.required' => 'Tempat lahir anak wajib diisi.',
@@ -383,8 +395,7 @@ class ClientController extends Controller
         return DB::transaction(function () use ($request) {
             $primaryPhone = !empty($request->phone) ? $request->phone : (!empty($request->phone_ibu) ? $request->phone_ibu : $request->phone_ayah);
             $gender = (strtolower($request->jenis_kelamin) === 'laki-laki' || strtolower($request->jenis_kelamin) === 'l') ? 'l' : 'p';
-            $isOnline = str_contains(strtolower($request->preferensi_konseling ?? ''), 'online');
-            $counselingType = $isOnline ? 'online' : 'offline';
+            $counselingType = $request->filled('preferensi_konseling') ? (str_contains(strtolower($request->preferensi_konseling), 'online') ? 'online' : 'offline') : null;
 
             $client = Client::firstOrNew(['phone' => trim($primaryPhone)]);
             $client->name = trim($request->nama_lengkap);
@@ -404,20 +415,26 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('anak');
+            $booking = Booking::createInitialForForm($client, 'anak', $counselingType);
+
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'anak',
                 'client_id' => $client->id,
-                'booking_id' => null,
+                'booking_id' => $booking->id,
                 'client_name' => $client->name,
                 'client_phone' => $primaryPhone,
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => $counselingType,
-                'status' => 'baru',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+
+            if ($request->filled('existing_client_id')) {
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'konseling'])
+                    ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Formulir Riwayat Hidup Konseling - Anak (Tiket: ' . $ticketNumber . ').');
+            }
 
             return redirect()->route('clients.index')
                 ->with('success', 'Klien ' . $client->name . ' berhasil ditambahkan melalui Formulir Riwayat Hidup Konseling - Anak (Tiket: ' . $ticketNumber . ').');
@@ -471,8 +488,9 @@ class ClientController extends Controller
             'nama_konselor' => 'nullable|string|max:150',
             'kontak_darurat' => 'nullable|string|max:255',
             'sumber_info' => 'nullable|string|max:150',
-            'preferensi_konseling' => 'nullable|string|max:100',
+            'preferensi_konseling' => 'required|string|max:100',
         ], [
+            'preferensi_konseling.required' => 'Preferensi proses konseling wajib dipilih.',
             'nama_lengkap.required' => 'Nama lengkap Anda wajib diisi.',
             'jenis_kelamin.required' => 'Pilih jenis kelamin Anda.',
             'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
@@ -487,8 +505,7 @@ class ClientController extends Controller
 
         return DB::transaction(function () use ($request) {
             $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
-            $isOnline = str_contains(strtolower($request->preferensi_konseling ?? ''), 'online');
-            $counselingType = $isOnline ? 'online' : 'offline';
+            $counselingType = $request->filled('preferensi_konseling') ? (str_contains(strtolower($request->preferensi_konseling), 'online') ? 'online' : 'offline') : null;
 
             $client = Client::firstOrNew(['phone' => trim($request->phone)]);
             $client->name = trim($request->nama_lengkap);
@@ -509,20 +526,26 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('pra_nikah');
+            $booking = Booking::createInitialForForm($client, 'pra_nikah', $counselingType);
+
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'pra_nikah',
                 'client_id' => $client->id,
-                'booking_id' => null,
+                'booking_id' => $booking->id,
                 'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => $counselingType,
-                'status' => 'baru',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+
+            if ($request->filled('existing_client_id')) {
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'konseling'])
+                    ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Formulir Riwayat Hidup Konseling - Pra Nikah (Tiket: ' . $ticketNumber . ').');
+            }
 
             return redirect()->route('clients.index')
                 ->with('success', 'Klien ' . $client->name . ' berhasil ditambahkan melalui Formulir Riwayat Hidup Konseling - Pra Nikah (Tiket: ' . $ticketNumber . ').');
@@ -577,8 +600,9 @@ class ClientController extends Controller
             'nama_konselor' => 'nullable|string|max:150',
             'kontak_darurat' => 'nullable|string|max:255',
             'sumber_info' => 'nullable|string|max:150',
-            'preferensi_konseling' => 'nullable|string|max:100',
+            'preferensi_konseling' => 'required|string|max:100',
         ], [
+            'preferensi_konseling.required' => 'Preferensi proses konseling wajib dipilih.',
             'nama_lengkap.required' => 'Nama lengkap Anda wajib diisi.',
             'jenis_kelamin.required' => 'Pilih jenis kelamin Anda.',
             'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
@@ -593,8 +617,7 @@ class ClientController extends Controller
 
         return DB::transaction(function () use ($request) {
             $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
-            $isOnline = str_contains(strtolower($request->preferensi_konseling ?? ''), 'online');
-            $counselingType = $isOnline ? 'online' : 'offline';
+            $counselingType = $request->filled('preferensi_konseling') ? (str_contains(strtolower($request->preferensi_konseling), 'online') ? 'online' : 'offline') : null;
 
             $client = Client::firstOrNew(['phone' => trim($request->phone)]);
             $client->name = trim($request->nama_lengkap);
@@ -615,20 +638,26 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('pernikahan');
+            $booking = Booking::createInitialForForm($client, 'pernikahan', $counselingType);
+
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'pernikahan',
                 'client_id' => $client->id,
-                'booking_id' => null,
+                'booking_id' => $booking->id,
                 'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => $counselingType,
-                'status' => 'baru',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+
+            if ($request->filled('existing_client_id')) {
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'konseling'])
+                    ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Formulir Riwayat Hidup Konseling - Pernikahan (Tiket: ' . $ticketNumber . ').');
+            }
 
             return redirect()->route('clients.index')
                 ->with('success', 'Klien ' . $client->name . ' berhasil ditambahkan melalui Formulir Riwayat Hidup Konseling - Pernikahan (Tiket: ' . $ticketNumber . ').');
@@ -709,20 +738,26 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('biography_en');
+            $booking = Booking::createInitialForForm($client, 'biography_en', 'offline');
+
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'biography_en',
                 'client_id' => $client->id,
-                'booking_id' => null,
+                'booking_id' => $booking->id,
                 'client_name' => $client->name,
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => 'offline',
-                'status' => 'baru',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+
+            if ($request->filled('existing_client_id')) {
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psychotest'])
+                    ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Biography Form (Tiket: ' . $ticketNumber . ').');
+            }
 
             return redirect()->route('clients.index')
                 ->with('success', 'Client ' . $client->name . ' has been successfully added via Biography Form (Ticket: ' . $ticketNumber . ').');
@@ -789,7 +824,10 @@ class ClientController extends Controller
             $client->name = trim($request->nama_lengkap);
             $client->jenis = 'individu';
             $client->gender = $gender;
-            $client->birth_place = $request->tempat_tanggal_lahir;
+            $client->birth_place = $request->tempat_lahir ?? $request->tempat_tanggal_lahir;
+            if ($request->filled('tanggal_lahir')) {
+                $client->dob = $request->tanggal_lahir;
+            }
             $client->address = $request->alamat_sekarang;
             $client->religion = $request->agama;
             $client->education = $request->pendidikan_terakhir;
@@ -803,20 +841,26 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('non_industri');
+            $booking = Booking::createInitialForForm($client, 'non_industri', 'offline');
+
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'non_industri',
                 'client_id' => $client->id,
-                'booking_id' => null,
+                'booking_id' => $booking->id,
                 'client_name' => $client->name,
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => 'offline',
-                'status' => 'baru',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+
+            if ($request->filled('existing_client_id')) {
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psychotest'])
+                    ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Formulir Riwayat Hidup - Non-Industri (Tiket: ' . $ticketNumber . ').');
+            }
 
             return redirect()->route('clients.index')
                 ->with('success', 'Klien ' . $client->name . ' berhasil ditambahkan melalui Formulir Riwayat Hidup - Non-Industri (Tiket: ' . $ticketNumber . ').');
@@ -828,9 +872,13 @@ class ClientController extends Controller
         $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'nama_perusahaan' => 'required|string|max:255',
+            'pic_name' => 'nullable|string|max:255',
+            'nama_pic' => 'nullable|string|max:255',
             'pekerjaan_saat_ini' => 'required|string|max:150',
             'jenis_kelamin' => 'required|string|in:Laki-Laki,Perempuan',
-            'tempat_tanggal_lahir' => 'required|string|max:150',
+            'tempat_lahir' => 'required_without:tempat_tanggal_lahir|nullable|string|max:150',
+            'tanggal_lahir' => 'required_without:tempat_tanggal_lahir|nullable|date',
+            'tempat_tanggal_lahir' => 'nullable|string|max:150',
             'alamat_sekarang' => 'nullable|string',
             'agama' => 'nullable|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
@@ -871,6 +919,9 @@ class ClientController extends Controller
             'nama_perusahaan.required' => 'Nama perusahaan wajib diisi.',
             'pekerjaan_saat_ini.required' => 'Pekerjaan saat ini wajib diisi.',
             'jenis_kelamin.required' => 'Pilih jenis kelamin.',
+            'tempat_lahir.required_without' => 'Tempat lahir wajib diisi.',
+            'tanggal_lahir.required_without' => 'Tanggal lahir wajib diisi.',
+            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid.',
             'tempat_tanggal_lahir.required' => 'Tempat & tanggal lahir wajib diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir wajib dipilih.',
             'phone.required' => 'Nomor Telp/HP/WhatsApp aktif wajib diisi.',
@@ -884,13 +935,19 @@ class ClientController extends Controller
             $client = Client::firstOrNew(['phone' => trim($request->phone)]);
             $client->name = trim($request->nama_lengkap);
             $client->jenis = 'industri';
-            $client->pic_name = trim($request->nama_perusahaan);
+            $client->company_name = trim($request->nama_perusahaan);
+            $client->pic_name = $request->filled('pic_name')
+                ? trim($request->pic_name)
+                : ($request->filled('nama_pic') ? trim($request->nama_pic) : null);
             $client->gender = $gender;
-            $client->birth_place = $request->tempat_tanggal_lahir;
+            $client->birth_place = $request->tempat_lahir ?? $request->tempat_tanggal_lahir;
+            if ($request->filled('tanggal_lahir')) {
+                $client->dob = $request->tanggal_lahir;
+            }
             $client->address = $request->alamat_sekarang;
             $client->religion = $request->agama;
             $client->education = $request->pendidikan_terakhir;
-            $client->occupation = trim($request->pekerjaan_saat_ini) . ' - ' . trim($request->nama_perusahaan);
+            $client->occupation = $request->filled('pekerjaan_saat_ini') ? trim($request->pekerjaan_saat_ini) : null;
             $client->email = $request->email;
             $client->service_type = 'Layanan Industri';
             $client->counseling_type = 'offline';
@@ -900,20 +957,26 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('industri');
+            $booking = Booking::createInitialForForm($client, 'industri', 'offline');
+
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'industri',
                 'client_id' => $client->id,
-                'booking_id' => null,
+                'booking_id' => $booking->id,
                 'client_name' => $client->name,
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => 'offline',
-                'status' => 'baru',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+
+            if ($request->filled('existing_client_id')) {
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psychotest'])
+                    ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Formulir Riwayat Hidup - Industri (Tiket: ' . $ticketNumber . ').');
+            }
 
             return redirect()->route('clients.index')
                 ->with('success', 'Klien ' . $client->name . ' berhasil ditambahkan melalui Formulir Riwayat Hidup - Industri (Tiket: ' . $ticketNumber . ').');
@@ -930,16 +993,11 @@ class ClientController extends Controller
             'creator',
             'pairings.counselor',
             'pairings.assigner',
-
-            'testResults.administrator',
-            'testResults.deliveredBy',
-            'testResults.booking.staffPenguji',
-            'testResults.booking.staffKoreksi',
-            'testResults.booking.staffPelapor',
-            'testResults.documents',
             'staffAssignmentHistory.staff',
             'staffAssignmentHistory.assigner',
             'bookings.followUps',
+            'bookings.clientForm',
+            'bookings.clientForms',
             'bookings.participants',
             'bookings.paymentTransaction',
             'bookings.counselor',
@@ -956,7 +1014,7 @@ class ClientController extends Controller
             $staffMembers = User::orderBy('name')->get();
         }
 
-        return view('clients.show', compact('client', 'counselors', 'staffMembers'));
+        return view('clients.client-profile-detail', compact('client', 'counselors', 'staffMembers'));
     }
 
     public function edit(Client $client)
@@ -967,12 +1025,21 @@ class ClientController extends Controller
         $upcomingRecord = null;
         $activePairing = $client->pairings()->where('status', 'active')->latest()->first();
 
-        return view('clients.edit', compact('client', 'counselors', 'upcomingRecord', 'activePairing'));
+        return view('clients.client-edit-form', compact('client', 'counselors', 'upcomingRecord', 'activePairing'));
     }
 
     public function update(Request $request, Client $client)
     {
         $this->authorize('update', $client);
+
+        if ($request->has('gender')) {
+            $rawGender = strtolower(trim((string)$request->input('gender')));
+            if (in_array($rawGender, ['l', 'male', 'laki-laki', 'laki - laki', 'pria'])) {
+                $request->merge(['gender' => 'l']);
+            } elseif (in_array($rawGender, ['p', 'female', 'perempuan', 'wanita'])) {
+                $request->merge(['gender' => 'p']);
+            }
+        }
 
         $validated = $request->validate([
             'name' => [
@@ -982,6 +1049,7 @@ class ClientController extends Controller
                 'max:255',
                 'regex:/^[^0-9]+$/u',
             ],
+            'company_name' => 'nullable|string|max:255',
             'pic_name' => [
                 'nullable',
                 'string',
@@ -990,7 +1058,7 @@ class ClientController extends Controller
             ],
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
-            'gender' => 'nullable|in:l,p,non_binary,transgender,prefer_not_to_say,other',
+            'gender' => 'nullable|in:l,p,male,female,laki-laki,perempuan,non_binary,transgender,prefer_not_to_say,other',
             'birth_place' => 'nullable|string|max:255',
             'dob' => 'nullable|date',
             'religion' => 'nullable|string|max:100',
@@ -1030,6 +1098,15 @@ class ClientController extends Controller
 
         $participants = $validated['participants'] ?? null;
         unset($validated['participants']);
+
+        if (isset($validated['gender'])) {
+            $rawGender = strtolower(trim((string)$validated['gender']));
+            if (in_array($rawGender, ['l', 'male', 'laki-laki', 'laki - laki', 'pria'])) {
+                $validated['gender'] = 'l';
+            } elseif (in_array($rawGender, ['p', 'female', 'perempuan', 'wanita'])) {
+                $validated['gender'] = 'p';
+            }
+        }
 
         $client->update($validated);
 
@@ -1083,7 +1160,8 @@ class ClientController extends Controller
         ]);
 
         $notes = $client->notes_list;
-        $date = !empty($request->date) ? \Carbon\Carbon::parse($request->date) : now();
+        // Gunakan waktu saat catatan dibuat secara presisi hingga detik
+        $date = now();
 
         $notes[] = [
             'id' => 'note_' . time() . '_' . substr(bin2hex(random_bytes(2)), 0, 4),
@@ -1107,21 +1185,25 @@ class ClientController extends Controller
     public function updateNote(Request $request, Client $client, string $noteId)
     {
         $request->validate([
-            'note' => 'required|string',
+            'note' => 'nullable|string',
             'date' => 'nullable|date',
-        ], [
-            'note.required' => 'Isi catatan tidak boleh kosong.',
         ]);
+
+        $noteText = trim($request->note ?? '');
+
+        // Jika teks catatan dikosongkan saat edit, otomatis hapus catatan tersebut
+        if ($noteText === '') {
+            return $this->destroyNote($client, $noteId);
+        }
 
         $notes = $client->notes_list;
         $found = false;
 
         foreach ($notes as &$item) {
             if ($item['id'] === $noteId) {
-                if (!empty($request->date)) {
-                    $item['date'] = \Carbon\Carbon::parse($request->date)->format('Y-m-d H:i:s');
-                }
-                $item['note'] = trim($request->note);
+                // Tanggal dan waktu diperbarui mengikuti waktu saat menyimpan perubahan yang baru
+                $item['date'] = now()->format('Y-m-d H:i:s');
+                $item['note'] = $noteText;
                 $found = true;
                 break;
             }
@@ -1160,5 +1242,6 @@ class ClientController extends Controller
         return redirect()->to(route('clients.show', $client) . '?tab=notes')
             ->with('success', 'Catatan berhasil dihapus.');
     }
+
 }
 

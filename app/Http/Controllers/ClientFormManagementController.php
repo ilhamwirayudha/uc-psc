@@ -167,7 +167,7 @@ class ClientFormManagementController extends Controller
             });
         }
 
-        return view('client-forms.index', compact('forms'));
+        return view('client-forms.client-forms-incoming-table', compact('forms'));
     }
 
     /**
@@ -299,7 +299,7 @@ class ClientFormManagementController extends Controller
 
         $submissions = $query->paginate(25)->withQueryString();
 
-        return view('client-forms.results', compact('categories', 'activeKey', 'activeCategory', 'submissions'));
+        return view('client-forms.client-forms-summary-results', compact('categories', 'activeKey', 'activeCategory', 'submissions'));
     }
 
     /**
@@ -326,24 +326,6 @@ class ClientFormManagementController extends Controller
     {
         $clientForm->load(['client', 'booking']);
 
-        return view('client-forms.pdf', compact('clientForm'));
-    }
-
-    /**
-     * Update submission status or notes.
-     */
-    public function updateStatus(Request $request, ClientForm $clientForm)
-    {
-        $request->validate([
-            'status' => 'required|in:baru,diproses,selesai,dibatalkan',
-            'admin_notes' => 'nullable|string',
-        ]);
-
-        $clientForm->update([
-            'status' => $request->status,
-            'admin_notes' => $request->admin_notes,
-        ]);
-
-        return back()->with('success', 'Status formulir #' . $clientForm->ticket_number . ' berhasil diperbarui.');
+        return view('client-forms.client-form-print-dossier', compact('clientForm'));
     }
 }

@@ -65,7 +65,8 @@
         // Halaman 2: Data Diri
         nama_lengkap: @js(old('nama_lengkap', '')),
         jenis_kelamin: @js(old('jenis_kelamin', '')),
-        tempat_tanggal_lahir: @js(old('tempat_tanggal_lahir', '')),
+        tempat_lahir: @js(old('tempat_lahir', '')),
+        tanggal_lahir: @js(old('tanggal_lahir', '')),
         urutan_kelahiran: @js(old('urutan_kelahiran', '')),
         alamat_sekarang: @js(old('alamat_sekarang', '')),
         asal_kota: @js(old('asal_kota', '')),
@@ -355,7 +356,8 @@
             } else if (this.page === 2) {
                 if (!this.nama_lengkap.trim()) this.errors['nama_lengkap'] = 'Pertanyaan ini wajib diisi';
                 if (!this.jenis_kelamin) this.errors['jenis_kelamin'] = 'Pertanyaan ini wajib diisi';
-                if (!this.tempat_tanggal_lahir.trim()) this.errors['tempat_tanggal_lahir'] = 'Pertanyaan ini wajib diisi';
+                if (!this.tempat_lahir.trim()) this.errors['tempat_lahir'] = 'Tempat lahir wajib diisi';
+                if (!this.tanggal_lahir) this.errors['tanggal_lahir'] = 'Tanggal lahir wajib diisi';
                 if (!this.urutan_kelahiran.trim()) this.errors['urutan_kelahiran'] = 'Pertanyaan ini wajib diisi';
                 if (!this.asal_kota.trim()) this.errors['asal_kota'] = 'Pertanyaan ini wajib diisi';
                 if (!this.phone.trim()) this.errors['phone'] = 'Pertanyaan ini wajib diisi';
@@ -525,10 +527,30 @@
                     </div>
 
                     {{-- 3. Tempat, Tanggal Lahir --}}
-                    <div id="card_tempat_tanggal_lahir" class="bg-white rounded-2xl border shadow-xs p-5 space-y-2 transition" :class="errors['tempat_tanggal_lahir'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
-                        <label class="block text-sm font-bold text-slate-900">Tempat, Tanggal Lahir <span class="text-rose-500">*</span></label>
-                        <input type="text" name="tempat_tanggal_lahir" x-model="tempat_tanggal_lahir" @input="delete errors['tempat_tanggal_lahir']" placeholder="Contoh: Surabaya, 15 Januari 1998" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
-                        <template x-if="errors['tempat_tanggal_lahir']"><p class="text-xs text-rose-600 font-medium" x-text="errors['tempat_tanggal_lahir']"></p></template>
+                    <div id="card_tempat_lahir" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                         :class="errors['tempat_lahir'] || errors['tanggal_lahir'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
+                        <label class="block text-sm sm:text-base font-bold text-slate-900">
+                            Tempat, Tanggal Lahir <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                            <div>
+                                <span class="block text-xs text-slate-500 mb-1">Tempat Lahir</span>
+                                <input type="text" name="tempat_lahir" x-model="tempat_lahir" @input="delete errors['tempat_lahir']"
+                                       placeholder="Kota tempat lahir (Contoh: Surabaya)" 
+                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <template x-if="errors['tempat_lahir']">
+                                    <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['tempat_lahir']"></p>
+                                </template>
+                            </div>
+                            <div>
+                                <span class="block text-xs text-slate-500 mb-1">Tanggal Lahir</span>
+                                <input type="date" name="tanggal_lahir" x-model="tanggal_lahir" @change="delete errors['tanggal_lahir']"
+                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <template x-if="errors['tanggal_lahir']">
+                                    <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['tanggal_lahir']"></p>
+                                </template>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- 4. Urutan Kelahiran --}}
@@ -552,9 +574,9 @@
                         <template x-if="errors['asal_kota']"><p class="text-xs text-rose-600 font-medium" x-text="errors['asal_kota']"></p></template>
                     </div>
 
-                    {{-- 7. No. Telp/HP --}}
+                    {{-- 7. No. Telepon --}}
                     <div id="card_phone" class="bg-white rounded-2xl border shadow-xs p-5 space-y-2 transition" :class="errors['phone'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
-                        <label class="block text-sm font-bold text-slate-900">No. Telp/HP <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-900">No. Telepon <span class="text-rose-500">*</span></label>
                         <input type="tel" name="phone" x-model="phone" @input="delete errors['phone']" placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['phone']"><p class="text-xs text-rose-600 font-medium" x-text="errors['phone']"></p></template>
                     </div>

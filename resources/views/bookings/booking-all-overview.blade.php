@@ -49,7 +49,7 @@
                         <th class="px-6 py-3.5 text-left font-semibold text-white">Tanggal & Jam Dibuat</th>
                         <th class="px-6 py-3.5 text-left font-semibold text-white">Jadwal & Jam Pelaksanaan</th>
                         <th class="px-6 py-3.5 text-left font-semibold text-white">Status</th>
-                        <th class="px-6 py-3.5 text-left font-semibold text-white">Konselor/Staff</th>
+                        <th class="px-6 py-3.5 text-left font-semibold text-white">Psikolog/Staff</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#F3EAFB]">
@@ -75,8 +75,7 @@
                             'email' => $booking->client->email ?? '-',
                             'gender' => $booking->client->gender_label ?? '-',
                             'dob' => $booking->client->dob ? $booking->client->dob->locale('id')->isoFormat('D MMMM Y') : '-',
-                            'age' => $booking->client->dob ? $booking->client->dob->age . ' tahun' : null,
-                            'birth_place' => $booking->client->birth_place ?? '-',
+                                                        'birth_place' => $booking->client->birth_place ?? '-',
                             'religion' => $booking->client->religion ?? '-',
                             'occupation' => $booking->client->occupation ?? '-',
                             'education' => $booking->client->education_label ?? '-',
@@ -110,14 +109,6 @@
                                 'staff_penguji_name' => $b->staffPenguji?->name,
                                 'notes' => $b->notes,
                                 'update_url' => route('bookings.update', $b),
-                            ])->values()->toArray(),
-                            'test_results' => $booking->client->testResults->map(fn($t) => [
-                                'id' => $t->id,
-                                'test_name' => $t->test_name,
-                                'status' => $t->status,
-                                'status_label' => $t->status_label ?? ucfirst(str_replace('_', ' ', $t->status)),
-                                'summary' => $t->result_summary,
-                                'url' => route('test-results.show', $t),
                             ])->values()->toArray(),
                             'show_url' => route('clients.show', $booking->client),
                             'edit_url' => route('clients.edit', $booking->client),
@@ -178,7 +169,7 @@
                             'follow_up_url' => route('bookings.follow-up', $booking),
                         ];
                     @endphp
-                    <tr class="hover:bg-[#FDFCFE] transition group cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
+                    <tr class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 group cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
                         {{-- ID Booking (Teks Biasa, Bukan Tombol Terpisah) --}}
                         <td class="px-6 py-3.5 font-medium text-black">
                             <span>#{{ $booking->id }}</span>
@@ -216,7 +207,7 @@
 
                         {{-- Kategori --}}
                         <td class="px-6 py-3.5 cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase
+                            <span class="px-2 py-0.5 rounded text-[10px] font-medium uppercase
                                 {{ $booking->kategori === 'konseling' ? 'bg-purple-deep/10 text-purple-deep' : 'bg-orange/10 text-orange' }}">
                                 {{ $booking->kategori }}
                             </span>
@@ -236,7 +227,7 @@
                             @if($booking->tanggal_dijadwalkan)
                                 <div class="font-medium text-black">{{ $booking->tanggal_dijadwalkan->format('d M Y') }}</div>
                                 @if($jamSesi)
-                                    <div class="text-[11px] text-purple-deep font-semibold flex items-center gap-1 mt-0.5 font-mono bg-purple-50 px-1.5 py-0.5 rounded-md w-fit">
+                                    <div class="text-[11px] text-purple-deep font-medium flex items-center gap-1 mt-0.5 font-mono bg-purple-50 px-1.5 py-0.5 rounded-md w-fit">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                                         <span>{{ $jamSesi }}</span>
                                     </div>
@@ -253,14 +244,14 @@
 
                         {{-- Status --}}
                         <td class="px-6 py-3.5 cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-medium
                                 {{ $booking->status === 'selesai' ? 'bg-emerald-50 text-emerald-600' :
                                    ($booking->status === 'baru' ? 'bg-blue-50 text-blue-600' :
                                    ($booking->status === 'lanjutan' ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-600')) }}">
                                 {{ ucfirst(str_replace('_', ' ', $booking->status)) }}
                             </span>
                             @if($booking->kategori === 'konseling' && $booking->is_realized)
-                            <span class="mt-1 block px-2 py-0.5 rounded text-[10px] font-semibold w-fit
+                            <span class="mt-1 block px-2 py-0.5 rounded text-[10px] font-medium w-fit
                                 {{ $booking->is_overtime ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-600' }}">
                                 {{ $booking->is_overtime ? '⏱ Overtime' : '✓ Tepat Waktu' }}
                             </span>
@@ -275,9 +266,9 @@
                                 <div class="font-medium text-black">{{ $booking->counselor->name }}</div>
                                 <span class="text-[10px] text-gray-500 block">{{ $booking->counselor->specialization ?? 'Konselor' }}</span>
                             @elseif($booking->kategori === 'psikotes')
-                                @if($booking->staffPenguji) <div class="font-medium text-black"><span class="font-bold text-orange text-[10px]">P:</span> {{ $booking->staffPenguji->name }}</div> @endif
-                                @if($booking->staffKoreksi) <div class="font-medium text-black"><span class="font-bold text-amber-600 text-[10px]">K:</span> {{ $booking->staffKoreksi->name }}</div> @endif
-                                @if($booking->staffPelapor) <div class="font-medium text-black"><span class="font-bold text-emerald-600 text-[10px]">L:</span> {{ $booking->staffPelapor->name }}</div> @endif
+                                @if($booking->staffPenguji) <div class="font-medium text-black"><span class="font-medium text-orange text-[10px]">P:</span> {{ $booking->staffPenguji->name }}</div> @endif
+                                @if($booking->staffKoreksi) <div class="font-medium text-black"><span class="font-medium text-amber-600 text-[10px]">K:</span> {{ $booking->staffKoreksi->name }}</div> @endif
+                                @if($booking->staffPelapor) <div class="font-medium text-black"><span class="font-medium text-emerald-600 text-[10px]">L:</span> {{ $booking->staffPelapor->name }}</div> @endif
                             @else
                                 <span class="text-gray-400 italic font-medium">-</span>
                             @endif
@@ -320,12 +311,12 @@
                         <div class="flex items-center gap-2 flex-wrap">
                             <h3 class="font-extrabold text-base text-[#2A2035]" x-text="selectedBooking?.client?.name || 'Detail Klien'"></h3>
                             <span 
-                                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                                class="px-2.5 py-0.5 rounded-full text-[10px] font-medium uppercase tracking-wider"
                                 :class="['industri', 'company', 'perusahaan'].includes(selectedBooking?.client?.jenis) ? 'bg-amber-50 text-amber-700' : 'bg-purple-deep/10 text-purple-deep'"
                                 x-text="['industri', 'company', 'perusahaan'].includes(selectedBooking?.client?.jenis) ? 'INDUSTRI' : 'INDIVIDU'"
                             ></span>
                             <span 
-                                class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider"
+                                class="px-2.5 py-0.5 rounded-full text-[10px] font-medium uppercase tracking-wider"
                                 :class="selectedBooking?.kategori === 'konseling' ? 'bg-purple-deep/10 text-purple-deep' : 'bg-orange/15 text-orange'"
                                 x-text="selectedBooking?.kategori || ''"
                             ></span>
@@ -375,7 +366,7 @@
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
                         <div>
-                            <span class="text-[#827299] block font-medium">WhatsApp / Telepon</span>
+                            <span class="text-[#827299] block font-medium">No. Telepon</span>
                             <template x-if="selectedBooking?.client?.phone && selectedBooking.client.phone !== '-'">
                                 <a :href="'https://wa.me/' + selectedBooking.client.phone.replace(/[^0-9]/g, '')" target="_blank" class="font-bold text-purple-deep hover:underline flex items-center gap-1 mt-0.5">
                                     <span x-text="selectedBooking.client.phone"></span>
@@ -395,11 +386,8 @@
                             <span class="font-semibold text-[#2A2035]" x-text="selectedBooking?.client?.gender || '-'"></span>
                         </div>
                         <div>
-                            <span class="text-[#827299] block font-medium">Lahir & Usia</span>
-                            <span class="font-semibold text-[#2A2035]" x-text="selectedBooking?.client?.dob || '-'"></span>
-                            <template x-if="selectedBooking?.client?.age">
-                                <span class="text-[#827299] block text-[11px]" x-text="'(' + selectedBooking.client.age + ')'"></span>
-                            </template>
+                            <span class="text-[#827299] block font-medium">Tempat, Tanggal Lahir</span>
+                            <span class="font-semibold text-[#2A2035]" x-text="(selectedBooking?.client?.birth_place ? selectedBooking.client.birth_place + ', ' : '') + (selectedBooking?.client?.dob || '-')"></span>
                         </div>
                         <div>
                             <span class="text-[#827299] block font-medium">Pendidikan & Pekerjaan</span>
@@ -435,15 +423,15 @@
                         </div>
                     </div>
 
-                    {{-- Konselor Praktik (Khusus Konseling) --}}
+                    {{-- Psikolog Praktik (Khusus Konseling) --}}
                     <template x-if="selectedBooking?.kategori === 'konseling'">
                         <div class="mt-3 p-3 bg-purple-50/50 rounded-xl border border-purple-100 flex items-center justify-between text-xs">
                             <div>
-                                <span class="text-[#827299] block text-[11px] font-medium">Konselor Praktik</span>
+                                <span class="text-[#827299] block text-[11px] font-medium">Psikolog Praktik</span>
                                 <p class="font-bold text-purple-deep text-sm" x-text="selectedBooking.counselor?.name || 'Belum ditentukan'"></p>
-                                <p class="text-[11px] text-[#5B4A73]" x-text="selectedBooking.counselor?.specialization || 'Konselor Praktik'"></p>
+                                <p class="text-[11px] text-[#5B4A73]" x-text="selectedBooking.counselor?.specialization || 'Psikolog Praktik'"></p>
                             </div>
-                            <span class="px-2.5 py-1 bg-purple-deep/10 text-purple-deep font-semibold rounded-lg text-[10px]">Konselor Aktif</span>
+                            <span class="px-2.5 py-1 bg-purple-deep/10 text-purple-deep font-semibold rounded-lg text-[10px]">Psikolog Aktif</span>
                         </div>
                     </template>
 
@@ -522,7 +510,7 @@
                             </div>
                             <div>
                                 <span class="text-[#827299] block">Status Bayar</span>
-                                <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase mt-0.5" :class="selectedBooking.payment.status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'" x-text="selectedBooking.payment.status"></span>
+                                <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium uppercase mt-0.5" :class="selectedBooking.payment.status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'" x-text="selectedBooking.payment.status"></span>
                             </div>
                             <div>
                                 <span class="text-[#827299] block">Metode</span>
@@ -556,7 +544,7 @@
                                         </template>
                                     </div>
                                     <span 
-                                        class="px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                                        class="px-2 py-0.5 rounded-full text-[10px] font-medium"
                                         :class="b.status === 'selesai' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'"
                                         x-text="b.status_label"
                                     ></span>
@@ -565,33 +553,13 @@
                         </div>
                     </div>
                 </template>
-
-                {{-- 5. BERKAS HASIL ASESMEN PSIKOTES (JIKA ADA) --}}
-                <template x-if="selectedBooking?.client?.test_results && selectedBooking.client.test_results.length > 0">
-                    <div class="bg-white rounded-2xl p-4 border border-[#EDE1FA]">
-                        <h4 class="font-bold text-xs uppercase tracking-wider text-[#5B4A73] pb-2.5 mb-3 border-b border-[#EDE1FA] flex items-center gap-1.5">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            Berkas & Hasil Asesmen Klien
-                        </h4>
-                        <div class="divide-y divide-[#EDE1FA]">
-                            <template x-for="t in selectedBooking.client.test_results" :key="t.id">
-                                <div class="py-2.5 flex items-center justify-between text-xs">
-                                    <div>
-                                        <p class="font-bold text-[#2A2035]" x-text="t.test_name"></p>
-                                        <p class="text-[11px] text-[#827299] line-clamp-1" x-text="t.summary || 'Tidak ada ringkasan'"></p>
-                                    </div>
-                                    <a :href="t.url" target="_blank" class="px-2.5 py-1 bg-purple-50 text-purple-deep rounded-lg text-xs font-bold hover:bg-purple-100 transition">
-                                        Buka Berkas
-                                    </a>
-                                </div>
-                            </template>
                         </div>
                     </div>
                 </template>
 
             </div>
 
-            {{-- Footer: Bagian Paling Bawah Tersedia Tombol Edit Jadwal, Hapus Data, Tutup (dan Edit Profil Klien) --}}
+            {{-- Footer: Bagian Paling Bawah Tersedia Tombol Edit Jadwal, Tutup (dan Edit Profil Klien) --}}
             <div class="p-4 border-t border-[#EDE1FA] bg-[#FAF8FD] flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-2 flex-wrap">
                     {{-- Tombol Edit Jadwal --}}
@@ -604,18 +572,6 @@
                         <span>Edit Jadwal</span>
                     </button>
 
-                    {{-- Tombol Hapus Data --}}
-                    <form :action="selectedBooking?.destroy_url || ('/bookings/' + (selectedBooking?.id || ''))" method="POST" class="inline m-0 p-0" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data booking ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button 
-                            type="submit" 
-                            class="px-4 py-2 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-xl hover:bg-red-100 transition cursor-pointer flex items-center gap-1.5"
-                        >
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                            <span>Hapus Data</span>
-                        </button>
-                    </form>
 
                     {{-- Tombol Edit Profil Klien --}}
                     <template x-if="selectedBooking?.client?.edit_url">
@@ -767,7 +723,7 @@
 
                     {{-- Konseling: Konselor --}}
                     <div x-show="editForm.kategori === 'konseling'" class="bg-[#FAF8FD] p-4 rounded-2xl border border-[#EDE1FA]">
-                        <label class="block font-semibold text-[#5B4A73] mb-1.5">Pilih Konselor Praktik</label>
+                        <label class="block font-semibold text-[#5B4A73] mb-1.5">Pilih Psikolog Praktik</label>
                         <select 
                             name="counselor_id" 
                             x-model="editForm.counselor_id"
@@ -776,7 +732,7 @@
                             <option value="">Belum Ditentukan (Unassigned)</option>
                             @foreach($counselors as $counselor)
                             <option value="{{ $counselor->id }}">
-                                {{ $counselor->name }} ({{ $counselor->specialization ?? 'Psikolog' }})
+                                {{ $counselor->name }}
                             </option>
                             @endforeach
                         </select>
@@ -885,9 +841,10 @@
                     </button>
                     <button 
                         type="submit" 
-                        class="px-5 py-2 bg-purple-deep text-white text-xs font-bold rounded-xl hover:opacity-90 transition shadow-xs cursor-pointer"
+                        class="px-5 py-2 bg-purple-deep text-white text-xs font-bold rounded-xl hover:opacity-90 transition shadow-xs cursor-pointer flex items-center gap-1.5"
                     >
-                        Simpan Perubahan
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        <span>Simpan Perubahan</span>
                     </button>
                 </div>
             </form>

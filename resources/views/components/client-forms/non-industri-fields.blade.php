@@ -2,32 +2,32 @@
 <div class="space-y-6">
 
     {{-- KARTU: LEMBAR PERNYATAAN KEJUJURAN --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Pernyataan Kejujuran <span class="text-red-500">*</span></h3>
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Pernyataan Kejujuran <span class="text-rose-300 font-bold">*</span></h3>
         </div>
 
-        <div>
+        <div class="p-6 space-y-4">
             <p class="text-sm text-[#6B5B85] leading-relaxed mb-3">
                 Semua keterangan yang saya berikan dalam Formulir Riwayat Hidup ini, saya buat dengan jujur dan sungguh-sungguh.
             </p>
 
             <label class="inline-flex items-center gap-2.5 cursor-pointer text-sm font-medium text-black">
-                <input type="checkbox" name="consent_agree" value="Setuju" required checked class="w-4 h-4 rounded text-purple-deep focus:ring-purple-deep border-[#D9C2F0]">
+                <input type="checkbox" name="consent_agree" value="Setuju" required {{ old('consent_agree') === 'Setuju' ? 'checked' : '' }} class="w-4 h-4 rounded text-purple-deep focus:ring-purple-deep border-[#D9C2F0]">
                 <span>Setuju <span class="text-red-500">*</span></span>
             </label>
             @error('consent_agree') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
     </div>
 
-    {{-- KARTU 1: DATA DIRI --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Data Diri</h3>
+    {{-- KARTU: DATA DIRI --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Data Diri</h3>
         </div>
 
-        <div class="grid sm:grid-cols-2 gap-4">
-            <div class="sm:col-span-2">
+        <div class="p-6 space-y-4">
+            <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">Nama Lengkap <span class="text-red-500">*</span></label>
                 <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required placeholder="Nama lengkap peserta..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
@@ -56,13 +56,13 @@
                 <input type="text" name="asal_kota" value="{{ old('asal_kota') }}" placeholder="Contoh: Surabaya" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
-            <div class="sm:col-span-2">
+            <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">Alamat Sekarang <span class="text-red-500">*</span></label>
                 <textarea name="alamat_sekarang" rows="2" required placeholder="Alamat domisili saat ini..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('alamat_sekarang') }}</textarea>
             </div>
 
             <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">No. Telp/HP <span class="text-red-500">*</span></label>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon <span class="text-red-500">*</span></label>
                 <input type="tel" name="phone" value="{{ old('phone') }}" required placeholder="08xxxxxxxx" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
@@ -88,33 +88,39 @@
 
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">Pendidikan Terakhir yang Berijazah <span class="text-red-500">*</span></label>
-                <input type="text" name="pendidikan_terakhir" value="{{ old('pendidikan_terakhir') }}" required placeholder="Contoh: SMA / S1" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                <select name="pendidikan_terakhir" required class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                    <option value="">-- Pilih Pendidikan --</option>
+                    @foreach(['TK', 'SD', 'SMP', 'SMA / SMK', 'Diploma (D3/D4)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'] as $edu)
+                        <option value="{{ $edu }}" {{ old('pendidikan_terakhir') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
     </div>
 
-    {{-- KARTU 2: DATA KELUARGA --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-6">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div>
-                    <h3 class="text-base font-semibold text-black">Data Keluarga</h3>
-                    <p class="text-xs text-slate-500">Informasi orang tua dan saudara kandung (opsional).</p>
-                </div>
+    {{-- KARTU: DATA KELUARGA --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <div>
+                <h3 class="text-base font-semibold text-white">Data Keluarga</h3>
+                <p class="text-xs text-purple-200 mt-0.5">Informasi orang tua dan saudara kandung (opsional).</p>
             </div>
         </div>
+
+        <div class="p-6 space-y-6">
 
         {{-- Data Ayah --}}
         <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
             <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">Data Ayah</h4>
-            <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-3">
-                <div class="md:col-span-2">
+            <div class="space-y-3">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Nama Ayah</label>
                     <input type="text" name="ayah_nama" value="{{ old('ayah_nama') }}" placeholder="Nama ayah" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Jenis Kelamin</label>
                     <select name="ayah_jenis_kelamin" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                        <option value="">-- Pilih --</option>
                         <option value="Laki-Laki" {{ old('ayah_jenis_kelamin') === 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
                         <option value="Perempuan" {{ old('ayah_jenis_kelamin') === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                     </select>
@@ -125,9 +131,14 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Pendidikan</label>
-                    <input type="text" name="ayah_pendidikan" value="{{ old('ayah_pendidikan') }}" placeholder="Contoh: S1" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                    <select name="ayah_pendidikan" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                        <option value="">-- Pilih Pendidikan --</option>
+                        @foreach(['TK', 'SD', 'SMP', 'SMA / SMK', 'Diploma (D3/D4)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'] as $edu)
+                            <option value="{{ $edu }}" {{ old('ayah_pendidikan') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <div class="md:col-span-5">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Pekerjaan Ayah</label>
                     <input type="text" name="ayah_pekerjaan" value="{{ old('ayah_pekerjaan') }}" placeholder="Pekerjaan ayah" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                 </div>
@@ -137,14 +148,15 @@
         {{-- Data Ibu --}}
         <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
             <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">Data Ibu</h4>
-            <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-3">
-                <div class="md:col-span-2">
+            <div class="space-y-3">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Nama Ibu</label>
                     <input type="text" name="ibu_nama" value="{{ old('ibu_nama') }}" placeholder="Nama ibu" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Jenis Kelamin</label>
                     <select name="ibu_jenis_kelamin" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                        <option value="">-- Pilih --</option>
                         <option value="Perempuan" {{ old('ibu_jenis_kelamin') === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                         <option value="Laki-Laki" {{ old('ibu_jenis_kelamin') === 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
                     </select>
@@ -155,9 +167,14 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Pendidikan</label>
-                    <input type="text" name="ibu_pendidikan" value="{{ old('ibu_pendidikan') }}" placeholder="Contoh: SMA" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                    <select name="ibu_pendidikan" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                        <option value="">-- Pilih Pendidikan --</option>
+                        @foreach(['TK', 'SD', 'SMP', 'SMA / SMK', 'Diploma (D3/D4)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'] as $edu)
+                            <option value="{{ $edu }}" {{ old('ibu_pendidikan') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <div class="md:col-span-5">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Pekerjaan Ibu</label>
                     <input type="text" name="ibu_pekerjaan" value="{{ old('ibu_pekerjaan') }}" placeholder="Pekerjaan ibu" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                 </div>
@@ -172,8 +189,8 @@
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-semibold text-black">Saudara {{ $s }} <span class="text-slate-400 font-normal">(Opsional)</span></span>
                 </div>
-                <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-2.5">
-                    <div class="md:col-span-2">
+                <div class="space-y-2.5">
+                    <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Nama Saudara {{ $s }}</label>
                         <input type="text" name="saudara_{{ $s }}_nama" value="{{ old('saudara_' . $s . '_nama') }}" placeholder="Nama saudara" class="w-full px-2.5 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
                     </div>
@@ -191,9 +208,14 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Pendidikan</label>
-                        <input type="text" name="saudara_{{ $s }}_pendidikan" value="{{ old('saudara_' . $s . '_pendidikan') }}" placeholder="Pendidikan" class="w-full px-2.5 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
+                        <select name="saudara_{{ $s }}_pendidikan" class="w-full px-2 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
+                            <option value="">--</option>
+                            @foreach(['Belum Sekolah', 'PAUD / TK', 'SD', 'SMP', 'SMA / SMK', 'Diploma (D3/D4)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'] as $edu)
+                                <option value="{{ $edu }}" {{ old('saudara_' . $s . '_pendidikan') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="md:col-span-5">
+                    <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Pekerjaan</label>
                         <input type="text" name="saudara_{{ $s }}_pekerjaan" value="{{ old('saudara_' . $s . '_pekerjaan') }}" placeholder="Pekerjaan" class="w-full px-2.5 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
                     </div>
@@ -202,23 +224,24 @@
             @endfor
         </div>
     </div>
+</div>
 
-    {{-- KARTU 3: RIWAYAT PENDIDIKAN FORMAL --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-5">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div>
-                    <h3 class="text-base font-semibold text-black">Riwayat Pendidikan Formal</h3>
-                    <p class="text-xs text-slate-500">Tuliskan dari yang paling akhir (opsional).</p>
-                </div>
+    {{-- KARTU: RIWAYAT PENDIDIKAN FORMAL --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <div>
+                <h3 class="text-base font-semibold text-white">Riwayat Pendidikan Formal</h3>
+                <p class="text-xs text-purple-200 mt-0.5">Tuliskan dari yang paling akhir (opsional).</p>
             </div>
         </div>
+
+        <div class="p-6 space-y-5">
 
         {{-- Sekolah 1 --}}
         <div class="p-4 bg-purple-50/20 rounded-xl border border-purple-200/80 space-y-3">
             <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">Sekolah 1 (Pendidikan Terakhir)</h4>
-            <div class="grid sm:grid-cols-2 gap-3">
-                <div class="sm:col-span-2">
+            <div class="space-y-3">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Nama Sekolah 1</label>
                     <input type="text" name="nama_sekolah_1" value="{{ old('nama_sekolah_1') }}" placeholder="Nama sekolah / universitas" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                 </div>
@@ -245,8 +268,8 @@
         @for($sk = 2; $sk <= 5; $sk++)
         <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
             <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">Sekolah {{ $sk }} <span class="text-slate-400 font-normal">(Opsional)</span></h4>
-            <div class="grid sm:grid-cols-2 gap-3">
-                <div class="sm:col-span-2">
+            <div class="space-y-3">
+                <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Nama Sekolah {{ $sk }}</label>
                     <input type="text" name="nama_sekolah_{{ $sk }}" value="{{ old('nama_sekolah_' . $sk) }}" placeholder="Nama sekolah" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                 </div>
@@ -277,21 +300,22 @@
             <textarea name="tidak_naik_kelas" rows="2" placeholder="Contoh: Tidak pernah / Pernah di kelas ... karena ..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('tidak_naik_kelas') }}</textarea>
         </div>
     </div>
+</div>
 
-    {{-- KARTU 4: PENDIDIKAN NON FORMAL --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
+    {{-- KARTU: PENDIDIKAN NON FORMAL --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
             <div>
-                <h3 class="text-base font-semibold text-black">Pendidikan Non Formal</h3>
-                <p class="text-xs text-slate-500">Tuliskan dari yang paling akhir (opsional).</p>
+                <h3 class="text-base font-semibold text-white">Pendidikan Non Formal</h3>
+                <p class="text-xs text-purple-200 mt-0.5">Tuliskan dari yang paling akhir (opsional).</p>
             </div>
         </div>
 
-        <div class="space-y-4">
+        <div class="p-6 space-y-4">
             @for($c = 1; $c <= 3; $c++)
             <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
                 <h4 class="text-sm font-semibold text-black">Kursus {{ $c }}</h4>
-                <div class="grid sm:grid-cols-3 gap-3">
+                <div class="space-y-3">
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Jenis Kursus {{ $c }}</label>
                         <input type="text" name="jenis_kursus_{{ $c }}" value="{{ old('jenis_kursus_' . $c) }}" placeholder="Contoh: Kursus Bahasa Inggris" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
@@ -310,20 +334,20 @@
         </div>
     </div>
 
-    {{-- KARTU 5: PENGALAMAN ORGANISASI --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
+    {{-- KARTU: PENGALAMAN ORGANISASI --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
             <div>
-                <h3 class="text-base font-semibold text-black">Pengalaman Organisasi</h3>
-                <p class="text-xs text-slate-500">Tuliskan dari yang paling akhir (opsional).</p>
+                <h3 class="text-base font-semibold text-white">Pengalaman Organisasi</h3>
+                <p class="text-xs text-purple-200 mt-0.5">Tuliskan dari yang paling akhir (opsional).</p>
             </div>
         </div>
 
-        <div class="space-y-4">
+        <div class="p-6 space-y-4">
             @for($o = 1; $o <= 3; $o++)
             <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
                 <h4 class="text-sm font-semibold text-black">Organisasi {{ $o }}</h4>
-                <div class="grid sm:grid-cols-3 gap-3">
+                <div class="space-y-3">
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">Nama Organisasi {{ $o }}</label>
                         <input type="text" name="organisasi_{{ $o }}_nama" value="{{ old('organisasi_' . $o . '_nama') }}" placeholder="Nama organisasi" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
@@ -342,149 +366,153 @@
         </div>
     </div>
 
-    {{-- KARTU 6: PRESTASI --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Prestasi</h3>
+    {{-- KARTU: PRESTASI --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Prestasi</h3>
         </div>
 
-        <div>
-            <label class="block text-xs font-medium text-gray-500 mb-1.5 leading-snug">
-                Jika Anda pernah meraih prestasi, tuliskan prestasi apa saja yang pernah Anda raih. Prestasi di sini, boleh yang sifatnya akademik maupun non-akademik.
-            </label>
-            <textarea name="prestasi" rows="3" placeholder="Tuliskan daftar prestasi Anda (opsional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('prestasi') }}</textarea>
+        <div class="p-6 space-y-4">
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5 leading-snug">
+                    Jika Anda pernah meraih prestasi, tuliskan prestasi apa saja yang pernah Anda raih. Prestasi di sini, boleh yang sifatnya akademik maupun non-akademik.
+                </label>
+                <textarea name="prestasi" rows="3" placeholder="Tuliskan daftar prestasi Anda (opsional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('prestasi') }}</textarea>
+            </div>
         </div>
     </div>
 
-    {{-- KARTU 7: DESKRIPSI DIRI & MINAT / CITA-CITA --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-5">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Deskripsi Diri & Minat</h3>
+    {{-- KARTU: DESKRIPSI DIRI & MINAT / CITA-CITA --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Deskripsi Diri & Minat</h3>
         </div>
 
-        <div>
-            <label class="block text-xs font-medium text-gray-500 mb-1.5">Tuliskan riwayat hidup yang sifatnya menimbulkan trauma (jika ada).</label>
-            <textarea name="riwayat_trauma" rows="2" placeholder="Jawaban Anda (opsional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('riwayat_trauma') }}</textarea>
-        </div>
+        <div class="p-6 space-y-5">
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Tuliskan riwayat hidup yang sifatnya menimbulkan trauma (jika ada).</label>
+                <textarea name="riwayat_trauma" rows="2" placeholder="Jawaban Anda (opsional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('riwayat_trauma') }}</textarea>
+            </div>
 
-        <div>
-            <label class="block text-xs font-medium text-gray-500 mb-1.5">Tuliskan riwayat penyakit yang sifatnya sampai membutuhkan opname (jika ada).</label>
-            <textarea name="riwayat_penyakit_opname" rows="2" placeholder="Jawaban Anda (opsional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('riwayat_penyakit_opname') }}</textarea>
-        </div>
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Tuliskan riwayat penyakit yang sifatnya sampai membutuhkan opname (jika ada).</label>
+                <textarea name="riwayat_penyakit_opname" rows="2" placeholder="Jawaban Anda (opsional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('riwayat_penyakit_opname') }}</textarea>
+            </div>
 
-        <div>
-            <label class="block text-xs font-medium text-gray-500 mb-1.5">Apakah Anda pernah konsultasi dengan psikolog sebelumnya? Jika ya, tuliskan jenis dan tujuan dari konsultasi tersebut.</label>
-            <textarea name="konsultasi_psikolog" rows="2" placeholder="Jawaban Anda (opsional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('konsultasi_psikolog') }}</textarea>
-        </div>
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Apakah Anda pernah konsultasi dengan psikolog sebelumnya? Jika ya, tuliskan jenis dan tujuan dari konsultasi tersebut.</label>
+                <textarea name="konsultasi_psikolog" rows="2" placeholder="Jawaban Anda (opsional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('konsultasi_psikolog') }}</textarea>
+            </div>
 
-        {{-- Kelebihan Diri 1, 2, 3 --}}
-        <div class="grid sm:grid-cols-3 gap-3">
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelebihan Diri 1 (Opsional)</label>
-                <input type="text" name="kelebihan_1" value="{{ old('kelebihan_1') }}" placeholder="Kelebihan 1" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+            {{-- Kelebihan Diri 1, 2, 3 --}}
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelebihan Diri 1 (Opsional)</label>
+                    <input type="text" name="kelebihan_1" value="{{ old('kelebihan_1') }}" placeholder="Kelebihan 1" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelebihan Diri 2 (Opsional)</label>
+                    <input type="text" name="kelebihan_2" value="{{ old('kelebihan_2') }}" placeholder="Kelebihan 2" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelebihan Diri 3 (Opsional)</label>
+                    <input type="text" name="kelebihan_3" value="{{ old('kelebihan_3') }}" placeholder="Kelebihan 3" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
             </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelebihan Diri 2 (Opsional)</label>
-                <input type="text" name="kelebihan_2" value="{{ old('kelebihan_2') }}" placeholder="Kelebihan 2" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelebihan Diri 3 (Opsional)</label>
-                <input type="text" name="kelebihan_3" value="{{ old('kelebihan_3') }}" placeholder="Kelebihan 3" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-        </div>
 
-        {{-- Kelemahan Diri 1, 2, 3 --}}
-        <div class="grid sm:grid-cols-3 gap-3">
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelemahan Diri 1 (Opsional)</label>
-                <input type="text" name="kelemahan_1" value="{{ old('kelemahan_1') }}" placeholder="Kelemahan 1" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+            {{-- Kelemahan Diri 1, 2, 3 --}}
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelemahan Diri 1 (Opsional)</label>
+                    <input type="text" name="kelemahan_1" value="{{ old('kelemahan_1') }}" placeholder="Kelemahan 1" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelemahan Diri 2 (Opsional)</label>
+                    <input type="text" name="kelemahan_2" value="{{ old('kelemahan_2') }}" placeholder="Kelemahan 2" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelemahan Diri 3 (Opsional)</label>
+                    <input type="text" name="kelemahan_3" value="{{ old('kelemahan_3') }}" placeholder="Kelemahan 3" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
             </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelemahan Diri 2 (Opsional)</label>
-                <input type="text" name="kelemahan_2" value="{{ old('kelemahan_2') }}" placeholder="Kelemahan 2" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Kelemahan Diri 3 (Opsional)</label>
-                <input type="text" name="kelemahan_3" value="{{ old('kelemahan_3') }}" placeholder="Kelemahan 3" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-        </div>
 
-        {{-- Mata Pelajaran --}}
-        <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Mata Pelajaran Nilai Tertinggi (Opsional)</label>
-                <input type="text" name="mapel_nilai_tertinggi" value="{{ old('mapel_nilai_tertinggi') }}" placeholder="Contoh: Matematika, Bahasa Inggris" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+            {{-- Mata Pelajaran --}}
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Mata Pelajaran Nilai Tertinggi (Opsional)</label>
+                    <input type="text" name="mapel_nilai_tertinggi" value="{{ old('mapel_nilai_tertinggi') }}" placeholder="Contoh: Matematika, Bahasa Inggris" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Mata Pelajaran Nilai Terendah (Opsional)</label>
+                    <input type="text" name="mapel_nilai_terendah" value="{{ old('mapel_nilai_terendah') }}" placeholder="Contoh: Sejarah, Fisika" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Mata Pelajaran yang Disukai (Opsional)</label>
+                    <input type="text" name="mapel_disukai" value="{{ old('mapel_disukai') }}" placeholder="Pelajaran yang disukai..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Mata Pelajaran yang Tidak Disukai (Opsional)</label>
+                    <input type="text" name="mapel_tidak_disukai" value="{{ old('mapel_tidak_disukai') }}" placeholder="Pelajaran yang tidak disukai..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
             </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Mata Pelajaran Nilai Terendah (Opsional)</label>
-                <input type="text" name="mapel_nilai_terendah" value="{{ old('mapel_nilai_terendah') }}" placeholder="Contoh: Sejarah, Fisika" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Mata Pelajaran yang Disukai (Opsional)</label>
-                <input type="text" name="mapel_disukai" value="{{ old('mapel_disukai') }}" placeholder="Pelajaran yang disukai..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Mata Pelajaran yang Tidak Disukai (Opsional)</label>
-                <input type="text" name="mapel_tidak_disukai" value="{{ old('mapel_tidak_disukai') }}" placeholder="Pelajaran yang tidak disukai..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-        </div>
 
-        {{-- Gaya Belajar, Kegiatan --}}
-        <div class="grid sm:grid-cols-3 gap-3">
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Gaya Belajar (Opsional)</label>
-                <input type="text" name="gaya_belajar" value="{{ old('gaya_belajar') }}" placeholder="Visual / Auditori / Kinestetik / dll" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+            {{-- Gaya Belajar, Kegiatan --}}
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Gaya Belajar (Opsional)</label>
+                    <input type="text" name="gaya_belajar" value="{{ old('gaya_belajar') }}" placeholder="Visual / Auditori / Kinestetik / dll" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Kegiatan yang Disenangi (Opsional)</label>
+                    <input type="text" name="hal_disenangi" value="{{ old('hal_disenangi') }}" placeholder="Kegiatan yang disenangi..." class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Kegiatan yang Tidak Disenangi (Opsional)</label>
+                    <input type="text" name="hal_tidak_disenangi" value="{{ old('hal_tidak_disenangi') }}" placeholder="Kegiatan yang tidak disenangi..." class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
             </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Kegiatan yang Disenangi (Opsional)</label>
-                <input type="text" name="hal_disenangi" value="{{ old('hal_disenangi') }}" placeholder="Kegiatan yang disenangi..." class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Kegiatan yang Tidak Disenangi (Opsional)</label>
-                <input type="text" name="hal_tidak_disenangi" value="{{ old('hal_tidak_disenangi') }}" placeholder="Kegiatan yang tidak disenangi..." class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-        </div>
 
-        {{-- Cita-Cita & Usaha --}}
-        <div>
-            <label class="block text-xs font-medium text-gray-500 mb-1.5">Cita-Cita (Opsional)</label>
-            <input type="text" name="cita_cita" value="{{ old('cita_cita') }}" placeholder="Cita-cita Anda..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-        </div>
+            {{-- Cita-Cita & Usaha --}}
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Cita-Cita (Opsional)</label>
+                <input type="text" name="cita_cita" value="{{ old('cita_cita') }}" placeholder="Cita-cita Anda..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+            </div>
 
-        <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Usaha yang Telah Dilakukan untuk Cita-Cita (Opsional)</label>
-                <textarea name="usaha_cita_cita" rows="2" placeholder="Usaha yang telah dijalankan..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('usaha_cita_cita') }}</textarea>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Usaha yang Telah Dilakukan untuk Cita-Cita (Opsional)</label>
+                    <textarea name="usaha_cita_cita" rows="2" placeholder="Usaha yang telah dijalankan..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('usaha_cita_cita') }}</textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Rencana untuk Mencapai Cita-Cita (Opsional)</label>
+                    <textarea name="rencana_cita_cita" rows="2" placeholder="Rencana ke depan..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('rencana_cita_cita') }}</textarea>
+                </div>
             </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Rencana untuk Mencapai Cita-Cita (Opsional)</label>
-                <textarea name="rencana_cita_cita" rows="2" placeholder="Rencana ke depan..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('rencana_cita_cita') }}</textarea>
-            </div>
-        </div>
 
-        {{-- Bidang Pekerjaan & Aktivitas --}}
-        <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Bidang Pekerjaan yang Disukai (Opsional)</label>
-                <input type="text" name="pekerjaan_disukai" value="{{ old('pekerjaan_disukai') }}" placeholder="Bidang yang disukai..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+            {{-- Bidang Pekerjaan & Aktivitas --}}
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Bidang Pekerjaan yang Disukai (Opsional)</label>
+                    <input type="text" name="pekerjaan_disukai" value="{{ old('pekerjaan_disukai') }}" placeholder="Bidang yang disukai..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Bidang Pekerjaan yang Tidak Disukai (Opsional)</label>
+                    <input type="text" name="pekerjaan_tidak_disukai" value="{{ old('pekerjaan_tidak_disukai') }}" placeholder="Bidang yang tidak disukai..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Aktivitas Disukai namun Kurang Mahir (Opsional)</label>
+                    <input type="text" name="aktivitas_disukai_kurang_mahir" value="{{ old('aktivitas_disukai_kurang_mahir') }}" placeholder="Aktivitas yang disukai tapi belum mahir..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Aktivitas Kurang Disukai namun Cukup Mahir (Opsional)</label>
+                    <input type="text" name="aktivitas_tidak_disukai_cukup_mahir" value="{{ old('aktivitas_tidak_disukai_cukup_mahir') }}" placeholder="Aktivitas yang kurang disukai tapi cukup mahir..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
             </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Bidang Pekerjaan yang Tidak Disukai (Opsional)</label>
-                <input type="text" name="pekerjaan_tidak_disukai" value="{{ old('pekerjaan_tidak_disukai') }}" placeholder="Bidang yang tidak disukai..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Aktivitas Disukai namun Kurang Mahir (Opsional)</label>
-                <input type="text" name="aktivitas_disukai_kurang_mahir" value="{{ old('aktivitas_disukai_kurang_mahir') }}" placeholder="Aktivitas yang disukai tapi belum mahir..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1.5">Aktivitas Kurang Disukai namun Cukup Mahir (Opsional)</label>
-                <input type="text" name="aktivitas_tidak_disukai_cukup_mahir" value="{{ old('aktivitas_tidak_disukai_cukup_mahir') }}" placeholder="Aktivitas yang kurang disukai tapi cukup mahir..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-        </div>
 
-        <div>
-            <label class="block text-xs font-medium text-gray-500 mb-1.5">Deskripsikan diri Anda secara bebas dalam 1-2 paragraf. (Opsional)</label>
-            <textarea name="deskripsi_diri_bebas" rows="3" placeholder="Gambarkan diri Anda secara bebas..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('deskripsi_diri_bebas') }}</textarea>
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Deskripsikan diri Anda secara bebas dalam 1-2 paragraf. (Opsional)</label>
+                <textarea name="deskripsi_diri_bebas" rows="3" placeholder="Gambarkan diri Anda secara bebas..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('deskripsi_diri_bebas') }}</textarea>
+            </div>
         </div>
     </div>
 

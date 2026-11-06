@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Counselor;
 use App\Models\Pairing;
 use App\Models\Booking;
-use App\Models\TestResult;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 
@@ -54,7 +53,6 @@ class ClientSeeder extends Seeder
                 'counselor_id' => $c1->id,
                 'tanggal_booking_dibuat' => Carbon::now()->subDays(2)->toDateString(),
                 'tanggal_dijadwalkan' => Carbon::now()->addDays(1)->toDateString(),
-                'status' => 'baru',
                 'notes' => 'Sesi 1: Asesmen awal dan identifikasi sumber stres.',
             ]);
         }
@@ -90,7 +88,6 @@ class ClientSeeder extends Seeder
                 'counselor_id' => $c3->id,
                 'tanggal_booking_dibuat' => Carbon::now()->subDays(3)->toDateString(),
                 'tanggal_dijadwalkan' => Carbon::now()->toDateString(),
-                'status' => 'baru',
                 'notes' => 'Sesi berlangsung: Eksplorasi hambatan karir dan relaksasi progresif.',
             ]);
         }
@@ -166,15 +163,6 @@ class ClientSeeder extends Seeder
                 'status' => 'selesai',
                 'notes' => 'Pelaksanaan tes minat bakat RIASEC dan inventori kepribadian 16PF berjalan lancar.',
             ]);
-
-            TestResult::create([
-                'client_id' => $reza->id,
-                'test_name' => 'Tes Minat Bakat & Jurusan (RIASEC)',
-                'result_summary' => 'Dominan tipe Investigative dan Artistic. Rekomendasi bidang studi: Desain Komunikasi Visual atau Informatika.',
-                'file_path' => null,
-                'administered_by' => $staff->id,
-                'tested_at' => Carbon::now()->subDays(1),
-            ]);
         }
 
         // 5. Maya Anggraini - NEEDS_FOLLOWUP (Butuh Sesi Lanjutan)
@@ -247,15 +235,6 @@ class ClientSeeder extends Seeder
                 'tanggal_dijadwalkan' => Carbon::now()->subDays(5)->toDateString(),
                 'status' => 'selesai',
                 'notes' => 'Asesmen NST (Nijmeegse Schoolbekwaamheids Test) dan observasi motorik halus/kasar selesai.',
-            ]);
-
-            TestResult::create([
-                'client_id' => $fajar->id,
-                'test_name' => 'Laporan Hasil Tes Kesiapan Sekolah (NST)',
-                'result_summary' => 'Kematangan motorik, kognitif, dan sosial-emosional sangat baik dan siap masuk jenjang SD.',
-                'file_path' => null,
-                'administered_by' => $staff->id,
-                'tested_at' => Carbon::now()->subDays(5),
             ]);
         }
 

@@ -31,7 +31,6 @@ class SampleDewasaSeeder extends Seeder
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => 'Online (Google Meet)',
-                'status' => 'baru',
                 'answers' => [
                     'jenis_kelamin' => 'Laki-Laki',
                     'tempat_lahir' => 'Surabaya',

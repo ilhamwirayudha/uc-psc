@@ -136,9 +136,10 @@
                     <div class="pt-2">
                         <button 
                             type="submit" 
-                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-deep text-white font-semibold text-sm hover:bg-[#3D1D66] transition shadow-xs cursor-pointer"
+                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-deep text-white font-semibold text-sm hover:bg-[#3D1D66] transition shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
                         >
-                            Simpan Email Baru
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                            <span>Simpan Email Baru</span>
                         </button>
                     </div>
                 </form>
@@ -242,9 +243,10 @@
                     <div class="pt-2">
                         <button 
                             type="submit" 
-                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-deep text-white font-semibold text-sm hover:bg-[#3D1D66] transition shadow-xs cursor-pointer"
+                            class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-deep text-white font-semibold text-sm hover:bg-[#3D1D66] transition shadow-xs cursor-pointer flex items-center justify-center gap-1.5"
                         >
-                            Perbarui Kata Sandi
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                            <span>Perbarui Kata Sandi</span>
                         </button>
                     </div>
                 </form>

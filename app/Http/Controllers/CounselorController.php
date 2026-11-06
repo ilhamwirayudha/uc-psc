@@ -31,10 +31,12 @@ class CounselorController extends Controller
             $query->where('status', $request->status);
         }
 
-        $sort = $request->get('sort', 'created_at');
+        $sort = $request->get('sort');
         $direction = $request->get('direction', 'desc');
 
-        if (in_array($sort, ['id', 'name', 'specialization', 'status', 'created_at', 'phone', 'email'])) {
+        if (empty($sort)) {
+            $query->orderBy('counselors.created_at', 'desc');
+        } elseif (in_array($sort, ['id', 'name', 'specialization', 'status', 'created_at', 'phone', 'email'])) {
             $query->orderBy('counselors.' . $sort, $direction);
         } else {
             $query->orderBy('counselors.created_at', $direction);
@@ -42,12 +44,12 @@ class CounselorController extends Controller
 
         $counselors = $query->paginate(15)->withQueryString();
 
-        return view('counselors.index', compact('counselors', 'sort', 'direction'));
+        return view('counselors.counselor-directory-table', compact('counselors', 'sort', 'direction'));
     }
 
     public function create()
     {
-        return view('counselors.create');
+        return view('counselors.counselor-create-form');
     }
 
     public function store(Request $request)
@@ -82,7 +84,7 @@ class CounselorController extends Controller
 
     public function edit(Counselor $counselor)
     {
-        return view('counselors.edit', compact('counselor'));
+        return view('counselors.counselor-edit-form', compact('counselor'));
     }
 
     public function update(Request $request, Counselor $counselor)

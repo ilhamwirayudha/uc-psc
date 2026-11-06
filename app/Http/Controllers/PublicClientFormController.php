@@ -179,22 +179,25 @@ class PublicClientFormController extends Controller
                 $client->status = 'unassigned';
                 $client->save();
 
-                // 2. Create ClientForm Record with JSON answers (Tanpa Booking Otomatis)
+                // 2. Create ClientForm Record with JSON answers
                 $ticketNumber = ClientForm::generateTicketNumber('anak');
+                $booking = Booking::createInitialForForm($client, 'anak', $counselingType);
+
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'anak',
                     'client_id' => $client->id,
-                    'booking_id' => null,
+                    'booking_id' => $booking->id,
                     'client_name' => $client->name,
                     'client_phone' => $primaryPhone,
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
-                    'status' => 'baru',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
+                $booking->client_form_id = $clientForm->id;
+                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
@@ -326,20 +329,23 @@ class PublicClientFormController extends Controller
 
                 // 2. Create ClientForm Record
                 $ticketNumber = ClientForm::generateTicketNumber('dewasa');
+                $booking = Booking::createInitialForForm($client, 'dewasa', $counselingType);
+
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'dewasa',
                     'client_id' => $client->id,
-                    'booking_id' => null,
+                    'booking_id' => $booking->id,
                     'client_name' => $client->name,
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
-                    'status' => 'baru',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
+                $booking->client_form_id = $clientForm->id;
+                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
@@ -469,20 +475,23 @@ class PublicClientFormController extends Controller
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('pra_nikah');
+                $booking = Booking::createInitialForForm($client, 'pra_nikah', $counselingType);
+
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'pra_nikah',
                     'client_id' => $client->id,
-                    'booking_id' => null,
+                    'booking_id' => $booking->id,
                     'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
-                    'status' => 'baru',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
+                $booking->client_form_id = $clientForm->id;
+                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
@@ -609,20 +618,23 @@ class PublicClientFormController extends Controller
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('pernikahan');
+                $booking = Booking::createInitialForForm($client, 'pernikahan', $counselingType);
+
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'pernikahan',
                     'client_id' => $client->id,
-                    'booking_id' => null,
+                    'booking_id' => $booking->id,
                     'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
-                    'status' => 'baru',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
+                $booking->client_form_id = $clientForm->id;
+                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
@@ -701,20 +713,23 @@ class PublicClientFormController extends Controller
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('biography_en');
+                $booking = Booking::createInitialForForm($client, 'biography_en', $counselingType);
+
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'biography_en',
                     'client_id' => $client->id,
-                    'booking_id' => null,
+                    'booking_id' => $booking->id,
                     'client_name' => $client->name,
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
-                    'status' => 'baru',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
+                $booking->client_form_id = $clientForm->id;
+                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
@@ -741,7 +756,9 @@ class PublicClientFormController extends Controller
             'consent_agree' => 'required|in:Setuju,setuju,1',
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|string|in:Laki-Laki,Perempuan',
-            'tempat_tanggal_lahir' => 'required|string|max:150',
+            'tempat_lahir' => 'required_without:tempat_tanggal_lahir|nullable|string|max:150',
+            'tanggal_lahir' => 'required_without:tempat_tanggal_lahir|nullable|date',
+            'tempat_tanggal_lahir' => 'nullable|string|max:150',
             'urutan_kelahiran' => 'required|string|max:100',
             'alamat_sekarang' => 'required|string',
             'asal_kota' => 'required|string|max:100',
@@ -783,7 +800,10 @@ class PublicClientFormController extends Controller
 
                 $client->jenis = 'individu';
                 $client->gender = $gender;
-                $client->birth_place = $request->tempat_tanggal_lahir;
+                $client->birth_place = $request->tempat_lahir ?? $request->tempat_tanggal_lahir;
+                if ($request->filled('tanggal_lahir')) {
+                    $client->dob = $request->tanggal_lahir;
+                }
                 $client->address = $request->alamat_sekarang;
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
@@ -796,20 +816,23 @@ class PublicClientFormController extends Controller
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('non_industri');
+                $booking = Booking::createInitialForForm($client, 'non_industri', 'offline');
+
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'non_industri',
                     'client_id' => $client->id,
-                    'booking_id' => null,
+                    'booking_id' => $booking->id,
                     'client_name' => $client->name,
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => 'offline',
-                    'status' => 'baru',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
+                $booking->client_form_id = $clientForm->id;
+                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
@@ -839,7 +862,9 @@ class PublicClientFormController extends Controller
             // 2. Data Diri
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|string|in:Laki-Laki,Perempuan',
-            'tempat_tanggal_lahir' => 'required|string|max:150',
+            'tempat_lahir' => 'required_without:tempat_tanggal_lahir|nullable|string|max:150',
+            'tanggal_lahir' => 'required_without:tempat_tanggal_lahir|nullable|date',
+            'tempat_tanggal_lahir' => 'nullable|string|max:150',
             'urutan_kelahiran' => 'required|string|max:100',
             'alamat_sekarang' => 'nullable|string',
             'asal_kota' => 'required|string|max:100',
@@ -886,6 +911,9 @@ class PublicClientFormController extends Controller
             'consent_agree.required' => 'Anda wajib menyetujui pernyataan kejujuran untuk melanjutkan.',
             'nama_lengkap.required' => 'Nama lengkap beserta gelar (jika ada) wajib diisi.',
             'jenis_kelamin.required' => 'Pilih jenis kelamin.',
+            'tempat_lahir.required_without' => 'Tempat lahir wajib diisi.',
+            'tanggal_lahir.required_without' => 'Tanggal lahir wajib diisi.',
+            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid.',
             'tempat_tanggal_lahir.required' => 'Tempat & tanggal lahir wajib diisi.',
             'urutan_kelahiran.required' => 'Urutan kelahiran wajib diisi.',
             'asal_kota.required' => 'Asal kota wajib diisi.',
@@ -923,15 +951,19 @@ class PublicClientFormController extends Controller
                 $client->jenis = 'industri';
                 $company = trim($request->nama_perusahaan ?? $request->instansi_1_nama ?? '');
                 if (!empty($company)) {
-                    $client->pic_name = $company;
-                    $client->occupation = !empty($request->pekerjaan_saat_ini)
-                        ? trim($request->pekerjaan_saat_ini) . ' - ' . $company
-                        : $company;
-                } else {
-                    $client->occupation = $request->pekerjaan_saat_ini ?? 'Pelamar / Karyawan';
+                    $client->company_name = $company;
                 }
+                $client->occupation = $request->filled('pekerjaan_saat_ini')
+                    ? trim($request->pekerjaan_saat_ini)
+                    : null;
+                $client->pic_name = $request->filled('pic_name')
+                    ? trim($request->pic_name)
+                    : ($request->filled('nama_pic') ? trim($request->nama_pic) : null);
                 $client->gender = $gender;
-                $client->birth_place = $request->tempat_tanggal_lahir;
+                $client->birth_place = $request->tempat_lahir ?? $request->tempat_tanggal_lahir;
+                if ($request->filled('tanggal_lahir')) {
+                    $client->dob = $request->tanggal_lahir;
+                }
                 $client->address = $request->alamat_sekarang;
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
@@ -943,20 +975,23 @@ class PublicClientFormController extends Controller
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('industri');
+                $booking = Booking::createInitialForForm($client, 'industri', 'offline');
+
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'industri',
                     'client_id' => $client->id,
-                    'booking_id' => null,
+                    'booking_id' => $booking->id,
                     'client_name' => $client->name,
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => 'offline',
-                    'status' => 'baru',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
+                $booking->client_form_id = $clientForm->id;
+                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
@@ -990,7 +1025,6 @@ class PublicClientFormController extends Controller
                 'client_name' => 'Ananda Bintang Pratama',
                 'client_phone' => '081234567890',
                 'service_preference' => 'Offline di UCPSC',
-                'status' => 'baru',
             ]);
         }
 

@@ -74,7 +74,7 @@
                         <strong class="text-purple-deep">{{ $clientForm->form_type_label }}</strong>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="text-slate-400">WhatsApp / Kontak:</span>
+                        <span class="text-slate-400">No. Telepon:</span>
                         <strong class="text-slate-900 font-mono">{{ $clientForm->client_phone }}</strong>
                     </div>
                     <div class="flex items-center justify-between">
@@ -92,7 +92,7 @@
                     Langkah Selanjutnya:
                 </p>
                 <p>1. Data Anda sedang ditinjau oleh staf operasional UC PSC untuk pencocokan konselor yang paling tepat.</p>
-                <p>2. Admin kami akan menghubungi Anda via WhatsApp di nomor <strong class="underline">{{ $clientForm->client_phone }}</strong> dalam 1x24 jam kerja untuk penjadwalan.</p>
+                <p>2. Admin kami akan menghubungi Anda melalui nomor telepon <strong class="underline">{{ $clientForm->client_phone }}</strong> dalam 1x24 jam kerja untuk penjadwalan.</p>
             </div>
 
             {{-- Back to Form Button --}}

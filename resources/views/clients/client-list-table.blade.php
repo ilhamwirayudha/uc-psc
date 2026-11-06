@@ -8,7 +8,7 @@
 @section('content')
 <div x-data="{
     search: '{{ addslashes(request('search', '')) }}',
-    sort: '{{ request('sort', 'created_at') }}',
+    sort: '{{ request('sort', '') }}',
     direction: '{{ request('direction', 'desc') }}',
     perPage: '{{ request('per_page', $perPage ?? 25) }}',
     loading: false,
@@ -113,7 +113,7 @@
                     x-model="search"
                     @input="onSearch()"
                     @keydown.enter.prevent="fetchResults()"
-                    placeholder="Cari nama, no. HP, atau email klien..."
+                    placeholder="Cari nama, no. telepon, atau email klien..."
                     class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
 
                 {{-- Clear button saat ada teks --}}
@@ -142,42 +142,22 @@
     </div>
 
 
-    {{-- Dynamic Content Area (Filter Indicator + Table + Pagination) --}}
-    <div id="client-data-container" :class="{ 'opacity-70 pointer-events-none transition-opacity duration-150': loading }">
-        {{-- Active Filter / Sort Indicators --}}
-        @if(request('sort') || request('search'))
-        <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-[#6B5B85] bg-white px-4 py-2.5 rounded-xl border border-[#EDE1FA]">
-            <span class="font-semibold text-[#5B4A73] flex items-center gap-1">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-                Filter/Urutan:
-            </span>
-            @if(request('search'))
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Cari: "{{ request('search') }}"</span>
-            @endif
-            @if(request('sort') === 'id')
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut ID: {{ $direction === 'asc' ? 'Terkecil (1 → 9)' : 'Terbesar (9 → 1)' }}</span>
-            @elseif(request('sort') === 'name')
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut Nama: {{ $direction === 'asc' ? 'A → Z' : 'Z → A' }}</span>
-            @elseif(request('sort') === 'jenis')
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">
-                    Urut Industri: {{ $direction === 'desc' ? 'Industri Terlebih Dahulu' : 'Bukan Industri Terlebih Dahulu' }}
-                </span>
-            @elseif(request('sort') === 'creator')
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut Pembuat: {{ $direction === 'asc' ? 'A → Z' : 'Z → A' }}</span>
-            @elseif(request('sort') === 'phone')
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut No. HP: {{ $direction === 'asc' ? '0 → 9' : '9 → 0' }}</span>
-            @elseif(request('sort') === 'email')
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut Email: {{ $direction === 'asc' ? 'A → Z' : 'Z → A' }}</span>
-            @elseif(request('sort') === 'created_at')
-                <span class="bg-gray-100 text-[#5B4A73] px-2.5 py-1 rounded-lg font-medium">Urut Waktu: {{ $direction === 'asc' ? 'Paling Awal (Terlama)' : 'Paling Baru (Terkini)' }}</span>
-            @endif
-            <a href="{{ route('clients.index') }}" class="text-[#6B5B85] hover:text-red-500 hover:underline font-semibold ml-auto flex items-center gap-1 transition">
-                <span>Reset Filter & Urutan</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </a>
-        </div>
-        @endif
+    {{-- Helper fungsi 3-state sort: unselected -> asc -> desc -> unselected (default) --}}
+    @php
+        $getNextSortUrl = function($column) use ($sort, $direction) {
+            if ($sort !== $column) {
+                return request()->fullUrlWithQuery(['sort' => $column, 'direction' => 'asc', 'page' => 1]);
+            }
+            if ($direction === 'asc') {
+                return request()->fullUrlWithQuery(['sort' => $column, 'direction' => 'desc', 'page' => 1]);
+            }
+            // State ke-3: Default (reset sort)
+            return request()->fullUrlWithQuery(['sort' => null, 'direction' => null, 'page' => 1]);
+        };
+    @endphp
 
+    {{-- Dynamic Content Area (Table + Pagination) --}}
+    <div id="client-data-container" :class="{ 'opacity-70 pointer-events-none transition-opacity duration-150': loading }">
         {{-- Table --}}
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
             <div class="overflow-x-auto">
@@ -187,10 +167,10 @@
                             {{-- No. Column with Numeric Sort --}}
                             <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16">
                                 <div class="flex items-center justify-center">
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'direction' => ($sort === 'id' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                    <a href="{{ $getNextSortUrl('id') }}"
                                         @click.prevent="goToUrl($event.currentTarget.href)"
                                         class="inline-flex items-center gap-1 hover:text-white group transition cursor-pointer"
-                                        title="Urutkan nomor urut angka: 1→9 atau 9→1">
+                                        title="Urutkan nomor urut: Ascending → Descending → Default">
                                         <span class="text-white font-semibold">No.</span>
                                         <span class="inline-flex items-center justify-center w-4 h-4 rounded-md transition {{ $sort === 'id' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                             @if($sort === 'id')
@@ -209,10 +189,10 @@
                             
                             {{-- Nama Column with Alphabetical Sort --}}
                             <th class="text-left align-middle px-6 py-3.5 font-semibold">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'name', 'direction' => ($sort === 'name' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                <a href="{{ $getNextSortUrl('name') }}"
                                     @click.prevent="goToUrl($event.currentTarget.href)"
                                     class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer"
-                                    title="Urutkan alfabetis A-Z / Z-A">
+                                    title="Urutkan nama klien: Ascending → Descending → Default">
                                     <span class="text-white font-semibold">Nama Klien</span>
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition {{ $sort === 'name' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'name')
@@ -230,10 +210,10 @@
 
                             {{-- Kolom Industri --}}
                             <th class="text-left align-middle px-4 py-3.5 font-semibold">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'jenis', 'direction' => ($sort === 'jenis' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                <a href="{{ $getNextSortUrl('jenis') }}"
                                     @click.prevent="goToUrl($event.currentTarget.href)"
                                     class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
-                                    title="Urutkan klien industri">
+                                    title="Urutkan klien industri: Ascending → Descending → Default">
                                     <span class="text-white font-semibold">Industri</span>
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'jenis' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'jenis')
@@ -249,13 +229,13 @@
                                 </a>
                             </th>
 
-                            {{-- No. HP Column Sort --}}
+                            {{-- No. Telepon Column Sort --}}
                             <th class="text-left align-middle px-4 py-3.5 font-semibold">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'phone', 'direction' => ($sort === 'phone' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                <a href="{{ $getNextSortUrl('phone') }}"
                                     @click.prevent="goToUrl($event.currentTarget.href)"
                                     class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
-                                    title="Urutkan nomor HP">
-                                    <span class="text-white font-semibold">No. HP</span>
+                                    title="Urutkan nomor telepon: Ascending → Descending → Default">
+                                    <span class="text-white font-semibold">No. Telepon</span>
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'phone' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'phone')
                                              @if($direction === 'asc')
@@ -272,10 +252,10 @@
 
                             {{-- Email Column Sort --}}
                             <th class="text-left align-middle px-4 py-3.5 font-semibold">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'email', 'direction' => ($sort === 'email' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                <a href="{{ $getNextSortUrl('email') }}"
                                     @click.prevent="goToUrl($event.currentTarget.href)"
                                     class="inline-flex items-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
-                                    title="Urutkan alamat email">
+                                    title="Urutkan alamat email: Ascending → Descending → Default">
                                     <span class="text-white font-semibold">Email</span>
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'email' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                         @if($sort === 'email')
@@ -294,10 +274,10 @@
                             {{-- Waktu Pendaftaran Column with Oldest/Newest Sort --}}
                             <th class="text-center align-middle px-4 py-3.5 font-semibold">
                                 <div class="flex items-center justify-center">
-                                    <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => ($sort === 'created_at' && $direction === 'asc') ? 'desc' : 'asc', 'page' => 1]) }}"
+                                    <a href="{{ $getNextSortUrl('created_at') }}"
                                         @click.prevent="goToUrl($event.currentTarget.href)"
                                         class="inline-flex items-center justify-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
-                                        title="Urutkan waktu pendaftaran: Paling Baru atau Paling Awal/Tua">
+                                        title="Urutkan waktu pendaftaran: Ascending → Descending → Default">
                                         <span class="w-5 shrink-0" aria-hidden="true"></span>
                                         <span class="text-white font-semibold">Waktu Pendaftaran</span>
                                         <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'created_at' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
@@ -319,7 +299,7 @@
                     </thead>
                     <tbody class="divide-y divide-[#F3EAFB]">
                         @forelse($clients as $client)
-                        <tr class="hover:bg-[#FDFBFF] transition">
+                        <tr class="transition-colors duration-150">
                             <td class="text-center align-middle px-3 py-3.5 text-black font-medium">
                                 {{ $loop->iteration + ($clients->currentPage() - 1) * $clients->perPage() }}
                             </td>
@@ -336,7 +316,7 @@
                                 @endif
                             </td>
 
-                            {{-- No. HP --}}
+                            {{-- No. Telepon --}}
                             <td class="text-left align-middle px-4 py-3.5 whitespace-nowrap">
                                 @if($client->phone)
                                     <span class="font-medium text-black block">
@@ -359,7 +339,7 @@
                             </td>
 
                             <td class="text-center align-middle px-4 py-3.5 text-black font-medium whitespace-nowrap">
-                                {{ $client->created_at ? $client->created_at->format('d/m/Y H:i:s') : '-' }}
+                                {{ $client->created_at ? $client->created_at->format('d/m/Y H:i') : '-' }}
                             </td>
                         </tr>
                         @empty

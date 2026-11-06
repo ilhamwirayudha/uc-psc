@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Client extends Model
 {
 
+
     protected $fillable = [
         'name',
         'pic_name',
+        'company_name',
         'jenis',
         'phone',
         'email',
@@ -56,9 +58,7 @@ class Client extends Model
             return trim($matches[1]);
         }
 
-        if ($this->relationLoaded('clientParticipants') && $this->clientParticipants->isNotEmpty()) {
-            return $this->clientParticipants->first()->nama_peserta;
-        }
+
 
         return null;
     }
@@ -69,9 +69,9 @@ class Client extends Model
             return null;
         }
 
-        // 1. Cek pic_name (pada klien industri digunakan untuk menyimpan nama perusahaan)
-        if (!empty($this->attributes['pic_name'])) {
-            return trim($this->attributes['pic_name']);
+        // 1. Cek company_name
+        if (!empty($this->attributes['company_name'])) {
+            return trim($this->attributes['company_name']);
         }
 
         // 2. Jika occupation berformat "Jabatan - Nama Perusahaan", ambil bagian perusahaan setelah " - "
@@ -169,11 +169,6 @@ class Client extends Model
         return $this->hasMany(Pairing::class);
     }
 
-    public function testResults(): HasMany
-    {
-        return $this->hasMany(TestResult::class);
-    }
-
     public function getGenderLabelAttribute(): string
     {
         return match($this->gender) {
@@ -189,15 +184,16 @@ class Client extends Model
 
     public function getEducationLabelAttribute(): string
     {
-        return match($this->education) {
-            'sd' => 'SD / Sederajat',
-            'smp' => 'SMP / Sederajat',
-            'sma_smk' => 'SMA / SMK / Sederajat',
-            'd3' => 'Diploma / D3',
-            's1' => 'Sarjana / S1 / D4',
-            's2' => 'Magister / S2',
-            's3' => 'Doktor / S3',
-            'lainnya' => 'Lainnya',
+        return match(strtolower((string)$this->education)) {
+            'tk', 'paud', 'paud_tk', 'paud / tk' => 'TK',
+            'sd', 'sd / sederajat' => 'SD',
+            'smp', 'smp / sederajat' => 'SMP',
+            'sma_smk', 'sma / smk', 'sma', 'smk' => 'SMA / SMK',
+            'd3', 'd4', 'diploma / d3', 'diploma (d3/d4)', 'diploma' => 'Diploma (D3/D4)',
+            's1', 'sarjana / s1', 'sarjana (s1)', 'sarjana' => 'Sarjana (S1)',
+            's2', 'magister / s2', 'magister (s2)', 'magister' => 'Magister (S2)',
+            's3', 'doktor / s3', 'doktor (s3)', 'doktor' => 'Doktor (S3)',
+            'lainnya', 'other' => 'Lainnya',
             default => $this->education ?: '-',
         };
     }
@@ -271,32 +267,6 @@ class Client extends Model
     public function getNotesListAttribute(): array
     {
         if (empty($this->notes)) {
-            // Ambil catatan otomatis dari formulir pendaftaran jika ada
-            $forms = $this->relationLoaded('clientForms')
-                ? $this->clientForms
-                : ($this->exists ? $this->clientForms()->latest()->get() : collect());
-
-            if ($forms->isNotEmpty()) {
-                $list = [];
-                foreach ($forms as $form) {
-                    $noteContent = $this->extractFormNoteContent($form);
-                    if (!empty($noteContent)) {
-                        $formDate = $form->created_at ?? ($form->consent_agreed_at ?? now());
-                        $list[] = [
-                            'id' => 'form_note_' . $form->id,
-                            'date' => $formDate->format('Y-m-d H:i:s'),
-                            'date_display' => $formDate->format('d M Y, H:i') . ' WIB',
-                            'date_input' => $formDate->format('Y-m-d\TH:i'),
-                            'note' => $noteContent,
-                        ];
-                    }
-                }
-                if (!empty($list)) {
-                    usort($list, fn($a, $b) => strcmp($b['date'], $a['date']));
-                    return $list;
-                }
-            }
-
             return [];
         }
 

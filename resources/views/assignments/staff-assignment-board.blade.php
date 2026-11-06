@@ -211,8 +211,9 @@
                             <label class="text-[11px] font-semibold text-[#5B4A73] mb-1 block">Catatan Penugasan</label>
                             <input type="text" name="notes" class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white focus:outline-none focus:ring-1 focus:ring-purple-deep" placeholder="Catatan opsional...">
                         </div>
-                        <button type="submit" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition flex-shrink-0 cursor-pointer">
-                            Simpan
+                        <button type="submit" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition flex-shrink-0 cursor-pointer flex items-center gap-1.5">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                            <span>Simpan</span>
                         </button>
                     </form>
                 </div>

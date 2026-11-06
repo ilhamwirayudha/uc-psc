@@ -555,11 +555,11 @@
                         </template>
                     </div>
 
-                    {{-- 6. No. Telp/HP --}}
+                    {{-- 6. No. Telepon --}}
                     <div id="card_phone" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['phone'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
-                            No. Telp/HP (WhatsApp) <span class="text-rose-500">*</span>
+                            No. Telepon <span class="text-rose-500">*</span>
                         </label>
                         <input type="tel" name="phone" x-model="phone" @input="delete errors['phone']"
                                placeholder="Contoh: 081234567890" 

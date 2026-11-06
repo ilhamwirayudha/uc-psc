@@ -17,7 +17,6 @@ class ClientForm extends Model
         'consent_agreed',
         'consent_agreed_at',
         'service_preference',
-        'status',
         'answers',
         'admin_notes',
         'ip_address',
@@ -87,17 +86,6 @@ class ClientForm extends Model
             'non_industri' => 'Layanan Non-Industri',
             'biography_en' => 'Biography Form (English)',
             default => ucfirst(str_replace('_', ' ', $this->form_type)),
-        };
-    }
-
-    public function getStatusBadgeAttribute(): array
-    {
-        return match($this->status) {
-            'baru' => ['bg' => 'bg-emerald-50 text-emerald-700 border-emerald-200', 'label' => 'Baru Masuk'],
-            'diproses' => ['bg' => 'bg-amber-50 text-amber-700 border-amber-200', 'label' => 'Sedang Diproses'],
-            'selesai' => ['bg' => 'bg-blue-50 text-blue-700 border-blue-200', 'label' => 'Selesai Terjadwal'],
-            'dibatalkan' => ['bg' => 'bg-rose-50 text-rose-700 border-rose-200', 'label' => 'Dibatalkan'],
-            default => ['bg' => 'bg-gray-50 text-gray-700 border-gray-200', 'label' => ucfirst($this->status)],
         };
     }
 

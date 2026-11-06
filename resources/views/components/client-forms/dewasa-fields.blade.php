@@ -2,33 +2,33 @@
 <div class="space-y-6">
 
     {{-- KARTU: LEMBAR PERSETUJUAN (INFORMED CONSENT) --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Lembar Persetujuan (Informed Consent) <span class="text-red-500">*</span></h3>
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Lembar Persetujuan (Informed Consent) <span class="text-rose-300 font-bold">*</span></h3>
         </div>
 
-        <div>
+        <div class="p-6 space-y-4">
             <p class="text-sm text-[#6B5B85] leading-relaxed mb-3">
                 Dengan menyetujui pernyataan ini, saya menyatakan bahwa seluruh data yang diisikan adalah benar dan saya menyetujui pelaksanaan layanan di UC Psychological Service Center.
             </p>
 
             <label class="inline-flex items-center gap-2.5 cursor-pointer text-sm font-medium text-black">
-                <input type="checkbox" name="consent_agree" value="Setuju" required checked class="w-4 h-4 rounded text-purple-deep focus:ring-purple-deep border-[#D9C2F0]">
+                <input type="checkbox" name="consent_agree" value="Setuju" required {{ old('consent_agree') === 'Setuju' ? 'checked' : '' }} class="w-4 h-4 rounded text-purple-deep focus:ring-purple-deep border-[#D9C2F0]">
                 <span>Menyetujui lembar persetujuan layanan konseling UC PSC <span class="text-red-500">*</span></span>
             </label>
             @error('consent_agree') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
     </div>
 
-    {{-- KARTU 1: DATA IDENTITAS & DIRI --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-5">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Data Identitas & Diri</h3>
+    {{-- KARTU: DATA IDENTITAS & DIRI --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Data Identitas & Diri</h3>
         </div>
 
-        <div class="grid sm:grid-cols-2 gap-4">
+        <div class="p-6 space-y-4">
             {{-- Nama Lengkap --}}
-            <div class="sm:col-span-2">
+            <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
                     Nama Lengkap (Beserta Gelar Jika Ada) <span class="text-red-500">*</span>
                 </label>
@@ -85,7 +85,7 @@
             </div>
 
             {{-- Alamat --}}
-            <div class="sm:col-span-2">
+            <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
                     Alamat Tempat Tinggal Saat Ini <span class="text-red-500">*</span>
                 </label>
@@ -95,10 +95,10 @@
                 @error('alamat') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
-            {{-- No WhatsApp / Telepon --}}
+            {{-- No. Telepon --}}
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                    No. Telp / WhatsApp Aktif <span class="text-red-500">*</span>
+                    No. Telepon <span class="text-red-500">*</span>
                 </label>
                 <input type="tel" name="phone" value="{{ old('phone') }}" required
                     placeholder="Contoh: 081234567890"
@@ -151,7 +151,7 @@
                 <select name="pendidikan_terakhir" required
                     class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('pendidikan_terakhir') border-red-400 bg-red-50/20 @enderror">
                     <option value="">-- Pilih Pendidikan --</option>
-                    @foreach(['SD', 'SMP', 'SMA / SMK', 'Diploma (D3/D4)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'] as $edu)
+                    @foreach(['TK', 'SD', 'SMP', 'SMA / SMK', 'Diploma (D3/D4)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'] as $edu)
                         <option value="{{ $edu }}" {{ old('pendidikan_terakhir') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
                     @endforeach
                 </select>
@@ -169,7 +169,7 @@
             </div>
 
             {{-- Hobi --}}
-            <div class="sm:col-span-2">
+            <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
                     Hobi / Minat Kegemaran (Opsional)
                 </label>
@@ -180,7 +180,7 @@
             </div>
 
             {{-- Alasan Konseling --}}
-            <div class="sm:col-span-2">
+            <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
                     Alasan Membutuhkan Konseling (Opsional)
                 </label>
@@ -191,14 +191,16 @@
             </div>
         </div>
     </div>
+</div>
 
-    {{-- KARTU 2: DATA KONDISI PSIKOLOGIS --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-5">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Data Kondisi Psikologis</h3>
+    {{-- KARTU: DATA KONDISI PSIKOLOGIS --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Data Kondisi Psikologis</h3>
         </div>
 
-        <div class="space-y-4">
+        <div class="p-6 space-y-5">
+            <div class="space-y-4">
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
                     Gambaran Kondisi Saat Ini (Opsional)
@@ -229,26 +231,24 @@
                 @error('hal_ingin_ditingkatkan') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <div class="grid sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                        Karakter Kepribadian Anda (Opsional)
-                    </label>
-                    <input type="text" name="karakter_kepribadian" value="{{ old('karakter_kepribadian') }}"
-                        placeholder="Contoh: Terbuka, pendiam, perfeksionis, perasa"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('karakter_kepribadian') border-red-400 bg-red-50/20 @enderror">
-                    @error('karakter_kepribadian') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">
+                    Karakter Kepribadian Anda (Opsional)
+                </label>
+                <input type="text" name="karakter_kepribadian" value="{{ old('karakter_kepribadian') }}"
+                    placeholder="Contoh: Terbuka, pendiam, perfeksionis, perasa"
+                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('karakter_kepribadian') border-red-400 bg-red-50/20 @enderror">
+                @error('karakter_kepribadian') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
 
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                        Rata-Rata Jam Tidur Per Malam (Opsional)
-                    </label>
-                    <input type="text" name="jam_tidur" value="{{ old('jam_tidur') }}"
-                        placeholder="Contoh: 6 - 7 jam per malam"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('jam_tidur') border-red-400 bg-red-50/20 @enderror">
-                    @error('jam_tidur') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">
+                    Rata-Rata Jam Tidur Per Malam (Opsional)
+                </label>
+                <input type="text" name="jam_tidur" value="{{ old('jam_tidur') }}"
+                    placeholder="Contoh: 6 - 7 jam per malam"
+                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('jam_tidur') border-red-400 bg-red-50/20 @enderror">
+                @error('jam_tidur') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>
@@ -260,80 +260,77 @@
                     class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
-            <div class="grid sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                        Riwayat Trauma Masa Lalu (Opsional)
-                    </label>
-                    <textarea name="riwayat_trauma" rows="2"
-                        placeholder="Jika ada kejadian masa lalu yang membekas..."
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('riwayat_trauma') }}</textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                        Riwayat Kesehatan Medis (Opsional)
-                    </label>
-                    <textarea name="riwayat_kesehatan" rows="2"
-                        placeholder="Penyakit kronis, operasi, atau obat yang rutin dikonsumsi..."
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('riwayat_kesehatan') }}</textarea>
-                </div>
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">
+                    Riwayat Trauma Masa Lalu (Opsional)
+                </label>
+                <textarea name="riwayat_trauma" rows="2"
+                    placeholder="Jika ada kejadian masa lalu yang membekas..."
+                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('riwayat_trauma') }}</textarea>
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">
+                    Riwayat Kesehatan Medis (Opsional)
+                </label>
+                <textarea name="riwayat_kesehatan" rows="2"
+                    placeholder="Penyakit kronis, operasi, atau obat yang rutin dikonsumsi..."
+                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('riwayat_kesehatan') }}</textarea>
             </div>
         </div>
     </div>
 
-    {{-- KARTU 3: GAMBARAN RELASI INTERPERSONAL --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-5">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Gambaran Relasi Interpersonal</h3>
+    {{-- KARTU: GAMBARAN RELASI INTERPERSONAL --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Gambaran Relasi Interpersonal</h3>
         </div>
 
-        <div class="space-y-4">
-            <div class="grid sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                        Relasi dengan Ayah (Opsional)
-                    </label>
-                    <textarea name="relasi_ayah" rows="2"
-                        placeholder="Contoh: Dekat dan komunikatif / Berjarak..."
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('relasi_ayah') border-red-400 bg-red-50/20 @enderror">{{ old('relasi_ayah') }}</textarea>
-                    @error('relasi_ayah') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                        Relasi dengan Ibu (Opsional)
-                    </label>
-                    <textarea name="relasi_ibu" rows="2"
-                        placeholder="Contoh: Sangat dekat, sering curhat / Cukup kaku..."
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('relasi_ibu') border-red-400 bg-red-50/20 @enderror">{{ old('relasi_ibu') }}</textarea>
-                    @error('relasi_ibu') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+        <div class="p-6 space-y-4">
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">
+                    Relasi dengan Ayah (Opsional)
+                </label>
+                <textarea name="relasi_ayah" rows="2"
+                    placeholder="Contoh: Dekat dan komunikatif / Berjarak..."
+                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('relasi_ayah') border-red-400 bg-red-50/20 @enderror">{{ old('relasi_ayah') }}</textarea>
+                @error('relasi_ayah') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <div class="grid sm:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Relasi Saudara (Opsional)</label>
-                    <input type="text" name="relasi_saudara" value="{{ old('relasi_saudara') }}" placeholder="Harmonis / Kurang dekat" class="w-full px-4 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Relasi Pasangan (Opsional)</label>
-                    <input type="text" name="relasi_pasangan" value="{{ old('relasi_pasangan') }}" placeholder="Baik / Mengalami konflik" class="w-full px-4 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-gray-500 mb-1.5">Relasi Anak (Opsional)</label>
-                    <input type="text" name="relasi_anak" value="{{ old('relasi_anak') }}" placeholder="Jika sudah memiliki anak" class="w-full px-4 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">
+                    Relasi dengan Ibu (Opsional)
+                </label>
+                <textarea name="relasi_ibu" rows="2"
+                    placeholder="Contoh: Sangat dekat, sering curhat / Cukup kaku..."
+                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('relasi_ibu') border-red-400 bg-red-50/20 @enderror">{{ old('relasi_ibu') }}</textarea>
+                @error('relasi_ibu') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Relasi Saudara (Opsional)</label>
+                <input type="text" name="relasi_saudara" value="{{ old('relasi_saudara') }}" placeholder="Harmonis / Kurang dekat" class="w-full px-4 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Relasi Pasangan (Opsional)</label>
+                <input type="text" name="relasi_pasangan" value="{{ old('relasi_pasangan') }}" placeholder="Baik / Mengalami konflik" class="w-full px-4 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1.5">Relasi Anak (Opsional)</label>
+                <input type="text" name="relasi_anak" value="{{ old('relasi_anak') }}" placeholder="Jika sudah memiliki anak" class="w-full px-4 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
             </div>
         </div>
     </div>
 
-    {{-- KARTU 4: INFORMASI TAMBAHAN & PREFERENSI --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-5">
-        <div class="pb-3 border-b border-[#EDE1FA] flex items-center gap-2">
-            <h3 class="text-base font-semibold text-black">Informasi Tambahan & Preferensi</h3>
+    {{-- KARTU: INFORMASI TAMBAHAN & PREFERENSI --}}
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
+            <h3 class="text-base font-semibold text-white">Informasi Tambahan & Preferensi</h3>
         </div>
 
-        <div class="grid sm:grid-cols-2 gap-4">
+        <div class="p-6 space-y-4">
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
                     Pernah Mengikuti Konseling Sebelumnya? (Opsional)
@@ -356,9 +353,9 @@
                     class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
-            <div class="sm:col-span-2">
+            <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                    Kontak Darurat (Nama, Relasi, No. Telp) (Opsional)
+                    Kontak Darurat (Nama, Relasi, No. Telepon) (Opsional)
                 </label>
                 <input type="text" name="kontak_darurat" value="{{ old('kontak_darurat') }}"
                     placeholder="Contoh: Ibu Rina (Ibu Kandung) - 08123456789"
@@ -382,9 +379,9 @@
 
             <div>
                 <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                    Preferensi Proses Konseling (Opsional)
+                    Preferensi Proses Konseling <span class="text-red-500">*</span>
                 </label>
-                <select name="preferensi_konseling"
+                <select name="preferensi_konseling" required
                     class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('preferensi_konseling') border-red-400 bg-red-50/20 @enderror">
                     <option value="">-- Pilih Preferensi --</option>
                     <option value="Offline di UCPSC" {{ old('preferensi_konseling') === 'Offline di UCPSC' ? 'selected' : '' }}>Offline (Tatap Muka di UC PSC CitraLand)</option>
@@ -394,5 +391,4 @@
             </div>
         </div>
     </div>
-
 </div>

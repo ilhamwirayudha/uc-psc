@@ -25,12 +25,12 @@ class StaffManagementController extends Controller
 
         $staffs = $query->paginate(15)->withQueryString();
 
-        return view('staff-management.index', compact('staffs'));
+        return view('staff-management.staff-directory-table', compact('staffs'));
     }
 
     public function create()
     {
-        return view('staff-management.create');
+        return view('staff-management.staff-create-form');
     }
 
     public function store(Request $request)
@@ -58,7 +58,7 @@ class StaffManagementController extends Controller
         }
 
         $activeClients = Client::where('assigned_staff_id', $staff->id)
-            ->with(['creator', 'testResults'])
+            ->with(['creator'])
             ->latest()
             ->get();
 
@@ -72,7 +72,7 @@ class StaffManagementController extends Controller
         $unassignedClients = Client::whereNull('assigned_staff_id')->orderBy('name')->get();
         $otherStaffs = User::where('role', 'staff')->where('id', '!=', $staff->id)->orderBy('name')->get();
 
-        return view('staff-management.show', compact('staff', 'activeClients', 'historyAssignments', 'unassignedClients', 'otherStaffs'));
+        return view('staff-management.staff-workload-detail', compact('staff', 'activeClients', 'historyAssignments', 'unassignedClients', 'otherStaffs'));
     }
 
     public function destroy(User $staff)

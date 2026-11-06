@@ -1,8 +1,8 @@
-@extends('layouts.dashboard')
+﻿@extends('layouts.dashboard')
 
-@section('title', 'Edit Konselor — UC PSC')
-@section('page-title', 'Edit Data Konselor')
-@section('page-subtitle', 'Perbarui data identitas, kualifikasi, atau status konselor')
+@section('title', 'Edit Psikolog — UC PSC')
+@section('page-title', 'Edit Data Psikolog')
+@section('page-subtitle', 'Perbarui data identitas, kualifikasi, atau status psikolog')
 
 @section('content')
 @include('clients.partials.address-script')
@@ -127,7 +127,7 @@
                 </div>
 
                 <div class="flex-1 text-center sm:text-left space-y-2">
-                    <h3 class="text-base font-semibold text-black">Foto Profil Konselor</h3>
+                    <h3 class="text-base font-semibold text-black">Foto Profil Psikolog</h3>
                     <p class="text-xs font-medium text-gray-500">Format foto JPG, PNG, atau WebP. Resolusi rasio 1:1 direkomendasikan. Maksimal 2 MB.</p>
                     
                     <div class="pt-1">
@@ -146,22 +146,22 @@
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Data Identitas & Kontak</h3>
-                <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif konselor</p>
+                <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif psikolog</p>
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
-                {{-- Nama Konselor --}}
+                {{-- Nama Psikolog --}}
                 <div class="sm:col-span-2">
-                    <label for="name" class="block text-xs font-medium text-gray-500 mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
+                    <label for="name" class="block text-xs font-medium text-gray-500 mb-1.5">Nama Psikolog / Psikolog <span class="text-red-500">*</span></label>
                     <input type="text" id="name" name="name" value="{{ old('name', $counselor->name) }}" required
                         placeholder="Contoh: Dr. Amanda Wijaya, M.Psi., Psikolog"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('name') border-red-300 @enderror">
                     @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- No Telepon / WA --}}
+                {{-- No. Telepon --}}
                 <div>
-                    <label for="phone" class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon / WhatsApp</label>
+                    <label for="phone" class="block text-xs font-medium text-gray-500 mb-1.5">No. Telepon</label>
                     <input type="text" id="phone" name="phone" value="{{ old('phone', $counselor->phone) }}"
                         inputmode="numeric"
                         maxlength="13"
@@ -187,7 +187,7 @@
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Alamat Domisili</h3>
-                <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat lengkap tempat tinggal</p>
+                <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat</p>
             </div>
 
             <div class="grid sm:grid-cols-3 gap-4 pt-1">
@@ -320,9 +320,9 @@
                     @error('str_number') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                {{-- Status Keaktifan Konselor --}}
+                {{-- Status Keaktifan Psikolog --}}
                 <div class="sm:col-span-2">
-                    <label for="status" class="block text-xs font-medium text-gray-500 mb-1.5">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
+                    <label for="status" class="block text-xs font-medium text-gray-500 mb-1.5">Status Keaktifan Psikolog <span class="text-red-500">*</span></label>
                     <select id="status" name="status" required
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                         <option value="active" class="text-emerald-600 font-semibold" {{ old('status', $counselor->status) === 'active' ? 'selected' : '' }}>Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
@@ -337,7 +337,7 @@
         <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Catatan & Keterangan Tambahan</h3>
-                <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus konselor (opsional)</p>
+                <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus psikolog (opsional)</p>
             </div>
 
             <div>

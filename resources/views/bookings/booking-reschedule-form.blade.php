@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+﻿@extends('layouts.dashboard')
 
 @section('title', 'Edit Booking — UC PSC')
 @section('page-title', 'Edit Booking #' . $booking->id)
@@ -64,11 +64,11 @@
             </select>
         </div>
 
-        {{-- Konseling: Konselor --}}
+        {{-- Konseling: Psikolog --}}
         <div x-show="kategori === 'konseling'" x-transition>
-            <label class="block text-xs font-medium text-gray-500 mb-1.5">Konselor</label>
+            <label class="block text-xs font-medium text-gray-500 mb-1.5">Psikolog</label>
             <select name="counselor_id" class="w-full px-3 py-2 border border-[#D9C2F0] rounded-xl text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-purple-deep">
-                <option value="">Pilih Konselor...</option>
+                <option value="">Pilih Psikolog...</option>
                 @foreach($counselors as $counselor)
                 <option value="{{ $counselor->id }}" {{ old('counselor_id', $booking->counselor_id) == $counselor->id ? 'selected' : '' }}>{{ $counselor->name }}</option>
                 @endforeach
@@ -130,7 +130,7 @@
 
         {{-- Buttons --}}
         <div class="flex items-center gap-3 pt-2">
-            <button type="submit" class="px-5 py-2 bg-purple-deep text-white text-sm font-semibold rounded-xl hover:bg-purple-deep/90 transition shadow-sm">Simpan Perubahan</button>
+            <button type="submit" class="px-5 py-2 bg-purple-deep text-white text-sm font-semibold rounded-xl hover:bg-purple-deep/90 transition shadow-sm flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span>Simpan Perubahan</span></button>
             <a href="{{ route('bookings.index') }}" class="px-5 py-2 text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] rounded-xl hover:bg-[#F7F5FB] transition">Batal</a>
         </div>
     </form>

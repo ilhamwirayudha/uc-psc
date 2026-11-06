@@ -15,6 +15,11 @@
         return originalSubmit.apply(this, arguments);
     };
 
+    // Global listener submit untuk semua form (termasuk form dinamis)
+    document.addEventListener('submit', function () {
+        window.isSubmittingForm = true;
+    }, true);
+
     // Ambil snapshot nilai awal seluruh input form
     function initFormSnapshots() {
         const forms = document.querySelectorAll('main form:not([method="GET"]):not([method="get"]):not([data-no-guard]):not([data-no-unsaved-guard]), form[data-unsaved-guard]');
@@ -43,6 +48,11 @@
     // Periksa apakah form memiliki perubahan / data terisi
     window.checkFormDirty = function () {
         if (window.isSubmittingForm) return false;
+
+        // Cek juga custom dirty checker khusus (seperti edit biodata klien)
+        if (typeof window.isClientProfileDirty === 'function' && window.isClientProfileDirty()) {
+            return true;
+        }
 
         const forms = document.querySelectorAll('main form:not([method="GET"]):not([method="get"]):not([data-no-guard]):not([data-no-unsaved-guard]), form[data-unsaved-guard]');
         for (const form of forms) {
