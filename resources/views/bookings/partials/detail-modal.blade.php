@@ -1,4 +1,4 @@
-﻿    {{-- ========================================================================= --}}
+    {{-- ========================================================================= --}}
     {{-- POP-UP MODAL DETAIL & EDIT BOOKING LAYANAN (STYLE IDENTIK DENGAN BUAT BOOKING) --}}
     {{-- STRICT RULE: Dilarang menutup modal saat klik backdrop/overlay           --}}
     {{-- ========================================================================= --}}
@@ -48,46 +48,62 @@
 
                         {{-- Subcard Data Isian Profil Klien (Ditata Urut Atas ke Bawah, Tanpa Grid Samping, Tanpa Truncate) --}}
                         <div class="p-5 sm:p-6 space-y-3">
-                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Nama Lengkap</label>
-                                <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.name || '-'"></span>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                    <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.name || '-'"></span>
+                                </div>
                             </div>
 
-                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">No. Telepon</label>
-                                <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.phone || '-'"></span>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                    <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.phone || '-'"></span>
+                                </div>
                             </div>
 
-                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Email</label>
-                                <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.email || '-'"></span>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Email</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                    <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.email || '-'"></span>
+                                </div>
                             </div>
 
-                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Jenis Kelamin</label>
-                                <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.gender || '-'"></span>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                    <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.gender || '-'"></span>
+                                </div>
                             </div>
 
-                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Tanggal Lahir</label>
-                                <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.dob || '-'"></span>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                    <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.dob || '-'"></span>
+                                </div>
                             </div>
 
-                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Pendidikan &amp; Pekerjaan</label>
-                                <span class="text-black font-medium text-sm block leading-relaxed break-words" x-text="(selectedBooking?.client?.education || '-') + ' • ' + (selectedBooking?.client?.occupation || '-')"></span>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan &amp; Pekerjaan</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                    <span class="text-black font-medium text-sm block leading-relaxed break-words" x-text="(selectedBooking?.client?.education || '-') + ' • ' + (selectedBooking?.client?.occupation || '-')"></span>
+                                </div>
                             </div>
 
                             <template x-if="selectedBooking?.client?.pic_name">
-                                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">PIC Perusahaan</label>
-                                    <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking.client.pic_name"></span>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">PIC Perusahaan</label>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                        <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking.client.pic_name"></span>
+                                    </div>
                                 </div>
                             </template>
 
-                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Alamat Lengkap</label>
-                                <span class="text-black font-medium text-sm block leading-relaxed break-words" x-text="selectedBooking?.client?.address || '-'"></span>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Lengkap</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                    <span class="text-black font-medium text-sm block leading-relaxed break-words" x-text="selectedBooking?.client?.address || '-'"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -562,17 +578,17 @@
                             <div x-show="(editForm.kategori || selectedBooking?.kategori) === 'psikotes'">
                                 <template x-if="editingCard !== 'penugasan'">
                                     <div class="space-y-3">
-                                        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl w-full">
-                                            <span class="block text-xs font-medium text-gray-500 mb-1">Staff Penguji / Tester</span>
-                                            <p class="font-medium text-black text-sm break-words" x-text="selectedBooking?.staff_penguji?.name || '-'"></p>
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Staff Penguji / Tester</label>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-xl min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_penguji?.name || '-'"></div>
                                         </div>
-                                        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl w-full">
-                                            <span class="block text-xs font-medium text-gray-500 mb-1">Staff Koreksi / Skoring</span>
-                                            <p class="font-medium text-black text-sm break-words" x-text="selectedBooking?.staff_koreksi?.name || '-'"></p>
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Staff Koreksi / Skoring</label>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-xl min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_koreksi?.name || '-'"></div>
                                         </div>
-                                        <div class="p-3.5 bg-slate-50 border border-slate-100 rounded-xl w-full">
-                                            <span class="block text-xs font-medium text-gray-500 mb-1">Staff Pelapor / Hasil</span>
-                                            <p class="font-medium text-black text-sm break-words" x-text="selectedBooking?.staff_pelapor?.name || '-'"></p>
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Staff Pelapor / Hasil</label>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-xl min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_pelapor?.name || '-'"></div>
                                         </div>
                                     </div>
                                 </template>
@@ -661,30 +677,32 @@
                             {{-- Mode View: Kartu Tampilan Jadwal --}}
                             <template x-if="editingCard !== 'jadwal'">
                                 <div class="space-y-3">
-                                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                        <span class="block text-xs font-medium text-gray-500 mb-1">Tanggal Permintaan Booking</span>
-                                        <span class="text-black font-medium text-sm block" x-text="selectedBooking?.tanggal_booking_dibuat_formatted || '-'"></span>
-                                        <span class="text-gray-500 font-medium text-xs block mt-0.5" x-text="'Pukul ' + (selectedBooking?.jam_dibuat || '-')"></span>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Permintaan Booking</label>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                            <span x-text="selectedBooking?.tanggal_booking_dibuat_formatted || '-'"></span>
+                                            <span class="text-slate-400 font-medium text-xs" x-text="'Pukul ' + (selectedBooking?.jam_dibuat || '-')"></span>
+                                        </div>
                                     </div>
 
-                                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                        <span class="block text-xs font-medium text-gray-500 mb-1">Tanggal Sesi Pelaksanaan</span>
-                                        <span class="text-black font-medium text-sm block" x-text="selectedBooking?.tanggal_dijadwalkan_formatted || 'Belum Dijadwalkan'"></span>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Sesi Pelaksanaan</label>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.tanggal_dijadwalkan_formatted || 'Belum Dijadwalkan'"></div>
                                     </div>
 
-                                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                        <span class="block text-xs font-medium text-gray-500 mb-1">Jam Pelaksanaan Sesi</span>
-                                        <span class="text-black font-medium text-sm block" x-text="selectedBooking?.jam_sesi || 'Jam belum diatur'"></span>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Jam Pelaksanaan Sesi</label>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.jam_sesi || 'Jam belum diatur'"></div>
                                     </div>
 
-                                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                        <span class="block text-xs font-medium text-gray-500 mb-1">Metode Pertemuan / Sesi</span>
-                                        <span class="text-black font-medium text-sm block" x-text="selectedBooking?.session_type ? (selectedBooking.session_type === 'online' ? 'Online' : 'Offline') : 'Offline'"></span>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Metode Pertemuan / Sesi</label>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.session_type ? (selectedBooking.session_type === 'online' ? 'Online' : 'Offline') : 'Offline'"></div>
                                     </div>
 
-                                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                        <span class="block text-xs font-medium text-gray-500 mb-1">Ruangan / Lokasi / Link Meeting</span>
-                                        <span class="text-black font-medium text-sm block leading-relaxed break-words" x-text="selectedBooking?.location || '-'"></span>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Ruangan / Lokasi / Link Meeting</label>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black leading-relaxed break-words" x-text="selectedBooking?.location || '-'"></div>
                                     </div>
                                 </div>
                             </template>
@@ -890,13 +908,15 @@
                             {{-- Mode View: Status & Catatan (Ditata Atas ke Bawah) --}}
                             <template x-if="editingCard !== 'status'">
                                 <div class="space-y-3">
-                                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                        <span class="block text-xs font-medium text-gray-500 mb-1">Status Booking</span>
-                                        <span class="text-black font-medium text-sm block" x-text="selectedBooking?.status_label"></span>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Status Booking</label>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.status_label"></div>
                                     </div>
-                                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 w-full">
-                                        <span class="block text-xs font-medium text-gray-500 mb-1">Catatan Khusus Sesi</span>
-                                        <p class="text-black font-medium text-sm leading-relaxed whitespace-pre-line break-words" x-text="selectedBooking?.notes || 'Tidak ada catatan tambahan untuk booking ini.'"></p>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Catatan Khusus Sesi</label>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                            <p class="whitespace-pre-line break-words" x-text="selectedBooking?.notes || 'Tidak ada catatan tambahan untuk booking ini.'"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </template>

@@ -328,4 +328,144 @@ class ClientFormManagementController extends Controller
 
         return view('client-forms.client-form-print-dossier', compact('clientForm'));
     }
+
+    /**
+     * Perbarui data jawaban formulir klien dan sinkronkan data biodata ke master client.
+     */
+    public function update(Request $request, ClientForm $clientForm)
+    {
+        $updatedAnswers = $request->input('answers', $request->except(['_token', '_method']));
+        if (!is_array($updatedAnswers)) {
+            $updatedAnswers = [];
+        }
+
+        $currentAnswers = $clientForm->answers ?? [];
+        if (!is_array($currentAnswers)) {
+            $currentAnswers = [];
+        }
+
+        foreach ($updatedAnswers as $key => $val) {
+            $currentAnswers[$key] = $val;
+        }
+
+        $clientForm->answers = $currentAnswers;
+
+        // Perbarui client_name & client_phone jika ada field terkait di form
+        $newName = $currentAnswers['nama_lengkap'] ?? $currentAnswers['nama'] ?? $currentAnswers['full_name'] ?? null;
+        if (!empty($newName)) {
+            if (in_array($clientForm->form_type, ['pra_nikah', 'pernikahan']) && !empty($currentAnswers['nama_pasangan'])) {
+                $clientForm->client_name = trim($newName) . ' & ' . trim($currentAnswers['nama_pasangan']);
+            } else {
+                $clientForm->client_name = trim($newName);
+            }
+        }
+
+        $newPhone = $currentAnswers['no_telepon'] ?? $currentAnswers['phone'] ?? $currentAnswers['telepon'] ?? null;
+        if (!empty($newPhone)) {
+            $clientForm->client_phone = trim($newPhone);
+        }
+
+        $clientForm->save();
+
+        // Sinkronisasi ke master client jika formulir ini terhubung ke Client
+        $client = $clientForm->client;
+        if ($client) {
+            $clientChanged = false;
+
+            // 1. Nama
+            if (!empty($newName) && $client->name !== trim($newName)) {
+                $client->name = trim($newName);
+                $clientChanged = true;
+            }
+
+            // 2. Jenis Kelamin
+            $genderRaw = $currentAnswers['jenis_kelamin'] ?? $currentAnswers['gender'] ?? null;
+            if (!empty($genderRaw)) {
+                $gCode = match(strtolower(trim($genderRaw))) {
+                    'laki-laki', 'l', 'pria', 'male' => 'l',
+                    'perempuan', 'p', 'wanita', 'female' => 'p',
+                    default => $client->gender,
+                };
+                if ($client->gender !== $gCode) {
+                    $client->gender = $gCode;
+                    $clientChanged = true;
+                }
+            }
+
+            // 3. Tempat Lahir
+            $birthPlace = $currentAnswers['tempat_lahir'] ?? $currentAnswers['birth_place'] ?? $currentAnswers['place_of_birth'] ?? null;
+            if (!empty($birthPlace) && $client->birth_place !== trim($birthPlace)) {
+                $client->birth_place = trim($birthPlace);
+                $clientChanged = true;
+            }
+
+            // 4. Tanggal Lahir
+            $dob = $currentAnswers['tanggal_lahir'] ?? $currentAnswers['dob'] ?? $currentAnswers['date_of_birth'] ?? null;
+            if (!empty($dob)) {
+                $formattedDob = date('Y-m-d', strtotime($dob));
+                if (!$client->dob || $client->dob->format('Y-m-d') !== $formattedDob) {
+                    $client->dob = $formattedDob;
+                    $clientChanged = true;
+                }
+            }
+
+            // 5. No. Telepon
+            if (!empty($newPhone) && $client->phone !== trim($newPhone)) {
+                $client->phone = trim($newPhone);
+                $clientChanged = true;
+            }
+
+            // 6. Alamat Email
+            $email = $currentAnswers['email'] ?? $currentAnswers['alamat_email'] ?? null;
+            if (!empty($email) && $client->email !== trim($email)) {
+                $client->email = trim($email);
+                $clientChanged = true;
+            }
+
+            // 7. Agama
+            $religion = $currentAnswers['agama'] ?? $currentAnswers['religion'] ?? null;
+            if (!empty($religion) && $client->religion !== trim($religion)) {
+                $client->religion = trim($religion);
+                $clientChanged = true;
+            }
+
+            // 8. Pendidikan Terakhir
+            $education = $currentAnswers['pendidikan_terakhir'] ?? $currentAnswers['pendidikan'] ?? $currentAnswers['last_education'] ?? null;
+            if (!empty($education) && $client->education !== trim($education)) {
+                $client->education = trim($education);
+                $clientChanged = true;
+            }
+
+            // 9. Pekerjaan
+            $occupation = $currentAnswers['pekerjaan'] ?? $currentAnswers['pekerjaan_saat_ini'] ?? $currentAnswers['occupation'] ?? null;
+            if (!empty($occupation) && $client->occupation !== trim($occupation)) {
+                $client->occupation = trim($occupation);
+                $clientChanged = true;
+            }
+
+            // 10. Alamat
+            $address = $currentAnswers['alamat'] ?? $currentAnswers['alamat_lengkap'] ?? $currentAnswers['alamat_sekarang'] ?? $currentAnswers['address'] ?? null;
+            if (!empty($address) && $client->address !== trim($address)) {
+                $client->address = trim($address);
+                $clientChanged = true;
+            }
+
+            if ($clientChanged) {
+                // Menyimpan client akan otomatis memicu static::updated yang memanggil $client->syncToClientForms()
+                // sehingga seluruh formulir lain milik klien ini juga ikut tersinkronisasi
+                $client->save();
+            }
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data formulir berhasil diperbarui dan disinkronkan.',
+                'data' => $clientForm->fresh(['client', 'booking']),
+                'client' => $client ? $client->fresh(['clientForms']) : null,
+            ]);
+        }
+
+        return back()->with('success', 'Data formulir berhasil diperbarui dan disinkronkan.');
+    }
 }

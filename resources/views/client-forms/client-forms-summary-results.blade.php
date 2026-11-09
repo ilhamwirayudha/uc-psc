@@ -93,6 +93,21 @@
         this.showDossierModal = true;
     },
 
+    getFormTitle(form) {
+        if (!form) return 'Detail Formulir';
+        if (form.form_type_label) return form.form_type_label;
+        const map = {
+            'anak': 'Konseling Anak',
+            'dewasa': 'Konseling Dewasa',
+            'pra_nikah': 'Konseling Pra-Nikah',
+            'pernikahan': 'Konseling Pernikahan',
+            'industri': 'Layanan Industri',
+            'non_industri': 'Layanan Non-Industri',
+            'biography_en': 'Biography Form (English)'
+        };
+        return map[form.form_type] || (form.form_type ? form.form_type.charAt(0).toUpperCase() + form.form_type.slice(1).replace(/_/g, ' ') : 'Detail Formulir');
+    },
+
     printPdf(formOrId) {
         const formId = typeof formOrId === 'object' && formOrId !== null ? formOrId.id : (formOrId || (this.selectedForm ? this.selectedForm.id : null));
         if (!formId) return;
@@ -610,8 +625,7 @@
             <div class="p-6 bg-purple-deep text-white flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold text-purple-200 uppercase" x-text="selectedForm && selectedForm.created_at ? 'Waktu Pengisian: ' + selectedForm.created_at.slice(0, 19).replace('T', ' ') : ''"></span>
-                    <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight" x-text="selectedForm ? selectedForm.client_name : ''"></h3>
-                    <p class="text-sm sm:text-base font-semibold text-purple-200" x-text="selectedForm ? selectedForm.form_type_label : ''"></p>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight" x-text="getFormTitle(selectedForm)"></h3>
                 </div>
                 <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
                     <button type="button" 
@@ -825,62 +839,70 @@
                             <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Kondisi & Riwayat Psikologis</h4>
                             
                             <template x-if="selectedForm.answers.alasan_konseling">
-                                <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50">
-                                    <span class="text-slate-500 text-xs block mb-1 font-semibold">Alasan Membutuhkan Konseling:</span>
-                                    <p class="text-sm font-medium text-slate-900" x-text="selectedForm.answers.alasan_konseling"></p>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Alasan Membutuhkan Konseling</label>
+                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                        <p x-text="selectedForm.answers.alasan_konseling"></p>
+                                    </div>
                                 </div>
                             </template>
 
                             <template x-if="selectedForm.answers.kondisi_anak_saat_ini || selectedForm.answers.kondisi_saat_ini">
-                                <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50">
-                                    <span class="text-slate-500 text-xs block mb-1 font-semibold">Gambaran Kondisi Saat Ini:</span>
-                                    <p class="text-sm font-medium text-slate-900" x-text="selectedForm.answers.kondisi_anak_saat_ini || selectedForm.answers.kondisi_saat_ini"></p>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Gambaran Kondisi Saat Ini</label>
+                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                        <p x-text="selectedForm.answers.kondisi_anak_saat_ini || selectedForm.answers.kondisi_saat_ini"></p>
+                                    </div>
                                 </div>
                             </template>
 
                             <template x-if="selectedForm.answers.hal_ingin_ditingkatkan">
-                                <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50">
-                                    <span class="text-slate-500 text-xs block mb-1 font-semibold">Hal yang Ingin Ditingkatkan:</span>
-                                    <p class="text-sm font-medium text-slate-900" x-text="selectedForm.answers.hal_ingin_ditingkatkan"></p>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Hal yang Ingin Ditingkatkan</label>
+                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                        <p x-text="selectedForm.answers.hal_ingin_ditingkatkan"></p>
+                                    </div>
                                 </div>
                             </template>
 
                             <template x-if="selectedForm.answers.self_description || selectedForm.answers.deskripsi_diri_bebas">
-                                <div class="p-3.5 rounded-xl border border-slate-100 bg-slate-50">
-                                    <span class="text-slate-500 text-xs block mb-1 font-semibold">Deskripsi Diri:</span>
-                                    <p class="text-sm font-medium text-slate-900" x-text="selectedForm.answers.self_description || selectedForm.answers.deskripsi_diri_bebas"></p>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Deskripsi Diri</label>
+                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                        <p x-text="selectedForm.answers.self_description || selectedForm.answers.deskripsi_diri_bebas"></p>
+                                    </div>
                                 </div>
                             </template>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                                 <template x-if="selectedForm.answers.karakter_anak || selectedForm.answers.karakter_kepribadian || selectedForm.answers.kelebihan_diri || selectedForm.answers.strengths">
-                                    <div class="p-3 rounded-xl border bg-slate-50/70">
-                                        <span class="text-slate-400 block font-semibold">Karakter / Kelebihan Diri:</span>
-                                        <p class="font-medium text-slate-800" x-text="selectedForm.answers.karakter_anak || selectedForm.answers.karakter_kepribadian || selectedForm.answers.kelebihan_diri || selectedForm.answers.strengths || '-'"></p>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Karakter / Kelebihan Diri</label>
+                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.karakter_anak || selectedForm.answers.karakter_kepribadian || selectedForm.answers.kelebihan_diri || selectedForm.answers.strengths || '-'"></div>
                                     </div>
                                 </template>
                                 <template x-if="selectedForm.answers.kelemahan_diri || selectedForm.answers.weaknesses || selectedForm.answers.pikiran_negatif">
-                                    <div class="p-3 rounded-xl border bg-slate-50/70">
-                                        <span class="text-slate-400 block font-semibold">Kelemahan / Pikiran Negatif:</span>
-                                        <p class="font-medium text-slate-800" x-text="selectedForm.answers.kelemahan_diri || selectedForm.answers.weaknesses || selectedForm.answers.pikiran_negatif || '-'"></p>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Kelemahan / Pikiran Negatif</label>
+                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.kelemahan_diri || selectedForm.answers.weaknesses || selectedForm.answers.pikiran_negatif || '-'"></div>
                                     </div>
                                 </template>
                                 <template x-if="selectedForm.answers.ketakutan_phobia">
-                                    <div class="p-3 rounded-xl border bg-slate-50/70">
-                                        <span class="text-slate-400 block font-semibold">Ketakutan / Phobia:</span>
-                                        <p class="font-medium text-slate-800" x-text="selectedForm.answers.ketakutan_phobia || '-'"></p>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Ketakutan / Phobia</label>
+                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.ketakutan_phobia || '-'"></div>
                                     </div>
                                 </template>
                                 <template x-if="selectedForm.answers.riwayat_trauma || selectedForm.answers.trauma_history">
-                                    <div class="p-3 rounded-xl border bg-slate-50/70">
-                                        <span class="text-slate-400 block font-semibold">Riwayat Trauma:</span>
-                                        <p class="font-medium text-slate-800" x-text="selectedForm.answers.riwayat_trauma || selectedForm.answers.trauma_history || '-'"></p>
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Trauma</label>
+                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.riwayat_trauma || selectedForm.answers.trauma_history || '-'"></div>
                                     </div>
                                 </template>
                                 <template x-if="selectedForm.answers.riwayat_kesehatan || selectedForm.answers.hospitalization_history">
-                                    <div class="col-span-1 sm:col-span-2 p-3 rounded-xl border bg-slate-50/70">
-                                        <span class="text-slate-400 block font-semibold">Riwayat Kesehatan / Medis:</span>
-                                        <p class="font-medium text-slate-800" x-text="selectedForm.answers.riwayat_kesehatan || selectedForm.answers.hospitalization_history || '-'"></p>
+                                    <div class="col-span-1 sm:col-span-2">
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Kesehatan / Medis</label>
+                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.riwayat_kesehatan || selectedForm.answers.hospitalization_history || '-'"></div>
                                     </div>
                                 </template>
                             </div>
@@ -890,21 +912,21 @@
                         <div class="space-y-2">
                             <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Lain-Lain & Preferensi Layanan</h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                                <div class="p-3 rounded-xl border bg-slate-50">
-                                    <span class="text-slate-400 block font-semibold">Pernah Konseling:</span>
-                                    <p class="font-medium text-slate-800" x-text="`${selectedForm.answers.pernah_konseling || selectedForm.answers.psychologist_consultation || '-'} ${selectedForm.answers.nama_konselor_lama ? '(' + selectedForm.answers.nama_konselor_lama + ')' : ''}`"></p>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Pernah Konseling</label>
+                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="`${selectedForm.answers.pernah_konseling || selectedForm.answers.psychologist_consultation || '-'} ${selectedForm.answers.nama_konselor_lama ? '(' + selectedForm.answers.nama_konselor_lama + ')' : ''}`"></div>
                                 </div>
-                                <div class="p-3 rounded-xl border bg-slate-50">
-                                    <span class="text-slate-400 block font-semibold">Kontak Darurat:</span>
-                                    <strong class="text-slate-900" x-text="selectedForm.answers.kontak_darurat || selectedForm.answers.emergency_contact || '-'"></strong>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Kontak Darurat</label>
+                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.kontak_darurat || selectedForm.answers.emergency_contact || '-'"></div>
                                 </div>
-                                <div class="p-3 rounded-xl border bg-slate-50">
-                                    <span class="text-slate-400 block font-semibold">Sumber Info UC PSC:</span>
-                                    <span class="font-medium text-slate-800" x-text="selectedForm.answers.sumber_info || selectedForm.answers.info_source || '-'"></span>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Sumber Info UC PSC</label>
+                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.sumber_info || selectedForm.answers.info_source || '-'"></div>
                                 </div>
-                                <div class="p-3 rounded-xl border bg-purple-50/50 border-purple-100">
-                                    <span class="text-purple-deep block font-semibold">Preferensi Proses Konseling:</span>
-                                    <strong class="text-purple-deep" x-text="selectedForm.answers.preferensi_konseling || selectedForm.answers.preferred_counseling || '-'"></strong>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Preferensi Proses Konseling</label>
+                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.preferensi_konseling || selectedForm.answers.preferred_counseling || '-'"></div>
                                 </div>
                             </div>
                         </div>

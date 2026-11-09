@@ -150,7 +150,7 @@ class ClientController extends Controller
                     $digits = preg_replace('/[^0-9]/', '', $value);
                     $len = strlen($digits);
                     if ($len < 10 || $len > 13) {
-                        $fail('Jumlah nomor telepon / WhatsApp harus berjumlah antara 10 hingga 13 digit angka.');
+                        $fail('Jumlah nomor telepon harus berjumlah antara 10 hingga 13 digit angka.');
                     }
                 },
             ],
@@ -1056,8 +1056,19 @@ class ClientController extends Controller
                 'max:255',
                 'regex:/^[^0-9]+$/u',
             ],
-            'phone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
+            'phone' => [
+                'required',
+                'string',
+                'max:20',
+                function ($attribute, $value, $fail) {
+                    $digits = preg_replace('/[^0-9]/', '', (string)$value);
+                    $len = strlen($digits);
+                    if ($len < 10 || $len > 13) {
+                        $fail('Jumlah nomor telepon harus berjumlah antara 10 hingga 13 digit angka.');
+                    }
+                },
+            ],
+            'email' => 'required|email|max:255',
             'gender' => 'nullable|in:l,p,male,female,laki-laki,perempuan,non_binary,transgender,prefer_not_to_say,other',
             'birth_place' => 'nullable|string|max:255',
             'dob' => 'nullable|date',
@@ -1082,6 +1093,9 @@ class ClientController extends Controller
             'participants.*' => 'required|string|max:255',
         ], [
             'name.regex' => 'Nama tidak boleh mengandung angka. Hanya teks dan simbol yang diperbolehkan.',
+            'phone.required' => 'Nomor telepon wajib diisi.',
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.email' => 'Format alamat email tidak valid.',
             'country.required' => 'Negara wajib dipilih.',
             'province.required_if' => 'Provinsi wajib dipilih untuk negara Indonesia.',
             'city.required_if' => 'Kota / Kabupaten wajib dipilih untuk negara Indonesia.',
@@ -1109,6 +1123,7 @@ class ClientController extends Controller
         }
 
         $client->update($validated);
+        $client->syncToClientForms();
 
         if ($request->has('participants') && is_array($participants)) {
             $cleanParticipants = array_filter(

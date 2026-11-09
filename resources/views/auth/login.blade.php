@@ -177,32 +177,7 @@
                     </button>
                 </form>
 
-                {{-- Quick Login Role Admin (Development Only) --}}
-                @if(app()->environment('local') || config('app.debug'))
-                    <div class="flex flex-col items-center justify-center pt-3 relative z-10">
-                        <div class="w-full flex items-center gap-3 mb-2.5">
-                            <div class="h-px bg-purple-200/60 flex-1"></div>
-                            <span class="text-[10px] font-bold tracking-wider uppercase text-[#827299]">Quick Login</span>
-                            <div class="h-px bg-purple-200/60 flex-1"></div>
-                        </div>
 
-                        <a 
-                            href="{{ route('dev.quick-login', ['role' => 'admin']) }}"
-                            @click.prevent="window.location.replace('{{ route('dev.quick-login', ['role' => 'admin']) }}')"
-                            target="_self"
-                            title="Quick Login Admin" 
-                            aria-label="Quick Login Admin"
-                            class="w-11 h-11 rounded-2xl bg-white/70 hover:bg-white text-purple-deep hover:text-purple-light border border-white/90 shadow-[0_2px_8px_rgba(74,35,128,0.06),inset_0_1px_2px_rgba(255,255,255,0.9)] hover:shadow-[0_6px_16px_rgba(74,35,128,0.14)] active:scale-95 transition-all duration-200 cursor-pointer flex items-center justify-center group mb-1.5"
-                        >
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                <path d="m9 12 2 2 4-4"/>
-                            </svg>
-                        </a>
-
-                        <span class="text-xs font-bold text-[#4A2380]">Admin</span>
-                    </div>
-                @endif
             </div>
         </div>
 

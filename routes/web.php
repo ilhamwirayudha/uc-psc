@@ -46,10 +46,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 
-    // Development Quick Login Route
-    if (app()->environment('local') || config('app.debug')) {
-        Route::match(['get', 'post'], '/dev/quick-login', [AuthController::class, 'quickLogin'])->name('dev.quick-login');
-    }
 });
 
 // Authenticated Routes
@@ -79,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::get('client-forms', [ClientFormManagementController::class, 'index'])->name('client-forms.index');
     Route::get('client-forms/results', [ClientFormManagementController::class, 'results'])->name('client-forms.results');
     Route::get('client-forms/{clientForm}', [ClientFormManagementController::class, 'show'])->name('client-forms.show');
+    Route::put('client-forms/{clientForm}', [ClientFormManagementController::class, 'update'])->name('client-forms.update');
     Route::get('client-forms/{clientForm}/pdf', [ClientFormManagementController::class, 'downloadPdf'])->name('client-forms.pdf');
     Route::post('client-forms/{clientForm}/schedule', [BookingController::class, 'scheduleFromForm'])->name('bookings.schedule-form');
 

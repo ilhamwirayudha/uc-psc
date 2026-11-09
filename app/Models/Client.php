@@ -46,6 +46,10 @@ class Client extends Model
         static::deleting(function (Client $client) {
             $client->clientForms()->delete();
         });
+
+        static::updated(function (Client $client) {
+            $client->syncToClientForms();
+        });
     }
 
     public function getPicNameAttribute(): ?string
@@ -495,5 +499,177 @@ class Client extends Model
         }
 
         return "Formulir {$formTitle}:\n• " . implode("\n• ", $items);
+    }
+
+    /**
+     * Synchronize updated client biodata to all associated client forms (dossier & spreadsheet answers).
+     */
+    public function syncToClientForms(): void
+    {
+        $this->loadMissing('clientForms');
+
+        $genderId = match(strtolower((string)$this->gender)) {
+            'l', 'male', 'laki-laki', 'pria' => 'Laki-Laki',
+            'p', 'female', 'perempuan', 'wanita' => 'Perempuan',
+            default => null,
+        };
+
+        $genderEn = match(strtolower((string)$this->gender)) {
+            'l', 'male', 'laki-laki', 'pria' => 'Male',
+            'p', 'female', 'perempuan', 'wanita' => 'Female',
+            default => null,
+        };
+
+        $dobFormatted = $this->dob ? $this->dob->format('Y-m-d') : null;
+        $dobLocale = $this->dob ? $this->dob->locale('id')->isoFormat('D MMMM Y') : null;
+
+        foreach ($this->clientForms as $form) {
+            $answers = $form->answers ?? [];
+            if (!is_array($answers)) {
+                $answers = [];
+            }
+
+            // 1. Nama Lengkap
+            if (!empty($this->name)) {
+                if (array_key_exists('nama_lengkap', $answers) || !isset($answers['full_name'])) {
+                    $answers['nama_lengkap'] = $this->name;
+                }
+                if (array_key_exists('full_name', $answers)) {
+                    $answers['full_name'] = $this->name;
+                }
+                if (array_key_exists('nama', $answers)) {
+                    $answers['nama'] = $this->name;
+                }
+
+                if (in_array($form->form_type, ['pra_nikah', 'pernikahan']) && !empty($answers['nama_pasangan'])) {
+                    $form->client_name = $this->name . ' & ' . trim($answers['nama_pasangan']);
+                } else {
+                    $form->client_name = $this->name;
+                }
+            }
+
+            // 2. Tanggal Lahir & Tempat Lahir
+            if ($dobFormatted !== null) {
+                if (array_key_exists('tanggal_lahir', $answers) || !isset($answers['date_of_birth'])) {
+                    $answers['tanggal_lahir'] = $dobFormatted;
+                }
+                if (array_key_exists('date_of_birth', $answers)) {
+                    $answers['date_of_birth'] = $dobFormatted;
+                }
+                if (array_key_exists('dob', $answers)) {
+                    $answers['dob'] = $dobFormatted;
+                }
+            }
+
+            if (!empty($this->birth_place)) {
+                if (array_key_exists('tempat_lahir', $answers) || !isset($answers['place_of_birth'])) {
+                    $answers['tempat_lahir'] = $this->birth_place;
+                }
+                if (array_key_exists('place_of_birth', $answers)) {
+                    $answers['place_of_birth'] = $this->birth_place;
+                }
+                if (array_key_exists('birth_place', $answers)) {
+                    $answers['birth_place'] = $this->birth_place;
+                }
+            }
+
+            // Kombinasi tempat_tanggal_lahir / birth_place_date
+            if (!empty($this->birth_place) && $dobLocale !== null) {
+                $combined = "{$this->birth_place}, {$dobLocale}";
+                if (array_key_exists('tempat_tanggal_lahir', $answers)) {
+                    $answers['tempat_tanggal_lahir'] = $combined;
+                }
+                if (array_key_exists('birth_place_date', $answers)) {
+                    $answers['birth_place_date'] = $combined;
+                }
+            }
+
+            // 3. Jenis Kelamin
+            if ($genderId !== null) {
+                if (array_key_exists('jenis_kelamin', $answers) || !isset($answers['gender'])) {
+                    $answers['jenis_kelamin'] = $genderId;
+                }
+            }
+            if ($genderEn !== null && (array_key_exists('gender', $answers) || $form->form_type === 'biography_en')) {
+                $answers['gender'] = ($form->form_type === 'biography_en') ? $genderEn : $genderId;
+            }
+
+            // 4. No. Telepon / WhatsApp
+            if (!empty($this->phone)) {
+                $answers['phone'] = $this->phone;
+                if (array_key_exists('no_telepon', $answers)) $answers['no_telepon'] = $this->phone;
+                if (array_key_exists('no_hp', $answers)) $answers['no_hp'] = $this->phone;
+                if (array_key_exists('nomor_whatsapp', $answers)) $answers['nomor_whatsapp'] = $this->phone;
+                if (array_key_exists('telephone_number', $answers)) $answers['telephone_number'] = $this->phone;
+                $form->client_phone = $this->phone;
+            }
+
+            // 5. Alamat Email
+            if (!empty($this->email)) {
+                $answers['email'] = $this->email;
+            }
+
+            // 6. Alamat Lengkap
+            if ($this->address !== null) {
+                if (array_key_exists('alamat', $answers) || !isset($answers['address'])) {
+                    $answers['alamat'] = $this->address;
+                }
+                if (array_key_exists('address', $answers)) {
+                    $answers['address'] = $this->address;
+                }
+            }
+
+            // 7. Agama
+            if (!empty($this->religion)) {
+                if (array_key_exists('agama', $answers) || !isset($answers['religion'])) {
+                    $answers['agama'] = $this->religion;
+                }
+                if (array_key_exists('religion', $answers)) {
+                    $answers['religion'] = $this->religion;
+                }
+            }
+
+            // 8. Pendidikan Terakhir
+            if (!empty($this->education)) {
+                if (array_key_exists('pendidikan_terakhir', $answers) || !isset($answers['education'])) {
+                    $answers['pendidikan_terakhir'] = $this->education;
+                }
+                if (array_key_exists('education', $answers)) {
+                    $answers['education'] = $this->education;
+                }
+                if (array_key_exists('pendidikan', $answers)) {
+                    $answers['pendidikan'] = $this->education;
+                }
+            }
+
+            // 9. Pekerjaan
+            if ($this->occupation !== null) {
+                if (array_key_exists('pekerjaan', $answers) || !isset($answers['occupation'])) {
+                    $answers['pekerjaan'] = $this->occupation;
+                }
+                if (array_key_exists('occupation', $answers)) {
+                    $answers['occupation'] = $this->occupation;
+                }
+            }
+
+            // 10. Perusahaan / Instansi
+            if ($this->company_name !== null) {
+                if (array_key_exists('nama_perusahaan', $answers)) {
+                    $answers['nama_perusahaan'] = $this->company_name;
+                }
+                if (array_key_exists('company_name', $answers)) {
+                    $answers['company_name'] = $this->company_name;
+                }
+                if (array_key_exists('perusahaan', $answers)) {
+                    $answers['perusahaan'] = $this->company_name;
+                }
+                if (array_key_exists('instansi', $answers)) {
+                    $answers['instansi'] = $this->company_name;
+                }
+            }
+
+            $form->answers = $answers;
+            $form->save();
+        }
     }
 }

@@ -466,67 +466,95 @@
                                         </div>
                                         <div class="p-4 bg-white">
                                             @if($client)
-                                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                                 {{-- 1. Nama Lengkap --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">Nama Lengkap:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $client->name ?? '-' }}</span>
+                                                <div>
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">Nama Lengkap</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black">{{ $client->name ?? '-' }}</span>
+                                                    </div>
                                                 </div>
 
                                                 {{-- 2. Nama Perusahaan --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">Nama Perusahaan:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $client->company_name ?? ($client->pic_name ?? '-') }}</span>
+                                                <div>
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">Nama Perusahaan</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black">{{ $client->company_name ?? ($client->pic_name ?? '-') }}</span>
+                                                    </div>
                                                 </div>
 
                                                 {{-- 3. Pekerjaan / Jabatan Saat Ini --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">Pekerjaan / Jabatan Saat Ini:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $clientJobTitle ?: '-' }}</span>
+                                                <div>
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">Pekerjaan / Jabatan Saat Ini</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black">{{ $clientJobTitle ?: '-' }}</span>
+                                                    </div>
                                                 </div>
 
                                                 {{-- 4. Jenis Kelamin --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">Jenis Kelamin:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $client->gender_label ?: '-' }}</span>
+                                                <div>
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">Jenis Kelamin</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black">{{ $client->gender_label ?: '-' }}</span>
+                                                    </div>
                                                 </div>
 
-                                                {{-- 5. Tempat, Tanggal Lahir --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">Tempat, Tanggal Lahir:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">
-                                                        {{ $client->birth_place ?? '-' }}{{ $client->dob ? ', ' . $client->dob->locale('id')->isoFormat('D MMMM Y') : '' }}
-                                                    </span>
+                                                {{-- 5 & 6. Tempat, Tanggal Lahir --}}
+                                                <div>
+                                                    <div class="grid grid-cols-2 gap-2">
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Lahir</label>
+                                                            <div class="px-3 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                                {{ $client->birth_place ?? '-' }}
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
+                                                            <div class="px-2.5 sm:px-3 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                                {{ $client->dob ? $client->dob->locale('id')->isoFormat('D MMMM Y') : '-' }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
-                                                {{-- 6. No. Telepon / WA --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">No. Telepon / WA:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $client->phone ?? '-' }}</span>
+                                                {{-- 6. No. Telepon --}}
+                                                <div>
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">No. Telepon</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black">{{ $client->phone ?? '-' }}</span>
+                                                    </div>
                                                 </div>
 
                                                 {{-- 7. Alamat Email --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">Alamat Email:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5 break-all">{{ $client->email ?? '-' }}</span>
+                                                <div>
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">Alamat Email</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black break-all">{{ $client->email ?? '-' }}</span>
+                                                    </div>
                                                 </div>
 
                                                 {{-- 8. Pendidikan Terakhir --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">Pendidikan Terakhir:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $client->education_label ?? $client->education ?? '-' }}</span>
+                                                <div>
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">Pendidikan Terakhir</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black">{{ $client->education_label ?? $client->education ?? '-' }}</span>
+                                                    </div>
                                                 </div>
 
                                                 {{-- 9. Agama / Kepercayaan --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <span class="text-xs font-medium text-slate-500 block">Agama / Kepercayaan:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $client->religion ?? '-' }}</span>
+                                                <div>
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">Agama / Kepercayaan</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black">{{ $client->religion ?? '-' }}</span>
+                                                    </div>
                                                 </div>
 
                                                 {{-- 10. Alamat Lengkap --}}
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 sm:col-span-2 lg:col-span-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Alamat Lengkap:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5 leading-relaxed">{{ $client->address ?? '-' }}</span>
+                                                <div class="sm:col-span-2 lg:col-span-3">
+                                                    <span class="text-xs font-medium text-slate-500 block mb-1">Alamat</span>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                        <span class="text-sm font-medium text-black leading-relaxed">{{ $client->address ?? '-' }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             @else
@@ -570,35 +598,35 @@
                                             <div x-show="!editPaket" class="space-y-2.5">
                                                 {{-- 4 Field Rincian: Jenis, Metode, Klien, Kategori --}}
                                                 <div class="space-y-2.5">
-                                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
-                                                        <span class="text-xs font-medium text-slate-500 block">Jenis:</span>
-                                                        <span class="text-sm font-medium text-black block mt-0.5" x-text="counselingJenis"></span>
+                                                    <div>
+                                                        <label class="block text-xs font-medium text-slate-500 mb-1">Jenis</label>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingJenis"></div>
                                                     </div>
-                                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
-                                                        <span class="text-xs font-medium text-slate-500 block">Metode:</span>
-                                                        <span class="text-sm font-medium text-black block mt-0.5" x-text="counselingMetode"></span>
+                                                    <div>
+                                                        <label class="block text-xs font-medium text-slate-500 mb-1">Metode</label>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingMetode"></div>
                                                     </div>
-                                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
-                                                        <span class="text-xs font-medium text-slate-500 block">Klien:</span>
-                                                        <span class="text-sm font-medium text-black block mt-0.5" x-text="counselingKlien"></span>
+                                                    <div>
+                                                        <label class="block text-xs font-medium text-slate-500 mb-1">Klien</label>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingKlien"></div>
                                                     </div>
-                                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
-                                                        <span class="text-xs font-medium text-slate-500 block">Kategori:</span>
-                                                        <span class="text-sm font-medium text-black block mt-0.5" x-text="counselingKategori"></span>
+                                                    <div>
+                                                        <label class="block text-xs font-medium text-slate-500 mb-1">Kategori</label>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingKategori"></div>
                                                     </div>
                                                 </div>
 
                                                 {{-- Card Paket Terpilih --}}
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
-                                                    <span class="text-xs font-medium text-slate-500 block">Paket Terpilih:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5" x-text="fullCounselingTitle"></span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Paket Terpilih</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="fullCounselingTitle"></div>
                                                 </div>
 
                                                 {{-- Card Total Harga per Sesi --}}
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
-                                                    <span class="text-xs font-medium text-slate-500 block">Harga per Sesi:</span>
-                                                    <div class="flex items-baseline gap-2 mt-0.5">
-                                                        <span class="text-sm font-medium text-black" x-text="formatRupiah(counselingPrice)"></span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Harga per Sesi</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between text-sm font-medium text-black">
+                                                        <span x-text="formatRupiah(counselingPrice)"></span>
                                                         <span class="text-xs font-medium text-slate-400">*sebelum PPN & PPh</span>
                                                     </div>
                                                 </div>
@@ -700,9 +728,11 @@
 
                                         <div class="p-4 space-y-3">
                                             @if($booking->kategori === 'konseling')
-                                            <div x-show="!editKonselor" class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-1">
-                                                <span class="text-xs font-medium text-slate-500 block">Psikolog Bertugas:</span>
-                                                <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->counselor ? $booking->counselor->name : 'Belum Ditugaskan' }}</span>
+                                            <div x-show="!editKonselor">
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Psikolog Bertugas</label>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    {{ $booking->counselor ? $booking->counselor->name : 'Belum Ditugaskan' }}
+                                                </div>
                                             </div>
 
                                             <div x-show="editKonselor" x-cloak class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2">
@@ -720,17 +750,23 @@
                                             </div>
                                             @else
                                             <div class="space-y-2.5">
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Staff Penguji:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->staffPenguji->name ?? '-' }}</span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Staff Penguji</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        {{ $booking->staffPenguji->name ?? '-' }}
+                                                    </div>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Staff Koreksi:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->staffKoreksi->name ?? '-' }}</span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Staff Koreksi</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        {{ $booking->staffKoreksi->name ?? '-' }}
+                                                    </div>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Staff Pelapor:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->staffPelapor->name ?? '-' }}</span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Staff Pelapor</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        {{ $booking->staffPelapor->name ?? '-' }}
+                                                    </div>
                                                 </div>
                                             </div>
                                             @endif
@@ -769,41 +805,45 @@
 
                                         <div class="p-4 space-y-3">
                                             {{-- View Mode Jadwal --}}
-                                            <div x-show="!editJadwal" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Tanggal Permintaan Booking:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->tanggal_booking_dibuat ? $booking->tanggal_booking_dibuat->locale('id')->isoFormat('D MMMM Y') : '-' }}</span>
+                                            <div x-show="!editJadwal" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Permintaan Booking</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        {{ $booking->tanggal_booking_dibuat ? $booking->tanggal_booking_dibuat->locale('id')->isoFormat('D MMMM Y') : '-' }}
+                                                    </div>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Tanggal Sesi Dijadwalkan:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->tanggal_dijadwalkan ? $booking->tanggal_dijadwalkan->locale('id')->isoFormat('D MMMM Y') : 'Belum Dijadwalkan' }}</span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Sesi Dijadwalkan</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        {{ $booking->tanggal_dijadwalkan ? $booking->tanggal_dijadwalkan->locale('id')->isoFormat('D MMMM Y') : 'Belum Dijadwalkan' }}
+                                                    </div>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Jam Mulai Sesi:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5" x-text="startTimeVal ? startTimeVal + ' WIB' : '-' "></span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Jam Mulai Sesi</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="startTimeVal ? startTimeVal + ' WIB' : '-' "></div>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Jam Selesai Sesi:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5" x-text="endTimeVal ? endTimeVal + ' WIB' : '-' "></span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Jam Selesai Sesi</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="endTimeVal ? endTimeVal + ' WIB' : '-' "></div>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Durasi Sesi Riil:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5" x-text="durationFormatted"></span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Durasi Sesi Riil</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="durationFormatted"></div>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                                    <span class="text-xs font-medium text-slate-500 block">Status Overtime (>90 mnt):</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5" x-text="calculatedDurationMinutes === 0 ? '-' : (isOvertime ? 'Overtime' : 'Tidak')"></span>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Status Overtime (>90 mnt)</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="calculatedDurationMinutes === 0 ? '-' : (isOvertime ? 'Overtime' : 'Tidak')"></div>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 sm:col-span-2">
-                                                    <span class="text-xs font-medium text-slate-500 block">Metode & Ruangan:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">
+                                                <div class="sm:col-span-2">
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Metode & Ruangan</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         {{ match($sessionType) {
                                                             'online' => 'Online (Google Meet / Zoom)',
                                                             'whatsapp' => 'Konsultasi WhatsApp',
                                                             default => 'Tatap Muka (Offline di Ruang PSC)',
                                                         } }}
                                                         {{ $location ? ' - ' . $location : '' }}
-                                                    </span>
+                                                    </div>
                                                 </div>
                                             </div>
 

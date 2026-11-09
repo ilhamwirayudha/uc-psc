@@ -8,18 +8,25 @@
     searchQuery: '',
     showClientSelector: false,
     today: '',
-    sessionType: '{{ old('session_type', 'tatap_muka') }}',
+    sessionType: '{{ old('session_type', '') }}',
     participants: {{ json_encode(old('participants', [''])) }},
     clientsList: {{ json_encode($clients->values()) }},
     clientsData: {{ json_encode($clients->keyBy('id')) }},
 
-    // Dropdown bertingkat Konseling
-    counselingJenis: 'Pro',
-    counselingMetode: 'Offline',
-    counselingKlien: 'WNI',
-    counselingKategori: 'Umum',
+    // Dropdown bertingkat Konseling (Default kosong sesuai permintaan user)
+    counselingJenis: '{{ old('counseling_jenis', '') }}',
+    counselingMetode: '{{ old('counseling_metode', '') }}',
+    counselingKlien: '{{ old('counseling_klien', '') }}',
+    counselingKategori: '{{ old('counseling_kategori', '') }}',
+
+    get isCounselingConfigured() {
+        return Boolean(this.counselingJenis && this.counselingMetode && this.counselingKlien && this.counselingKategori);
+    },
 
     get counselingPrice() {
+        if (!this.counselingJenis || !this.counselingKlien || !this.counselingKategori) {
+            return 0;
+        }
         if (this.counselingJenis === 'Pro') {
             if (this.counselingKlien === 'WNI') {
                 return this.counselingKategori === 'Kerja Sama' ? 450000 : 525000;
@@ -40,10 +47,14 @@
     },
 
     get fullCounselingTitle() {
+        if (!this.isCounselingConfigured) {
+            return '-';
+        }
         return `Konseling ${this.counselingJenis} - ${this.counselingMetode} - ${this.counselingKlien} - ${this.counselingKategori}`;
     },
 
     formatRupiah(val) {
+        if (!val || val === 0) return '-';
         return 'Rp ' + Number(val).toLocaleString('id-ID');
     },
 
@@ -72,6 +83,11 @@
 
     openModal(detail = null) {
         this.bookingModalOpen = true;
+        this.counselingJenis = '';
+        this.counselingMetode = '';
+        this.counselingKlien = '';
+        this.counselingKategori = '';
+        this.sessionType = '';
         const initialClientId = (typeof detail === 'object' && detail !== null) ? detail.client_id : detail;
         const requestedCategory = (typeof detail === 'object' && detail !== null) ? detail.category : null;
 
@@ -151,6 +167,11 @@
         this.searchQuery = '';
         this.jenis = 'individu';
         this.showClientSelector = true;
+        this.counselingJenis = '';
+        this.counselingMetode = '';
+        this.counselingKlien = '';
+        this.counselingKategori = '';
+        this.sessionType = '';
         if (this.lockCategory) {
             this.serviceType = this.lockCategory;
         }
@@ -283,64 +304,84 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                         {{-- Grid 3x3: Dari Nama Lengkap hingga ke Pendidikan Terakhir & Agama --}}
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                             {{-- 1. Nama Lengkap --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">Nama Lengkap:</span>
-                                                <span class="text-base font-medium text-black block" x-text="selectedClient.name || '-'"></span>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">Nama Lengkap</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black" x-text="selectedClient.name || '-'"></span>
+                                                </div>
                                             </div>
 
                                             {{-- 2. Nama Perusahaan --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">Nama Perusahaan:</span>
-                                                <span class="text-base font-medium text-black block" x-text="selectedClient.company_name_display || selectedClient.company_name || '-'"></span>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">Nama Perusahaan</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black" x-text="selectedClient.company_name_display || selectedClient.company_name || '-'"></span>
+                                                </div>
                                             </div>
 
                                             {{-- 3. Pekerjaan / Jabatan Saat Ini --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">Pekerjaan / Jabatan Saat Ini:</span>
-                                                <span class="text-base font-medium text-black block" x-text="selectedClient.occupation_display || selectedClient.occupation || '-'"></span>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">Pekerjaan / Jabatan Saat Ini</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black" x-text="selectedClient.occupation_display || selectedClient.occupation || '-'"></span>
+                                                </div>
                                             </div>
 
                                             {{-- 4. Jenis Kelamin --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">Jenis Kelamin:</span>
-                                                <span class="text-base font-medium text-black block" x-text="selectedClient.gender_display || selectedClient.gender_label || '-'"></span>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">Jenis Kelamin</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black" x-text="selectedClient.gender_display || selectedClient.gender_label || '-'"></span>
+                                                </div>
                                             </div>
 
                                             {{-- 5. Tempat, Tanggal Lahir --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">Tempat, Tanggal Lahir:</span>
-                                                <span class="text-base font-medium text-black block" x-text="selectedClient.formatted_dob || '-'"></span>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">Tempat, Tanggal Lahir</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black" x-text="selectedClient.formatted_dob || '-'"></span>
+                                                </div>
                                             </div>
 
-                                            {{-- 6. No. Telepon / WA --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">No. Telepon / WA:</span>
-                                                <span class="text-base font-medium text-black block" x-text="selectedClient.phone || '-'"></span>
+                                            {{-- 6. No. Telepon --}}
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">No. Telepon</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black" x-text="selectedClient.phone || '-'"></span>
+                                                </div>
                                             </div>
 
                                             {{-- 7. Alamat Email --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">Alamat Email:</span>
-                                                <span class="text-base font-medium text-black block break-all" x-text="selectedClient.email || '-'"></span>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">Alamat Email</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black break-all" x-text="selectedClient.email || '-'"></span>
+                                                </div>
                                             </div>
 
                                             {{-- 8. Pendidikan Terakhir --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">Pendidikan Terakhir:</span>
-                                                <span class="text-base font-medium text-black block" x-text="selectedClient.education_display || selectedClient.education_label || selectedClient.education || '-'"></span>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">Pendidikan Terakhir</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black" x-text="selectedClient.education_display || selectedClient.education_label || selectedClient.education || '-'"></span>
+                                                </div>
                                             </div>
 
                                             {{-- 9. Agama / Kepercayaan --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                                <span class="text-sm font-semibold text-slate-700 block">Agama / Kepercayaan:</span>
-                                                <span class="text-base font-medium text-black block" x-text="selectedClient.religion_display || selectedClient.religion || '-'"></span>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 block mb-1">Agama / Kepercayaan</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <span class="text-sm font-medium text-black" x-text="selectedClient.religion_display || selectedClient.religion || '-'"></span>
+                                                </div>
                                             </div>
                                         </div>
 
                                         {{-- 10. Alamat Lengkap (Memanjang di Bawah Grid) --}}
-                                        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-1">
-                                            <span class="text-sm font-semibold text-slate-700 block">Alamat Lengkap:</span>
-                                            <span class="text-base font-medium text-black block leading-relaxed" x-text="selectedClient.address_display || selectedClient.address || '-'"></span>
+                                        <div class="sm:col-span-2 lg:col-span-3">
+                                            <span class="text-xs font-medium text-slate-500 block mb-1">Alamat</span>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                <span class="text-sm font-medium text-black leading-relaxed" x-text="selectedClient.address_display || selectedClient.address || '-'"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </template>
@@ -449,6 +490,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                                 <label class="block text-sm font-semibold text-slate-700">Jenis</label>
                                                 <select x-model="counselingJenis"
                                                     class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                                    <option value="">Pilih Jenis...</option>
                                                     <option value="Pro">Pro</option>
                                                     <option value="Reguler">Reguler</option>
                                                 </select>
@@ -457,8 +499,9 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                             {{-- Dropdown 2: Metode (Offline / Online) --}}
                                             <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-5 space-y-2">
                                                 <label class="block text-sm font-semibold text-slate-700">Metode</label>
-                                                <select x-model="counselingMetode" @change="sessionType = (counselingMetode === 'Offline' ? 'tatap_muka' : 'online')"
+                                                <select x-model="counselingMetode" @change="sessionType = (counselingMetode === 'Offline' ? 'tatap_muka' : (counselingMetode === 'Online' ? 'online' : ''))"
                                                     class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                                    <option value="">Pilih Metode...</option>
                                                     <option value="Offline">Offline</option>
                                                     <option value="Online">Online</option>
                                                 </select>
@@ -469,6 +512,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                                 <label class="block text-sm font-semibold text-slate-700">Klien</label>
                                                 <select x-model="counselingKlien"
                                                     class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                                    <option value="">Pilih Klien...</option>
                                                     <option value="WNI">WNI</option>
                                                     <option value="WNA">WNA</option>
                                                 </select>
@@ -479,6 +523,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                                 <label class="block text-sm font-semibold text-slate-700">Kategori</label>
                                                 <select x-model="counselingKategori"
                                                     class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                                    <option value="">Pilih Kategori...</option>
                                                     <option value="Umum">Umum</option>
                                                     <option value="Kerja Sama">Kerja Sama</option>
                                                 </select>
@@ -502,9 +547,9 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                                 <p class="text-base font-medium text-black" x-text="formatRupiah(counselingOvertime)"></p>
                                             </div>
 
-                                            <input type="hidden" name="counseling_type" :value="fullCounselingTitle">
-                                            <input type="hidden" name="price" :value="counselingPrice">
-                                            <input type="hidden" name="overtime_price" :value="counselingOvertime">
+                                            <input type="hidden" name="counseling_type" :value="isCounselingConfigured ? fullCounselingTitle : ''">
+                                            <input type="hidden" name="price" :value="isCounselingConfigured ? counselingPrice : ''">
+                                            <input type="hidden" name="overtime_price" :value="isCounselingConfigured ? counselingOvertime : ''">
                                         </div>
                                     </template>
 
@@ -558,10 +603,6 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                                 </option>
                                                 @endforeach
                                             </select>
-                                            <p class="text-sm text-slate-500 pt-1 flex items-center gap-1.5">
-                                                <svg class="w-4 h-4 text-purple-deep shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                                                <span>Jadwal psikolog yang dipilih akan otomatis disinkronkan ke kalender operasional harian UC PSC.</span>
-                                            </p>
                                         </div>
                                     </div>
 
