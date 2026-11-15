@@ -128,7 +128,7 @@ function clientRegistrationForm() {
 
     {{-- Tombol Kembali --}}
     <div class="flex items-center justify-between pb-2">
-        <a href="{{ !empty($existingClient) ? route('clients.show', ['client' => $existingClient->id, 'tab' => $initialJenis === 'industri' ? 'psychotest' : 'konseling']) : route('clients.index') }}"
+        <a href="{{ !empty($existingClient) ? route('clients.show', ['client' => $existingClient->id, 'tab' => $initialJenis === 'industri' ? 'psikotes' : 'konseling']) : route('clients.index') }}"
             class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-semibold text-black hover:text-purple-deep hover:border-purple-deep shadow-xs transition cursor-pointer w-fit">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             <span>{{ !empty($existingClient) ? 'Kembali ke Detail Klien' : 'Kembali ke Daftar Klien' }}</span>
@@ -171,8 +171,8 @@ function clientRegistrationForm() {
         @endif
 
         {{-- SELEKTOR UTAMA: DROPDOWN TIPE KLIEN & FORMULIR LAYANAN --}}
-        <div class="bg-white rounded-2xl shadow-xs border border-[#EDE1FA] overflow-hidden">
-            <div class="bg-purple-deep px-6 py-4 flex items-center gap-2">
+        <div class="glass-card rounded-2xl overflow-hidden">
+            <div class="bg-purple-deep/95 px-6 py-4 flex items-center gap-2">
                 <h3 class="text-base font-semibold text-white">Pilih Jenis Layanan & Formulir Klien</h3>
             </div>
             <div class="p-5 sm:p-6 space-y-4">
@@ -272,7 +272,7 @@ function clientRegistrationForm() {
 
         {{-- TOMBOL AKSI BAWAH (HANYA TAMPIL SAAT FORMULIR TERPILIH) --}}
         <div x-show="form_type" x-cloak class="flex items-center justify-end gap-3 pt-3 pb-8">
-            <a href="{{ !empty($existingClient) ? route('clients.show', ['client' => $existingClient->id, 'tab' => $initialJenis === 'industri' ? 'psychotest' : 'konseling']) : route('clients.index') }}"
+            <a href="{{ !empty($existingClient) ? route('clients.show', ['client' => $existingClient->id, 'tab' => $initialJenis === 'industri' ? 'psikotes' : 'konseling']) : route('clients.index') }}"
                 class="px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-sm font-semibold transition text-center shadow-xs">
                 Batal
             </a>

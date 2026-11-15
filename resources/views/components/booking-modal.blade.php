@@ -211,10 +211,10 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                  x-transition:leave="ease-in duration-200"
                  x-transition:leave-start="opacity-100 scale-100"
                  x-transition:leave-end="opacity-0 scale-95"
-                 class="relative bg-white rounded-3xl w-full max-w-5xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+                 class="relative glass-modal rounded-3xl w-full max-w-5xl max-h-[92vh] flex flex-col overflow-hidden">
 
                 {{-- Modal Header (Skala Desain & Komponen Persis Seperti Modal Formulir) --}}
-                <div class="px-7 py-5 bg-purple-deep text-white flex items-center justify-between shrink-0">
+                <div class="px-7 py-5 bg-purple-deep/95 text-white flex items-center justify-between shrink-0">
                     <div>
                         <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight" id="modal-booking-title"
                             x-text="lockCategory === 'konseling' ? 'Buat Booking Jadwal Konseling' : (lockCategory === 'psikotes' ? 'Buat Booking Jadwal Psikotes' : 'Buat Booking / Jadwal Sesi')">

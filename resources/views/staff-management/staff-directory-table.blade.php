@@ -10,7 +10,7 @@
         <div class="relative flex-1">
             <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B5B85]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau email..."
-                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl glass-input text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
         </div>
         <button type="submit" class="bg-purple-deep text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition">Cari</button>
     </form>
@@ -20,11 +20,11 @@
     </a>
 </div>
 
-<div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+<div class="glass-card rounded-2xl overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full text-sm font-medium">
             <thead>
-                <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
+                <tr class="bg-purple-deep/95 text-white font-semibold select-none border-b border-purple-900/30">
                     <th class="text-center px-4 py-3.5 font-semibold text-white w-14">No.</th>
                     <th class="text-left px-6 py-3.5 font-semibold text-white">Nama Staff</th>
                     <th class="text-left px-6 py-3.5 font-semibold text-white">Email</th>

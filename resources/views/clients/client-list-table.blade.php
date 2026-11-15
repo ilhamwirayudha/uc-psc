@@ -114,7 +114,7 @@
                     @input="onSearch()"
                     @keydown.enter.prevent="fetchResults()"
                     placeholder="Cari nama, no. telepon, atau email klien..."
-                    class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
+                    class="w-full pl-10 pr-10 py-2.5 rounded-xl glass-input text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
 
                 {{-- Clear button saat ada teks --}}
                 <button type="button"
@@ -159,11 +159,11 @@
     {{-- Dynamic Content Area (Table + Pagination) --}}
     <div id="client-data-container" :class="{ 'opacity-70 pointer-events-none transition-opacity duration-150': loading }">
         {{-- Table --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+        <div class="glass-card rounded-2xl overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm font-medium">
                     <thead>
-                        <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
+                        <tr class="bg-purple-deep/95 text-white font-semibold select-none border-b border-purple-900/30">
                             {{-- No. Column with Numeric Sort --}}
                             <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16">
                                 <div class="flex items-center justify-center">
@@ -385,13 +385,13 @@
                 }
             @endphp
 
-            <div class="px-6 py-4 border-t border-[#EDE1FA] bg-white relative flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="px-6 py-4 border-t border-white/70 bg-white/35 relative flex flex-col md:flex-row items-center justify-between gap-4">
                 {{-- Left Side: Per-Page Selector --}}
                 <div class="flex items-center gap-2 text-xs text-black font-medium w-full md:w-auto justify-start">
                     <span class="text-xs font-medium text-black">Tampilkan</span>
                     <select
                         @change="setPerPage($event.target.value)"
-                        class="px-2.5 py-1 text-xs rounded-lg border border-[#D9C2F0] bg-white text-black font-medium focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
+                        class="px-2.5 py-1 text-xs rounded-lg border border-[#D9C2F0]/80 bg-white/80 text-black font-medium focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
                         <option value="25" {{ ($perPage ?? 25) == 25 ? 'selected' : '' }}>25</option>
                         <option value="50" {{ ($perPage ?? 25) == 50 ? 'selected' : '' }}>50</option>
                         <option value="100" {{ ($perPage ?? 25) == 100 ? 'selected' : '' }}>100</option>

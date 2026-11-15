@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Formulir Klien — UC PSC')
-@section('page-title', 'Data Formulir Klien')
+@section('page-title', 'Formulir Klien')
 @section('page-subtitle', 'Kelola daftar tautan formulir pendaftaran mandiri & akses lembar hasil respon')
 
 @section('content')
@@ -93,11 +93,11 @@
 
 
     {{-- Main Table Card (Exact same design language as Data Klien & Data Konselor) --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+    <div class="glass-card rounded-2xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm font-medium">
                 <thead>
-                    <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
+                    <tr class="bg-purple-deep/95 text-white font-semibold select-none border-b border-purple-900/30">
                         {{-- No. --}}
                         <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16 text-white">
                             No.
@@ -228,8 +228,8 @@
     {{-- MODAL EDIT FORMULIR                                            --}}
     {{-- ============================================================== --}}
     <div x-show="editModalOpen" x-cloak 
-         class="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-scale-up">
+         class="fixed inset-0 z-50 overflow-y-auto bg-[#1F0E38]/55 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-modal rounded-3xl w-full max-w-lg overflow-hidden animate-scale-up">
             
             {{-- Modal Header --}}
             <div class="p-6 bg-gradient-to-r from-purple-deep to-[#4A2F85] text-white flex items-center justify-between">

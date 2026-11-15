@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="max-w-2xl">
-    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6">
+    <div class="glass-card rounded-2xl p-6">
         <form action="{{ route('staff-management.store') }}" method="POST" class="space-y-5">
             @csrf
 

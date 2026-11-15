@@ -11,7 +11,7 @@
             x-transition:leave="ease-in duration-150"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"></div>
+            class="fixed inset-0 bg-[#1F0E38]/55 backdrop-blur-md transition-opacity"></div>
 
         {{-- Dialog Box --}}
         <div x-show="showConfirmCloseModal"
@@ -21,7 +21,7 @@
             x-transition:leave="ease-in duration-150"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95"
-            class="relative bg-white rounded-2xl shadow-2xl border border-[#EDE1FA] max-w-md w-full p-6 sm:p-7 text-center space-y-4 z-10"
+            class="relative glass-modal rounded-3xl max-w-md w-full p-6 sm:p-7 text-center space-y-4 z-10"
             @click.stop>
             
             {{-- Centered Top Warning Badge --}}

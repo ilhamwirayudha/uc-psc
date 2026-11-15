@@ -1,7 +1,7 @@
-﻿@extends('layouts.dashboard')
+@extends('layouts.dashboard')
 
-@section('title', 'Kalender Operasional & Jadwal Praktik — UC PSC')
-@section('page-title', 'Kalender Operasional')
+@section('title', 'Kalender — UC PSC')
+@section('page-title', 'Kalender')
 @section('page-subtitle', 'Monitoring jadwal praktik psikolog dan penugasan staff harian')
 
 @section('content')
@@ -13,10 +13,10 @@
     {{-- ========================================================================= --}}
     {{-- GOOGLE CALENDAR MAIN CARD                                                 --}}
     {{-- ========================================================================= --}}
-    <div class="bg-white rounded-3xl border border-[#EDE1FA] shadow-sm overflow-hidden flex flex-col">
+    <div class="glass-card rounded-3xl overflow-hidden flex flex-col">
         
         {{-- ===== TOOLBAR ATAS (GOOGLE CALENDAR STYLE) ===== --}}
-        <div class="p-4 sm:p-5 bg-purple-deep border-b border-purple-900/40 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+        <div class="p-4 sm:p-5 bg-purple-deep/95 border-b border-purple-900/30 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
             
             {{-- Kelompok Kiri: Navigasi Periode & Hari Ini --}}
             <div class="flex items-center gap-2.5 flex-wrap">
@@ -326,7 +326,7 @@
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95"
-            class="bg-white w-full max-w-lg rounded-3xl shadow-xl border border-[#EDE1FA] overflow-hidden"
+            class="glass-modal w-full max-w-lg rounded-3xl overflow-hidden"
         >
             {{-- Header Modal --}}
             <div 
@@ -411,9 +411,9 @@
         @keydown.escape.window="selectedDateModalOpen = false"
     >
         <div 
-            class="bg-white w-full max-w-md rounded-3xl shadow-xl border border-[#EDE1FA] overflow-hidden"
+            class="glass-modal w-full max-w-md rounded-3xl overflow-hidden"
         >
-            <div class="p-4 border-b border-[#EDE1FA] flex items-center justify-between bg-[#F7F5FB]">
+            <div class="p-4 border-b border-white/70 flex items-center justify-between bg-white/40">
                 <div>
                     <h3 class="font-bold text-sm text-[#2A2035]">Jadwal Kegiatan</h3>
                     <p class="text-[10px] text-[#827299]" x-text="selectedDateEvents?.dateStr"></p>

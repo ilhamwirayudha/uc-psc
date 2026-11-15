@@ -1,7 +1,14 @@
-﻿@extends('layouts.dashboard')
+@extends('layouts.dashboard')
 
 @section('title', 'Edit Psikolog — UC PSC')
 @section('page-title', 'Edit Data Psikolog')
+@section('breadcrumbs')
+    <x-ui.breadcrumbs :items="[
+        ['label' => 'Klien & Psikolog'],
+        ['label' => 'Psikolog', 'url' => route('counselors.index')],
+        ['label' => $counselor->name],
+    ]" />
+@endsection
 @section('page-subtitle', 'Perbarui data identitas, kualifikasi, atau status psikolog')
 
 @section('content')

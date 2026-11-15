@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Daftar Booking — UC PSC')
-@section('page-title', 'Booking')
+@section('title', 'Layanan — UC PSC')
+@section('page-title', 'Layanan')
 @section('page-subtitle', 'Kelola booking konseling & psikotes')
 
 @section('content')
@@ -14,13 +14,13 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <form method="GET" class="flex flex-wrap items-center gap-3">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama klien..."
-                class="px-4 py-2 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white min-w-[200px]">
-            <select name="kategori" class="px-3 py-2 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+                class="px-4 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input min-w-[200px]">
+            <select name="kategori" class="px-3 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input">
                 <option value="">Semua Kategori</option>
                 <option value="konseling" {{ request('kategori') === 'konseling' ? 'selected' : '' }}>Konseling</option>
                 <option value="psikotes" {{ request('kategori') === 'psikotes' ? 'selected' : '' }}>Psikotes</option>
             </select>
-            <select name="status" class="px-3 py-2 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+            <select name="status" class="px-3 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input">
                 <option value="">Semua Status</option>
                 <option value="baru" {{ request('status') === 'baru' ? 'selected' : '' }}>Baru</option>
                 <option value="lanjutan" {{ request('status') === 'lanjutan' ? 'selected' : '' }}>Lanjutan</option>
@@ -38,11 +38,11 @@
     </div>
 
     {{-- Table --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+    <div class="glass-card rounded-2xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm font-medium">
                 <thead>
-                    <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
+                    <tr class="bg-purple-deep/95 text-white font-semibold select-none border-b border-purple-900/30">
                         <th class="px-6 py-3.5 text-left font-semibold text-white">ID</th>
                         <th class="px-6 py-3.5 text-left font-semibold text-white">Klien</th>
                         <th class="px-6 py-3.5 text-left font-semibold text-white">Kategori</th>

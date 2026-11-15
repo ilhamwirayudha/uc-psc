@@ -1,4 +1,4 @@
-﻿@extends('layouts.dashboard')
+@extends('layouts.dashboard')
 
 @section('title', 'Tambah Psikolog — UC PSC')
 @section('page-title', 'Tambah Psikolog Baru')
@@ -106,7 +106,7 @@
         @csrf
 
         {{-- CARD 1: DATA IDENTITAS & KONTAK --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="glass-card rounded-2xl p-6 space-y-5">
             <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
                 <div class="w-8 h-8 rounded-lg bg-orange/10 text-orange flex items-center justify-center font-bold text-sm">
                     1

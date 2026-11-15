@@ -1,7 +1,17 @@
-﻿@extends('layouts.dashboard')
+@extends('layouts.dashboard')
 
 @section('title', 'Edit Booking — UC PSC')
 @section('page-title', 'Edit Booking #' . $booking->id)
+@section('breadcrumbs')
+    <x-ui.breadcrumbs :items="[
+        ['label' => 'Layanan & Jadwal'],
+        [
+            'label' => $booking->kategori === 'psikotes' ? 'Layanan Psikotes' : 'Layanan Konseling',
+            'url' => $booking->kategori === 'psikotes' ? route('bookings.psychotest') : route('bookings.counseling'),
+        ],
+        ['label' => 'Edit Booking #' . $booking->id],
+    ]" />
+@endsection
 
 @section('content')
 <div class="max-w-3xl" x-data="{
@@ -11,7 +21,7 @@
     addParticipant() { this.participants.push('') },
     removeParticipant(i) { this.participants.splice(i, 1) }
 }">
-    <form action="{{ route('bookings.update', $booking) }}" method="POST" class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+    <form action="{{ route('bookings.update', $booking) }}" method="POST" class="glass-card rounded-2xl p-6 space-y-5">
         @csrf @method('PUT')
 
         {{-- Klien --}}

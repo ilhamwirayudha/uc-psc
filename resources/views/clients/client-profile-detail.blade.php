@@ -2,6 +2,13 @@
 
 @section('title', 'Detail Klien — ' . $client->name . ' — UC PSC')
 @section('page-title', 'Detail Klien')
+@section('breadcrumbs')
+    <x-ui.breadcrumbs :items="[
+        ['label' => 'Klien & Psikolog'],
+        ['label' => 'Daftar Klien', 'url' => route('clients.index')],
+        ['label' => $client->name],
+    ]" />
+@endsection
 @section('page-subtitle', 'Informasi profil, riwayat seluruh layanan terdaftar, reservasi konseling, dan berkas asesmen')
 @section('content')
 @php
@@ -404,7 +411,7 @@
 <script>
 function clientProfileDetail() {
     return {
-        activeTab: @js(in_array(request('tab'), ['profile', 'notes', 'konseling', 'psychotest', 'history', 'settings']) ? request('tab') : 'profile'),
+        activeTab: @js(in_array(request('tab'), ['biodata', 'catatan', 'konseling', 'psikotes', 'riwayat', 'pengaturan']) ? request('tab') : 'biodata'),
         assignModalOpen: false,
         reassignModalOpen: false,
         unassignModalOpen: false,
@@ -457,7 +464,7 @@ function clientProfileDetail() {
             if (this.editMode) {
                 this.handleCancelEdit();
             } else {
-                this.activeTab = 'profile';
+                this.activeTab = 'biodata';
                 this.initFormData();
                 this.editMode = true;
             }
@@ -867,7 +874,7 @@ function clientProfileDetail() {
             this.isSavingFormCard = true;
             try {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
-                const response = await fetch(`/client-forms/${this.selectedForm.id}`, {
+                const response = await fetch(`/formulir-klien/${this.selectedForm.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1067,11 +1074,11 @@ function clientProfileDetail() {
                     }
                 }, 350);
             };
-            frame.src = `/client-forms/${formId}/pdf`;
+            frame.src = `/formulir-klien/${formId}/pdf`;
         },
         init() {
             window.clientProfileDetailComponent = this;
-            const validTabs = ['profile', 'notes', 'konseling', 'psychotest', 'history', 'settings'];
+            const validTabs = ['biodata', 'catatan', 'konseling', 'psikotes', 'riwayat', 'pengaturan'];
             const urlParams = new URLSearchParams(window.location.search);
             const urlTab = urlParams.get('tab');
             try {
@@ -1084,12 +1091,12 @@ function clientProfileDetail() {
             if (urlTab && validTabs.includes(urlTab)) {
                 this.activeTab = urlTab;
             } else {
-                this.activeTab = 'profile';
+                this.activeTab = 'biodata';
             }
             this.$watch('activeTab', (tab) => {
                 if (validTabs.includes(tab)) {
                     const url = new URL(window.location.href);
-                    if (tab === 'profile') {
+                    if (tab === 'biodata') {
                         url.searchParams.delete('tab');
                     } else {
                         url.searchParams.set('tab', tab);
@@ -1109,7 +1116,7 @@ function clientProfileDetail() {
     {{-- ========================================================================= --}}
     {{-- CARD 1: PROFILE HEADER BANNER (ELEGANT PURPLE CARD DENGAN KONTRAS HARMONIS) --}}
     {{-- ========================================================================= --}}
-    <div class="bg-purple-deep rounded-2xl border border-purple-900 shadow-xs overflow-hidden text-white relative">
+    <div class="bg-purple-deep/92 backdrop-blur-lg rounded-2xl border border-white/20 shadow-[0_14px_34px_rgba(74,35,128,0.16)] overflow-hidden text-white relative">
         {{-- Background Soft Accent Tint --}}
         <div class="absolute -right-12 -top-12 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -1163,13 +1170,13 @@ function clientProfileDetail() {
     {{-- ========================================================================= --}}
     {{-- CARD 2: TABS WORKSPACE CONTAINER (BIODATA, CATATAN, KONSELING, PSIKOTES, RIWAYAT, PENGATURAN) --}}
     {{-- ========================================================================= --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+    <div class="glass-card rounded-2xl overflow-hidden">
         {{-- Unified Tabs Navigation Header (Pertinggi & Font Lebih Tebal & Jelas) --}}
-        <div class="px-4 sm:px-6 bg-purple-deep border-b border-purple-900/30 flex items-center gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none">
+        <div class="px-4 sm:px-6 bg-purple-deep/95 border-b border-purple-900/30 flex items-center gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none">
             {{-- Tab 1: Biodata Klien --}}
-            <button type="button" @click="handleTabClick('profile')"
+            <button type="button" @click="handleTabClick('biodata')"
                     class="py-3 sm:py-3.5 text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border-b-2 whitespace-nowrap"
-                    :class="activeTab === 'profile'
+                    :class="activeTab === 'biodata'
                         ? 'border-white text-white font-bold'
                         : 'border-transparent text-purple-200/80 hover:text-white hover:border-purple-300/40 font-semibold'">
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1180,9 +1187,9 @@ function clientProfileDetail() {
             </button>
 
             {{-- Tab 2: Catatan Klien --}}
-            <button type="button" @click="handleTabClick('notes')"
+            <button type="button" @click="handleTabClick('catatan')"
                     class="py-3 sm:py-3.5 text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border-b-2 whitespace-nowrap"
-                    :class="activeTab === 'notes'
+                    :class="activeTab === 'catatan'
                         ? 'border-white text-white font-bold'
                         : 'border-transparent text-purple-200/80 hover:text-white hover:border-purple-300/40 font-semibold'">
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1208,9 +1215,9 @@ function clientProfileDetail() {
             </button>
 
             {{-- Tab 4: Psikotes --}}
-            <button type="button" @click="handleTabClick('psychotest')"
+            <button type="button" @click="handleTabClick('psikotes')"
                     class="py-3 sm:py-3.5 text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border-b-2 whitespace-nowrap"
-                    :class="activeTab === 'psychotest'
+                    :class="activeTab === 'psikotes'
                         ? 'border-white text-white font-bold'
                         : 'border-transparent text-purple-200/80 hover:text-white hover:border-purple-300/40 font-semibold'">
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1222,9 +1229,9 @@ function clientProfileDetail() {
             </button>
 
             {{-- Tab 5: Riwayat Layanan (Fitur Baru) --}}
-            <button type="button" @click="handleTabClick('history')"
+            <button type="button" @click="handleTabClick('riwayat')"
                     class="py-3 sm:py-3.5 text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border-b-2 whitespace-nowrap"
-                    :class="activeTab === 'history'
+                    :class="activeTab === 'riwayat'
                         ? 'border-white text-white font-bold'
                         : 'border-transparent text-purple-200/80 hover:text-white hover:border-purple-300/40 font-semibold'">
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1236,9 +1243,9 @@ function clientProfileDetail() {
             </button>
 
             {{-- Tab 6: Pengaturan --}}
-            <button type="button" @click="handleTabClick('settings')"
+            <button type="button" @click="handleTabClick('pengaturan')"
                     class="py-3 sm:py-3.5 text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border-b-2 whitespace-nowrap"
-                    :class="activeTab === 'settings'
+                    :class="activeTab === 'pengaturan'
                         ? 'border-white text-white font-bold'
                         : 'border-transparent text-purple-200/80 hover:text-white hover:border-purple-300/40 font-semibold'">
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1256,7 +1263,7 @@ function clientProfileDetail() {
             {{-- ========================================================================= --}}
             {{-- TAB 1: BIODATA KLIEN (FULL WIDTH CONTAINER)                               --}}
             {{-- ========================================================================= --}}
-            <div x-show="activeTab === 'profile'" x-cloak class="space-y-6">
+            <div x-show="activeTab === 'biodata'" x-cloak class="space-y-6">
                 @include('clients.partials.address-script')
 
                 {{-- ---- VIEW MODE BIODATA ---- --}}
@@ -1488,7 +1495,7 @@ function clientProfileDetail() {
                 </div>
             </div>
 
-<div x-show="activeTab === 'notes'" x-cloak class="space-y-6" x-data="{ 
+<div x-show="activeTab === 'catatan'" x-cloak class="space-y-6" x-data="{ 
         showAddNoteModal: false,
         showAddUnsavedModal: false,
         addNoteText: '',
@@ -1576,7 +1583,7 @@ function clientProfileDetail() {
             this.editNoteDate = item.date_input;
             this.editNoteText = item.note;
             this.initialEditNoteText = item.note;
-            this.editActionUrl = `/clients/{{ $client->id }}/notes/${item.id}`;
+            this.editActionUrl = `/daftar-klien/{{ $client->id }}/catatan/${item.id}`;
             this.showEditNoteModal = true;
             this.showEditUnsavedModal = false;
         },
@@ -1679,7 +1686,7 @@ function clientProfileDetail() {
                                         </button>
 
                                         {{-- Tombol Hapus --}}
-                                        <form :action="`/clients/{{ $client->id }}/notes/${item.id}`" method="POST" 
+                                        <form :action="`/daftar-klien/{{ $client->id }}/catatan/${item.id}`" method="POST" 
                                               onsubmit="return confirm('Apakah Anda yakin ingin menghapus catatan ini?')">
                                             @csrf
                                             @method('DELETE')
@@ -2364,7 +2371,7 @@ function clientProfileDetail() {
 
     {{-- ========================================================================= --}}
 
-    <div x-show="activeTab === 'psychotest'" x-cloak class="space-y-6">
+    <div x-show="activeTab === 'psikotes'" x-cloak class="space-y-6">
 
         {{-- Bagian A: Tabel Formulir Pendaftaran / Asesmen Psikotes Masuk --}}
 
@@ -2630,7 +2637,7 @@ function clientProfileDetail() {
             {{-- ========================================================================= --}}
             {{-- TAB 5: RIWAYAT LAYANAN (FITUR BARU)                                       --}}
             {{-- ========================================================================= --}}
-            <div x-show="activeTab === 'history'" x-cloak class="space-y-6"
+            <div x-show="activeTab === 'riwayat'" x-cloak class="space-y-6"
                  x-data="{
                      serviceHistory: {{ json_encode($allServiceHistoryJson ?? []) }},
                      filterKategori: 'semua',
@@ -2903,7 +2910,7 @@ function clientProfileDetail() {
                 </div>
             </div>
 
-<div x-show="activeTab === 'settings'" x-cloak class="space-y-5">
+<div x-show="activeTab === 'pengaturan'" x-cloak class="space-y-5">
 
         {{-- 1. Fitur Hubungi Klien via WhatsApp --}}
         <div class="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -8483,7 +8490,7 @@ function clientProfileDetail() {
                 </div>
 
                 {{-- Body Modal Form --}}
-                <form :action="'/client-forms/' + (schedulingForm ? schedulingForm.id : '') + '/schedule'" method="POST" class="flex flex-col flex-1 overflow-hidden">
+                <form :action="'/formulir-klien/' + (schedulingForm ? schedulingForm.id : '') + '/jadwalkan'" method="POST" class="flex flex-col flex-1 overflow-hidden">
                     @csrf
                     <div class="p-6 sm:p-7 overflow-y-auto space-y-5 text-black">
 

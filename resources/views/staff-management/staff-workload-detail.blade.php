@@ -2,6 +2,13 @@
 
 @section('title', 'Detail Staff — ' . $staff->name . ' — UC PSC')
 @section('page-title', 'Detail & Penugasan Staff')
+@section('breadcrumbs')
+    <x-ui.breadcrumbs :items="[
+        ['label' => 'Administrasi'],
+        ['label' => 'Kelola Staff', 'url' => route('staff-management.index')],
+        ['label' => $staff->name],
+    ]" />
+@endsection
 
 @section('content')
 <div x-data="{ 
@@ -31,7 +38,7 @@
     </div>
 
     {{-- Staff Profile Card & Quick Stats --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6">
+    <div class="glass-card rounded-2xl p-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="flex items-center gap-4">
                 <div class="w-16 h-16 rounded-2xl grad-purple flex items-center justify-center text-white text-2xl font-bold shadow-md flex-shrink-0">
@@ -72,8 +79,8 @@
     </div>
 
     {{-- Main Section: Daftar Klien Sedang Ditugaskan --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
-        <div class="px-6 py-4 bg-purple-deep border-b border-purple-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div class="glass-card rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
                 <div class="flex items-center gap-2">
                     <h3 class="font-bold text-base text-white">Klien yang Sedang Ditugaskan</h3>
@@ -179,7 +186,7 @@
 
     {{-- Section: Riwayat Penugasan Lampau --}}
     @if($historyAssignments->count() > 0)
-    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
+    <div class="glass-card rounded-2xl p-6 space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-[#EDE1FA]">
             <div>
                 <h3 class="font-semibold text-black text-sm">Riwayat Penugasan Lampau</h3>

@@ -755,7 +755,7 @@ class ClientController extends Controller
             ]);
 
             if ($request->filled('existing_client_id')) {
-                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psychotest'])
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psikotes'])
                     ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Biography Form (Tiket: ' . $ticketNumber . ').');
             }
 
@@ -858,7 +858,7 @@ class ClientController extends Controller
             ]);
 
             if ($request->filled('existing_client_id')) {
-                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psychotest'])
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psikotes'])
                     ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Formulir Riwayat Hidup - Non-Industri (Tiket: ' . $ticketNumber . ').');
             }
 
@@ -974,7 +974,7 @@ class ClientController extends Controller
             ]);
 
             if ($request->filled('existing_client_id')) {
-                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psychotest'])
+                return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psikotes'])
                     ->with('success', 'Layanan baru ' . $client->name . ' berhasil didaftarkan melalui Formulir Riwayat Hidup - Industri (Tiket: ' . $ticketNumber . ').');
             }
 
@@ -1190,7 +1190,7 @@ class ClientController extends Controller
             'notes' => json_encode($notes, JSON_UNESCAPED_UNICODE),
         ]);
 
-        return redirect()->to(route('clients.show', $client) . '?tab=notes')
+        return redirect()->to(route('clients.show', $client) . '?tab=catatan')
             ->with('success', 'Catatan baru berhasil ditambahkan.');
     }
 
@@ -1226,7 +1226,7 @@ class ClientController extends Controller
         unset($item);
 
         if (!$found) {
-            return redirect()->to(route('clients.show', $client) . '?tab=notes')
+            return redirect()->to(route('clients.show', $client) . '?tab=catatan')
                 ->with('error', 'Catatan tidak ditemukan.');
         }
 
@@ -1236,7 +1236,7 @@ class ClientController extends Controller
             'notes' => json_encode($notes, JSON_UNESCAPED_UNICODE),
         ]);
 
-        return redirect()->to(route('clients.show', $client) . '?tab=notes')
+        return redirect()->to(route('clients.show', $client) . '?tab=catatan')
             ->with('success', 'Catatan berhasil diperbarui.');
     }
 
@@ -1254,7 +1254,7 @@ class ClientController extends Controller
             'notes' => empty($notes) ? null : json_encode($notes, JSON_UNESCAPED_UNICODE),
         ]);
 
-        return redirect()->to(route('clients.show', $client) . '?tab=notes')
+        return redirect()->to(route('clients.show', $client) . '?tab=catatan')
             ->with('success', 'Catatan berhasil dihapus.');
     }
 

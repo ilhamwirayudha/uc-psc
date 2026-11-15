@@ -54,12 +54,12 @@ class="relative z-50"
 aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
 
     {{-- Background backdrop --}}
-    <div x-show="clientModalOpen" x-transition.opacity class="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"></div>
+    <div x-show="clientModalOpen" x-transition.opacity class="fixed inset-0 bg-[#1F0E38]/55 backdrop-blur-md transition-opacity"></div>
     
     {{-- Modal panel --}}
     <div x-show="clientModalOpen" x-transition class="fixed inset-0 z-10 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-3 text-center sm:items-center sm:p-4">
-            <div class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-6 w-full max-w-5xl border border-purple-100">
+            <div class="relative transform overflow-hidden rounded-3xl glass-modal text-left transition-all sm:my-6 w-full max-w-5xl">
                 
                 <!-- Header -->
                 <div class="bg-gradient-to-r from-purple-deep via-[#4A2F85] to-purple-light px-6 py-4.5 rounded-t-3xl flex items-center justify-between shadow-xs">

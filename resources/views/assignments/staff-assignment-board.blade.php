@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Kelola Penugasan — UC PSC')
-@section('page-title', 'Kelola Penugasan Staff')
+@section('page-title', 'Kelola Penugasan')
 
 @section('content')
 <div x-data="{
@@ -27,8 +27,8 @@
     {{-- ========================================================================= --}}
     {{-- 1. BAGIAN ATAS: DAFTAR KLIEN YANG SEDANG DITUGASKAN                       --}}
     {{-- ========================================================================= --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
-        <div class="px-6 py-4 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
+    <div class="glass-card rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
             <h3 class="font-bold text-base text-white">Daftar Klien yang Sedang Ditugaskan</h3>
             <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">
                 {{ $assignedClients->count() }} Klien Ter-assign
@@ -134,8 +134,8 @@
     {{-- ========================================================================= --}}
     <div class="grid lg:grid-cols-3 gap-6">
         {{-- Ringkasan Staff --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden flex flex-col">
-            <div class="px-6 py-4 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
+        <div class="glass-card rounded-2xl overflow-hidden flex flex-col">
+            <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
                 <h3 class="font-bold text-white">Ringkasan per Staff</h3>
                 <a href="{{ route('staff-management.index') }}" class="text-xs text-purple-200 font-semibold hover:text-white hover:underline transition">Kelola Staff →</a>
             </div>
@@ -165,8 +165,8 @@
         </div>
 
         {{-- Klien Belum Ditugaskan --}}
-        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden flex flex-col">
-            <div class="px-6 py-4 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
+        <div class="lg:col-span-2 glass-card rounded-2xl overflow-hidden flex flex-col">
+            <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
                 <h3 class="font-bold text-white">Klien Menunggu Penugasan</h3>
                 <span class="px-2.5 py-0.5 rounded-full text-xs font-bold {{ $unassignedClients->count() > 0 ? 'bg-amber-300 text-amber-950' : 'bg-white/20 text-white' }}">
                     {{ $unassignedClients->count() }} Klien

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Booking Layanan Psikotes — UC PSC')
-@section('page-title', 'Booking Layanan Psikotes')
+@section('title', 'Layanan Psikotes — UC PSC')
+@section('page-title', 'Layanan Psikotes')
 @section('page-subtitle', 'Kelola jadwal asesmen dan reservasi klien psikotes')
 
 @section('content')
@@ -18,7 +18,7 @@
         <form method="GET" action="{{ route('bookings.psychotest') }}" class="w-full sm:w-80 md:w-96 relative">
             <div class="relative w-full">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama klien psikotes..."
-                    class="w-full pl-11 pr-10 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black placeholder:text-gray-400 font-medium shadow-xs">
+                    class="w-full pl-11 pr-10 py-2.5 glass-input rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black placeholder:text-gray-400 font-medium">
                 <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -79,9 +79,9 @@
 
     {{-- TABEL: LAYANAN PSIKOTES                                                   --}}
     {{-- ========================================================================= --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden flex flex-col justify-between">
+    <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between">
         {{-- Header Card (Warna Ungu) --}}
-        <div class="px-6 py-4 bg-purple-deep text-white flex items-center justify-between border-b border-purple-900/40">
+        <div class="px-6 py-4 bg-purple-deep/95 text-white flex items-center justify-between border-b border-purple-900/30">
             <h3 class="text-base font-bold text-white tracking-tight">Layanan Psikotes</h3>
             <span class="text-xs text-purple-100 font-medium bg-white/15 px-2.5 py-1 rounded-full">{{ $psikotesBookings->total() }} Data</span>
         </div>

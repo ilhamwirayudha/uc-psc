@@ -1,7 +1,15 @@
-﻿@extends('layouts.dashboard')
+@extends('layouts.dashboard')
 
 @section('title', 'Edit Klien — UC PSC')
 @section('page-title', 'Edit Klien')
+@section('breadcrumbs')
+    <x-ui.breadcrumbs :items="[
+        ['label' => 'Klien & Psikolog'],
+        ['label' => 'Daftar Klien', 'url' => route('clients.index')],
+        ['label' => $client->name, 'url' => route('clients.show', $client)],
+        ['label' => 'Edit Klien'],
+    ]" />
+@endsection
 
 @section('content')
 @include('clients.partials.address-script')

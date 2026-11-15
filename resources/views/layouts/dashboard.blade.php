@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UC PSC Management System</title>
+    <title>@yield('title', 'UC PSC Management System')</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo-ucpsc.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,13 +12,24 @@
     <style>[x-cloak] { display: none !important; }</style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[#F7F5FB] min-h-screen" 
+<body class="bg-[#F3EBF9] min-h-screen relative overflow-x-hidden selection:bg-purple-light selection:text-white" 
     x-data="{ 
         sidebarOpen: false, 
+        sidebarCollapsed: localStorage.getItem('sidebar_collapsed') === 'true',
+        sidebarTransitionReady: false,
         showLogoutModal: false,
         showUnsavedModal: false,
         pendingUrl: null,
         isBrowserBack: false,
+        init() {
+            this.$nextTick(() => {
+                this.sidebarTransitionReady = true;
+            });
+        },
+        toggleSidebarCollapse() {
+            this.sidebarCollapsed = !this.sidebarCollapsed;
+            localStorage.setItem('sidebar_collapsed', this.sidebarCollapsed ? 'true' : 'false');
+        },
         proceedUnsaved() {
             window.isSubmittingForm = true;
             if (this.pendingUrl) {
@@ -38,6 +49,16 @@
     {{-- Splash Screen on Refresh / Load --}}
     <x-splash-screen />
 
+    {{-- ===== HIGH-PERFORMANCE STATIC AURORA MESH BACKGROUND (FOR GLASSMORPHISM REFRACTION) ===== --}}
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+        {{-- Top-Left Purple / Lavender Glow --}}
+        <div class="absolute -top-[18%] -left-[10%] w-[780px] h-[780px] bg-gradient-to-br from-[#8E51E8]/24 via-[#B07DF5]/16 to-transparent rounded-full blur-[110px] transform-gpu"></div>
+        {{-- Bottom-Right Warm Peach / Orange Glow --}}
+        <div class="absolute -bottom-[18%] -right-[10%] w-[820px] h-[820px] bg-gradient-to-tl from-[#FB923C]/22 via-[#FDBA74]/16 to-[#C084FC]/10 rounded-full blur-[115px] transform-gpu"></div>
+        {{-- Center-Right Atmospheric Tint --}}
+        <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[680px] bg-gradient-to-tr from-[#E9D5FF]/32 via-[#FED7AA]/14 to-transparent rounded-full blur-[95px] transform-gpu"></div>
+    </div>
+
     <div class="flex min-h-screen relative overflow-x-hidden z-10">
         {{-- Mobile Overlay Backdrop --}}
         <div 
@@ -54,162 +75,37 @@
         ></div>
 
         {{-- ===== SIDEBAR ===== --}}
-        <aside 
-            id="sidebar" 
-            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
-            class="fixed inset-y-0 left-0 z-40 w-64 bg-purple-700 text-white shadow-xl max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out lg:translate-x-0 select-none flex flex-col justify-between"
-        >
-            <div class="flex-1 flex flex-col min-h-0">
-                {{-- Logo Header --}}
-                <div class="px-5 py-5 border-b border-white/10 flex items-center justify-between flex-shrink-0">
-                    <a href="{{ route('dashboard') }}" class="block" onclick="sessionStorage.setItem('show_splash_logo', '1')">
-                        <img src="{{ asset('images/logo-ucpsc-white.png') }}" alt="Logo Resmi UC PSC" class="h-14 sm:h-16 w-auto object-contain">
-                    </a>
-                </div>
-
-                {{-- Navigation --}}
-                <nav class="px-4 py-6 space-y-1.5 overflow-y-auto flex-1">
-                    <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mb-2">Menu Utama</p>
-
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('dashboard') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                        <span>Dashboard</span>
-                    </a>
-
-                    <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mt-6 mb-2">Data</p>
-
-                    <a href="{{ route('clients.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('clients.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <span>Daftar Klien</span>
-                    </a>
-
-                    <a href="{{ route('client-forms.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('client-forms.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                        <span>Formulir Klien</span>
-                    </a>
-
-                    <a href="{{ route('counselors.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('counselors.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        <span>Psikolog</span>
-                    </a>
-
-                    <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mt-6 mb-2">Operasional</p>
-
-                    <a href="{{ route('calendar.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('calendar.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
-                        <span>Kalender</span>
-                    </a>
-
-                    {{-- Dropdown Menu: Booking Layanan --}}
-                    <div id="booking-sidebar-menu"
-                        x-data="{ 
-                            open: (localStorage.getItem('booking_menu_open') !== null 
-                                ? localStorage.getItem('booking_menu_open') === 'true' 
-                                : true) || {{ request()->routeIs('bookings.*') ? 'true' : 'false' }},
-                            toggle() {
-                                this.open = !this.open;
-                                localStorage.setItem('booking_menu_open', this.open ? 'true' : 'false');
-                            }
-                        }" class="space-y-1">
-                        <button type="button" 
-                            @click="toggle()" 
-                            class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium cursor-pointer {{ request()->routeIs('bookings.*') ? 'bg-white/15 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
-                            <div class="flex items-center gap-3">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                                <span>Booking Layanan</span>
-                            </div>
-                            {{-- Chevron Icon: Static toggle without CSS transition rotation --}}
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-white">
-                                <polyline points="18 15 12 9 6 15" x-show="open"></polyline>
-                                <polyline points="6 9 12 15 18 9" x-show="!open" style="display: none;"></polyline>
-                            </svg>
-                        </button>
-
-                        {{-- Submenu: Layanan Konseling & Layanan Psikotes (Seragam dengan teks sidebar lainnya) --}}
-                        <div x-show="open" 
-                            id="booking-submenu"
-                            class="pl-4 space-y-1 pt-0.5">
-                            {{-- 1. Layanan Konseling --}}
-                            <a href="{{ route('bookings.counseling') }}" 
-                                class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition font-medium whitespace-nowrap {{ request()->routeIs('bookings.counseling') ? 'bg-white/20 text-white font-semibold shadow-xs ring-1 ring-white/10' : 'text-white hover:bg-white/10' }}">
-                                <span class="w-2 h-2 rounded-full shrink-0 {{ request()->routeIs('bookings.counseling') ? 'bg-white ring-2 ring-white/30' : 'bg-white/60' }}"></span>
-                                <span>Layanan Konseling</span>
-                            </a>
-
-                            {{-- 2. Layanan Psikotes --}}
-                            <a href="{{ route('bookings.psychotest') }}" 
-                                class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition font-medium whitespace-nowrap {{ request()->routeIs('bookings.psychotest') ? 'bg-white/20 text-white font-semibold shadow-xs ring-1 ring-white/10' : 'text-white hover:bg-white/10' }}">
-                                <span class="w-2 h-2 rounded-full shrink-0 {{ request()->routeIs('bookings.psychotest') ? 'bg-white ring-2 ring-white/30' : 'bg-white/60' }}"></span>
-                                <span>Layanan Psikotes</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    @if(auth()->user()->isAdmin())
-                    <p class="text-white/40 text-[10px] uppercase tracking-widest font-extrabold px-3 mt-6 mb-2">Pengaturan</p>
-
-                    <a href="{{ route('assignments.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('assignments.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-                        <span>Kelola Penugasan</span>
-                    </a>
-
-                    <a href="{{ route('staff-management.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition font-medium {{ request()->routeIs('staff-management.*') ? 'bg-white/20 text-white font-semibold' : 'text-white hover:bg-white/10' }}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                        <span>Kelola Staff</span>
-                    </a>
-                    @endif
-                </nav>
-            </div>
-
-            {{-- User Profile Info & Logout at bottom of sidebar --}}
-            <div class="px-4 py-3.5 border-t border-white/10 flex-shrink-0">
-                <div class="flex items-center justify-between gap-2.5 px-1 py-1">
-                    {{-- Avatar & Text Profile (Clickable to Profile Page) --}}
-                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 min-w-0 group/profile flex-1 rounded-xl p-1 -m-1 hover:bg-white/10 transition {{ request()->routeIs('profile.*') ? 'bg-white/15' : '' }}" title="Buka Profil Saya">
-                        @if(auth()->user()->avatar_url)
-                            <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-9 h-9 rounded-full object-cover border border-white/20 shadow-xs flex-shrink-0 group-hover/profile:scale-105 transition-transform">
-                        @else
-                            <div class="w-9 h-9 rounded-full bg-purple-light text-white border border-white/20 flex items-center justify-center font-bold text-sm shadow-xs flex-shrink-0 group-hover/profile:scale-105 transition-transform">
-                                {{ substr(auth()->user()->name, 0, 1) }}
-                            </div>
-                        @endif
-                        <div class="min-w-0 flex-1">
-                            <p class="text-xs font-bold text-white truncate group-hover/profile:text-orange transition-colors">{{ auth()->user()->name }}</p>
-                        </div>
-                    </a>
-
-                    {{-- Logout Button beside text --}}
-                    <button 
-                        type="button" 
-                        @click="showLogoutModal = true" 
-                        class="p-2 rounded-xl text-white hover:bg-white/10 transition cursor-pointer flex-shrink-0 group" 
-                        title="Keluar"
-                    >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white/70 group-hover:text-red-400 transition-colors duration-200"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    </button>
-                </div>
-            </div>
-        </aside>
+        <x-ui.sidebar />
 
         {{-- ===== MAIN CONTENT ===== --}}
-        <div class="flex-1 flex flex-col min-w-0 lg:ml-64">
-            {{-- Top Bar --}}
-            <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#EDE1FA] px-6 py-3.5">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2.5 sm:gap-3">
-                        {{-- Mobile Hamburger (Only on mobile < lg) --}}
-                        <button 
-                            type="button" 
-                            @click="sidebarOpen = true" 
-                            class="lg:hidden text-purple-deep hover:text-orange p-1.5 -ml-1.5 rounded-xl hover:bg-purple-deep/5 transition cursor-pointer flex items-center justify-center"
-                            title="Buka Menu"
-                        >
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                        </button>
+        <div id="dashboard-main"
+             :class="[
+                 sidebarCollapsed ? 'lg:ml-[92px]' : 'lg:ml-[268px]',
+                 sidebarTransitionReady ? 'transition-[margin] duration-200 ease-out' : ''
+             ]"
+             class="flex-1 flex flex-col min-w-0">
+            {{-- Borderless Editorial Header (Desktop Transparent on Aurora Canvas, Sticky Glass on Mobile) --}}
+            <header class="z-30 flex items-center justify-between gap-4 px-6 max-lg:sticky max-lg:top-0 max-lg:h-16 max-lg:glass-topbar lg:pt-5 lg:pb-1">
+                <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                    {{-- Mobile Hamburger (Only on mobile < lg) --}}
+                    <button 
+                        type="button" 
+                        @click="sidebarOpen = true" 
+                        class="lg:hidden text-purple-deep hover:text-orange p-1.5 -ml-1.5 rounded-xl hover:bg-purple-deep/5 transition cursor-pointer flex items-center justify-center flex-shrink-0"
+                        title="Buka Menu"
+                    >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
 
-                        <div>
-                            <h1 class="text-lg font-bold text-purple-deep">@yield('page-title', 'Dashboard')</h1>
-                        </div>
+                    <div class="min-w-0">
+                        @hasSection('breadcrumbs')
+                            @yield('breadcrumbs')
+                        @else
+                            <x-ui.breadcrumbs />
+                        @endif
+                        <h1 class="text-lg lg:text-2xl font-bold tracking-tight text-purple-deep truncate">
+                            @yield('page-title', 'Dashboard')
+                        </h1>
                     </div>
                 </div>
             </header>
@@ -228,8 +124,8 @@
                 x-transition:leave="transition ease-in duration-200 transform"
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-4"
-                class="sticky top-[57px] z-30 px-6 pt-3 pb-1">
-                <div class="w-full bg-emerald-600 text-white rounded-xl px-5 py-3.5 shadow-lg shadow-emerald-600/15 flex items-center justify-between gap-4 border border-emerald-500/40">
+                class="sticky top-16 lg:top-4 z-30 px-6 pt-3 pb-1">
+                <div class="w-full bg-emerald-600/90 backdrop-blur-md text-white rounded-xl px-5 py-3.5 shadow-lg shadow-emerald-600/15 flex items-center justify-between gap-4 border border-white/25">
                     <div class="flex items-center gap-3 min-w-0">
                         <div class="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center flex-shrink-0">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -258,8 +154,8 @@
                 x-transition:leave="transition ease-in duration-200 transform"
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-4"
-                class="sticky top-[57px] z-30 px-6 pt-3 pb-1">
-                <div class="w-full bg-rose-600 text-white rounded-xl px-5 py-3.5 shadow-lg shadow-rose-600/15 flex items-center justify-between gap-4 border border-rose-500/40">
+                class="sticky top-16 lg:top-4 z-30 px-6 pt-3 pb-1">
+                <div class="w-full bg-rose-600/90 backdrop-blur-md text-white rounded-xl px-5 py-3.5 shadow-lg shadow-rose-600/15 flex items-center justify-between gap-4 border border-white/25">
                     <div class="flex items-center gap-3 min-w-0">
                         <div class="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center flex-shrink-0">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -279,7 +175,7 @@
             @endif
 
             {{-- Page Content --}}
-            <main class="p-6">
+            <main class="p-6 lg:pt-4">
                 @yield('content')
             </main>
         </div>

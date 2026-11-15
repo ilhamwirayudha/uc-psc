@@ -11,12 +11,12 @@
         @keydown.escape.window="if (detailModalOpen) { handleCloseAttempt(); }"
     >
         {{-- Background backdrop (STRICT RULE: Dilarang memasang handler penutup pada backdrop/overlay) --}}
-        <div x-show="detailModalOpen" x-transition.opacity class="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"></div>
+        <div x-show="detailModalOpen" x-transition.opacity class="fixed inset-0 bg-[#1F0E38]/55 backdrop-blur-md transition-opacity"></div>
 
         {{-- Modal panel wrapper --}}
         <div class="min-h-full flex items-center justify-center p-4">
             {{-- Modal Dialog Container (Ukuran container max-w-4xl, bg-purple-deep rounded-2xl shadow-2xl) --}}
-            <div x-show="detailModalOpen" x-transition class="relative bg-purple-deep rounded-2xl shadow-2xl overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col z-10 my-6">
+            <div x-show="detailModalOpen" x-transition class="relative bg-purple-deep/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col z-10 my-6">
                 
                 {{-- Modal Header --}}
                 <div class="flex items-center justify-between px-6 py-4 bg-purple-deep text-white border-b border-purple-900/40 shrink-0">
@@ -985,7 +985,7 @@
                 </form>
 
                 {{-- Form Hidden untuk Delete Booking --}}
-                <form id="delete-booking-form" :action="selectedBooking?.destroy_url || ('/bookings/' + (selectedBooking?.id || ''))" method="POST" class="hidden">
+                <form id="delete-booking-form" :action="selectedBooking?.destroy_url || ('/layanan/' + (selectedBooking?.id || ''))" method="POST" class="hidden">
                     @csrf
                     @method('DELETE')
                 </form>

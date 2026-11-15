@@ -15,7 +15,7 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        $user = auth()->user();
+        $user = auth()->user()->loadCount(['assignedClients', 'clients']);
         return view('profile.edit', compact('user'));
     }
 
@@ -61,6 +61,39 @@ class ProfileController extends Controller
         $user->update(['avatar' => null]);
 
         return redirect()->route('profile.edit')->with('success', 'Foto profil berhasil dihapus.');
+    }
+
+    /**
+     * Perbarui biodata dan informasi akun pengguna.
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'employee_id' => ['nullable', 'string', 'max:60'],
+            'position' => ['nullable', 'string', 'max:120'],
+            'phone' => ['nullable', 'string', 'max:30'],
+            'gender' => ['nullable', 'in:l,p'],
+            'address' => ['nullable', 'string', 'max:1000'],
+        ], [
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'name.max' => 'Nama lengkap maksimal 255 karakter.',
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.email' => 'Format alamat email tidak valid.',
+            'email.unique' => 'Alamat email sudah digunakan oleh akun lain.',
+            'employee_id.max' => 'ID Pegawai / NIP maksimal 60 karakter.',
+            'position.max' => 'Jabatan / Divisi maksimal 120 karakter.',
+            'phone.max' => 'Nomor telepon maksimal 30 karakter.',
+            'gender.in' => 'Pilihan jenis kelamin tidak valid.',
+            'address.max' => 'Alamat maksimal 1000 karakter.',
+        ]);
+
+        $user->update($validated);
+
+        return redirect()->route('profile.edit')->with('success', 'Biodata dan informasi akun berhasil diperbarui.');
     }
 
     /**

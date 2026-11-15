@@ -170,7 +170,7 @@
             }, 350);
         };
 
-        frame.src = `/client-forms/${formId}/pdf`;
+        frame.src = `/formulir-klien/${formId}/pdf`;
     },
 
     switchCategory(catKey) {
@@ -962,7 +962,7 @@
                 </button>
                 <div class="flex items-center gap-2">
                     <template x-if="selectedForm && selectedForm.client_id">
-                        <a :href="`/clients/${selectedForm.client_id}`" class="px-4 py-2 rounded-xl bg-purple-deep text-white text-xs font-bold hover:bg-[#4A2F85] transition">
+                        <a :href="`/daftar-klien/${selectedForm.client_id}`" class="px-4 py-2 rounded-xl bg-purple-deep text-white text-xs font-bold hover:bg-[#4A2F85] transition">
                             Buka di Profil Klien &rarr;
                         </a>
                     </template>

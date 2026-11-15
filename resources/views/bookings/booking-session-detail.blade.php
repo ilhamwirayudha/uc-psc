@@ -2,6 +2,16 @@
 
 @section('title', 'Detail Booking #' . $booking->id . ' - UC PSC')
 @section('page-title', 'Detail Booking #' . $booking->id)
+@section('breadcrumbs')
+    <x-ui.breadcrumbs :items="[
+        ['label' => 'Layanan & Jadwal'],
+        [
+            'label' => $booking->kategori === 'psikotes' ? 'Layanan Psikotes' : 'Layanan Konseling',
+            'url' => $booking->kategori === 'psikotes' ? route('bookings.psychotest') : route('bookings.counseling'),
+        ],
+        ['label' => 'Booking #' . $booking->id],
+    ]" />
+@endsection
 
 @section('content')
 @php

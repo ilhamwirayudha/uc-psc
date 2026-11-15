@@ -1,7 +1,7 @@
-﻿@extends('layouts.dashboard')
+@extends('layouts.dashboard')
 
 @section('title', 'Psikolog — UC PSC')
-@section('page-title', 'Data Psikolog')
+@section('page-title', 'Psikolog')
 @section('page-subtitle', 'Kelola data psikolog pendamping UC PSC')
 
 @section('content')
@@ -487,7 +487,7 @@
                     @input="onSearch()"
                     @keydown.enter.prevent="fetchResults()"
                     placeholder="Cari nama, spesialisasi, SIPP, STR..."
-                    class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
+                    class="w-full pl-10 pr-10 py-2.5 rounded-xl glass-input text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
 
                 {{-- Clear button saat ada teks --}}
                 <button type="button"
@@ -509,7 +509,7 @@
             <select name="status"
                 x-model="status"
                 @change="fetchResults()"
-                class="px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#5B4A73] flex-shrink-0">
+                class="px-3.5 py-2.5 rounded-xl glass-input text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#5B4A73] flex-shrink-0">
                 <option value="">Semua Status Psikolog</option>
                 <option value="active">Aktif</option>
                 <option value="inactive">Nonaktif</option>
@@ -529,7 +529,7 @@
     <div id="counselor-data-container" :class="{ 'opacity-70 pointer-events-none transition-opacity duration-150': loading }">
         {{-- Active Filter / Sort Indicators --}}
         @if(request('sort') || request('search') || request('status'))
-        <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-[#6B5B85] bg-white px-4 py-2.5 rounded-xl border border-[#EDE1FA]">
+        <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-[#6B5B85] glass-card-subtle px-4 py-2.5 rounded-xl">
             <span class="font-semibold text-[#5B4A73] flex items-center gap-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
                 Filter/Urutan:
@@ -573,11 +573,11 @@
             };
         @endphp
         {{-- Table Card --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+        <div class="glass-card rounded-2xl overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm font-medium">
                     <thead>
-                        <tr class="bg-purple-deep text-white font-semibold select-none border-b border-purple-900/40">
+                        <tr class="bg-purple-deep/95 text-white font-semibold select-none border-b border-purple-900/30">
                             {{-- No. Column with Numeric Sort --}}
                             <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16">
                                 <div class="flex items-center justify-center">
@@ -898,11 +898,11 @@
                 x-transition:enter="ease-out duration-200" 
                 x-transition:enter-start="opacity-0 scale-95" 
                 x-transition:enter-end="opacity-100 scale-100" 
-                class="relative bg-white rounded-2xl shadow-2xl border border-[#EDE1FA] max-w-3xl w-full max-h-[90vh] flex flex-col z-10 my-6"
+                class="relative glass-modal rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col z-10 my-6 overflow-hidden"
                 @click.stop>
                 
                 {{-- Modal Header --}}
-                <div class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white rounded-t-2xl">
+                <div class="flex items-center justify-between px-6 py-4.5 border-b border-white/70 bg-white/50 rounded-t-2xl">
                     <div>
                         <h3 class="text-base sm:text-lg font-bold text-purple-deep">Tambah Psikolog Baru</h3>
                         <p class="text-xs sm:text-[13px] text-[#6B5B85] mt-0.5">Daftarkan data psikolog atau konselor pendamping baru ke UC PSC</p>
@@ -1247,11 +1247,11 @@
                 x-transition:enter="ease-out duration-200" 
                 x-transition:enter-start="opacity-0 scale-95" 
                 x-transition:enter-end="opacity-100 scale-100" 
-                class="relative bg-white rounded-2xl shadow-2xl border border-[#EDE1FA] max-w-3xl w-full max-h-[90vh] flex flex-col z-10 my-6"
+                class="relative glass-modal rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col z-10 my-6 overflow-hidden"
                 @click.stop>
                 
                 {{-- Modal Header (View Mode) --}}
-                <div x-show="!isEditing" class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white rounded-t-2xl">
+                <div x-show="!isEditing" class="flex items-center justify-between px-6 py-4.5 border-b border-white/70 bg-white/50 rounded-t-2xl">
                     <div>
                         <h3 class="text-base sm:text-lg font-bold text-purple-deep">Detail Data Psikolog</h3>
                         <p class="text-xs sm:text-[13px] text-[#6B5B85] mt-0.5">Informasi profil, kualifikasi, dan status konselor</p>

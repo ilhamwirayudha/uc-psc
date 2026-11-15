@@ -55,48 +55,59 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Profile
-    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile/avatar', [\App\Http\Controllers\ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
-    Route::delete('/profile/avatar', [\App\Http\Controllers\ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
-    Route::put('/profile/email', [\App\Http\Controllers\ProfileController::class, 'updateEmail'])->name('profile.email.update');
-    Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    // Profile (Profil Saya)
+    Route::get('/profil-saya', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profil-saya', [\App\Http\Controllers\ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profil-saya/avatar', [\App\Http\Controllers\ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::delete('/profil-saya/avatar', [\App\Http\Controllers\ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
+    Route::put('/profil-saya/email', [\App\Http\Controllers\ProfileController::class, 'updateEmail'])->name('profile.email.update');
+    Route::put('/profil-saya/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password.update');
 
-    // Clients
-    Route::post('clients/{client}/notes', [ClientController::class, 'storeNote'])->name('clients.notes.store');
-    Route::put('clients/{client}/notes/{noteId}', [ClientController::class, 'updateNote'])->name('clients.notes.update');
-    Route::delete('clients/{client}/notes/{noteId}', [ClientController::class, 'destroyNote'])->name('clients.notes.destroy');
-    Route::resource('clients', ClientController::class);
+    // Daftar Klien
+    Route::post('daftar-klien/{client}/catatan', [ClientController::class, 'storeNote'])->name('clients.notes.store');
+    Route::put('daftar-klien/{client}/catatan/{noteId}', [ClientController::class, 'updateNote'])->name('clients.notes.update');
+    Route::delete('daftar-klien/{client}/catatan/{noteId}', [ClientController::class, 'destroyNote'])->name('clients.notes.destroy');
+    Route::resource('daftar-klien', ClientController::class)
+        ->names('clients')
+        ->parameters(['daftar-klien' => 'client']);
 
-    // Counselors
-    Route::resource('counselors', CounselorController::class)->except(['show']);
+    // Psikolog
+    Route::resource('psikolog', CounselorController::class)
+        ->except(['show'])
+        ->names('counselors')
+        ->parameters(['psikolog' => 'counselor']);
 
-    // Data - Client Forms Management
-    Route::get('client-forms', [ClientFormManagementController::class, 'index'])->name('client-forms.index');
-    Route::get('client-forms/results', [ClientFormManagementController::class, 'results'])->name('client-forms.results');
-    Route::get('client-forms/{clientForm}', [ClientFormManagementController::class, 'show'])->name('client-forms.show');
-    Route::put('client-forms/{clientForm}', [ClientFormManagementController::class, 'update'])->name('client-forms.update');
-    Route::get('client-forms/{clientForm}/pdf', [ClientFormManagementController::class, 'downloadPdf'])->name('client-forms.pdf');
-    Route::post('client-forms/{clientForm}/schedule', [BookingController::class, 'scheduleFromForm'])->name('bookings.schedule-form');
+    // Formulir Klien
+    Route::get('formulir-klien', [ClientFormManagementController::class, 'index'])->name('client-forms.index');
+    Route::get('formulir-klien/hasil', [ClientFormManagementController::class, 'results'])->name('client-forms.results');
+    Route::get('formulir-klien/{clientForm}', [ClientFormManagementController::class, 'show'])->name('client-forms.show');
+    Route::put('formulir-klien/{clientForm}', [ClientFormManagementController::class, 'update'])->name('client-forms.update');
+    Route::get('formulir-klien/{clientForm}/pdf', [ClientFormManagementController::class, 'downloadPdf'])->name('client-forms.pdf');
+    Route::post('formulir-klien/{clientForm}/jadwalkan', [BookingController::class, 'scheduleFromForm'])->name('bookings.schedule-form');
 
-    // Bookings - Layanan Terpisah (Konseling & Psikotes)
-    Route::get('bookings/counseling', [BookingController::class, 'counseling'])->name('bookings.counseling');
-    Route::get('bookings/psychotest', [BookingController::class, 'psychotest'])->name('bookings.psychotest');
-    Route::post('bookings/{booking}/follow-up', [BookingController::class, 'createFollowUp'])->name('bookings.follow-up');
-    Route::post('bookings/{booking}/realisasi', [BookingController::class, 'storeRealisasi'])->name('bookings.realisasi');
-    Route::resource('bookings', BookingController::class);
+    // Layanan Konseling & Layanan Psikotes
+    Route::get('layanan-konseling', [BookingController::class, 'counseling'])->name('bookings.counseling');
+    Route::get('layanan-psikotes', [BookingController::class, 'psychotest'])->name('bookings.psychotest');
+    Route::post('layanan/{booking}/tindak-lanjut', [BookingController::class, 'createFollowUp'])->name('bookings.follow-up');
+    Route::post('layanan/{booking}/realisasi', [BookingController::class, 'storeRealisasi'])->name('bookings.realisasi');
+    Route::resource('layanan', BookingController::class)
+        ->names('bookings')
+        ->parameters(['layanan' => 'booking']);
 
-    // Operasional - Kalender
-    Route::get('calendar', [OperationalCalendarController::class, 'index'])->name('calendar.index');
+    // Kalender
+    Route::get('kalender', [OperationalCalendarController::class, 'index'])->name('calendar.index');
 
     // Admin-only routes
     Route::middleware(\App\Http\Middleware\EnsureAdmin::class)->group(function () {
-        Route::resource('staff-management', \App\Http\Controllers\StaffManagementController::class)->except(['edit', 'update']);
+        Route::resource('kelola-staff', \App\Http\Controllers\StaffManagementController::class)
+            ->except(['edit', 'update'])
+            ->names('staff-management')
+            ->parameters(['kelola-staff' => 'staff']);
 
-        // Kelola Penugasan Staff
-        Route::get('assignments', [AssignmentController::class, 'index'])->name('assignments.index');
-        Route::post('assignments/{client}/assign', [AssignmentController::class, 'assign'])->name('assignments.assign');
-        Route::post('assignments/{client}/unassign', [AssignmentController::class, 'unassign'])->name('assignments.unassign');
-        Route::post('assignments/{client}/reassign', [AssignmentController::class, 'reassign'])->name('assignments.reassign');
+        // Kelola Penugasan
+        Route::get('kelola-penugasan', [AssignmentController::class, 'index'])->name('assignments.index');
+        Route::post('kelola-penugasan/{client}/assign', [AssignmentController::class, 'assign'])->name('assignments.assign');
+        Route::post('kelola-penugasan/{client}/unassign', [AssignmentController::class, 'unassign'])->name('assignments.unassign');
+        Route::post('kelola-penugasan/{client}/reassign', [AssignmentController::class, 'reassign'])->name('assignments.reassign');
     });
 });
