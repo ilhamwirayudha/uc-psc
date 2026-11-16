@@ -91,7 +91,7 @@
                     <button 
                         type="button" 
                         @click="sidebarOpen = true" 
-                        class="lg:hidden text-purple-deep hover:text-orange p-1.5 -ml-1.5 rounded-xl hover:bg-purple-deep/5 transition cursor-pointer flex items-center justify-center flex-shrink-0"
+                        class="lg:hidden text-purple-deep hover:text-orange p-1.5 -ml-1.5 rounded-lg hover:bg-purple-deep/5 transition cursor-pointer flex items-center justify-center flex-shrink-0"
                         title="Buka Menu"
                     >
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -125,7 +125,7 @@
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-4"
                 class="sticky top-16 lg:top-4 z-30 px-6 pt-3 pb-1">
-                <div class="w-full bg-emerald-600/90 backdrop-blur-md text-white rounded-xl px-5 py-3.5 shadow-lg shadow-emerald-600/15 flex items-center justify-between gap-4 border border-white/25">
+                <div class="w-full bg-emerald-600/90 backdrop-blur-md text-white rounded-lg px-5 py-3.5 shadow-lg shadow-emerald-600/15 flex items-center justify-between gap-4 border border-white/25">
                     <div class="flex items-center gap-3 min-w-0">
                         <div class="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center flex-shrink-0">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -155,7 +155,7 @@
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-4"
                 class="sticky top-16 lg:top-4 z-30 px-6 pt-3 pb-1">
-                <div class="w-full bg-rose-600/90 backdrop-blur-md text-white rounded-xl px-5 py-3.5 shadow-lg shadow-rose-600/15 flex items-center justify-between gap-4 border border-white/25">
+                <div class="w-full bg-rose-600/90 backdrop-blur-md text-white rounded-lg px-5 py-3.5 shadow-lg shadow-rose-600/15 flex items-center justify-between gap-4 border border-white/25">
                     <div class="flex items-center gap-3 min-w-0">
                         <div class="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center flex-shrink-0">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -204,7 +204,7 @@
                 class="relative transform overflow-hidden rounded-[2rem] bg-white/75 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
                 
                 {{-- Centered Top Icon Badge --}}
-                <div class="mx-auto w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
+                <div class="mx-auto w-14 h-14 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                 </div>
 
@@ -221,7 +221,7 @@
                     <button 
                         type="button" 
                         @click="showLogoutModal = false"
-                        class="w-full py-3 rounded-2xl text-xs sm:text-sm font-bold text-[#5B4A73] hover:text-[#260E45] bg-white/60 hover:bg-white border border-white/90 hover:border-purple-200/80 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
+                        class="w-full py-3 rounded-xl text-xs sm:text-sm font-bold text-[#5B4A73] hover:text-[#260E45] bg-white/60 hover:bg-white border border-white/90 hover:border-purple-200/80 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
                     >
                         Batal
                     </button>
@@ -241,7 +241,7 @@
                         @csrf
                         <button 
                             type="submit" 
-                            class="w-full py-3 bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white rounded-2xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(225,29,72,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(225,29,72,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
+                            class="w-full py-3 bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(225,29,72,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(225,29,72,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
                         >
                             <span class="relative z-10">Ya, Keluar</span>
                         </button>
@@ -275,7 +275,7 @@
                 class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
                 
                 {{-- Centered Top Icon Badge --}}
-                <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
+                <div class="mx-auto w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
                         <line x1="12" y1="9" x2="12" y2="13"/>
@@ -296,7 +296,7 @@
                     <button 
                         type="button" 
                         @click="showUnsavedModal = false"
-                        class="w-full py-3 rounded-2xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
+                        class="w-full py-3 rounded-xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
                     >
                         Lanjut Mengisi
                     </button>
@@ -304,7 +304,7 @@
                     <button 
                         type="button"
                         @click="proceedUnsaved()" 
-                        class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-2xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
+                        class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
                     >
                         <span class="relative z-10">Ya, Tinggalkan</span>
                     </button>

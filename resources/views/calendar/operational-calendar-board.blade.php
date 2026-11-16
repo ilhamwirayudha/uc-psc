@@ -13,7 +13,7 @@
     {{-- ========================================================================= --}}
     {{-- GOOGLE CALENDAR MAIN CARD                                                 --}}
     {{-- ========================================================================= --}}
-    <div class="glass-card rounded-3xl overflow-hidden flex flex-col">
+    <div class="glass-card rounded-2xl overflow-hidden flex flex-col">
         
         {{-- ===== TOOLBAR ATAS (GOOGLE CALENDAR STYLE) ===== --}}
         <div class="p-4 sm:p-5 bg-purple-deep/95 border-b border-purple-900/30 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
@@ -23,12 +23,12 @@
                 <button 
                     type="button" 
                     @click="goToday()" 
-                    class="px-4 py-2 rounded-xl text-xs font-semibold bg-white text-purple-deep hover:bg-purple-50 transition cursor-pointer shadow-xs"
+                    class="px-4 py-2 rounded-lg text-xs font-semibold bg-white text-purple-deep hover:bg-purple-50 transition cursor-pointer shadow-xs"
                 >
                     Hari Ini
                 </button>
 
-                <div class="flex items-center gap-1 bg-white/15 rounded-xl p-1 border border-white/20">
+                <div class="flex items-center gap-1 bg-white/15 rounded-lg p-1 border border-white/20">
                     <button 
                         type="button" 
                         @click="prev()" 
@@ -58,7 +58,7 @@
                 <div class="w-40 sm:w-48">
                     <select 
                         x-model="filterCounselorId" 
-                        class="w-full px-3 py-2 rounded-xl border border-white/20 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-white text-purple-deep"
+                        class="w-full px-3 py-2 rounded-lg border border-white/20 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-white text-purple-deep"
                     >
                         <option value="">-- Semua Psikolog --</option>
                         @foreach($counselors as $counselor)
@@ -71,7 +71,7 @@
                 <div class="w-36 sm:w-44">
                     <select 
                         x-model="filterStaffId" 
-                        class="w-full px-3 py-2 rounded-xl border border-white/20 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-white text-purple-deep"
+                        class="w-full px-3 py-2 rounded-lg border border-white/20 bg-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-white text-purple-deep"
                     >
                         <option value="">-- Semua Staff Tim --</option>
                         @foreach($staffList as $staff)
@@ -81,7 +81,7 @@
                 </div>
 
                 {{-- Switcher Tampilan (Bulan, Minggu, Agenda) --}}
-                <div class="flex items-center bg-black/20 p-1 rounded-xl border border-white/15 text-xs font-semibold text-purple-200">
+                <div class="flex items-center bg-black/20 p-1 rounded-lg border border-white/15 text-xs font-semibold text-purple-200">
                     <button 
                         type="button" 
                         @click="viewMode = 'month'" 
@@ -205,7 +205,7 @@
                         <template x-for="event in wDay.events" :key="event.id">
                             <div 
                                 @click="openEventModal(event)"
-                                class="p-2.5 rounded-xl border border-[#EDE1FA] hover:border-purple-300 bg-white shadow-2xs hover:shadow-xs transition cursor-pointer space-y-1.5 group"
+                                class="p-2.5 rounded-lg border border-[#EDE1FA] hover:border-purple-300 bg-white shadow-2xs hover:shadow-xs transition cursor-pointer space-y-1.5 group"
                             >
                                 <div class="flex items-center justify-between gap-1">
                                     <span 
@@ -253,7 +253,7 @@
                         <template x-for="event in eventsOnDate" :key="event.id">
                             <div 
                                 @click="openEventModal(event)"
-                                class="p-3.5 rounded-2xl bg-white border border-[#EDE1FA] hover:border-purple-deep hover:shadow-xs transition cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
+                                class="p-3.5 rounded-xl bg-white border border-[#EDE1FA] hover:border-purple-deep hover:shadow-xs transition cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
                             >
                                 <div class="flex items-start gap-3">
                                     <div 
@@ -292,7 +292,7 @@
 
             <template x-if="Object.keys(agendaGrouped).length === 0">
                 <div class="py-16 text-center text-xs text-[#827299]">
-                    <div class="w-12 h-12 rounded-2xl bg-[#F7F5FB] text-purple-deep flex items-center justify-center mx-auto mb-3 text-xl font-bold">
+                    <div class="w-12 h-12 rounded-xl bg-[#F7F5FB] text-purple-deep flex items-center justify-center mx-auto mb-3 text-xl font-bold">
                         📅
                     </div>
                     <p class="font-bold text-sm text-[#2A2035] mb-1">Belum ada agenda jadwal yang tercatat</p>
@@ -300,7 +300,7 @@
                     <button 
                         type="button" 
                         @click="$dispatch('open-booking-modal')" 
-                        class="px-4 py-2 bg-purple-deep text-white font-bold text-xs rounded-xl shadow-xs hover:opacity-90 transition cursor-pointer"
+                        class="px-4 py-2 bg-purple-deep text-white font-bold text-xs rounded-lg shadow-xs hover:opacity-90 transition cursor-pointer"
                     >
                         + Buat Booking / Jadwal Baru
                     </button>
@@ -326,7 +326,7 @@
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95"
-            class="glass-modal w-full max-w-lg rounded-3xl overflow-hidden"
+            class="glass-modal w-full max-w-lg rounded-2xl overflow-hidden"
         >
             {{-- Header Modal --}}
             <div 
@@ -356,7 +356,7 @@
                 </div>
 
                 {{-- Detail Penanggung Jawab --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-2xl bg-[#F7F5FB] border border-[#EDE1FA]">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#F7F5FB] border border-[#EDE1FA]">
                     <div>
                         <span class="text-[10px] font-bold text-[#827299] block">
                             <span x-text="selectedEvent?.category === 'counseling' ? 'Psikolog yang Praktik:' : 'Staff yang Bertugas:'"></span>
@@ -374,7 +374,7 @@
 
                 {{-- Catatan Jika Ada --}}
                 <template x-if="selectedEvent?.notes">
-                    <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200 text-amber-900">
+                    <div class="p-3 rounded-lg bg-amber-50/60 border border-amber-200 text-amber-900">
                         <span class="font-bold block text-[10px] text-amber-800 mb-0.5">Catatan:</span>
                         <p x-text="selectedEvent?.notes" class="leading-relaxed"></p>
                     </div>
@@ -385,13 +385,13 @@
                     <button 
                         type="button" 
                         @click="eventModalOpen = false" 
-                        class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-700 font-bold hover:bg-gray-50 transition cursor-pointer"
+                        class="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 font-bold hover:bg-gray-50 transition cursor-pointer"
                     >
                         Tutup
                     </button>
                     <a 
                         :href="selectedEvent?.url" 
-                        class="px-5 py-2.5 rounded-xl bg-purple-deep text-white font-bold hover:opacity-90 transition shadow-xs flex items-center gap-1.5"
+                        class="px-5 py-2.5 rounded-lg bg-purple-deep text-white font-bold hover:opacity-90 transition shadow-xs flex items-center gap-1.5"
                     >
                         <span>Buka Detail Lengkap</span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
@@ -411,7 +411,7 @@
         @keydown.escape.window="selectedDateModalOpen = false"
     >
         <div 
-            class="glass-modal w-full max-w-md rounded-3xl overflow-hidden"
+            class="glass-modal w-full max-w-md rounded-2xl overflow-hidden"
         >
             <div class="p-4 border-b border-white/70 flex items-center justify-between bg-white/40">
                 <div>
@@ -432,7 +432,7 @@
                     <div 
                         @click="selectedDateModalOpen = false; openEventModal(event)"
                         :class="event.bg_chip"
-                        class="p-2.5 rounded-xl text-xs font-bold cursor-pointer transition shadow-2xs flex items-center justify-between"
+                        class="p-2.5 rounded-lg text-xs font-bold cursor-pointer transition shadow-2xs flex items-center justify-between"
                     >
                         <div class="truncate mr-2">
                             <span class="text-[9px] uppercase tracking-wider block opacity-80" x-text="event.category_label"></span>

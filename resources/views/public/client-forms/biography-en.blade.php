@@ -322,7 +322,7 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 1" class="space-y-4">
                     {{-- Banner Header Card (Signature UC PSC Gradient) --}}
-                    <div class="bg-gradient-to-r from-purple-deep via-[#4A2F85] to-purple-light rounded-2xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-deep via-[#4A2F85] to-purple-light rounded-xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
                         <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
                         <div class="relative z-10 space-y-2">
                             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Biographical Intake Form</h1>
@@ -336,13 +336,13 @@
                     </div>
 
                     {{-- Informed Consent Agreement Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
                         <div class="pb-3 border-b border-slate-100">
                             <h2 class="text-lg sm:text-xl font-bold text-slate-900">INFORMED CONSENT</h2>
                             <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Counseling Service Agreement — Universitas Ciputra PSC</p>
                         </div>
 
-                        <div class="text-sm sm:text-base text-slate-700 leading-relaxed space-y-4 max-h-[380px] overflow-y-auto pr-3 custom-scrollbar border border-slate-100 rounded-xl p-4 sm:p-5 bg-slate-50/50">
+                        <div class="text-sm sm:text-base text-slate-700 leading-relaxed space-y-4 max-h-[380px] overflow-y-auto pr-3 custom-scrollbar border border-slate-100 rounded-lg p-4 sm:p-5 bg-slate-50/50">
                             <div>
                                 <h4 class="font-bold text-purple-deep text-base sm:text-lg">Psychological Consultation Services</h4>
                                 <p class="mt-1">Psychological consultation is aimed at helping you overcome personal or social difficulties, better understand yourself, and reach your goals in personal, professional, and relational life. Results may vary depending on active mutual collaboration.</p>
@@ -366,7 +366,7 @@
                     </div>
 
                     {{-- Consent Agreement Card --}}
-                    <div id="card_consent_agree" class="bg-white rounded-2xl border shadow-xs p-6 space-y-3 transition-colors"
+                    <div id="card_consent_agree" class="bg-white rounded-xl border shadow-xs p-6 space-y-3 transition-colors"
                          :class="errors['consent_agree'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-base sm:text-lg font-bold text-slate-900 leading-snug">
                             By agreeing to this form, you acknowledge that: <span class="text-rose-500">*</span>
@@ -377,13 +377,13 @@
                         </ul>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                            <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3 font-semibold text-base"
+                            <label class="p-3.5 rounded-lg border-2 transition cursor-pointer flex items-center gap-3 font-semibold text-base"
                                    :class="consent_agree === 'Agree' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="consent_agree" value="Agree" x-model="consent_agree" @change="delete errors['consent_agree']"
                                        class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
                                 <span>I Agree</span>
                             </label>
-                            <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3 font-semibold text-base"
+                            <label class="p-3.5 rounded-lg border-2 transition cursor-pointer flex items-center gap-3 font-semibold text-base"
                                    :class="consent_agree === 'Disagree' ? 'border-rose-400 bg-rose-50/70 text-rose-700' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="consent_agree" value="Disagree" x-model="consent_agree" @change="delete errors['consent_agree']"
                                        class="w-4 h-4 text-rose-600 focus:ring-rose-500">
@@ -399,7 +399,7 @@
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
                         <div></div>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Next</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -411,38 +411,38 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 2" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">PERSONAL DATA</h2>
                         <p class="text-sm text-slate-500 mt-1">Please complete your identity details below.</p>
                     </div>
 
                     {{-- 1. Full Name --}}
-                    <div id="card_full_name" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_full_name" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['full_name'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Full Name <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="full_name" x-model="full_name" @input="delete errors['full_name']"
                                placeholder="Your complete legal name" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['full_name']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['full_name']"></p>
                         </template>
                     </div>
 
                     {{-- 2. Gender --}}
-                    <div id="card_gender" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_gender" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['gender'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Gender <span class="text-rose-500">*</span>
                         </label>
                         <div class="grid grid-cols-2 gap-3">
-                            <label class="p-3 rounded-xl border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
+                            <label class="p-3 rounded-lg border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
                                    :class="gender === 'Male' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="gender" value="Male" x-model="gender" @change="delete errors['gender']" class="sr-only">
                                 <span>Male</span>
                             </label>
-                            <label class="p-3 rounded-xl border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
+                            <label class="p-3 rounded-lg border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
                                    :class="gender === 'Female' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="gender" value="Female" x-model="gender" @change="delete errors['gender']" class="sr-only">
                                 <span>Female</span>
@@ -454,49 +454,49 @@
                     </div>
 
                     {{-- 3. Place & Date of Birth --}}
-                    <div id="card_birth_place_date" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_birth_place_date" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['birth_place_date'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Place & Date of Birth <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="birth_place_date" x-model="birth_place_date" @input="delete errors['birth_place_date']"
                                placeholder="e.g. Surabaya, 15 March 1998" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['birth_place_date']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['birth_place_date']"></p>
                         </template>
                     </div>
 
                     {{-- 4. Birth Order --}}
-                    <div id="card_birth_order" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_birth_order" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['birth_order'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Birth Order in Family <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="birth_order" x-model="birth_order" @input="delete errors['birth_order']"
                                placeholder="e.g. 1st of 3 siblings" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['birth_order']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['birth_order']"></p>
                         </template>
                     </div>
 
                     {{-- 5. Current Address --}}
-                    <div id="card_current_address" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_current_address" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['current_address'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Current Residential Address <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="current_address" x-model="current_address" @input="delete errors['current_address']" rows="2"
                                   placeholder="Full current address with city" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['current_address']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['current_address']"></p>
                         </template>
                     </div>
 
                     {{-- 6. Contact Information --}}
-                    <div id="card_phone" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_phone" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['phone'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Contact Details <span class="text-rose-500">*</span>
@@ -506,7 +506,7 @@
                                 <span class="text-xs text-slate-500 block mb-1">No. Telepon: <span class="text-rose-500">*</span></span>
                                 <input type="tel" name="phone" x-model="phone" inputmode="numeric" pattern="[0-9]+" title="Numbers only (0-9)" @input="phone = $el.value.replace(/[^0-9]/g, ''); $el.value = phone; delete errors['phone']" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                        placeholder="e.g. 081234567890" 
-                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                       class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                                 <template x-if="errors['phone']">
                                     <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['phone']"></p>
                                 </template>
@@ -515,13 +515,13 @@
                                 <span class="text-xs text-slate-500 block mb-1">Email Address:</span>
                                 <input type="email" name="email" x-model="email"
                                        placeholder="name@email.com" 
-                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                       class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                         </div>
                     </div>
 
                     {{-- 7. Religion & Ethnicity --}}
-                    <div id="card_religion" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_religion" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['religion'] || errors['ethnicity'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Religion & Ethnicity <span class="text-rose-500">*</span>
@@ -531,7 +531,7 @@
                                 <span class="text-xs text-slate-500 block mb-1">Religion / Faith:</span>
                                 <input type="text" name="religion" x-model="religion" @input="delete errors['religion']"
                                        placeholder="e.g. Christian, Muslim, Catholic, etc" 
-                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                       class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                                 <template x-if="errors['religion']">
                                     <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['religion']"></p>
                                 </template>
@@ -540,7 +540,7 @@
                                 <span class="text-xs text-slate-500 block mb-1">Ethnicity:</span>
                                 <input type="text" name="ethnicity" x-model="ethnicity" @input="delete errors['ethnicity']"
                                        placeholder="e.g. Javanese, Chinese, etc" 
-                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                       class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                                 <template x-if="errors['ethnicity']">
                                     <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['ethnicity']"></p>
                                 </template>
@@ -549,7 +549,7 @@
                     </div>
 
                     {{-- 8. Education & Occupation --}}
-                    <div id="card_last_education" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_last_education" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['last_education'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Education & Occupation <span class="text-rose-500">*</span>
@@ -559,7 +559,7 @@
                                 <span class="text-xs text-slate-500 block mb-1">Highest Education Level:</span>
                                 <input type="text" name="last_education" x-model="last_education" @input="delete errors['last_education']"
                                        placeholder="e.g. Bachelor's Degree in Psychology" 
-                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                       class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                                 <template x-if="errors['last_education']">
                                     <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['last_education']"></p>
                                 </template>
@@ -568,17 +568,17 @@
                                 <span class="text-xs text-slate-500 block mb-1">Current Occupation:</span>
                                 <input type="text" name="occupation" x-model="occupation"
                                        placeholder="e.g. Student, Graphic Designer, etc" 
-                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                       class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                         </div>
                     </div>
 
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Back
                         </button>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Next</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -590,70 +590,70 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 3" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">FAMILY BACKGROUND</h2>
                         <p class="text-sm text-slate-500 mt-1">Information regarding your parents and immediate family members.</p>
                     </div>
 
                     {{-- Father's Information --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
                         <h3 class="font-bold text-sm sm:text-base text-slate-900">Father's Profile</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Father's Name:</span>
-                                <input type="text" name="father_name" x-model="father_name" placeholder="Father's full name" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="father_name" x-model="father_name" placeholder="Father's full name" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Age:</span>
-                                <input type="text" name="father_age" x-model="father_age" placeholder="e.g. 55" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="father_age" x-model="father_age" placeholder="e.g. 55" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Highest Education:</span>
-                                <input type="text" name="father_education" x-model="father_education" placeholder="e.g. Bachelor's" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="father_education" x-model="father_education" placeholder="e.g. Bachelor's" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Occupation:</span>
-                                <input type="text" name="father_occupation" x-model="father_occupation" placeholder="e.g. Entrepreneur" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="father_occupation" x-model="father_occupation" placeholder="e.g. Entrepreneur" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                         </div>
                     </div>
 
                     {{-- Mother's Information --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
                         <h3 class="font-bold text-sm sm:text-base text-slate-900">Mother's Profile</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Mother's Name:</span>
-                                <input type="text" name="mother_name" x-model="mother_name" placeholder="Mother's full name" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="mother_name" x-model="mother_name" placeholder="Mother's full name" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Age:</span>
-                                <input type="text" name="mother_age" x-model="mother_age" placeholder="e.g. 52" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="mother_age" x-model="mother_age" placeholder="e.g. 52" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Highest Education:</span>
-                                <input type="text" name="mother_education" x-model="mother_education" placeholder="e.g. Bachelor's" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="mother_education" x-model="mother_education" placeholder="e.g. Bachelor's" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Occupation:</span>
-                                <input type="text" name="mother_occupation" x-model="mother_occupation" placeholder="e.g. Homemaker" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="mother_occupation" x-model="mother_occupation" placeholder="e.g. Homemaker" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                         </div>
                     </div>
 
                     {{-- Siblings Information --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">Siblings Information</label>
                         <p class="text-xs text-slate-500">List name, age, and occupation of your brothers / sisters.</p>
-                        <textarea name="siblings_info" x-model="siblings_info" rows="3" placeholder="e.g. 1. Brother, 24, Software Engineer; 2. Sister, 19, University Student" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                        <textarea name="siblings_info" x-model="siblings_info" rows="3" placeholder="e.g. 1. Brother, 24, Software Engineer; 2. Sister, 19, University Student" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                     </div>
 
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Back
                         </button>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Next</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -665,49 +665,49 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 4" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">EDUCATION & EXPERIENCE</h2>
                         <p class="text-sm text-slate-500 mt-1">Academic history, achievements, and career aspirations.</p>
                     </div>
 
                     {{-- Education History --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">Education History</label>
-                        <textarea name="school_history" x-model="school_history" rows="2" placeholder="Schools/Universities attended with majors..." class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                        <textarea name="school_history" x-model="school_history" rows="2" placeholder="Schools/Universities attended with majors..." class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                     </div>
 
                     {{-- Work & Organizational Experience --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
                         <div>
                             <label class="block text-sm sm:text-base font-bold text-slate-900 mb-1">Work / Internship Experience</label>
-                            <textarea name="work_history" x-model="work_history" rows="2" placeholder="Companies, positions, and responsibilities..." class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                            <textarea name="work_history" x-model="work_history" rows="2" placeholder="Companies, positions, and responsibilities..." class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm sm:text-base font-bold text-slate-900 mb-1">Organizational / Volunteer Experience</label>
-                            <textarea name="organizational_experience" x-model="organizational_experience" rows="2" placeholder="Clubs, committees, or volunteer roles..." class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                            <textarea name="organizational_experience" x-model="organizational_experience" rows="2" placeholder="Clubs, committees, or volunteer roles..." class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         </div>
                     </div>
 
                     {{-- Hobbies & Dream Job --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Hobbies & Interests:</span>
-                                <input type="text" name="hobbies_interests" x-model="hobbies_interests" placeholder="e.g. Reading, Swimming, Music" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="hobbies_interests" x-model="hobbies_interests" placeholder="e.g. Reading, Swimming, Music" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Dream Job / Career Goal:</span>
-                                <input type="text" name="dream_job" x-model="dream_job" placeholder="e.g. Corporate Psychologist, Lead Designer" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                <input type="text" name="dream_job" x-model="dream_job" placeholder="e.g. Corporate Psychologist, Lead Designer" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             </div>
                         </div>
                     </div>
 
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Back
                         </button>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Next</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -719,50 +719,50 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 5" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">PERSONAL PROFILE & LIFE HISTORY</h2>
                         <p class="text-sm text-slate-500 mt-1">Understanding your main reasons for seeking counseling and your life experiences.</p>
                     </div>
 
                     {{-- Reason for Counseling --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">Reason for Seeking Counseling</label>
-                        <textarea name="counseling_reason" x-model="counseling_reason" rows="3" placeholder="What concerns or struggles bring you to counseling at this time?" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                        <textarea name="counseling_reason" x-model="counseling_reason" rows="3" placeholder="What concerns or struggles bring you to counseling at this time?" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                     </div>
 
                     {{-- Current Condition & Life Goals --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
                         <div>
                             <label class="block text-sm sm:text-base font-bold text-slate-900 mb-1">Current Psychological / Emotional Condition</label>
-                            <textarea name="current_condition" x-model="current_condition" rows="2" placeholder="Describe how you are feeling lately..." class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                            <textarea name="current_condition" x-model="current_condition" rows="2" placeholder="Describe how you are feeling lately..." class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm sm:text-base font-bold text-slate-900 mb-1">Strengths & Areas for Improvement</label>
-                            <textarea name="strengths_weaknesses" x-model="strengths_weaknesses" rows="2" placeholder="Your main strengths and things you would like to develop..." class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                            <textarea name="strengths_weaknesses" x-model="strengths_weaknesses" rows="2" placeholder="Your main strengths and things you would like to develop..." class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         </div>
                     </div>
 
                     {{-- Trauma & Medical History --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">Trauma & Medical History (Optional)</label>
                         <div class="space-y-3">
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Past Traumatic Events (if any):</span>
-                                <textarea name="trauma_history" x-model="trauma_history" rows="2" placeholder="Significant past experiences that still affect you today..." class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                <textarea name="trauma_history" x-model="trauma_history" rows="2" placeholder="Significant past experiences that still affect you today..." class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                             </div>
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">Medical / Physical Health Conditions (if any):</span>
-                                <textarea name="medical_history" x-model="medical_history" rows="2" placeholder="Chronic illnesses, current medications, or health concerns..." class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                <textarea name="medical_history" x-model="medical_history" rows="2" placeholder="Chronic illnesses, current medications, or health concerns..." class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                             </div>
                         </div>
                     </div>
 
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Back
                         </button>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Next</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -774,21 +774,21 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 6" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">PREFERENCES & EMERGENCY CONTACT</h2>
                         <p class="text-sm text-slate-500 mt-1">Final step: session format preferences and emergency contact.</p>
                     </div>
 
                     {{-- Previous Counseling --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">Have You Ever Had Counseling Before?</label>
                         <div class="grid grid-cols-2 gap-3">
-                            <label class="p-3 rounded-xl border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
+                            <label class="p-3 rounded-lg border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
                                    :class="previous_counseling === 'Yes' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="previous_counseling" value="Yes" x-model="previous_counseling" class="sr-only">
                                 <span>Yes, I Have</span>
                             </label>
-                            <label class="p-3 rounded-xl border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
+                            <label class="p-3 rounded-lg border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
                                    :class="previous_counseling === 'No' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="previous_counseling" value="No" x-model="previous_counseling" class="sr-only">
                                 <span>Never</span>
@@ -797,16 +797,16 @@
                     </div>
 
                     {{-- Emergency Contact --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">Emergency Contact</label>
-                        <input type="text" name="emergency_contact" x-model="emergency_contact" placeholder="Name, Relationship, and Phone Number (e.g. John Doe - Brother - 08123456789)" class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                        <input type="text" name="emergency_contact" x-model="emergency_contact" placeholder="Name, Relationship, and Phone Number (e.g. John Doe - Brother - 08123456789)" class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                     </div>
 
                     {{-- Preferred Counseling Format --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-3">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">Preferred Counseling Format</label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                            <label class="p-4 rounded-xl border-2 transition cursor-pointer flex items-start gap-3 hover:bg-slate-50"
+                            <label class="p-4 rounded-lg border-2 transition cursor-pointer flex items-start gap-3 hover:bg-slate-50"
                                    :class="preferred_counseling === 'Online via Zoom' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="preferred_counseling" value="Online via Zoom" x-model="preferred_counseling" class="mt-1 text-purple-deep focus:ring-purple-deep">
                                 <div>
@@ -814,7 +814,7 @@
                                     <p class="text-xs text-slate-500 mt-0.5">Interactive virtual session via Zoom Meeting.</p>
                                 </div>
                             </label>
-                            <label class="p-4 rounded-xl border-2 transition cursor-pointer flex items-start gap-3 hover:bg-slate-50"
+                            <label class="p-4 rounded-lg border-2 transition cursor-pointer flex items-start gap-3 hover:bg-slate-50"
                                    :class="preferred_counseling === 'Offline at UC PSC' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="preferred_counseling" value="Offline at UC PSC" x-model="preferred_counseling" class="mt-1 text-purple-deep focus:ring-purple-deep">
                                 <div>
@@ -827,10 +827,10 @@
 
                     {{-- Navigation Bottom Bar (Final Submit) --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Back
                         </button>
-                        <button type="submit" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="submit" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Submit Registration Form</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                         </button>

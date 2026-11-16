@@ -105,16 +105,16 @@
 }">
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <form @submit.prevent="fetchResults()" method="GET" class="flex flex-wrap items-center gap-3 flex-1 max-w-3xl">
+        <form @submit.prevent="fetchResults()" method="GET" class="flex flex-wrap items-center gap-3 flex-1 max-w-md">
             <div class="relative flex-1 min-w-[220px] sm:min-w-[280px]">
-                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B5B85]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 z-10 pointer-events-none text-[#6B5B85]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <input type="text"
                     name="search"
                     x-model="search"
                     @input="onSearch()"
                     @keydown.enter.prevent="fetchResults()"
                     placeholder="Cari nama, no. telepon, atau email klien..."
-                    class="w-full pl-10 pr-10 py-2.5 rounded-xl glass-input text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
+                    class="w-full pl-10 pr-10 py-2.5 rounded-lg glass-input text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent">
 
                 {{-- Clear button saat ada teks --}}
                 <button type="button"
@@ -135,7 +135,7 @@
 
         {{-- Tombol Tambah Klien Baru --}}
         <a href="{{ route('clients.create') }}"
-            class="px-4 py-2.5 bg-orange text-white text-sm font-semibold rounded-xl hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center justify-center gap-2">
+            class="px-4 py-2.5 bg-orange text-white text-sm font-semibold rounded-lg hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center justify-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>Tambah Klien Baru</span>
         </a>
@@ -159,7 +159,7 @@
     {{-- Dynamic Content Area (Table + Pagination) --}}
     <div id="client-data-container" :class="{ 'opacity-70 pointer-events-none transition-opacity duration-150': loading }">
         {{-- Table --}}
-        <div class="glass-card rounded-2xl overflow-hidden">
+        <div class="glass-card rounded-xl overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm font-medium">
                     <thead>
@@ -339,7 +339,7 @@
                             </td>
 
                             <td class="text-center align-middle px-4 py-3.5 text-black font-medium whitespace-nowrap">
-                                {{ $client->created_at ? $client->created_at->format('d/m/Y H:i') : '-' }}
+                                {{ $client->created_at ? $client->created_at->locale('id')->translatedFormat('j F Y H:i') : '-' }}
                             </td>
                         </tr>
                         @empty

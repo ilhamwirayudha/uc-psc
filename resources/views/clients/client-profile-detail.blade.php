@@ -1116,7 +1116,7 @@ function clientProfileDetail() {
     {{-- ========================================================================= --}}
     {{-- CARD 1: PROFILE HEADER BANNER (ELEGANT PURPLE CARD DENGAN KONTRAS HARMONIS) --}}
     {{-- ========================================================================= --}}
-    <div class="bg-purple-deep/92 backdrop-blur-lg rounded-2xl border border-white/20 shadow-[0_14px_34px_rgba(74,35,128,0.16)] overflow-hidden text-white relative">
+    <div class="bg-purple-deep/92 backdrop-blur-lg rounded-xl border border-white/20 shadow-[0_14px_34px_rgba(74,35,128,0.16)] overflow-hidden text-white relative">
         {{-- Background Soft Accent Tint --}}
         <div class="absolute -right-12 -top-12 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -1124,7 +1124,7 @@ function clientProfileDetail() {
             {{-- Sisi Kiri: Avatar Inisial Klien & Informasi Identitas Utama --}}
             <div class="flex items-center gap-4 sm:gap-5">
                 {{-- Profile Picture Inisial Klien --}}
-                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-b from-[#4A247A] to-[#2D124D] border border-[#D9C2F0]/40 ring-2 ring-black/10 flex items-center justify-center shadow-sm text-white font-bold text-lg sm:text-xl tracking-wider select-none shrink-0">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-gradient-to-b from-[#4A247A] to-[#2D124D] border border-[#D9C2F0]/40 ring-2 ring-black/10 flex items-center justify-center shadow-sm text-white font-bold text-lg sm:text-xl tracking-wider select-none shrink-0">
                     {{ $clientInitials }}
                 </div>
 
@@ -1143,7 +1143,7 @@ function clientProfileDetail() {
             <div class="flex items-center gap-2.5 shrink-0 self-start md:self-center">
                 @if(!empty($waPhone))
                 <a href="https://wa.me/{{ $waPhone }}" target="_blank"
-                   class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white backdrop-blur-md transition-all flex items-center justify-center shadow-xs cursor-pointer group"
+                   class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white backdrop-blur-md transition-all flex items-center justify-center shadow-xs cursor-pointer group"
                    title="Hubungi Klien via WhatsApp">
                     <svg class="w-4 h-4 fill-current text-white group-hover:scale-110 transition-transform" viewBox="0 0 16 16">
                         <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
@@ -1152,7 +1152,7 @@ function clientProfileDetail() {
                 @endif
                 {{-- Tombol Edit Profil: Ikon Putih, Tanpa Teks, Glossy Glass Transparan --}}
                 <button type="button" @click="handleToggleEdit()"
-                        class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl transition-all flex items-center justify-center shadow-xs cursor-pointer group"
+                        class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all flex items-center justify-center shadow-xs cursor-pointer group"
                         :class="editMode ? 'bg-white text-purple-deep shadow-sm' : 'bg-white/15 hover:bg-white/25 border border-white/25 text-white backdrop-blur-md'"
                         :title="editMode ? 'Tutup Mode Edit' : 'Edit Biodata Klien'">
                     <template x-if="!editMode">
@@ -1170,7 +1170,7 @@ function clientProfileDetail() {
     {{-- ========================================================================= --}}
     {{-- CARD 2: TABS WORKSPACE CONTAINER (BIODATA, CATATAN, KONSELING, PSIKOTES, RIWAYAT, PENGATURAN) --}}
     {{-- ========================================================================= --}}
-    <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="glass-card rounded-xl overflow-hidden">
         {{-- Unified Tabs Navigation Header (Pertinggi & Font Lebih Tebal & Jelas) --}}
         <div class="px-4 sm:px-6 bg-purple-deep/95 border-b border-purple-900/30 flex items-center gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none">
             {{-- Tab 1: Biodata Klien --}}
@@ -1272,7 +1272,7 @@ function clientProfileDetail() {
                         {{-- 1. Nama Lengkap --}}
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                 {{ $client->name ?? '-' }}
                             </div>
                         </div>
@@ -1280,7 +1280,7 @@ function clientProfileDetail() {
                         {{-- 2. Nama Perusahaan --}}
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1">Nama Perusahaan</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                 {{ $client->company_name ?? ($client->pic_name ?? '-') }}
                             </div>
                         </div>
@@ -1295,7 +1295,7 @@ function clientProfileDetail() {
                         @endphp
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan / Jabatan Saat Ini</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                 {{ $jobTitle ?: '-' }}
                             </div>
                         </div>
@@ -1303,7 +1303,7 @@ function clientProfileDetail() {
                         {{-- 4. Jenis Kelamin --}}
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                 {{ $client->gender_label ?: '-' }}
                             </div>
                         </div>
@@ -1313,13 +1313,13 @@ function clientProfileDetail() {
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Lahir</label>
-                                    <div class="px-3 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    <div class="px-3 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                         {{ $client->birth_place ?? '-' }}
                                     </div>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
-                                    <div class="px-2.5 sm:px-3 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    <div class="px-2.5 sm:px-3 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                         {{ $client->dob ? $client->dob->locale('id')->isoFormat('D MMMM Y') : '-' }}
                                     </div>
                                 </div>
@@ -1329,7 +1329,7 @@ function clientProfileDetail() {
                         {{-- 7. No. Telepon / WhatsApp --}}
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                 {{ $client->phone ?? '-' }}
                             </div>
                         </div>
@@ -1337,7 +1337,7 @@ function clientProfileDetail() {
                         {{-- 8. Alamat Email --}}
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black break-all">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black break-all">
                                 {{ $client->email ?? '-' }}
                             </div>
                         </div>
@@ -1345,7 +1345,7 @@ function clientProfileDetail() {
                         {{-- 9. Pendidikan Terakhir --}}
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                 {{ $client->education_label ?? $client->education ?? '-' }}
                             </div>
                         </div>
@@ -1353,7 +1353,7 @@ function clientProfileDetail() {
                         {{-- 10. Agama / Kepercayaan --}}
                         <div>
                             <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                 {{ $client->religion ?? '-' }}
                             </div>
                         </div>
@@ -1361,7 +1361,7 @@ function clientProfileDetail() {
                         {{-- 11. Alamat Domisili Lengkap --}}
                         <div class="sm:col-span-2 lg:col-span-3">
                             <label class="block text-xs font-medium text-slate-500 mb-1">Alamat</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black leading-relaxed">
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black leading-relaxed">
                                 {{ $client->address ?? '-' }}
                             </div>
                         </div>
@@ -1380,28 +1380,28 @@ function clientProfileDetail() {
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
                                 <input type="text" name="name" x-model="formData.name" required placeholder="Nama lengkap klien..."
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                       class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                             </div>
 
                             {{-- 2. Nama Perusahaan --}}
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Nama Perusahaan</label>
                                 <input type="text" name="company_name" x-model="formData.company_name" placeholder="Nama perusahaan atau instansi..."
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                       class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                             </div>
 
                             {{-- 3. Pekerjaan / Jabatan Saat Ini --}}
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan / Jabatan Saat Ini</label>
                                 <input type="text" name="occupation" x-model="formData.occupation" placeholder="Jabatan atau profesi..."
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                       class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                             </div>
 
                             {{-- 4. Jenis Kelamin --}}
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
                                 <select name="gender" x-model="formData.gender"
-                                        class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                        class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                                     <option value="">Pilih Jenis Kelamin...</option>
                                     <option value="l">Laki-laki</option>
                                     <option value="p">Perempuan</option>
@@ -1414,12 +1414,12 @@ function clientProfileDetail() {
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Lahir</label>
                                         <input type="text" name="birth_place" x-model="formData.birth_place" placeholder="Kota kelahiran..."
-                                               class="w-full px-3 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                               class="w-full px-3 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
                                         <input type="date" name="dob" x-model="formData.dob"
-                                               class="w-full px-2.5 sm:px-3 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                               class="w-full px-2.5 sm:px-3 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                                     </div>
                                 </div>
                             </div>
@@ -1433,21 +1433,21 @@ function clientProfileDetail() {
                                        title="Hanya boleh diisi angka (0-9)"
                                        @input="formData.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = formData.phone"
                                        @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                       class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                             </div>
 
                             {{-- 8. Alamat Email --}}
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
                                 <input type="email" name="email" x-model="formData.email" placeholder="Contoh: klien@email.com"
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                       class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                             </div>
 
                             {{-- 9. Pendidikan Terakhir --}}
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
                                 <select name="education" x-model="formData.education"
-                                        class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                        class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                                     <option value="">Pilih Pendidikan...</option>
                                     <option value="SD" {{ $client->education === 'SD' ? 'selected' : '' }}>SD</option>
                                     <option value="SMP" {{ $client->education === 'SMP' ? 'selected' : '' }}>SMP</option>
@@ -1464,7 +1464,7 @@ function clientProfileDetail() {
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
                                 <select name="religion" x-model="formData.religion"
-                                        class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                                        class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                                     <option value="">Pilih Agama...</option>
                                     <option value="Islam" {{ strcasecmp($client->religion ?? '', 'Islam') === 0 ? 'selected' : '' }}>Islam</option>
                                     <option value="Kristen" {{ strcasecmp($client->religion ?? '', 'Kristen') === 0 || strcasecmp($client->religion ?? '', 'Kristen Protestan') === 0 ? 'selected' : '' }}>Kristen</option>
@@ -1480,18 +1480,18 @@ function clientProfileDetail() {
                             <div class="sm:col-span-2 lg:col-span-3">
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Alamat</label>
                                 <textarea name="address" x-model="formData.address" rows="2" placeholder="Alamat domisili saat ini..."
-                                          class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white"></textarea>
+                                          class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white"></textarea>
                             </div>
                         </div>
 
                         {{-- Form Action Buttons Sesuai Aturan Button Design System --}}
                         <div class="pt-2 flex items-center justify-end gap-2.5">
                             <button type="button" @click="handleCancelEdit()"
-                                    class="px-5 py-2.5 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs sm:text-sm transition cursor-pointer shadow-xs">
+                                    class="px-5 py-2.5 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs sm:text-sm transition cursor-pointer shadow-xs">
                                 Batal
                             </button>
                             <button type="submit" @click="window.isSubmittingForm = true"
-                                    class="px-5 py-2.5 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs sm:text-sm transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                    class="px-5 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs sm:text-sm transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                 <span>Simpan Biodata</span>
                             </button>
@@ -1610,13 +1610,13 @@ function clientProfileDetail() {
         }
     }">
 
-        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
             <div class="px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                 <div>
                     <h3 class="font-semibold text-white text-base">Catatan Klien</h3>
                 </div>
                 <button type="button" @click="openAddModal()"
-                        class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                        class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     <span>Tambah Catatan</span>
                 </button>
@@ -1713,7 +1713,7 @@ function clientProfileDetail() {
                 <svg class="w-12 h-12 mx-auto text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 <p class="text-sm font-medium text-black">Belum ada catatan hasil inputan formulir untuk klien ini.</p>
                 <button type="button" @click="openAddModal()"
-                        class="px-4 py-2 rounded-xl bg-purple-deep text-white text-xs font-semibold hover:opacity-90 transition inline-flex items-center gap-1.5 shadow-xs cursor-pointer">
+                        class="px-4 py-2 rounded-lg bg-purple-deep text-white text-xs font-semibold hover:opacity-90 transition inline-flex items-center gap-1.5 shadow-xs cursor-pointer">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     <span>Tambah Catatan Pertama</span>
                 </button>
@@ -1745,7 +1745,7 @@ function clientProfileDetail() {
                          x-transition:leave="ease-in duration-200"
                          x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                          x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                         class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden text-left relative z-10">
+                         class="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden text-left relative z-10">
                         {{-- Header Modal --}}
                         <div class="px-6 py-4.5 bg-purple-deep text-white flex items-center justify-between">
                             <div>
@@ -1764,18 +1764,18 @@ function clientProfileDetail() {
 
                             <div>
                                 <textarea name="note" rows="6" x-model="addNoteText" required
-                                          class="w-full p-4 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white resize-y leading-relaxed"
+                                          class="w-full p-4 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white resize-y leading-relaxed"
                                           placeholder="Tuliskan catatan keluhan, alasan konseling, tujuan asesmen, atau keterangan penting hasil isian formulir klien..."></textarea>
                             </div>
 
                             {{-- Footer Modal --}}
                             <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
                                 <button type="button" @click="handleCloseAddModal()"
-                                        class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-50 transition cursor-pointer">
+                                        class="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-50 transition cursor-pointer">
                                     Batal
                                 </button>
                                 <button type="submit"
-                                        class="px-5 py-2.5 rounded-xl bg-purple-deep text-white text-xs font-semibold hover:opacity-95 transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                        class="px-5 py-2.5 rounded-lg bg-purple-deep text-white text-xs font-semibold hover:opacity-95 transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                     <span>Simpan Catatan Formulir</span>
                                 </button>
@@ -1809,7 +1809,7 @@ function clientProfileDetail() {
                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
 
-                        <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
+                        <div class="mx-auto w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
                                 <line x1="12" y1="9" x2="12" y2="13"/>
@@ -1828,14 +1828,14 @@ function clientProfileDetail() {
                             <button 
                                 type="button" 
                                 @click="showAddUnsavedModal = false"
-                                class="w-full py-3 rounded-2xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
+                                class="w-full py-3 rounded-xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
                             >
                                 Lanjut Mengisi
                             </button>
                             <button 
                                 type="button"
                                 @click="forceCloseAddModal()" 
-                                class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-2xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
+                                class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
                             >
                                 <span class="relative z-10">Ya, Buang</span>
                             </button>
@@ -1869,7 +1869,7 @@ function clientProfileDetail() {
                          x-transition:leave="ease-in duration-200"
                          x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                          x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                         class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden text-left relative z-10">
+                         class="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden text-left relative z-10">
                         {{-- Header Modal --}}
                         <div class="px-6 py-4.5 bg-purple-deep text-white flex items-center justify-between">
                             <div>
@@ -1890,18 +1890,18 @@ function clientProfileDetail() {
 
                             <div>
                                 <textarea name="note" rows="6" x-model="editNoteText"
-                                          class="w-full p-4 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white resize-y leading-relaxed"
+                                          class="w-full p-4 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white resize-y leading-relaxed"
                                           placeholder="Tuliskan catatan keluhan, alasan konseling, tujuan asesmen, atau keterangan penting hasil isian formulir klien..."></textarea>
                             </div>
 
                             {{-- Footer Modal --}}
                             <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
                                 <button type="button" @click="handleCloseEditModal()"
-                                        class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-50 transition cursor-pointer">
+                                        class="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-50 transition cursor-pointer">
                                     Batal
                                 </button>
                                 <button type="submit"
-                                        class="px-5 py-2.5 rounded-xl bg-purple-deep text-white text-xs font-semibold hover:opacity-95 transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                        class="px-5 py-2.5 rounded-lg bg-purple-deep text-white text-xs font-semibold hover:opacity-95 transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                     <span>Perbarui Catatan Formulir</span>
                                 </button>
@@ -1934,7 +1934,7 @@ function clientProfileDetail() {
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
 
-                    <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
+                    <div class="mx-auto w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
                             <line x1="12" y1="9" x2="12" y2="13"/>
@@ -1953,14 +1953,14 @@ function clientProfileDetail() {
                         <button 
                             type="button" 
                             @click="showEditUnsavedModal = false"
-                            class="w-full py-3 rounded-2xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
+                            class="w-full py-3 rounded-xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
                         >
                             Lanjut Mengisi
                         </button>
                         <button 
                             type="button"
                             @click="forceCloseEditModal()" 
-                            class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-2xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
+                            class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
                         >
                             <span class="relative z-10">Ya, Buang</span>
                         </button>
@@ -1981,13 +1981,13 @@ function clientProfileDetail() {
 
         {{-- Bagian A: Tabel Formulir Pendaftaran Konseling --}}
 
-        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
             <div class="px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                 <div>
                     <h3 class="font-semibold text-white text-base">Rekam Jejak Formulir Masuk</h3>
                 </div>
                 <a href="{{ route('clients.create', ['client_id' => $client->id, 'jenis' => 'individu', 'form_type' => 'dewasa']) }}"
-                   class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                   class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     <span>Buat Layanan Baru</span>
                 </a>
@@ -2100,14 +2100,14 @@ function clientProfileDetail() {
         </div>
 
         {{-- Bagian B: Tabel Data Booking Layanan Konseling --}}
-        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
             <div class="px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                 <div>
                     <h3 class="font-semibold text-white text-base">Rekam Jejak Booking Layanan</h3>
                 </div>
                 <button type="button"
                         @click="$dispatch('open-booking-modal', { client_id: {{ $client->id }}, category: 'konseling' })"
-                        class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                        class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     <span>Booking Layanan</span>
                 </button>
@@ -2376,13 +2376,13 @@ function clientProfileDetail() {
 
         {{-- Bagian A: Tabel Formulir Pendaftaran / Asesmen Psikotes Masuk --}}
 
-        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
             <div class="px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                 <div>
                     <h3 class="font-semibold text-white text-base">Rekam Jejak Formulir Masuk</h3>
                 </div>
                 <a href="{{ route('clients.create', ['client_id' => $client->id, 'jenis' => $isIndustri ? 'industri' : 'individu', 'form_type' => $isIndustri ? 'industri' : 'non_industri']) }}"
-                   class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                   class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     <span>Buat Layanan Baru</span>
                 </a>
@@ -2477,14 +2477,14 @@ function clientProfileDetail() {
         </div>
 
         {{-- Bagian B: Tabel Data Booking Layanan Psikotes --}}
-        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
             <div class="px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                 <div>
                     <h3 class="font-semibold text-white text-base">Rekam Jejak Booking Layanan</h3>
                 </div>
                 <button type="button"
                         @click="$dispatch('open-booking-modal', { client_id: {{ $client->id }}, category: 'psikotes' })"
-                        class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                        class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                     <span>Booking Layanan</span>
                 </button>
@@ -2707,14 +2707,14 @@ function clientProfileDetail() {
                          });
                      }
                  }">
-                <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                     <div class="px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
                             <h3 class="font-semibold text-white text-base">Riwayat Layanan Klien</h3>
                             <p class="text-xs font-medium text-purple-200 mt-0.5">Daftar rekam jejak transaksi seluruh layanan (Konseling & Psikotes) yang pernah terdaftar.</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <select x-model="filterKategori" class="px-3.5 py-1.5 rounded-xl bg-white text-black text-xs font-medium border border-transparent focus:outline-none cursor-pointer shadow-xs">
+                            <select x-model="filterKategori" class="px-3.5 py-1.5 rounded-lg bg-white text-black text-xs font-medium border border-transparent focus:outline-none cursor-pointer shadow-xs">
                                 <option value="semua">Semua Layanan</option>
                                 <option value="konseling">Konseling</option>
                                 <option value="psikotes">Psikotes</option>
@@ -2914,7 +2914,7 @@ function clientProfileDetail() {
 <div x-show="activeTab === 'pengaturan'" x-cloak class="space-y-5">
 
         {{-- 1. Fitur Hubungi Klien via WhatsApp --}}
-        <div class="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h4 class="text-sm font-semibold text-black">Hubungi Klien via WhatsApp</h4>
 
@@ -2933,7 +2933,7 @@ function clientProfileDetail() {
                 @if(!empty($waPhone))
                     <a href="https://wa.me/{{ $waPhone }}?text={{ urlencode('Halo ' . $client->name . ', saya dari Unit Konsultasi Psikologi (UC PSC).') }}"
                        target="_blank" rel="noopener noreferrer"
-                       class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm transition shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                       class="px-4 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm transition shadow-xs flex items-center justify-center gap-2 cursor-pointer">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
                         </svg>
@@ -2941,7 +2941,7 @@ function clientProfileDetail() {
                     </a>
                 @else
                     <button type="button" @click="editMode = true"
-                            class="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-purple-50 text-purple-deep font-semibold text-xs transition">
+                            class="px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-purple-50 text-purple-deep font-semibold text-xs transition">
                         Lengkapi Nomor HP
                     </button>
                 @endif
@@ -2951,13 +2951,13 @@ function clientProfileDetail() {
         {{-- 2. Hapus Akun Klien (Sederhana & Rapi) --}}
 
         @if(auth()->user()?->isAdmin())
-        <div class="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="p-5 bg-white rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h4 class="text-sm font-semibold text-black">Hapus Akun Klien</h4>
                 <p class="text-xs font-medium text-gray-500 mt-0.5">Hapus data klien ini beserta seluruh formulir dan reservasinya secara permanen dari sistem.</p>
             </div>
             <button type="button" @click="deleteModalOpen = true"
-                    class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-xs sm:text-sm transition shadow-xs flex items-center justify-center gap-2 shrink-0 cursor-pointer">
+                    class="px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold text-xs sm:text-sm transition shadow-xs flex items-center justify-center gap-2 shrink-0 cursor-pointer">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                 <span>Hapus Data Klien</span>
             </button>
@@ -2997,7 +2997,7 @@ function clientProfileDetail() {
                      x-transition:leave="ease-in duration-200"
                      x-transition:leave-start="opacity-100 scale-100"
                      x-transition:leave-end="opacity-0 scale-95"
-                     class="relative bg-white rounded-3xl w-full max-w-5xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+                     class="relative bg-white rounded-2xl w-full max-w-5xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
 
                     {{-- Modal Header (Nama Formulir yang Diisi) --}}
                     <div class="px-7 py-5 bg-purple-deep text-white flex items-center justify-between shrink-0">
@@ -3010,7 +3010,7 @@ function clientProfileDetail() {
                             <button type="button" 
                                     @click="printPdf(selectedForm)"
                                     :disabled="isPrintingPdf || !selectedForm"
-                                    class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs sm:text-sm font-semibold transition cursor-pointer shadow-xs backdrop-blur-xs select-none disabled:opacity-60 disabled:cursor-not-allowed"
+                                    class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs sm:text-sm font-semibold transition cursor-pointer shadow-xs backdrop-blur-xs select-none disabled:opacity-60 disabled:cursor-not-allowed"
                                     title="Download / Cetak Laporan PDF">
                                 <template x-if="!isPrintingPdf">
                                     <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -3052,7 +3052,7 @@ function clientProfileDetail() {
                                     <div class="space-y-6">
 
                                         {{-- LEMBAR PERNYATAAN KEJUJURAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lembar Pernyataan Kejujuran</span>
@@ -3062,7 +3062,7 @@ function clientProfileDetail() {
                                                 <div class="space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pernyataan</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
                                                             <div class="flex items-center gap-2 mt-1">
                                                             <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                                                             <span class="text-black text-sm font-medium" x-text="selectedForm.answers.consent_agree || 'Setuju'"></span>
@@ -3072,7 +3072,7 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Waktu Pengisian Form</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
                                                             <div x-text="formatFormSubmissionDate(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                             <div x-text="formatFormSubmissionTime(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                         </div>
@@ -3082,7 +3082,7 @@ function clientProfileDetail() {
                                         </div>
 
                                         {{-- DATA DIRI & POSISI PEKERJAAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Diri & Posisi Pekerjaan</span>
@@ -3118,49 +3118,49 @@ function clientProfileDetail() {
                                                 <div class="space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap & Gelar</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_lengkap || selectedForm.client_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Posisi yang Dituju</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.posisi_dituju || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.posisi_dituju" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.posisi_dituju" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan_saat_ini || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan_saat_ini" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan_saat_ini" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <template x-if="selectedForm.answers.nama_perusahaan">
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Nama Perusahaan</label>
-                                                            <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_perusahaan"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_perusahaan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_perusahaan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                         </div>
                                                     </template>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kelamin || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -3169,50 +3169,50 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat, Tanggal Lahir</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.tempat_tanggal_lahir)"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Urutan Kelahiran</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.urutan_kelahiran || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -3226,29 +3226,29 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_bangsa || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Status Perkawinan</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.status_perkawinan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.status_perkawinan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.status_perkawinan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_terakhir || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -3264,20 +3264,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Asal Kota</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.asal_kota || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.asal_kota" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.asal_kota" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Tinggal Sekarang</label>
-                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.alamat_sekarang || selectedForm.answers.alamat || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat_sekarang" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat_sekarang" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -3285,13 +3285,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_datadiri')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -3300,7 +3300,7 @@ function clientProfileDetail() {
                                         </div>
 
                                         {{-- KUESIONER STRES (PSS-10) --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Kuesioner Stres (PSS-10)</span>
@@ -3335,7 +3335,7 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Keterangan Skala Nilai (0 - 4)</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         <span class="text-black text-sm font-medium block ">0 = Tidak Pernah | 1 = Hampir Tidak Pernah | 2 = Kadang-kadang | 3 = Cukup Sering | 4 = Sangat Sering</span>
                                                     </div>
                                                 </div>
@@ -3358,12 +3358,12 @@ function clientProfileDetail() {
                                                 @foreach($pssLabels as $pssNum => $pssText)
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">{{ $pssText }}</label>
-                                                    <div x-show="editingFormCard !== 'industri_pss10'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div x-show="editingFormCard !== 'industri_pss10'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         <span class="text-black text-sm font-medium block "
                                                           x-text="selectedForm.answers.pss_{{ $pssNum }} !== undefined && selectedForm.answers.pss_{{ $pssNum }} !== null && selectedForm.answers.pss_{{ $pssNum }} !== '' ? selectedForm.answers.pss_{{ $pssNum }} : '-'"></span>
                                                     </div>
                                                         <div x-show="editingFormCard === 'industri_pss10'" x-cloak>
-                                                            <select x-model="editFormAnswers['pss_{{ $pssNum }}']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers['pss_{{ $pssNum }}']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                             <option value="">-- Pilih Skor (0 - 4) --</option>
                                                             <option value="0">0 - Tidak Pernah</option>
                                                             <option value="1">1 - Hampir Tidak Pernah</option>
@@ -3378,13 +3378,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_pss10')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -3393,7 +3393,7 @@ function clientProfileDetail() {
                                         </div>
 
                                         {{-- SUSUNAN ANGGOTA KELUARGA --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Susunan Anggota Keluarga</span>
@@ -3433,29 +3433,29 @@ function clientProfileDetail() {
                                                     <div class="space-y-4">
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Nama Ayah</label>
-                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ayah_nama || '-'"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ayah_nama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ayah_nama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                         </div>
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Usia Ayah</label>
-                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ayah_usia ? selectedForm.answers.ayah_usia + ' tahun' : '-'"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ayah_usia" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ayah_usia" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                         </div>
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Ayah</label>
-                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ayah_pendidikan || '-'"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers.ayah_pendidikan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.ayah_pendidikan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -3471,11 +3471,11 @@ function clientProfileDetail() {
                                                         </div>
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Ayah</label>
-                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ayah_pekerjaan || '-'"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ayah_pekerjaan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ayah_pekerjaan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                         </div>
                                                     </div>
@@ -3487,29 +3487,29 @@ function clientProfileDetail() {
                                                     <div class="space-y-4">
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Nama Ibu</label>
-                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ibu_nama || '-'"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ibu_nama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ibu_nama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                         </div>
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Usia Ibu</label>
-                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ibu_usia ? selectedForm.answers.ibu_usia + ' tahun' : '-'"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ibu_usia" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ibu_usia" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                         </div>
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Ibu</label>
-                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ibu_pendidikan || '-'"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers.ibu_pendidikan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.ibu_pendidikan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -3525,11 +3525,11 @@ function clientProfileDetail() {
                                                         </div>
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Ibu</label>
-                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ibu_pekerjaan || '-'"></span>
                                                             </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ibu_pekerjaan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ibu_pekerjaan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                         </div>
                                                     </div>
@@ -3542,29 +3542,29 @@ function clientProfileDetail() {
                                                         <div class="space-y-4">
                                                             <div>
                                                                 <label class="block text-xs font-medium text-slate-500 mb-1">Nama Pasangan</label>
-                                                                <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                                <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                     <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pasangan_nama || '-'"></span>
                                                                 </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pasangan_nama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pasangan_nama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                             </div>
                                                             <div>
                                                                 <label class="block text-xs font-medium text-slate-500 mb-1">Usia Pasangan</label>
-                                                                <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                                <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                     <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pasangan_usia ? selectedForm.answers.pasangan_usia + ' tahun' : '-'"></span>
                                                                 </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pasangan_usia" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pasangan_usia" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                             </div>
                                                             <div>
                                                                 <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Pasangan</label>
-                                                                <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                                <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                     <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pasangan_pendidikan || '-'"></span>
                                                                 </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -3580,11 +3580,11 @@ function clientProfileDetail() {
                                                             </div>
                                                             <div>
                                                                 <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Pasangan</label>
-                                                                <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                                <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                     <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pasangan_pekerjaan || '-'"></span>
                                                                 </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pasangan_pekerjaan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pasangan_pekerjaan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                             </div>
                                                         </div>
@@ -3598,23 +3598,23 @@ function clientProfileDetail() {
                                                         <div class="space-y-4">
                                                             @foreach(range(1, 5) as $sdrNum)
                                                             <template x-if="selectedForm.answers.saudara_{{ $sdrNum }}_nama">
-                                                                <div class="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                                                                <div class="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
                                                                     <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Nama Saudara {{ $sdrNum }}</label>
-    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.saudara_{{ $sdrNum }}_nama"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['saudara_{{ $sdrNum }}_nama']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['saudara_{{ $sdrNum }}_nama']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                                     <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Usia & Jenis Kelamin</label>
-    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="(selectedForm.answers.saudara_{{ $sdrNum }}_usia ? selectedForm.answers.saudara_{{ $sdrNum }}_usia + ' tahun' : '-') + ' | ' + (selectedForm.answers.saudara_{{ $sdrNum }}_jenis_kelamin || '-')"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -3623,11 +3623,11 @@ function clientProfileDetail() {
 </div>
                                                                     <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan</label>
-    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.saudara_{{ $sdrNum }}_pendidikan || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers['saudara_{{ $sdrNum }}_pendidikan']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers['saudara_{{ $sdrNum }}_pendidikan']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -3643,11 +3643,11 @@ function clientProfileDetail() {
 </div>
                                                                     <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan</label>
-    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.saudara_{{ $sdrNum }}_pekerjaan || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['saudara_{{ $sdrNum }}_pekerjaan']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['saudara_{{ $sdrNum }}_pekerjaan']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                                 </div>
@@ -3664,23 +3664,23 @@ function clientProfileDetail() {
                                                         <div class="space-y-4">
                                                             @foreach(range(1, 5) as $ankNum)
                                                             <template x-if="selectedForm.answers.anak_{{ $ankNum }}_nama">
-                                                                <div class="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                                                                <div class="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
                                                                     <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Nama Anak {{ $ankNum }}</label>
-    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.anak_{{ $ankNum }}_nama"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['anak_{{ $ankNum }}_nama']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['anak_{{ $ankNum }}_nama']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                                     <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Usia & Jenis Kelamin</label>
-    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="(selectedForm.answers.anak_{{ $ankNum }}_usia ? selectedForm.answers.anak_{{ $ankNum }}_usia + ' tahun' : '-') + ' | ' + (selectedForm.answers.anak_{{ $ankNum }}_jenis_kelamin || '-')"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers.anak_jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.anak_jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -3689,11 +3689,11 @@ function clientProfileDetail() {
 </div>
                                                                     <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan</label>
-    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.anak_{{ $ankNum }}_pendidikan || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers['anak_{{ $ankNum }}_pendidikan']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers['anak_{{ $ankNum }}_pendidikan']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -3709,11 +3709,11 @@ function clientProfileDetail() {
 </div>
                                                                     <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan</label>
-    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_keluarga'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.anak_{{ $ankNum }}_pekerjaan || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['anak_{{ $ankNum }}_pekerjaan']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['anak_{{ $ankNum }}_pekerjaan']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                                 </div>
@@ -3727,13 +3727,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_keluarga')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -3742,7 +3742,7 @@ function clientProfileDetail() {
                                         </div>
 
                                         {{-- RIWAYAT PENDIDIKAN FORMAL --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Riwayat Pendidikan Formal</span>
@@ -3780,11 +3780,11 @@ function clientProfileDetail() {
                                                 <template x-if="selectedForm.answers.ipk_terakhir">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">IPK Terakhir</label>
-                                                        <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ipk_terakhir"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_pendidikan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ipk_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ipk_terakhir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                 </template>
@@ -3801,50 +3801,50 @@ function clientProfileDetail() {
 
                                                 @foreach(range(1, 5) as $eduNum)
                                                 <template x-if="selectedForm.answers.nama_sekolah_{{ $eduNum }}">
-                                                    <div class="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                                                    <div class="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Jenjang / Tingkat</label>
-    <div class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block ">{{ $eduLabels[$eduNum] ?? "Jenjang $eduNum" }}</span>
     </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Nama Sekolah / Institusi</label>
-    <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_sekolah_{{ $eduNum }}"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pendidikan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['nama_sekolah_{{ $eduNum }}']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['nama_sekolah_{{ $eduNum }}']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Periode Pendidikan</label>
-    <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="(selectedForm.answers.tahun_masuk_sekolah_{{ $eduNum }} || '-') + ' - ' + (selectedForm.answers.tahun_keluar_sekolah_{{ $eduNum }} || '-')"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pendidikan'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers[\'tahun_masuk_sekolah_{{ $eduNum }}\']" placeholder="Tahun Masuk" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="text" x-model="editFormAnswers[\'tahun_keluar_sekolah_{{ $eduNum }}\']" placeholder="Tahun Lulus" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers[\'tahun_masuk_sekolah_{{ $eduNum }}\']" placeholder="Tahun Masuk" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers[\'tahun_keluar_sekolah_{{ $eduNum }}\']" placeholder="Tahun Lulus" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Jurusan / Program Studi</label>
-    <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.keterangan_sekolah_{{ $eduNum }} || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pendidikan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['keterangan_sekolah_{{ $eduNum }}']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['keterangan_sekolah_{{ $eduNum }}']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Kota</label>
-    <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pendidikan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.kota_sekolah_{{ $eduNum }} || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pendidikan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['kota_sekolah_{{ $eduNum }}']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['kota_sekolah_{{ $eduNum }}']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                     </div>
@@ -3854,7 +3854,7 @@ function clientProfileDetail() {
                                                 <template x-if="!selectedForm.answers.nama_sekolah_1 && !selectedForm.answers.nama_sekolah_2 && !selectedForm.answers.nama_sekolah_3 && !selectedForm.answers.nama_sekolah_4 && !selectedForm.answers.nama_sekolah_5">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Formal</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block ">-</span>
                                                         </div>
                                                     </div>
@@ -3863,13 +3863,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_pendidikan')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -3879,7 +3879,7 @@ function clientProfileDetail() {
 
                                         {{-- PENDIDIKAN NON FORMAL / KURSUS --}}
                                         <template x-if="selectedForm.answers.jenis_kursus_1 || selectedForm.answers.jenis_kursus_2 || selectedForm.answers.jenis_kursus_3">
-                                            <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                            <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                                 <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Pendidikan Non Formal / Kursus</span>
@@ -3914,32 +3914,32 @@ function clientProfileDetail() {
                                                 <div class="p-5 sm:p-6 space-y-4">
                                                     @foreach(range(1, 3) as $krsNum)
                                                     <template x-if="selectedForm.answers.jenis_kursus_{{ $krsNum }}">
-                                                        <div class="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                                                        <div class="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
                                                             <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kursus / Pelatihan {{ $krsNum }}</label>
-    <div x-show="editingFormCard !== 'industri_nonformal'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_nonformal'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kursus_{{ $krsNum }}"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_nonformal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['jenis_kursus_{{ $krsNum }}']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['jenis_kursus_{{ $krsNum }}']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                             <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Kursus</label>
-    <div x-show="editingFormCard !== 'industri_nonformal'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_nonformal'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.tempat_kursus_{{ $krsNum }} || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_nonformal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['tempat_kursus_{{ $krsNum }}']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['tempat_kursus_{{ $krsNum }}']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                             <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Lama / Durasi Kursus</label>
-    <div x-show="editingFormCard !== 'industri_nonformal'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_nonformal'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.lama_kursus_{{ $krsNum }} || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_nonformal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['lama_kursus_{{ $krsNum }}']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['lama_kursus_{{ $krsNum }}']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                         </div>
@@ -3949,13 +3949,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_nonformal')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -3965,7 +3965,7 @@ function clientProfileDetail() {
                                         </template>
 
                                         {{-- RIWAYAT PEKERJAAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Riwayat Pekerjaan</span>
@@ -4002,74 +4002,74 @@ function clientProfileDetail() {
                                                 <template x-if="selectedForm.answers.ekspektasi_gaji_tunjangan">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Ekspektasi Gaji & Tunjangan</label>
-                                                        <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ekspektasi_gaji_tunjangan"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_pekerjaan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ekspektasi_gaji_tunjangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ekspektasi_gaji_tunjangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                 </template>
 
                                                 @foreach(range(1, 5) as $jobNum)
                                                 <template x-if="selectedForm.answers.instansi_{{ $jobNum }}_nama">
-                                                    <div class="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                                                    <div class="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Nama Perusahaan / Instansi</label>
-    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.instansi_{{ $jobNum }}_nama"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pekerjaan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_nama']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_nama']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Jabatan / Posisi</label>
-    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.instansi_{{ $jobNum }}_jabatan || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pekerjaan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_jabatan']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_jabatan']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Periode Masa Kerja</label>
-    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="(selectedForm.answers.instansi_{{ $jobNum }}_tahun_masuk || '-') + ' - ' + (selectedForm.answers.instansi_{{ $jobNum }}_tahun_keluar || '-')"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pekerjaan'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_tahun_masuk']" placeholder="Tahun Masuk" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_tahun_keluar']" placeholder="Tahun Selesai" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_tahun_masuk']" placeholder="Tahun Masuk" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_tahun_keluar']" placeholder="Tahun Selesai" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Gaji Terakhir</label>
-    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.instansi_{{ $jobNum }}_gaji || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pekerjaan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_gaji']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['instansi_{{ $jobNum }}_gaji']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Alasan Berhenti</label>
-    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.instansi_{{ $jobNum }}_alasan_berhenti || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pekerjaan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers['instansi_{{ $jobNum }}_alasan_berhenti']" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers['instansi_{{ $jobNum }}_alasan_berhenti']" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
 </div>
                                                         <template x-if="selectedForm.answers.instansi_{{ $jobNum }}_tugas">
                                                             <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Uraian Tugas / Tanggung Jawab</label>
-    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+    <div x-show="editingFormCard !== 'industri_pekerjaan'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] text-sm font-medium text-black leading-relaxed">
         <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.instansi_{{ $jobNum }}_tugas"></p>
     </div>
                                                         <div x-show="editingFormCard === 'industri_pekerjaan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers['instansi_{{ $jobNum }}_tugas']" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers['instansi_{{ $jobNum }}_tugas']" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
 </div>
                                                         </template>
@@ -4080,7 +4080,7 @@ function clientProfileDetail() {
                                                 <template x-if="!selectedForm.answers.instansi_1_nama && !selectedForm.answers.instansi_2_nama && !selectedForm.answers.instansi_3_nama && !selectedForm.answers.instansi_4_nama && !selectedForm.answers.instansi_5_nama">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Pekerjaan</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block ">-</span>
                                                         </div>
                                                     </div>
@@ -4089,13 +4089,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_pekerjaan')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -4104,7 +4104,7 @@ function clientProfileDetail() {
                                         </div>
 
                                         {{-- PENGALAMAN ORGANISASI --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Pengalaman Organisasi</span>
@@ -4139,32 +4139,32 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 @foreach(range(1, 3) as $orgNum)
                                                 <template x-if="selectedForm.answers.organisasi_{{ $orgNum }}_nama">
-                                                    <div class="p-4 sm:p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                                                    <div class="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Nama Organisasi {{ $orgNum }}</label>
-    <div x-show="editingFormCard !== 'industri_organisasi'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_organisasi'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.organisasi_{{ $orgNum }}_nama"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_organisasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['organisasi_{{ $orgNum }}_nama']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['organisasi_{{ $orgNum }}_nama']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Jabatan</label>
-    <div x-show="editingFormCard !== 'industri_organisasi'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_organisasi'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.organisasi_{{ $orgNum }}_jabatan || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_organisasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['organisasi_{{ $orgNum }}_jabatan']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['organisasi_{{ $orgNum }}_jabatan']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                         <div>
     <label class="block text-xs font-medium text-slate-500 mb-1">Periode / Lama Aktif</label>
-    <div x-show="editingFormCard !== 'industri_organisasi'" class="px-3.5 py-2.5 bg-white rounded-xl border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
+    <div x-show="editingFormCard !== 'industri_organisasi'" class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-200 min-h-[42px] flex items-center text-sm font-medium text-black">
         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.organisasi_{{ $orgNum }}_lama || '-'"></span>
     </div>
                                                         <div x-show="editingFormCard === 'industri_organisasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers['organisasi_{{ $orgNum }}_lama']" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers['organisasi_{{ $orgNum }}_lama']" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
 </div>
                                                     </div>
@@ -4173,7 +4173,7 @@ function clientProfileDetail() {
                                                 <template x-if="!selectedForm.answers.organisasi_1_nama && !selectedForm.answers.organisasi_2_nama && !selectedForm.answers.organisasi_3_nama">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pengalaman Organisasi</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block ">-</span>
                                                         </div>
                                                     </div>
@@ -4182,13 +4182,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_organisasi')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -4197,7 +4197,7 @@ function clientProfileDetail() {
                                         </div>
 
                                         {{-- PRESTASI YANG DIRAIH --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Prestasi yang Diraih</span>
@@ -4232,24 +4232,24 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Prestasi yang Pernah Diraih</label>
-                                                    <div x-show="editingFormCard !== 'industri_prestasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                    <div x-show="editingFormCard !== 'industri_prestasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                         <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.prestasi || '-'"></p>
                                                     </div>
                                                         <div x-show="editingFormCard === 'industri_prestasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.prestasi" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.prestasi" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                 </div>
                                             <div x-show="editingFormCard === 'industri_prestasi'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_prestasi')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -4258,7 +4258,7 @@ function clientProfileDetail() {
                                         </div>
 
                                         {{-- DESKRIPSI DIRI & RIWAYAT KESEHATAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Deskripsi Diri & Riwayat Kesehatan</span>
@@ -4293,34 +4293,34 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Trauma</label>
-                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.riwayat_trauma || '-'"></span>
                                                     </div>
                                                         <div x-show="editingFormCard === 'industri_deskripsi'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Penyakit / Rawat Inap</label>
-                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.riwayat_penyakit_opname || '-'"></span>
                                                     </div>
                                                         <div x-show="editingFormCard === 'industri_deskripsi'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_penyakit_opname" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_penyakit_opname" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Konsultasi Psikolog</label>
-                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.konsultasi_psikolog || '-'"></span>
                                                     </div>
                                                         <div x-show="editingFormCard === 'industri_deskripsi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.konsultasi_psikolog" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.konsultasi_psikolog" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Kelebihan Diri (Kekuatan Utama)</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                         <div class="text-black text-sm font-medium block  space-y-1">
                                                         <p x-text="'1. ' + (selectedForm.answers.kelebihan_1 || '-')"></p>
                                                         <p x-text="'2. ' + (selectedForm.answers.kelebihan_2 || '-')"></p>
@@ -4330,7 +4330,7 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Kelemahan Diri (Area Pengembangan)</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                         <div class="text-black text-sm font-medium block  space-y-1">
                                                         <p x-text="'1. ' + (selectedForm.answers.kelemahan_1 || '-')"></p>
                                                         <p x-text="'2. ' + (selectedForm.answers.kelemahan_2 || '-')"></p>
@@ -4340,33 +4340,33 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Hobi / Kegemaran</label>
-                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.hobi || '-'"></span>
                                                     </div>
                                                         <div x-show="editingFormCard === 'industri_deskripsi'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.hobi" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.hobi" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Deskripsi Diri Bebas</label>
-                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                    <div x-show="editingFormCard !== 'industri_deskripsi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                         <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.deskripsi_diri_bebas || '-'"></p>
                                                     </div>
                                                         <div x-show="editingFormCard === 'industri_deskripsi'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.deskripsi_diri_bebas" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.deskripsi_diri_bebas" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                 </div>
                                             <div x-show="editingFormCard === 'industri_deskripsi'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('industri_deskripsi')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -4382,7 +4382,7 @@ function clientProfileDetail() {
                                 <template x-if="selectedForm.form_type === 'pra_nikah'">
                                     <div class="space-y-6">
                                         {{-- KARTU: LEMBAR PERSETUJUAN (INFORMED CONSENT) --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lembar Persetujuan (Informed Consent)</span>
@@ -4391,7 +4391,7 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Status Persetujuan</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
                                                         <div class="flex items-center gap-2 mt-1">
                                                         <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -4403,7 +4403,7 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Waktu Pengisian Form</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
                                                         <div x-text="formatFormSubmissionDate(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                         <div x-text="formatFormSubmissionTime(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                     </div>
@@ -4411,7 +4411,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA DIRI ANDA (PENDAFTAR) --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Diri Anda (Pendaftar)</span>
@@ -4446,20 +4446,20 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_lengkap || selectedForm.client_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kelamin || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -4468,59 +4468,59 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat, Tanggal Lahir</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.tempat_tanggal_lahir) || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Urutan Kelahiran</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.urutan_kelahiran || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Tempat Tinggal Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alamat || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email Aktif</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -4534,20 +4534,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_bangsa || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_terakhir || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -4563,51 +4563,51 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Rencana Pernikahan Ini Adalah Pernikahan Ke-</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernikahan_ke || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pernikahan_ke" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pernikahan_ke" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jumlah Anak yang Dimiliki Saat Ini (Jika ada)</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jumlah_anak || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.jumlah_anak" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.jumlah_anak" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alasan Mengikuti Konseling Pra Nikah</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alasan_konseling || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alasan_konseling" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alasan_konseling" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('pra_nikah_pendaftar')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -4615,7 +4615,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA DIRI CALON PASANGAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Diri Calon Pasangan</span>
@@ -4650,20 +4650,20 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap Calon Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin Calon Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kelamin_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <select x-model="editFormAnswers.jenis_kelamin_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.jenis_kelamin_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -4672,59 +4672,59 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat, Tanggal Lahir Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir_pasangan, selectedForm.answers.tanggal_lahir_pasangan, selectedForm.answers.tempat_tanggal_lahir_pasangan) || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers.tempat_lahir_pasangan" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="date" x-model="editFormAnswers.tanggal_lahir_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers.tempat_lahir_pasangan" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="date" x-model="editFormAnswers.tanggal_lahir_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Urutan Kelahiran Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.urutan_kelahiran_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Tempat Tinggal Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alamat_pasangan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat_pasangan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat_pasangan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone_pasangan" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_pasangan = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_pasangan" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone_pasangan" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_pasangan = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_pasangan" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.email_pasangan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.email_pasangan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -4738,20 +4738,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_bangsa_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_bangsa_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_bangsa_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_terakhir_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -4767,42 +4767,42 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Bagi Pasangan, Pernikahan Ini Adalah Ke-</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernikahan_pasangan_ke || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pernikahan_pasangan_ke" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pernikahan_pasangan_ke" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jumlah Anak yang Dimiliki Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jumlah_anak_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.jumlah_anak_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.jumlah_anak_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('pra_nikah_pasangan')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -4810,7 +4810,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA RENCANA PERNIKAHAN & KONDISI HUBUNGAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Rencana Pernikahan & Kondisi Hubungan</span>
@@ -4845,105 +4845,105 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Rencana Pernikahan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.tanggal_rencana_pernikahan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <input type="date" x-model="editFormAnswers.tanggal_rencana_pernikahan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="date" x-model="editFormAnswers.tanggal_rencana_pernikahan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Lama Waktu Berkenalan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.lama_berkenalan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.lama_berkenalan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.lama_berkenalan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Lama Waktu Berpacaran</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.lama_berpacaran || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.lama_berpacaran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.lama_berpacaran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Harapan terhadap Pernikahan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.harapan_pernikahan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.harapan_pernikahan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.harapan_pernikahan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Hal yang Ingin Ditingkatkan dalam Hubungan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.hal_ingin_ditingkatkan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.hal_ingin_ditingkatkan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.hal_ingin_ditingkatkan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kelebihan Peran Anda bagi Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.kelebihan_peran || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.kelebihan_peran" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.kelebihan_peran" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kekurangan Peran Anda bagi Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.kekurangan_peran || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.kekurangan_peran" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.kekurangan_peran" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Keluhan atau Konflik dalam Hubungan yang Sering Muncul</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.keluhan_hubungan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.keluhan_hubungan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.keluhan_hubungan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Trauma Masa Lalu</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_trauma || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Penyakit Medis</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_rencana'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_kesehatan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_kesehatan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_kesehatan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'pra_nikah_rencana'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('pra_nikah_rencana')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -4951,7 +4951,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: LAIN-LAIN & PREFERENSI LAYANAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lain-Lain & Preferensi Layanan</span>
@@ -4986,11 +4986,11 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pernah Konseling Sebelumnya?</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernah_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_lain'" x-cloak>
-                                                            <select x-model="editFormAnswers.pernah_konseling" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pernah_konseling" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="Tidak, pertama kali">Tidak, pertama kali</option>
     <option value="Ya, pernah sebelumnya">Ya, pernah sebelumnya</option>
 </select>
@@ -4998,38 +4998,38 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Konselor Lama</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_konselor || selectedForm.answers.nama_konselor_lama || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_konselor" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_konselor" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kontak Darurat (Nama, Relasi, No. Telepon)</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.kontak_darurat || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.kontak_darurat" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.kontak_darurat" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Sumber Informasi Mengenai UC PSC</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.sumber_info || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.sumber_info" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.sumber_info" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Preferensi Proses Konseling</label>
-                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pra_nikah_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.preferensi_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_lain'" x-cloak>
-                                                            <select x-model="editFormAnswers.preferensi_konseling" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.preferensi_konseling" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="Offline (Tatap Muka di UC PSC)">Offline (Tatap Muka di UC PSC)</option>
     <option value="Online (Melalui Zoom Meeting)">Online (Melalui Zoom Meeting)</option>
 </select>
@@ -5039,13 +5039,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('pra_nikah_lain')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -5059,7 +5059,7 @@ function clientProfileDetail() {
                                 <template x-if="selectedForm.form_type === 'dewasa'">
                                     <div class="space-y-6">
                                         {{-- KARTU: LEMBAR PERSETUJUAN (INFORMED CONSENT) --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lembar Persetujuan (Informed Consent)</span>
@@ -5068,7 +5068,7 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Status Persetujuan</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
                                                         <div class="flex items-center gap-2 mt-1">
                                                         <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -5080,7 +5080,7 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Waktu Pengisian Form</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
                                                         <div x-text="formatFormSubmissionDate(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                         <div x-text="formatFormSubmissionTime(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                     </div>
@@ -5088,7 +5088,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA IDENTITAS & DIRI KLIEN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Identitas & Diri Klien</span>
@@ -5123,20 +5123,20 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_lengkap || selectedForm.client_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kelamin || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -5145,59 +5145,59 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat, Tanggal Lahir</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.tempat_tanggal_lahir) || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Urutan Kelahiran</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.urutan_kelahiran || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Tempat Tinggal Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alamat || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -5211,20 +5211,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_bangsa || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_terakhir || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -5240,33 +5240,33 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Hobi / Minat Kegemaran</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.hobi || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.hobi" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.hobi" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('dewasa_identitas')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -5274,7 +5274,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: ALASAN KONSELING & KELUHAN UTAMA --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Alasan Konseling & Keluhan Utama</span>
@@ -5309,24 +5309,24 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alasan Ingin Melakukan Konseling</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_keluhan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_keluhan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alasan_konseling || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_keluhan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alasan_konseling" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alasan_konseling" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'dewasa_keluhan'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('dewasa_keluhan')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -5334,7 +5334,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA KONDISI PSIKOLOGIS --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Kondisi Psikologis</span>
@@ -5369,87 +5369,87 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Gambaran Kondisi Saat Ini terhadap Permasalahan yang Dirasakan</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.kondisi_saat_ini || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.kondisi_saat_ini" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.kondisi_saat_ini" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pikiran-Pikiran Negatif yang Sering Muncul Akhir-Akhir Ini</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.pikiran_negatif || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.pikiran_negatif" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.pikiran_negatif" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Hal-Hal Dalam Hidup yang Ingin Ditingkatkan</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.hal_ingin_ditingkatkan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.hal_ingin_ditingkatkan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.hal_ingin_ditingkatkan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Karakter Kepribadian</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.karakter_kepribadian || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.karakter_kepribadian" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.karakter_kepribadian" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Ketakutan / Phobia yang Dimiliki</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.ketakutan_phobia || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.ketakutan_phobia" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.ketakutan_phobia" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Rata-Rata Jam Tidur per Malam</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jam_tidur || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.jam_tidur" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.jam_tidur" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Hidup yang Menimbulkan Trauma</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_trauma || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Kesehatan</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_kesehatan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_kesehatan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_kesehatan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'dewasa_psikologis'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('dewasa_psikologis')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -5457,7 +5457,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: GAMBARAN RELASI INTERPERSONAL --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Gambaran Relasi Interpersonal</span>
@@ -5492,60 +5492,60 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi dengan Ayah</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_ayah || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi dengan Ibu</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_ibu || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi dengan Saudara</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_saudara || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_saudara" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_saudara" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi dengan Pasangan (Jika ada)</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_pasangan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi dengan Anak (Jika ada)</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'dewasa_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_anak || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_anak" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_anak" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'dewasa_relasi'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('dewasa_relasi')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -5553,7 +5553,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: LAIN-LAIN & PREFERENSI LAYANAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lain-Lain & Preferensi Layanan</span>
@@ -5588,33 +5588,33 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pernah Konseling Sebelumnya?</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernah_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_lain'" x-cloak>
-                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.kontak_darurat || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.kontak_darurat" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.kontak_darurat" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Sumber Mengetahui UC PSC</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.sumber_info || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.sumber_info" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.sumber_info" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Preferensi Proses Konseling</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.preferensi_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_lain'" x-cloak>
-                                                            <select x-model="editFormAnswers.preferensi_konseling" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.preferensi_konseling" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="Offline (Tatap Muka di UC PSC)">Offline (Tatap Muka di UC PSC)</option>
     <option value="Online (Melalui Zoom Meeting)">Online (Melalui Zoom Meeting)</option>
 </select>
@@ -5624,13 +5624,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('dewasa_lain')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -5644,7 +5644,7 @@ function clientProfileDetail() {
                                 <template x-if="selectedForm.form_type === 'pernikahan'">
                                     <div class="space-y-6">
                                         {{-- KARTU: LEMBAR PERSETUJUAN (INFORMED CONSENT) --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lembar Persetujuan (Informed Consent)</span>
@@ -5653,7 +5653,7 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Status Persetujuan</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
                                                         <div class="flex items-center gap-2 mt-1">
                                                         <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -5665,7 +5665,7 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Waktu Pengisian Form</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
                                                         <div x-text="formatFormSubmissionDate(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                         <div x-text="formatFormSubmissionTime(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                     </div>
@@ -5673,7 +5673,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA DIRI ANDA (PENDAFTAR) --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Diri Anda (Pendaftar)</span>
@@ -5708,20 +5708,20 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_lengkap || selectedForm.client_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kelamin || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -5730,59 +5730,59 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat, Tanggal Lahir</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.tempat_tanggal_lahir) || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Urutan Kelahiran</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.urutan_kelahiran || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Tempat Tinggal Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alamat || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -5796,20 +5796,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_bangsa || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_terakhir || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -5825,51 +5825,51 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pernikahan Ini Adalah Ke-</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernikahan_ke || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pernikahan_ke" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pernikahan_ke" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jumlah Anak yang Dimiliki</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jumlah_anak || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.jumlah_anak" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.jumlah_anak" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alasan Mengikuti Konseling Pernikahan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pendaftar'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alasan_konseling || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alasan_konseling" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alasan_konseling" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('pernikahan_pendaftar')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -5877,7 +5877,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA DIRI PASANGAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Diri Pasangan</span>
@@ -5912,20 +5912,20 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kelamin_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <select x-model="editFormAnswers.jenis_kelamin_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.jenis_kelamin_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -5934,59 +5934,59 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat, Tanggal Lahir Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir_pasangan, selectedForm.answers.tanggal_lahir_pasangan, selectedForm.answers.tempat_tanggal_lahir_pasangan) || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers.tempat_lahir_pasangan" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="date" x-model="editFormAnswers.tanggal_lahir_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers.tempat_lahir_pasangan" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="date" x-model="editFormAnswers.tanggal_lahir_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Urutan Kelahiran Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.urutan_kelahiran_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Tempat Tinggal Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alamat_pasangan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat_pasangan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat_pasangan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone_pasangan" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_pasangan = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_pasangan" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone_pasangan" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_pasangan = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_pasangan" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.email_pasangan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.email_pasangan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -6000,20 +6000,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_bangsa_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_bangsa_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_bangsa_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_terakhir_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -6029,33 +6029,33 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Pasangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan_pasangan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Bagi Pasangan, Pernikahan Ini Adalah Ke-</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_pasangan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernikahan_pasangan_ke || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pernikahan_pasangan_ke" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pernikahan_pasangan_ke" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('pernikahan_pasangan')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -6063,7 +6063,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA PERNIKAHAN & RIWAYAT HUBUNGAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Pernikahan & Riwayat Hubungan</span>
@@ -6098,87 +6098,87 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat & Tanggal Pernikahan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.tempat_tanggal_pernikahan || selectedForm.answers.tanggal_pernikahan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak>
-                                                            <input type="date" x-model="editFormAnswers.tempat_tanggal_pernikahan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="date" x-model="editFormAnswers.tempat_tanggal_pernikahan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Lama Pernikahan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.lama_pernikahan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.lama_pernikahan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.lama_pernikahan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jumlah Anak & Keterangan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jumlah_anak || selectedForm.answers.daftar_anak || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.jumlah_anak" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.jumlah_anak" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Harapan dari Konseling Pernikahan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.harapan_pernikahan || selectedForm.answers.harapan_konseling || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.harapan_pernikahan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.harapan_pernikahan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Dinamika Hubungan & Keluhan Utama</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.keluhan_hubungan || selectedForm.answers.keluhan_utama || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.keluhan_hubungan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.keluhan_hubungan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Upaya Penyelesaian yang Pernah Dilakukan</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.upaya_penyelesaian || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.upaya_penyelesaian" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.upaya_penyelesaian" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Trauma Masa Lalu</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_trauma || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Penyakit Medis</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'pernikahan_riwayat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_kesehatan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_kesehatan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_kesehatan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'pernikahan_riwayat'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('pernikahan_riwayat')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -6186,7 +6186,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: LAIN-LAIN & PREFERENSI LAYANAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lain-Lain & Preferensi Layanan</span>
@@ -6221,11 +6221,11 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pernah Konseling Sebelumnya?</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernah_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_lain'" x-cloak>
-                                                            <select x-model="editFormAnswers.pernah_konseling" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pernah_konseling" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="Tidak, pertama kali">Tidak, pertama kali</option>
     <option value="Ya, pernah sebelumnya">Ya, pernah sebelumnya</option>
 </select>
@@ -6233,38 +6233,38 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Konselor Lama</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_konselor || selectedForm.answers.nama_konselor_lama || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_konselor" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_konselor" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kontak Darurat</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.kontak_darurat || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.kontak_darurat" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.kontak_darurat" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Sumber Mengetahui UC PSC</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.sumber_info || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.sumber_info" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.sumber_info" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Preferensi Proses Konseling</label>
-                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'pernikahan_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.preferensi_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_lain'" x-cloak>
-                                                            <select x-model="editFormAnswers.preferensi_konseling" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.preferensi_konseling" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="Offline (Tatap Muka di UC PSC)">Offline (Tatap Muka di UC PSC)</option>
     <option value="Online (Melalui Zoom Meeting)">Online (Melalui Zoom Meeting)</option>
 </select>
@@ -6274,13 +6274,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('pernikahan_lain')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -6294,7 +6294,7 @@ function clientProfileDetail() {
                                 <template x-if="selectedForm.form_type === 'anak'">
                                     <div class="space-y-6">
                                         {{-- KARTU: LEMBAR PERSETUJUAN (INFORMED CONSENT) --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lembar Persetujuan (Informed Consent)</span>
@@ -6303,7 +6303,7 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Status Persetujuan</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
                                                         <div class="flex items-center gap-2 mt-1">
                                                         <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -6315,7 +6315,7 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Waktu Pengisian Form</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
                                                         <div x-text="formatFormSubmissionDate(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                         <div x-text="formatFormSubmissionTime(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                     </div>
@@ -6323,7 +6323,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA DIRI ANAK --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Diri Anak</span>
@@ -6358,20 +6358,20 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap Anak</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_lengkap || selectedForm.client_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin Anak</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kelamin || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <select x-model="editFormAnswers.anak_jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.anak_jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -6380,59 +6380,59 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat, Tanggal Lahir</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.tempat_tanggal_lahir) || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Urutan Kelahiran</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.urutan_kelahiran || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Tempat Tinggal Anak</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alamat || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -6446,20 +6446,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_bangsa || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan / Kelas Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_terakhir || selectedForm.answers.sekolah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -6475,33 +6475,33 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Hobi / Minat Kegemaran Anak</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.hobi || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.hobi" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.hobi" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Status Pernikahan Orang Tua</label>
-                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_datadiri'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.status_pernikahan_ortu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.status_pernikahan_ortu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.status_pernikahan_ortu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'anak_datadiri'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('anak_datadiri')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -6509,7 +6509,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA PROFIL ORANG TUA & KELUARGA --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Profil Orang Tua & Keluarga</span>
@@ -6544,29 +6544,29 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Ayah</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Usia Ayah</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.usia_ayah ? selectedForm.answers.usia_ayah + ' tahun' : '-' || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.usia_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.usia_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama Ayah</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -6580,20 +6580,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa Ayah</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir Ayah</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -6609,47 +6609,47 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Ayah</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon Ayah</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone_ayah" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_ayah = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_ayah" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone_ayah" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_ayah = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_ayah" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Ibu</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Usia Ibu</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.usia_ibu ? selectedForm.answers.usia_ibu + ' tahun' : '-' || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.usia_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.usia_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama Ibu</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -6663,20 +6663,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa Ibu</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir Ibu</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -6692,51 +6692,51 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Ibu</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon Ibu</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone_ibu" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_ibu = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_ibu" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone_ibu" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_ibu = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_ibu" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Orang Tua</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alamat_ortu || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat_ortu" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat_ortu" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Susunan Saudara Kandung</label>
-                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_orangtua'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.susunan_saudara || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.susunan_saudara" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.susunan_saudara" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'anak_orangtua'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('anak_orangtua')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -6744,7 +6744,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: ALASAN KONSELING & KELUHAN UTAMA --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Alasan Konseling & Keluhan Utama</span>
@@ -6779,42 +6779,42 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Keluhan Utama / Alasan Membawa Anak Konseling</label>
-                                                        <div x-show="editingFormCard !== 'anak_keluhan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_keluhan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alasan_konseling || selectedForm.answers.keluhan_utama || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_keluhan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alasan_konseling" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alasan_konseling" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Sejak Kapan Keluhan Ini Muncul (Onset)</label>
-                                                        <div x-show="editingFormCard !== 'anak_keluhan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_keluhan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.onset_keluhan || selectedForm.answers.sejak_kapan_muncul || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_keluhan'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.onset_keluhan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.onset_keluhan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Upaya yang Pernah Dilakukan Orang Tua</label>
-                                                        <div x-show="editingFormCard !== 'anak_keluhan'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_keluhan'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.upaya_dilakukan || selectedForm.answers.upaya_orang_tua || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_keluhan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.upaya_dilakukan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.upaya_dilakukan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'anak_keluhan'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('anak_keluhan')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -6822,7 +6822,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: KONDISI PSIKOLOGIS & PERKEMBANGAN ANAK --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Kondisi Psikologis & Perkembangan Anak</span>
@@ -6857,78 +6857,78 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Gambaran Kondisi Anak Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.kondisi_saat_ini || selectedForm.answers.kondisi_anak || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.kondisi_saat_ini" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.kondisi_saat_ini" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Karakter & Ciri Kepribadian Anak</label>
-                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.karakter_kepribadian || selectedForm.answers.karakter_anak || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.karakter_kepribadian" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.karakter_kepribadian" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Ketakutan / Fobia yang Dimiliki Anak</label>
-                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.ketakutan_phobia || selectedForm.answers.ketakutan_anak || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.ketakutan_phobia" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.ketakutan_phobia" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Kehamilan & Kelahiran</label>
-                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_kelahiran || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_kelahiran" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_kelahiran" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Tumbuh Kembang</label>
-                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_tumbuh_kembang || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_tumbuh_kembang" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_tumbuh_kembang" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Hidup yang Menimbulkan Trauma pada Anak</label>
-                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_trauma || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_trauma" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Penyakit Medis Anak</label>
-                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_psikologis'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.riwayat_kesehatan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_psikologis'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.riwayat_kesehatan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.riwayat_kesehatan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'anak_psikologis'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('anak_psikologis')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -6936,7 +6936,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: GAMBARAN RELASI ANAK --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Gambaran Relasi Anak</span>
@@ -6971,51 +6971,51 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi Anak dengan Ayah</label>
-                                                        <div x-show="editingFormCard !== 'anak_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_ayah || selectedForm.answers.relasi_dengan_ayah || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi Anak dengan Ibu</label>
-                                                        <div x-show="editingFormCard !== 'anak_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_ibu || selectedForm.answers.relasi_dengan_ibu || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi Anak dengan Saudara</label>
-                                                        <div x-show="editingFormCard !== 'anak_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_saudara || selectedForm.answers.relasi_dengan_saudara || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_saudara" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_saudara" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Relasi Anak dengan Teman Sebaya / Sekolah</label>
-                                                        <div x-show="editingFormCard !== 'anak_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'anak_relasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.relasi_teman || selectedForm.answers.relasi_dengan_teman || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_relasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.relasi_teman" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.relasi_teman" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'anak_relasi'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('anak_relasi')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -7023,7 +7023,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: LAIN-LAIN & PREFERENSI LAYANAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lain-Lain & Preferensi Layanan</span>
@@ -7058,11 +7058,11 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pernah Konseling Sebelumnya?</label>
-                                                        <div x-show="editingFormCard !== 'anak_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernah_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_lain'" x-cloak>
-                                                            <select x-model="editFormAnswers.pernah_konseling" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pernah_konseling" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="Tidak, pertama kali">Tidak, pertama kali</option>
     <option value="Ya, pernah sebelumnya">Ya, pernah sebelumnya</option>
 </select>
@@ -7070,29 +7070,29 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kontak Darurat (Nama, Relasi, No. Telepon)</label>
-                                                        <div x-show="editingFormCard !== 'anak_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.kontak_darurat || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.kontak_darurat" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.kontak_darurat" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Sumber Mengetahui UC PSC</label>
-                                                        <div x-show="editingFormCard !== 'anak_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.sumber_info || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.sumber_info" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.sumber_info" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Preferensi Proses Konseling</label>
-                                                        <div x-show="editingFormCard !== 'anak_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'anak_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.preferensi_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_lain'" x-cloak>
-                                                            <select x-model="editFormAnswers.preferensi_konseling" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.preferensi_konseling" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="Offline (Tatap Muka di UC PSC)">Offline (Tatap Muka di UC PSC)</option>
     <option value="Online (Melalui Zoom Meeting)">Online (Melalui Zoom Meeting)</option>
 </select>
@@ -7102,13 +7102,13 @@ function clientProfileDetail() {
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('anak_lain')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -7122,7 +7122,7 @@ function clientProfileDetail() {
                                 <template x-if="selectedForm.form_type === 'non_industri'">
                                     <div class="space-y-6">
                                         {{-- KARTU: LEMBAR PERNYATAAN KEJUJURAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lembar Pernyataan Kejujuran</span>
@@ -7131,7 +7131,7 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Status Persetujuan</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
                                                         <div class="flex items-center gap-2 mt-1">
                                                         <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -7143,7 +7143,7 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Waktu Pengisian Form</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
                                                         <div x-text="formatFormSubmissionDate(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                         <div x-text="formatFormSubmissionTime(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                     </div>
@@ -7151,7 +7151,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA IDENTITAS & DIRI KLIEN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Identitas & Diri Klien</span>
@@ -7186,20 +7186,20 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_lengkap || selectedForm.client_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_lengkap" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.jenis_kelamin || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.jenis_kelamin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Jenis Kelamin --</option>
     <option value="Laki-Laki">Laki-Laki</option>
     <option value="Perempuan">Perempuan</option>
@@ -7208,59 +7208,59 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tempat, Tanggal Lahir</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.tempat_tanggal_lahir) || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
                                                             <div class="grid grid-cols-2 gap-2">
-    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="text" x-model="editFormAnswers.tempat_lahir" placeholder="Kota Kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+    <input type="date" x-model="editFormAnswers.tanggal_lahir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
 </div>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Urutan Kelahiran</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.urutan_kelahiran || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.urutan_kelahiran" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Tempat Tinggal Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.alamat || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.alamat" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.email" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.agama || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.agama" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Agama --</option>
     <option value="Islam">Islam</option>
     <option value="Kristen">Kristen</option>
@@ -7274,20 +7274,20 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Suku Bangsa</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.suku_bangsa || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.suku_bangsa" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_terakhir || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_terakhir" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -7303,24 +7303,24 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Saat Ini</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_identitas'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('non_industri_identitas')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -7328,7 +7328,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: DATA KELUARGA & ORANG TUA --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Keluarga & Orang Tua</span>
@@ -7363,29 +7363,29 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Ayah</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Usia Ayah</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.usia_ayah ? selectedForm.answers.usia_ayah + ' tahun' : '-' || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.usia_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.usia_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Ayah</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -7401,38 +7401,38 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Ayah</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan_ayah" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Nama Ibu</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.nama_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Usia Ibu</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.usia_ibu ? selectedForm.answers.usia_ibu + ' tahun' : '-' || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.usia_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.usia_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Ibu</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pendidikan_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <select x-model="editFormAnswers.pendidikan_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <select x-model="editFormAnswers.pendidikan_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
     <option value="">-- Pilih Pendidikan --</option>
     <option value="TK">TK</option>
     <option value="SD">SD</option>
@@ -7448,33 +7448,33 @@ function clientProfileDetail() {
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan Ibu</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pekerjaan_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pekerjaan_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pekerjaan_ibu" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Susunan Saudara Kandung</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_keluarga'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.susunan_saudara || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.susunan_saudara" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.susunan_saudara" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'non_industri_keluarga'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('non_industri_keluarga')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -7482,7 +7482,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: MINAT, BAKAT, CITA-CITA & TUJUAN ASESMEN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Minat, Bakat, Cita-Cita & Tujuan Asesmen</span>
@@ -7517,78 +7517,78 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Cita-Cita / Peminatan yang Diinginkan</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.cita_cita || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_minat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.cita_cita" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.cita_cita" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Rencana Karir / Studi</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.rencana_cita_cita || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_minat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.rencana_cita_cita" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.rencana_cita_cita" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Usaha yang Telah Dilakukan</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.usaha_cita_cita || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_minat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.usaha_cita_cita" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.usaha_cita_cita" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tujuan Pemeriksaan Psikologis</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.tujuan_pemeriksaan || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_minat'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.tujuan_pemeriksaan" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.tujuan_pemeriksaan" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Mata Pelajaran / Kuliah yang Disukai</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.mata_pelajaran_disukai || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_minat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.mata_pelajaran_disukai" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.mata_pelajaran_disukai" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Mata Pelajaran / Kuliah yang Kurang Disukai</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.mata_pelajaran_tidak_disukai || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_minat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.mata_pelajaran_tidak_disukai" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.mata_pelajaran_tidak_disukai" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kegiatan di Waktu Luang / Hobi</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_minat'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.kegiatan_luang || selectedForm.answers.hobi || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_minat'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.kegiatan_luang" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.kegiatan_luang" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'non_industri_minat'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('non_industri_minat')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -7596,7 +7596,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: INFORMASI TAMBAHAN --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Informasi Tambahan</span>
@@ -7631,42 +7631,42 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Pernah Mengikuti Psikotes Sebelumnya?</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_informasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_informasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernah_psikotes || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_informasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.pernah_psikotes" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.pernah_psikotes" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kapan Psikotes Terdahulu Dilakukan</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_informasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'non_industri_informasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.waktu_psikotes || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_informasi'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.waktu_psikotes" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.waktu_psikotes" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tujuan Pemeriksaan Psikotes Terdahulu</label>
-                                                        <div x-show="editingFormCard !== 'non_industri_informasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'non_industri_informasi'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.tujuan_psikotes_lama || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_informasi'" x-cloak>
-                                                            <textarea x-model="editFormAnswers.tujuan_psikotes_lama" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
+                                                            <textarea x-model="editFormAnswers.tujuan_psikotes_lama" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white"></textarea>
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'non_industri_informasi'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('non_industri_informasi')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -7680,7 +7680,7 @@ function clientProfileDetail() {
                                 <template x-if="selectedForm.form_type === 'biography_en'">
                                     <div class="space-y-6">
                                         {{-- KARTU: DECLARATION OF AUTHENTICITY --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Declaration of Authenticity</span>
@@ -7689,7 +7689,7 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Declaration Status</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         <div class="flex items-center gap-2 ">
                                                         <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -7701,7 +7701,7 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Submission Timestamp</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         <div class=" flex items-center justify-between gap-2">
                                                         <div class="text-black text-sm font-medium" x-text="formatFormSubmissionDate(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                         <div class="text-black text-sm font-medium" x-text="formatFormSubmissionTime(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
@@ -7711,7 +7711,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: PERSONAL INFORMATION --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Personal Information</span>
@@ -7746,105 +7746,105 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Full Name</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.full_name || selectedForm.client_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.full_name" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.full_name" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Gender</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.gender || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.gender" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.gender" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Place & Date of Birth</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.birth_place_date || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.birth_place_date" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.birth_place_date" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Order of Birth</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.birth_order || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.birth_order" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.birth_order" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">City of Origin</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.city_of_origin || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.city_of_origin" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.city_of_origin" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Current Address</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.current_address || selectedForm.answers.alamat || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.current_address" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.current_address" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Phone / WhatsApp</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Active Email Address</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.email || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.email" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.email" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Religion / Belief</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.religion || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.religion" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.religion" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Ethnicity</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_personal'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.ethnicity || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.ethnicity" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.ethnicity" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'biography_en_personal'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('biography_en_personal')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -7852,7 +7852,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: FAMILY BACKGROUND --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Family Background</span>
@@ -7887,96 +7887,96 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Father Name</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.father_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.father_name" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.father_name" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Father Age</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.father_age ? selectedForm.answers.father_age + ' years old' : '-' || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.father_age" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.father_age" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Father Education</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.father_education || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.father_education" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.father_education" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Father Occupation</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.father_occupation || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.father_occupation" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.father_occupation" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Mother Name</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.mother_name || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.mother_name" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.mother_name" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Mother Age</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.mother_age ? selectedForm.answers.mother_age + ' years old' : '-' || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.mother_age" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.mother_age" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Mother Education</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.mother_education || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.mother_education" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.mother_education" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Mother Occupation</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.mother_occupation || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.mother_occupation" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.mother_occupation" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Siblings</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'biography_en_family'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.siblings || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_family'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.siblings" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.siblings" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'biography_en_family'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('biography_en_family')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -7984,7 +7984,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: CAREER ASPIRATIONS & ASSESSMENT PURPOSE --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Career Aspirations & Assessment Purpose</span>
@@ -8019,51 +8019,51 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Career Goal / Dream Job</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_career'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'biography_en_career'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.dream_job || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_career'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.dream_job" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.dream_job" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Future Aspirations</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_career'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'biography_en_career'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.dream_job_future || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_career'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.dream_job_future" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.dream_job_future" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Purpose of Psychological Assessment</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_career'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'biography_en_career'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.purpose_of_assessment || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_career'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.purpose_of_assessment" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.purpose_of_assessment" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Hobbies & Leisure Activities</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_career'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'biography_en_career'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.hobbies || selectedForm.answers.leisure_activities || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_career'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.hobbies" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.hobbies" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'biography_en_career'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('biography_en_career')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -8071,7 +8071,7 @@ function clientProfileDetail() {
                                             </div>
                                         </div>
                                         {{-- KARTU: ADDITIONAL INFORMATION --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Additional Information</span>
@@ -8106,42 +8106,42 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Prior Psychological Test Experience</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_additional'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_additional'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.prior_test || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_additional'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.prior_test" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.prior_test" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">When the Prior Test was Administered</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_additional'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        <div x-show="editingFormCard !== 'biography_en_additional'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.prior_test_date || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_additional'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.prior_test_date" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.prior_test_date" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Medical / Health History</label>
-                                                        <div x-show="editingFormCard !== 'biography_en_additional'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div x-show="editingFormCard !== 'biography_en_additional'" class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="selectedForm.answers.health_history || '-'"></p>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_additional'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.health_history" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.health_history" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                             <div x-show="editingFormCard === 'biography_en_additional'" x-cloak class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
                                                     <button type="button" 
                                                             @click="cancelEditFormCard()"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
+                                                            class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                                                         Batal
                                                     </button>
                                                     <button type="button" 
                                                             @click="saveFormCard('biography_en_additional')"
                                                             :disabled="isSavingFormCard"
-                                                            class="px-4 py-2 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                                            class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                                         <span x-text="isSavingFormCard ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
                                                     </button>
@@ -8155,7 +8155,7 @@ function clientProfileDetail() {
                                 <template x-if="!['industri', 'pra_nikah', 'dewasa', 'pernikahan', 'anak', 'non_industri', 'biography_en'].includes(selectedForm.form_type)">
                                     <div class="space-y-6">
                                         {{-- KARTU: LEMBAR PERSETUJUAN (INFORMED CONSENT) --}}
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Lembar Persetujuan (Informed Consent)</span>
@@ -8164,7 +8164,7 @@ function clientProfileDetail() {
                                             <div class="p-5 sm:p-6 space-y-4">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Status Persetujuan</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
                                                         <div class="flex items-center gap-2 mt-1">
                                                         <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -8176,14 +8176,14 @@ function clientProfileDetail() {
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Waktu Pengisian Form</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
                                                         <div x-text="formatFormSubmissionDate(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                         <div x-text="formatFormSubmissionTime(selectedForm.created_at || selectedForm.consent_agreed_at)"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                                     <span>Data Formulir</span>
@@ -8193,7 +8193,7 @@ function clientProfileDetail() {
                                                 <template x-for="(val, key) in selectedForm.answers" :key="key">
                                                     <div x-show="typeof val === 'string' && val.trim() !== '' && key !== 'consent_agree'">
                                                         <label class="block text-xs font-medium text-slate-500 mb-1" x-text="key.replace(/_/g, ' ').toUpperCase() + ':'"></label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                                             <p class="text-black text-sm font-medium block  leading-relaxed whitespace-pre-wrap" x-text="val"></p>
                                                         </div>
                                                     </div>
@@ -8223,13 +8223,13 @@ function clientProfileDetail() {
 
         <div x-show="assignModalOpen" class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>
 
-        <div x-show="assignModalOpen" class="relative bg-white rounded-2xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
+        <div x-show="assignModalOpen" class="relative bg-white rounded-xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
             <h3 class="text-base font-semibold text-black">Tugaskan Staff Pengelola</h3>
             <form action="{{ route('assignments.assign', $client) }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-xs font-medium text-gray-600 mb-1.5">Pilih Staff <span class="text-red-500">*</span></label>
-                    <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-xs font-medium text-black focus:ring-2 focus:ring-purple-deep bg-white">
+                    <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-xs font-medium text-black focus:ring-2 focus:ring-purple-deep bg-white">
                         <option value="">-- Pilih Staff --</option>
                         @foreach($staffMembers as $staff)
                         <option value="{{ $staff->id }}">{{ $staff->name }} ({{ $staff->email }})</option>
@@ -8237,8 +8237,8 @@ function clientProfileDetail() {
                     </select>
                 </div>
                 <div class="flex items-center justify-end gap-2 pt-2">
-                    <button type="button" @click="assignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
-                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-deep text-white shadow-xs flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span>Simpan</span></button>
+                    <button type="button" @click="assignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg text-xs font-semibold bg-purple-deep text-white shadow-xs flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span>Simpan</span></button>
                 </div>
             </form>
         </div>
@@ -8249,13 +8249,13 @@ function clientProfileDetail() {
 
         <div x-show="reassignModalOpen" class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>
 
-        <div x-show="reassignModalOpen" class="relative bg-white rounded-2xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
+        <div x-show="reassignModalOpen" class="relative bg-white rounded-xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
             <h3 class="text-base font-semibold text-black">Alihkan Staff Pengelola</h3>
             <form action="{{ route('assignments.reassign', $client) }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-xs font-medium text-gray-600 mb-1.5">Pilih Staff Pengganti <span class="text-red-500">*</span></label>
-                    <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-xs font-medium text-black focus:ring-2 focus:ring-purple-deep bg-white">
+                    <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-xs font-medium text-black focus:ring-2 focus:ring-purple-deep bg-white">
                         <option value="">-- Pilih Staff Baru --</option>
                         @foreach($staffMembers as $staff)
                         <option value="{{ $staff->id }}" {{ $client->assigned_staff_id === $staff->id ? 'disabled' : '' }}>
@@ -8267,8 +8267,8 @@ function clientProfileDetail() {
                 <div class="flex items-center justify-between gap-2 pt-2">
                     <button type="button" @click="reassignModalOpen = false; unassignModalOpen = true" class="text-xs font-semibold text-red-600 hover:underline">Lepaskan Staff</button>
                     <div class="flex items-center gap-2">
-                        <button type="button" @click="reassignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
-                        <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-deep text-white shadow-xs flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span>Simpan</span></button>
+                        <button type="button" @click="reassignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
+                        <button type="submit" class="px-4 py-2 rounded-lg text-xs font-semibold bg-purple-deep text-white shadow-xs flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span>Simpan</span></button>
                     </div>
                 </div>
             </form>
@@ -8280,14 +8280,14 @@ function clientProfileDetail() {
 
         <div x-show="unassignModalOpen" class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>
 
-        <div x-show="unassignModalOpen" class="relative bg-white rounded-2xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
+        <div x-show="unassignModalOpen" class="relative bg-white rounded-xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
             <h3 class="text-base font-semibold text-red-600">Lepaskan Penugasan Staff</h3>
             <p class="text-xs font-medium text-gray-500">Klien <strong class="text-black font-semibold">{{ $client->name }}</strong> akan dikembalikan ke status belum ditugaskan.</p>
             <form action="{{ route('assignments.unassign', $client) }}" method="POST" class="space-y-4">
                 @csrf
                 <div class="flex items-center justify-end gap-2 pt-2">
-                    <button type="button" @click="unassignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
-                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-red-600 text-white shadow-xs">Ya, Lepaskan</button>
+                    <button type="button" @click="unassignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg text-xs font-semibold bg-red-600 text-white shadow-xs">Ya, Lepaskan</button>
                 </div>
             </form>
         </div>
@@ -8298,7 +8298,7 @@ function clientProfileDetail() {
 
         <div x-show="deleteModalOpen" class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>
 
-        <div x-show="deleteModalOpen" class="relative bg-white rounded-2xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
+        <div x-show="deleteModalOpen" class="relative bg-white rounded-xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
             <h3 class="text-base font-semibold text-red-600">Hapus Data Klien?</h3>
             <p class="text-xs font-medium text-gray-500 leading-relaxed">
                 Apakah Anda yakin ingin menghapus data klien <strong class="text-black font-semibold">{{ $client->name }}</strong> beserta seluruh riwayat formulir dan reservasi terkait? Tindakan ini permanen.
@@ -8306,8 +8306,8 @@ function clientProfileDetail() {
             <form action="{{ route('clients.destroy', $client) }}" method="POST" class="flex items-center justify-end gap-2 pt-2">
                 @csrf
                 @method('DELETE')
-                <button type="button" @click="deleteModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
-                <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-red-600 text-white shadow-xs">Ya, Hapus Klien</button>
+                <button type="button" @click="deleteModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
+                <button type="submit" class="px-4 py-2 rounded-lg text-xs font-semibold bg-red-600 text-white shadow-xs">Ya, Hapus Klien</button>
             </form>
         </div>
     </div>
@@ -8341,7 +8341,7 @@ function clientProfileDetail() {
                 class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
 
                 {{-- Centered Top Icon Badge --}}
-                <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
+                <div class="mx-auto w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
                         <line x1="12" y1="9" x2="12" y2="13"/>
@@ -8362,14 +8362,14 @@ function clientProfileDetail() {
                     <button 
                         type="button" 
                         @click="showUnsavedChangesModal = false"
-                        class="w-full py-3 rounded-2xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
+                        class="w-full py-3 rounded-xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
                     >
                         Lanjut Mengisi
                     </button>
                     <button 
                         type="button"
                         @click="confirmDiscard()" 
-                        class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-2xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
+                        class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
                     >
                         <span class="relative z-10">Ya, Tinggalkan</span>
                     </button>
@@ -8453,7 +8453,7 @@ function clientProfileDetail() {
                  x-transition:leave="ease-in duration-200"
                  x-transition:leave-start="opacity-100 scale-100"
                  x-transition:leave-end="opacity-0 scale-95"
-                 class="relative bg-white rounded-3xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+                 class="relative bg-white rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
 
                 {{-- Header Modal --}}
                 <div class="px-6 py-5 bg-purple-deep text-white flex items-center justify-between shrink-0">
@@ -8476,12 +8476,12 @@ function clientProfileDetail() {
                     <div class="p-6 sm:p-7 overflow-y-auto space-y-5 text-black">
 
                         {{-- 1. Kategori Layanan --}}
-                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-2">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-2">
                             <label class="block text-xs font-semibold text-gray-700">Kategori Layanan <span class="text-red-500">*</span></label>
                             <template x-if="scheduleCategoryLocked">
                                 <div>
                                     <input type="hidden" name="kategori" :value="scheduleCategory">
-                                    <div class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-black uppercase tracking-wider flex items-center justify-between">
+                                    <div class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-black uppercase tracking-wider flex items-center justify-between">
                                         <span x-text="scheduleCategory === 'konseling' ? 'Layanan Konseling' : 'Layanan Asesmen Psikotes'"></span>
                                         <span class="text-xs text-gray-400 font-normal">Terkunci sesuai jenis formulir</span>
                                     </div>
@@ -8490,7 +8490,7 @@ function clientProfileDetail() {
                             <template x-if="!scheduleCategoryLocked">
                                 <div>
                                     <select name="kategori" x-model="scheduleCategory" @change="onCategoryChange()"
-                                            class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-xs font-semibold text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                            class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-xs font-semibold text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                         <option value="konseling">Layanan Konseling (WNA)</option>
                                         <option value="psikotes">Layanan Asesmen Psikotes (WNA / Asesmen)</option>
                                     </select>
@@ -8500,7 +8500,7 @@ function clientProfileDetail() {
                         </div>
 
                         {{-- 2. Spesifikasi Tier & Paket Layanan Sesuai Katalog --}}
-                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-4">
                             <h5 class="text-xs font-bold text-gray-700 uppercase tracking-wider">Spesifikasi Paket & Tarif Resmi</h5>
 
                             {{-- Option bila Kategori Konseling --}}
@@ -8510,7 +8510,7 @@ function clientProfileDetail() {
                                         <div>
                                             <label class="block text-xs font-medium text-gray-600 mb-1">Tier Konseling <span class="text-red-500">*</span></label>
                                             <select name="service_tier" x-model="scheduleTier" @change="onTierChange()"
-                                                    class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                                    class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                                 <option value="pro">Pro (Psikolog Senior)</option>
                                                 <option value="reguler">Reguler</option>
                                             </select>
@@ -8518,7 +8518,7 @@ function clientProfileDetail() {
                                         <div>
                                             <label class="block text-xs font-medium text-gray-600 mb-1">Paket Konseling & Tarif <span class="text-red-500">*</span></label>
                                             <select name="service_package_key" x-model="schedulePackageKey"
-                                                    class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                                    class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                                 <template x-if="scheduleTier === 'pro'">
                                                     <optgroup label="Pro (Psikolog Senior)">
                                                         <option value="pro_wni_umum">WNI - Umum (Rp 525.000 / sesi)</option>
@@ -8548,7 +8548,7 @@ function clientProfileDetail() {
                                         <div>
                                             <label class="block text-xs font-medium text-gray-600 mb-1">Klasifikasi Psikotes <span class="text-red-500">*</span></label>
                                             <select name="service_tier" x-model="scheduleTier" @change="onTierChange()"
-                                                    class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                                    class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                                 <option value="industri">Psikotes Industri</option>
                                                 <option value="non_industri_bakat_minat">Non-Industri (Bakat Minat Biasa)</option>
                                                 <option value="non_industri_khusus">Non-Industri Khusus</option>
@@ -8557,7 +8557,7 @@ function clientProfileDetail() {
                                         <div>
                                             <label class="block text-xs font-medium text-gray-600 mb-1">Format, Level & Kategori <span class="text-red-500">*</span></label>
                                             <select name="service_package_key" x-model="schedulePackageKey"
-                                                    class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                                    class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                                 <template x-if="scheduleTier === 'industri'">
                                                     <optgroup label="Psikotes Industri">
                                                         <option value="short_staf_umum">Short - Staf - Umum (Rp 575.000)</option>
@@ -8594,20 +8594,20 @@ function clientProfileDetail() {
                             </template>
 
                             {{-- Summary Tarif Terpilih --}}
-                            <div class="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                            <div class="p-3 bg-white rounded-lg border border-slate-200 flex items-center justify-between text-xs">
                                 <span class="text-gray-500 font-medium">Tarif Resmi Sesi:</span>
                                 <span class="text-black font-bold text-sm" x-text="calculatedPriceInfo.price_formatted"></span>
                             </div>
                         </div>
 
                         {{-- 3. Praktisi (Konselor atau Staff Penguji) --}}
-                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
                             <h5 class="text-xs font-bold text-gray-700 uppercase tracking-wider">Penugasan Psikolog / Penguji</h5>
                             <template x-if="scheduleCategory === 'konseling' || schedulePackageKey === 'konseling_ssct_epps'">
                                 <div>
                                     <label class="block text-xs font-medium text-gray-600 mb-1">Pilih Psikolog Praktik <span class="text-red-500">*</span></label>
                                     <select name="counselor_id" x-model="scheduleCounselorId" required
-                                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                            class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                         <option value="">-- Pilih Psikolog --</option>
                                         @foreach($counselors as $c)
                                         <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -8619,7 +8619,7 @@ function clientProfileDetail() {
                                 <div>
                                     <label class="block text-xs font-medium text-gray-600 mb-1">Pilih Staff Penguji <span class="text-red-500">*</span></label>
                                     <select name="staff_penguji_id" x-model="scheduleStaffId" required
-                                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                            class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                         <option value="">-- Pilih Staff Penguji --</option>
                                         @foreach($staffMembers as $s)
                                         <option value="{{ $s->id }}">{{ $s->name }} ({{ $s->email }})</option>
@@ -8630,30 +8630,30 @@ function clientProfileDetail() {
                         </div>
 
                         {{-- 4. Jadwal & Waktu Sesi --}}
-                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-3">
                             <h5 class="text-xs font-bold text-gray-700 uppercase tracking-wider">Waktu & Tempat Pelaksanaan</h5>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div>
                                     <label class="block text-xs font-medium text-gray-600 mb-1">Tanggal Sesi <span class="text-red-500">*</span></label>
                                     <input type="date" name="tanggal_dijadwalkan" x-model="scheduleDate" required
-                                           class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                           class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-gray-600 mb-1">Jam Mulai <span class="text-red-500">*</span></label>
                                     <input type="time" name="session_start" x-model="scheduleStart" required
-                                           class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                           class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-gray-600 mb-1">Jam Selesai <span class="text-red-500">*</span></label>
                                     <input type="time" name="session_end" x-model="scheduleEnd" required
-                                           class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                           class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                                 <div>
                                     <label class="block text-xs font-medium text-gray-600 mb-1">Metode Sesi <span class="text-red-500">*</span></label>
                                     <select name="session_type" x-model="scheduleSessionType"
-                                            class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                            class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                         <option value="offline">Offline (Tatap Muka di UC PSC)</option>
                                         <option value="online">Online (Video Call / Google Meet / Zoom)</option>
                                     </select>
@@ -8661,27 +8661,27 @@ function clientProfileDetail() {
                                 <div>
                                     <label class="block text-xs font-medium text-gray-600 mb-1">Lokasi / Link Pertemuan</label>
                                     <input type="text" name="location" x-model="scheduleLocation" placeholder="Contoh: Ruang Konseling 1 atau Link Zoom"
-                                           class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
+                                           class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep">
                                 </div>
                             </div>
                         </div>
 
                         {{-- 5. Catatan Khusus --}}
-                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-1.5">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5">
                             <label class="block text-xs font-semibold text-gray-700">Catatan Pelaporan & Briefing</label>
                             <textarea name="notes" x-model="scheduleNotes" rows="2" placeholder="Catatan hasil konfirmasi antara staf dan konselor/penguji..."
-                                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep"></textarea>
+                                      class="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-xs font-medium text-black bg-white focus:ring-2 focus:ring-purple-deep"></textarea>
                         </div>
                     </div>
 
                     {{-- Footer Modal --}}
                     <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2.5 shrink-0">
                         <button type="button" @click="closeScheduleModal()"
-                                class="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-gray-600 hover:bg-slate-100 transition cursor-pointer">
+                                class="px-4 py-2.5 rounded-lg border border-slate-200 text-xs font-semibold text-gray-600 hover:bg-slate-100 transition cursor-pointer">
                             Batal
                         </button>
                         <button type="submit"
-                                class="px-5 py-2.5 rounded-xl bg-purple-deep hover:bg-purple-900 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                                class="px-5 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-900 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                             <span>Simpan Jadwal & Layanan</span>
                         </button>

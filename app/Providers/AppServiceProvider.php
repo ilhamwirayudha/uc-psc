@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
-use App\Models\Client;
 use App\Models\Booking;
-use App\Policies\ClientPolicy;
+use App\Models\Client;
+use App\Models\ClientForm;
+use App\Models\ClientStaffAssignment;
+use App\Models\PaymentTransaction;
 use App\Policies\BookingPolicy;
+use App\Policies\ClientPolicy;
+use App\Services\ActivityLogger;
 use Illuminate\Foundation\Console\ServeCommand;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -68,6 +72,169 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\View::composer('components.test-result-modal', function ($view) {
             $view->with('clients', \App\Models\Client::orderBy('name')->get());
             $view->with('psikotesBookings', \App\Models\Booking::where('kategori', 'psikotes')->with(['client', 'staffPenguji', 'staffKoreksi', 'staffPelapor'])->latest()->get());
+        });
+
+        $this->registerActivityObservers();
+    }
+
+    /**
+     * Catat setiap perubahan sekecil apa pun pada entitas utama saat pengguna sedang login.
+     */
+    protected function registerActivityObservers(): void
+    {
+        Client::created(function (Client $client) {
+            ActivityLogger::recordForCurrentUser(
+                'klien',
+                'client.created',
+                'Mendaftarkan Klien Baru',
+                'Klien ' . $client->name . ' ditambahkan ke sistem.',
+                $client->service_type ? 'Layanan ' . ucfirst(str_replace('_', ' ', $client->service_type)) : 'Data Klien'
+            );
+        });
+
+        Client::updated(function (Client $client) {
+            $changed = ActivityLogger::summarizeDirtyFields($client, [
+                'name' => 'Nama Lengkap',
+                'phone' => 'No. Telepon',
+                'email' => 'Email',
+                'gender' => 'Jenis Kelamin',
+                'birth_place' => 'Tempat Lahir',
+                'dob' => 'Tanggal Lahir',
+                'address' => 'Alamat',
+                'service_type' => 'Jenis Layanan',
+                'counseling_type' => 'Jenis Konseling',
+                'status' => 'Status',
+                'notes' => 'Catatan',
+                'assigned_staff_id' => 'PIC Staff',
+            ]);
+
+            if ($changed === '') {
+                return;
+            }
+
+            ActivityLogger::recordForCurrentUser(
+                'klien',
+                'client.updated',
+                'Memperbarui Data Klien',
+                'Data klien ' . $client->name . ' diperbarui pada bagian: ' . $changed . '.',
+                $changed
+            );
+        });
+
+        Client::deleted(function (Client $client) {
+            ActivityLogger::recordForCurrentUser(
+                'klien',
+                'client.deleted',
+                'Menghapus Data Klien',
+                'Data klien ' . $client->name . ' dihapus dari sistem.',
+                'Hapus Klien'
+            );
+        });
+
+        ClientStaffAssignment::created(function (ClientStaffAssignment $assignment) {
+            $clientName = $assignment->client?->name ?? 'Klien #' . $assignment->client_id;
+            $staffName = $assignment->staff?->name ?? 'Staff #' . $assignment->staff_id;
+
+            ActivityLogger::recordForCurrentUser(
+                'penugasan',
+                'assignment.created',
+                'Menetapkan Penugasan Staff',
+                'Menugaskan ' . $staffName . ' untuk menangani klien ' . $clientName . '.',
+                'Penugasan Aktif'
+            );
+        });
+
+        ClientStaffAssignment::updated(function (ClientStaffAssignment $assignment) {
+            $changed = ActivityLogger::summarizeDirtyFields($assignment, [
+                'staff_id' => 'PIC Staff',
+                'ended_at' => 'Tanggal Selesai Penugasan',
+                'notes' => 'Catatan Penugasan',
+            ]);
+
+            if ($changed === '') {
+                return;
+            }
+
+            $clientName = $assignment->client?->name ?? 'Klien #' . $assignment->client_id;
+            ActivityLogger::recordForCurrentUser(
+                'penugasan',
+                'assignment.updated',
+                'Memperbarui Penugasan Staff',
+                'Penugasan untuk klien ' . $clientName . ' diperbarui pada: ' . $changed . '.',
+                $changed
+            );
+        });
+
+        Booking::created(function (Booking $booking) {
+            $clientName = $booking->client?->name ?? 'Klien';
+            $kategori = $booking->kategori === 'psikotes' ? 'Psikotes' : 'Konseling';
+
+            ActivityLogger::recordForCurrentUser(
+                'layanan',
+                'booking.created',
+                'Membuat Jadwal Layanan ' . $kategori,
+                'Jadwal layanan ' . strtolower($kategori) . ' dibuat untuk klien ' . $clientName . '.',
+                $kategori
+            );
+        });
+
+        Booking::updated(function (Booking $booking) {
+            $changed = ActivityLogger::summarizeDirtyFields($booking, [
+                'status' => 'Status Layanan',
+                'tanggal_dijadwalkan' => 'Jadwal Pelaksanaan',
+                'staff_penguji_id' => 'Staff Penguji',
+                'staff_koreksi_id' => 'Staff Korektor',
+                'staff_pelapor_id' => 'Staff Pelapor',
+                'counselor_id' => 'Konselor',
+                'catatan' => 'Catatan',
+                'harga_total' => 'Total Tarif',
+                'status_pembayaran' => 'Status Pembayaran',
+            ]);
+
+            if ($changed === '') {
+                return;
+            }
+
+            $clientName = $booking->client?->name ?? 'Klien';
+            $kategori = $booking->kategori === 'psikotes' ? 'Psikotes' : 'Konseling';
+
+            ActivityLogger::recordForCurrentUser(
+                'layanan',
+                'booking.updated',
+                'Memperbarui Layanan ' . $kategori,
+                'Layanan ' . strtolower($kategori) . ' klien ' . $clientName . ' diperbarui pada: ' . $changed . '.',
+                $changed
+            );
+        });
+
+        ClientForm::updated(function (ClientForm $form) {
+            $changed = ActivityLogger::summarizeDirtyFields($form, [
+                'answers' => 'Isian Formulir',
+                'form_type' => 'Jenis Formulir',
+            ]);
+
+            if ($changed === '') {
+                return;
+            }
+
+            $clientName = $form->client?->name ?? 'Klien';
+            ActivityLogger::recordForCurrentUser(
+                'klien',
+                'client_form.updated',
+                'Memperbarui Berkas Formulir Klien',
+                'Berkas formulir (' . ($form->form_type_label ?? $form->form_type) . ') milik ' . $clientName . ' diperbarui.',
+                $changed
+            );
+        });
+
+        PaymentTransaction::created(function (PaymentTransaction $trx) {
+            ActivityLogger::recordForCurrentUser(
+                'layanan',
+                'payment.created',
+                'Mencatat Transaksi Pembayaran',
+                'Transaksi pembayaran baru sebesar Rp ' . number_format((float) ($trx->amount ?? 0), 0, ',', '.') . ' dicatat.',
+                'Pembayaran'
+            );
         });
     }
 }

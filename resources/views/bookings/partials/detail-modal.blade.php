@@ -15,8 +15,8 @@
 
         {{-- Modal panel wrapper --}}
         <div class="min-h-full flex items-center justify-center p-4">
-            {{-- Modal Dialog Container (Ukuran container max-w-4xl, bg-purple-deep rounded-2xl shadow-2xl) --}}
-            <div x-show="detailModalOpen" x-transition class="relative bg-purple-deep/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col z-10 my-6">
+            {{-- Modal Dialog Container (Ukuran container max-w-4xl, bg-purple-deep rounded-xl shadow-2xl) --}}
+            <div x-show="detailModalOpen" x-transition class="relative bg-purple-deep/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-2xl overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col z-10 my-6">
                 
                 {{-- Modal Header --}}
                 <div class="flex items-center justify-between px-6 py-4 bg-purple-deep text-white border-b border-purple-900/40 shrink-0">
@@ -30,7 +30,7 @@
                 </div>
 
                 {{-- Modal Scrollable Body & Form --}}
-                <form :action="editForm.action_url" method="POST" class="flex-1 overflow-y-auto bg-[#FAF8FD] p-5 sm:p-6 pb-6 sm:pb-8 space-y-5 rounded-b-2xl scroll-smooth">
+                <form :action="editForm.action_url" method="POST" class="flex-1 overflow-y-auto bg-[#FAF8FD] p-5 sm:p-6 pb-6 sm:pb-8 space-y-5 rounded-b-xl scroll-smooth">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="client_id" :value="editForm.client_id">
@@ -41,7 +41,7 @@
                     {{-- ======================================================== --}}
                     {{-- CARD: BIODATA & PROFIL KLIEN (KLIEN TERDAFTAR)          --}}
                     {{-- ======================================================== --}}
-                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] overflow-hidden">
                         <div class="px-5 py-3 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
                             <h3 class="text-sm sm:text-base font-bold text-white">Biodata &amp; Profil Klien</h3>
                         </div>
@@ -50,42 +50,42 @@
                         <div class="p-5 sm:p-6 space-y-3">
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
-                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                     <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.name || '-'"></span>
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon</label>
-                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                     <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.phone || '-'"></span>
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Email</label>
-                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                     <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.email || '-'"></span>
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                     <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.gender || '-'"></span>
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
-                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                     <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking?.client?.dob || '-'"></span>
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan &amp; Pekerjaan</label>
-                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                     <span class="text-black font-medium text-sm block leading-relaxed break-words" x-text="(selectedBooking?.client?.education || '-') + ' • ' + (selectedBooking?.client?.occupation || '-')"></span>
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                             <template x-if="selectedBooking?.client?.pic_name">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">PIC Perusahaan</label>
-                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                         <span class="text-black font-medium text-sm block break-words" x-text="selectedBooking.client.pic_name"></span>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@
 
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Lengkap</label>
-                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                     <span class="text-black font-medium text-sm block leading-relaxed break-words" x-text="selectedBooking?.client?.address || '-'"></span>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                     {{-- ======================================================== --}}
                     {{-- CARD: PILIHAN LAYANAN                                    --}}
                     {{-- ======================================================== --}}
-                    <div id="card-pilihan-layanan" class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+                    <div id="card-pilihan-layanan" class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] overflow-hidden">
                         <div class="px-5 py-3 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
                             <h3 class="text-sm sm:text-base font-bold text-white">Pilihan Layanan</h3>
                             <div class="flex items-center gap-2">
@@ -160,9 +160,9 @@
                                     :class="editForm.kategori === 'konseling'
                                         ? 'border-2 border-purple-deep bg-purple-50/40 ring-1 ring-purple-deep/20 shadow-xs' 
                                         : (editingCard === 'layanan' ? 'border border-slate-200 bg-white hover:border-[#D9C2F0] hover:bg-[#FAF8FD] cursor-pointer' : 'border border-slate-200 bg-slate-50/60 opacity-60 cursor-default')"
-                                    class="text-left p-4 sm:p-5 rounded-2xl transition duration-200 flex items-start gap-3.5 group relative">
+                                    class="text-left p-4 sm:p-5 rounded-xl transition duration-200 flex items-start gap-3.5 group relative">
                                     <div :class="editForm.kategori === 'konseling' ? 'bg-purple-deep text-white shadow-xs' : 'bg-purple-50 text-purple-deep'"
-                                        class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition">
+                                        class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0 transition">
                                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                                         </svg>
@@ -190,9 +190,9 @@
                                     :class="editForm.kategori === 'psikotes'
                                         ? 'border-2 border-purple-deep bg-purple-50/40 ring-1 ring-purple-deep/20 shadow-xs' 
                                         : (editingCard === 'layanan' ? 'border border-slate-200 bg-white hover:border-[#D9C2F0] hover:bg-[#FAF8FD] cursor-pointer' : 'border border-slate-200 bg-slate-50/60 opacity-60 cursor-default')"
-                                    class="text-left p-4 sm:p-5 rounded-2xl transition duration-200 flex items-start gap-3.5 group relative">
+                                    class="text-left p-4 sm:p-5 rounded-xl transition duration-200 flex items-start gap-3.5 group relative">
                                     <div :class="editForm.kategori === 'psikotes' ? 'bg-purple-deep text-white shadow-xs' : 'bg-purple-50 text-purple-deep'"
-                                        class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition">
+                                        class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0 transition">
                                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                             <path d="M9 11l3 3L22 4"/>
                                             <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
@@ -218,7 +218,7 @@
 
                             {{-- 2. DROPDOWN YANG URUT KE BAWAH (Identik dengan Buat Booking Layanan) --}}
                             <div id="dropdown-paket-layanan-container" 
-                                class="p-5 bg-slate-50 rounded-xl border border-slate-100 space-y-4">
+                                class="p-5 bg-slate-50 rounded-lg border border-slate-100 space-y-4">
 
                                 {{-- ======================================================== --}}
                                 {{-- CABANG DROPDOWN KONSELING                                --}}
@@ -232,7 +232,7 @@
                                         <select x-model="editForm.service_type" 
                                             :disabled="editingCard !== 'layanan'"
                                             @change="onKonselingTypeChange($event.target.value)"
-                                            class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                            class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                             :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                             <option value="">-- Pilih Jenis Layanan --</option>
                                             <option value="konseling_reguler">Konseling Reguler</option>
@@ -248,7 +248,7 @@
                                         <select x-model="editForm.service_metode" 
                                             :disabled="editingCard !== 'layanan'"
                                             @change="onKonselingMetodeChange($event.target.value)"
-                                            class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                            class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                             :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                             <option value="">-- Pilih Metode --</option>
                                             <option value="Offline">Offline</option>
@@ -264,7 +264,7 @@
                                         <select x-model="editForm.service_klien" 
                                             :disabled="editingCard !== 'layanan'"
                                             @change="onKonselingKlienChange($event.target.value)"
-                                            class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                            class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                             :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                             <option value="">-- Pilih Klien --</option>
                                             <option value="WNI">WNI</option>
@@ -280,7 +280,7 @@
                                         <select x-model="editForm.service_kategori" 
                                             :disabled="editingCard !== 'layanan'"
                                             @change="onKonselingKategoriChange($event.target.value)"
-                                            class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                            class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                             :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                             <option value="">-- Pilih Kategori --</option>
                                             <option value="Umum">Umum</option>
@@ -301,7 +301,7 @@
                                         <select x-model="editForm.service_type" 
                                             :disabled="editingCard !== 'layanan'"
                                             @change="onPsikotesTypeChange($event.target.value)"
-                                            class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                            class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                             :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                             <option value="">-- Pilih Jenis Layanan --</option>
                                             <option value="psikotes_industri">Psikotes Industri</option>
@@ -320,7 +320,7 @@
                                             <select x-model="editForm.service_metode" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesMetodeChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Metode --</option>
                                                 <option value="Offline">Offline</option>
@@ -332,7 +332,7 @@
                                             <select x-model="editForm.service_metode" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesMetodeChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Metode --</option>
                                                 <option value="Offline">Offline</option>
@@ -352,7 +352,7 @@
                                             <select x-model="editForm.service_format" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesFormatChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Format --</option>
                                                 <option value="Short">Short</option>
@@ -364,7 +364,7 @@
                                             <select x-model="editForm.service_format" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesFormatChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Format --</option>
                                                 <option value="UCS-MED">UCS-MED</option>
@@ -377,7 +377,7 @@
                                             <select x-model="editForm.service_format" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesFormatChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Format --</option>
                                                 <option value="Konseling Psikotes">Konseling Psikotes</option>
@@ -395,7 +395,7 @@
                                             <select x-model="editForm.service_level" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesLevelChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Level --</option>
                                                 <option value="Staf">Staf</option>
@@ -406,7 +406,7 @@
                                             <select x-model="editForm.service_level" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesLevelChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Level --</option>
                                                 <option value="Staf">Staf</option>
@@ -426,7 +426,7 @@
                                             <select x-model="editForm.service_kategori" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesKategoriChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Kategori --</option>
                                                 <option value="Umum">Umum</option>
@@ -438,7 +438,7 @@
                                             <select x-model="editForm.service_kategori" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesKategoriChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Kategori --</option>
                                                 <option value="MMPI">MMPI</option>
@@ -449,7 +449,7 @@
                                             <select x-model="editForm.service_kategori" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesKategoriChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Kategori --</option>
                                                 <option value="MMPI">MMPI</option>
@@ -461,7 +461,7 @@
                                             <select x-model="editForm.service_kategori" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesKategoriChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Kategori --</option>
                                                 <option value="FCAT - FTPI - FEAST">FCAT - FTPI - FEAST</option>
@@ -472,7 +472,7 @@
                                             <select x-model="editForm.service_kategori" 
                                                 :disabled="editingCard !== 'layanan'"
                                                 @change="onPsikotesKategoriChange($event.target.value)"
-                                                class="w-full px-4 py-2.5 rounded-xl text-sm font-medium transition"
+                                                class="w-full px-4 py-2.5 rounded-lg text-sm font-medium transition"
                                                 :class="editingCard === 'layanan' ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-black cursor-pointer' : 'bg-slate-100 border border-slate-200 text-black cursor-default'">
                                                 <option value="">-- Pilih Kategori --</option>
                                                 <option value="SSCT - EPPS">SSCT - EPPS</option>
@@ -488,7 +488,7 @@
                                     <label class="block text-xs font-bold text-[#5B4A73] mb-1.5">
                                         Format Data Layanan (Tercatat)
                                     </label>
-                                    <div class="px-4 py-2.5 bg-white border border-slate-200/90 rounded-xl text-sm text-black font-medium flex items-center gap-2 shadow-xs"
+                                    <div class="px-4 py-2.5 bg-white border border-slate-200/90 rounded-lg text-sm text-black font-medium flex items-center gap-2 shadow-xs"
                                         :title="editForm.counseling_type">
                                         <svg class="w-4 h-4 text-emerald-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                             <polyline points="20 6 9 17 4 12"/>
@@ -505,7 +505,7 @@
                     {{-- ======================================================== --}}
                     {{-- CARD: PENUGASAN KONSELOR / STAFF PELAKSANA               --}}
                     {{-- ======================================================== --}}
-                    <div id="card-penugasan" class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+                    <div id="card-penugasan" class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] overflow-hidden">
                         <div class="px-5 py-3 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
                             <h3 class="text-sm sm:text-base font-bold text-white">Penugasan Psikolog / Staff Pelaksana</h3>
                             <template x-if="editingCard !== 'penugasan'">
@@ -547,7 +547,7 @@
                             {{-- Cabang Konseling --}}
                             <div x-show="(editForm.kategori || selectedBooking?.kategori) === 'konseling'">
                                 <template x-if="editingCard !== 'penugasan'">
-                                    <div class="p-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between">
+                                    <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between">
                                         <div>
                                             <span class="block text-xs font-medium text-gray-500">Psikolog Bertugas</span>
                                             <p class="text-sm font-medium text-black mt-1" x-text="selectedBooking?.counselor?.name || 'Belum Ditentukan'"></p>
@@ -562,7 +562,7 @@
                                             Pilih Psikolog Bertugas
                                         </label>
                                         <select name="counselor_id" x-model="editForm.counselor_id" 
-                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                             <option value="">-- Belum Ditentukan / Tentukan Nanti --</option>
                                             @foreach($counselors as $counselor)
                                             <option value="{{ $counselor->id }}">
@@ -580,15 +580,15 @@
                                     <div class="space-y-3">
                                         <div>
                                             <label class="block text-xs font-medium text-slate-500 mb-1">Staff Penguji / Tester</label>
-                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-xl min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_penguji?.name || '-'"></div>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-lg min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_penguji?.name || '-'"></div>
                                         </div>
                                         <div>
                                             <label class="block text-xs font-medium text-slate-500 mb-1">Staff Koreksi / Skoring</label>
-                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-xl min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_koreksi?.name || '-'"></div>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-lg min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_koreksi?.name || '-'"></div>
                                         </div>
                                         <div>
                                             <label class="block text-xs font-medium text-slate-500 mb-1">Staff Pelapor / Hasil</label>
-                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-xl min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_pelapor?.name || '-'"></div>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 border border-slate-100 rounded-lg min-h-[42px] flex items-center text-sm font-medium text-black break-words" x-text="selectedBooking?.staff_pelapor?.name || '-'"></div>
                                         </div>
                                     </div>
                                 </template>
@@ -597,7 +597,7 @@
                                         <div>
                                             <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Staff Penguji / Tester</label>
                                             <select name="staff_penguji_id" x-model="editForm.staff_penguji_id"
-                                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                                 <option value="">-- Pilih Staff --</option>
                                                 @foreach($staffs as $staff)
                                                 <option value="{{ $staff->id }}">{{ $staff->name }}</option>
@@ -607,7 +607,7 @@
                                         <div>
                                             <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Staff Koreksi / Skoring</label>
                                             <select name="staff_koreksi_id" x-model="editForm.staff_koreksi_id"
-                                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                                 <option value="">-- Pilih Staff --</option>
                                                 @foreach($staffs as $staff)
                                                 <option value="{{ $staff->id }}">{{ $staff->name }}</option>
@@ -617,7 +617,7 @@
                                         <div>
                                             <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Staff Pelapor / Hasil</label>
                                             <select name="staff_pelapor_id" x-model="editForm.staff_pelapor_id"
-                                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                                 <option value="">-- Pilih Staff --</option>
                                                 @foreach($staffs as $staff)
                                                 <option value="{{ $staff->id }}">{{ $staff->name }}</option>
@@ -635,7 +635,7 @@
                     {{-- ======================================================== --}}
                     {{-- CARD: JADWAL, WAKTU & LOKASI SESI                        --}}
                     {{-- ======================================================== --}}
-                    <div id="card-jadwal" class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+                    <div id="card-jadwal" class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] overflow-hidden">
                         <div class="px-5 py-3 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
                             <h3 class="text-sm sm:text-base font-bold text-white">Jadwal, Waktu &amp; Lokasi Sesi</h3>
                             <template x-if="editingCard !== 'jadwal'">
@@ -679,7 +679,7 @@
                                 <div class="space-y-3">
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Permintaan Booking</label>
-                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between gap-2 text-sm font-medium text-black">
                                             <span x-text="selectedBooking?.tanggal_booking_dibuat_formatted || '-'"></span>
                                             <span class="text-slate-400 font-medium text-xs" x-text="'Pukul ' + (selectedBooking?.jam_dibuat || '-')"></span>
                                         </div>
@@ -687,22 +687,22 @@
 
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Sesi Pelaksanaan</label>
-                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.tanggal_dijadwalkan_formatted || 'Belum Dijadwalkan'"></div>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.tanggal_dijadwalkan_formatted || 'Belum Dijadwalkan'"></div>
                                     </div>
 
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jam Pelaksanaan Sesi</label>
-                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.jam_sesi || 'Jam belum diatur'"></div>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.jam_sesi || 'Jam belum diatur'"></div>
                                     </div>
 
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Metode Pertemuan / Sesi</label>
-                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.session_type ? (selectedBooking.session_type === 'online' ? 'Online' : 'Offline') : 'Offline'"></div>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.session_type ? (selectedBooking.session_type === 'online' ? 'Online' : 'Offline') : 'Offline'"></div>
                                     </div>
 
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Ruangan / Lokasi / Link Meeting</label>
-                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black leading-relaxed break-words" x-text="selectedBooking?.location || '-'"></div>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black leading-relaxed break-words" x-text="selectedBooking?.location || '-'"></div>
                                     </div>
                                 </div>
                             </template>
@@ -717,7 +717,7 @@
                                         </label>
                                         <div class="relative">
                                             <input type="text" readonly :value="(selectedBooking?.tanggal_booking_dibuat_formatted || '') + ' • ' + (selectedBooking?.jam_dibuat || '')"
-                                                class="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-black font-medium focus:outline-none cursor-default select-none">
+                                                class="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-black font-medium focus:outline-none cursor-default select-none">
                                             <div class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                     <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
@@ -730,28 +730,28 @@
                                     <div>
                                         <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Tanggal Sesi Pelaksanaan</label>
                                         <input type="date" name="tanggal_dijadwalkan" x-model="editForm.tanggal_dijadwalkan"
-                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                     </div>
 
                                     {{-- Jam Mulai --}}
                                     <div>
                                         <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Jam Mulai Sesi</label>
                                         <input type="time" name="start_time" x-model="editForm.start_time"
-                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                     </div>
 
                                     {{-- Jam Selesai --}}
                                     <div>
                                         <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Jam Selesai Sesi</label>
                                         <input type="time" name="end_time" x-model="editForm.end_time"
-                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                     </div>
 
                                     {{-- Metode Sesi --}}
                                     <div>
                                         <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Metode Pertemuan / Sesi</label>
                                         <select name="session_type" x-model="editForm.session_type"
-                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                             <option value="tatap_muka">Offline</option>
                                             <option value="online">Online</option>
                                             <option value="whatsapp">WhatsApp</option>
@@ -763,7 +763,7 @@
                                         <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Ruangan / Lokasi / Link Meeting</label>
                                         <input type="text" name="location" x-model="editForm.location" 
                                             :placeholder="editForm.session_type === 'online' ? 'https://meet.google.com/xxx-xxxx-xxx' : 'Contoh: Ruang Konseling A / Lab Psikodiagnostik'"
-                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                     </div>
                                 </div>
 
@@ -777,7 +777,7 @@
                     {{-- CARD: DAFTAR ANGGOTA / PESERTA (KHUSUS INDUSTRI/PSIKOTES)--}}
                     {{-- ======================================================== --}}
                     <div id="card-peserta" x-show="['industri', 'company', 'perusahaan'].includes(selectedBooking?.client?.jenis) || selectedBooking?.kategori === 'psikotes' || (editForm.participants && editForm.participants.length > 0 && editForm.participants[0] !== '')" 
-                        class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+                        class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] overflow-hidden">
                         <div class="px-5 py-3 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
                             <h3 class="text-sm sm:text-base font-bold text-white">Daftar Karyawan / Peserta Asesmen</h3>
                             <div class="flex items-center gap-2">
@@ -828,7 +828,7 @@
                                     <template x-if="selectedBooking?.participants && selectedBooking.participants.length > 0">
                                         <div class="space-y-2">
                                             <template x-for="(nama, idx) in selectedBooking.participants" :key="idx">
-                                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-2.5 w-full">
+                                                <div class="p-3 bg-slate-50 rounded-lg border border-slate-100 flex items-center gap-2.5 w-full">
                                                     <span class="w-6 h-6 rounded-full bg-purple-deep/10 text-purple-deep font-bold text-xs flex items-center justify-center shrink-0" x-text="idx + 1"></span>
                                                     <span class="text-black font-medium text-sm break-words" x-text="nama"></span>
                                                 </div>
@@ -836,7 +836,7 @@
                                         </div>
                                     </template>
                                     <template x-if="!selectedBooking?.participants || selectedBooking.participants.length === 0">
-                                        <p class="text-xs text-gray-500 italic p-3 bg-slate-50 rounded-xl border border-slate-100">Belum ada daftar nama peserta yang dicatat.</p>
+                                        <p class="text-xs text-gray-500 italic p-3 bg-slate-50 rounded-lg border border-slate-100">Belum ada daftar nama peserta yang dicatat.</p>
                                     </template>
                                 </div>
                             </template>
@@ -849,7 +849,7 @@
                                             <span class="text-xs font-bold text-[#6B5B85] w-6 text-right" x-text="(i + 1) + '.'"></span>
                                             <input type="text" :name="'participants[' + i + ']'" x-model="editForm.participants[i]"
                                                 placeholder="Nama lengkap karyawan / kandidat..."
-                                                class="flex-1 px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                                class="flex-1 px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                             <button type="button" @click="removeParticipant(i)" x-show="editForm.participants.length > 1"
                                                 class="p-2 text-red-400 hover:text-red-600 transition rounded-lg hover:bg-red-50 cursor-pointer" title="Hapus peserta">
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -866,7 +866,7 @@
                     {{-- ======================================================== --}}
                     {{-- CARD: STATUS & CATATAN BOOKING                           --}}
                     {{-- ======================================================== --}}
-                    <div id="card-status" class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+                    <div id="card-status" class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] overflow-hidden">
                         <div class="px-5 py-3 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
                             <h3 class="text-sm sm:text-base font-bold text-white">Status &amp; Catatan Sesi Booking</h3>
                             <template x-if="editingCard !== 'status'">
@@ -910,11 +910,11 @@
                                 <div class="space-y-3">
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Status Booking</label>
-                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.status_label"></div>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedBooking?.status_label"></div>
                                     </div>
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Catatan Khusus Sesi</label>
-                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed">
                                             <p class="whitespace-pre-line break-words" x-text="selectedBooking?.notes || 'Tidak ada catatan tambahan untuk booking ini.'"></p>
                                         </div>
                                     </div>
@@ -927,7 +927,7 @@
                                     <div>
                                         <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Status Booking <span class="text-red-500">*</span></label>
                                         <select name="status" x-model="editForm.status" required
-                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
+                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium">
                                             <option value="baru">Baru</option>
                                             <option value="lanjutan">Lanjutan</option>
                                             <option value="selesai">Selesai</option>
@@ -937,7 +937,7 @@
                                     <div>
                                         <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Catatan Khusus Sesi <span class="text-gray-400 font-normal">(Opsional)</span></label>
                                         <textarea name="notes" x-model="editForm.notes" rows="3" placeholder="Informasi kebutuhan khusus klien, paket yang diambil, atau instruksi ruangan..."
-                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium"></textarea>
+                                            class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black font-medium"></textarea>
                                     </div>
                                 </div>
                             </template>
@@ -948,14 +948,14 @@
                     {{-- CARD: RIWAYAT SESI BOOKING LAINNYA (JIKA ADA > 1 BOOKING)--}}
                     {{-- ======================================================== --}}
                     <template x-if="selectedBooking?.client?.bookings && selectedBooking.client.bookings.length > 1">
-                        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] overflow-hidden">
+                        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] overflow-hidden">
                             <div class="px-5 py-3 bg-purple-deep border-b border-purple-900/40 flex items-center justify-between">
                                 <h3 class="text-sm sm:text-base font-bold text-white">Riwayat Sesi Booking Klien Lainnya</h3>
                                 <span class="text-xs text-purple-200 font-semibold" x-text="selectedBooking.client.bookings.length + ' sesi tercatat'"></span>
                             </div>
                             <div class="divide-y divide-slate-100 p-2">
                                 <template x-for="b in selectedBooking.client.bookings" :key="b.id">
-                                    <div class="p-3 flex items-center justify-between text-xs hover:bg-slate-50 rounded-xl transition" :class="b.id === selectedBooking.id ? 'bg-purple-50/50 font-bold' : ''">
+                                    <div class="p-3 flex items-center justify-between text-xs hover:bg-slate-50 rounded-lg transition" :class="b.id === selectedBooking.id ? 'bg-purple-50/50 font-bold' : ''">
                                         <div>
                                             <span class="font-bold text-purple-deep" x-text="'Booking #' + b.id"></span>
                                             <template x-if="b.id === selectedBooking.id">

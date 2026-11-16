@@ -37,7 +37,7 @@
             x-transition:leave="ease-in duration-150"
             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
             x-transition:leave-end="opacity-0 translate-y-3 sm:scale-95"
-            class="relative w-full {{ $maxWidth }} glass-modal rounded-3xl overflow-hidden text-left"
+            class="relative w-full {{ $maxWidth }} glass-modal rounded-2xl overflow-hidden text-left"
         >
             {{-- Specular Top Highlight Edge --}}
             <div class="absolute top-0 inset-x-10 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"></div>

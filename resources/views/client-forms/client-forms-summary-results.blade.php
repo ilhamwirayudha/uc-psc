@@ -182,7 +182,7 @@
     {{-- ============================================================== --}}
     {{-- SPREADSHEET RESPON MASUK (GOOGLE SHEETS STYLE)                 --}}
     {{-- ============================================================== --}}
-    <div class="bg-white rounded-3xl border border-[#EDE1FA] shadow-xs overflow-hidden" 
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden" 
          x-data="{
              exportToCSV() {
                  let table = document.getElementById('sheetsResponseTable');
@@ -213,7 +213,7 @@
         {{-- Google Sheets Toolbar Header --}}
         <div class="px-5 sm:px-6 py-4 bg-[#FAF9FD] border-b border-[#EDE1FA] flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shadow-xs flex-shrink-0">
+                <div class="w-10 h-10 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold shadow-xs flex-shrink-0">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
                 </div>
                 
@@ -229,11 +229,11 @@
                 <form method="GET" action="{{ route('client-forms.results') }}" class="flex items-center gap-1.5">
                     <input type="hidden" name="category" value="{{ $activeKey }}">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari di spreadsheet..." 
-                           class="px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 w-44 sm:w-56 bg-white">
+                           class="px-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 w-44 sm:w-56 bg-white">
                 </form>
 
                 <button type="button" @click="exportToCSV()" 
-                        class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep border border-[#EDE1FA] font-semibold text-xs transition flex items-center gap-1.5 shadow-2xs cursor-pointer"
+                        class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep border border-[#EDE1FA] font-semibold text-xs transition flex items-center gap-1.5 shadow-2xs cursor-pointer"
                         title="Unduh seluruh respon dalam format CSV">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     <span>Download CSV</span>
@@ -244,7 +244,7 @@
         {{-- Spreadsheet Grid View --}}
         @if($submissions->isEmpty())
             <div class="py-16 text-center bg-white">
-                <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-3">
+                <div class="w-14 h-14 rounded-xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-3">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg>
                 </div>
                 <h3 class="text-sm font-bold text-slate-700">Belum Ada Baris Respon untuk {{ $activeCategory['short_title'] }}</h3>
@@ -619,7 +619,7 @@
     {{-- ============================================================== --}}
     <div x-show="showDossierModal" x-cloak 
          class="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-scale-up">
+        <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-scale-up">
             
             {{-- Modal Header --}}
             <div class="p-6 bg-purple-deep text-white flex items-center justify-between">
@@ -631,7 +631,7 @@
                     <button type="button" 
                             @click="printPdf(selectedForm)"
                             :disabled="isPrintingPdf || !selectedForm"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition cursor-pointer shadow-xs backdrop-blur-xs select-none disabled:opacity-60 disabled:cursor-not-allowed"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition cursor-pointer shadow-xs backdrop-blur-xs select-none disabled:opacity-60 disabled:cursor-not-allowed"
                             title="Download / Cetak Laporan PDF">
                         <template x-if="!isPrintingPdf">
                             <svg class="w-3.5 h-3.5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -659,7 +659,7 @@
                 <template x-if="selectedForm && selectedForm.answers">
                     <div class="space-y-6">
                         {{-- 1. Ringkasan Identitas Klien --}}
-                        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                        <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
                             <h4 class="font-bold text-black text-xs uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                 <span>Data Diri Klien</span>
@@ -689,7 +689,7 @@
 
                         {{-- 2. Data Pasangan (Khusus Pra-Nikah & Pernikahan) --}}
                         <template x-if="selectedForm.answers.nama_pasangan">
-                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3">
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-3">
                                 <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                                     <span>Data Pasangan & Riwayat Hubungan</span>
@@ -702,7 +702,7 @@
                                     <div><span class="text-slate-400 block">Pekerjaan:</span> <span x-text="selectedForm.answers.pekerjaan_pasangan || '-'"></span></div>
                                     <div><span class="text-slate-400 block">Agama:</span> <span x-text="selectedForm.answers.agama_pasangan || '-'"></span></div>
                                     <template x-if="selectedForm.answers.tanggal_rencana_pernikahan">
-                                        <div class="col-span-2 sm:col-span-3 bg-white p-2.5 rounded-xl border border-slate-100">
+                                        <div class="col-span-2 sm:col-span-3 bg-white p-2.5 rounded-lg border border-slate-100">
                                             <span class="text-black font-bold block mb-0.5">Rencana Pernikahan:</span>
                                             <p class="text-slate-800" x-text="selectedForm.answers.tanggal_rencana_pernikahan"></p>
                                         </div>
@@ -745,21 +745,21 @@
 
                         {{-- 3. Data Industri & Stres PSS (Khusus Formulir Industri) --}}
                         <template x-if="selectedForm.form_type === 'industri' || selectedForm.answers.posisi_dituju">
-                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3 text-xs">
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-3 text-xs">
                                 <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                                     <span>Posisi Dilamar & Pengalaman Industri</span>
                                 </h4>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                    <div class="col-span-2 sm:col-span-1 bg-white p-2.5 rounded-xl border border-slate-100">
+                                    <div class="col-span-2 sm:col-span-1 bg-white p-2.5 rounded-lg border border-slate-100">
                                         <span class="text-slate-400 block font-medium">Posisi yang Dituju:</span>
                                         <strong class="text-purple-deep text-sm" x-text="selectedForm.answers.posisi_dituju || '-'"></strong>
                                     </div>
-                                    <div class="bg-white p-2.5 rounded-xl border border-slate-100">
+                                    <div class="bg-white p-2.5 rounded-lg border border-slate-100">
                                         <span class="text-slate-400 block font-medium">Pekerjaan Saat Ini:</span>
                                         <strong class="text-slate-800" x-text="selectedForm.answers.pekerjaan_saat_ini || '-'"></strong>
                                     </div>
-                                    <div class="bg-white p-2.5 rounded-xl border border-slate-100">
+                                    <div class="bg-white p-2.5 rounded-lg border border-slate-100">
                                         <span class="text-slate-400 block font-medium">Ekspektasi Gaji:</span>
                                         <strong class="text-purple-deep" x-text="selectedForm.answers.ekspektasi_gaji || '-'"></strong>
                                     </div>
@@ -791,7 +791,7 @@
                             <div class="space-y-2">
                                 <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Data Orang Tua & Keluarga</h4>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div class="border rounded-2xl p-4 bg-slate-50/50 space-y-1.5 text-xs">
+                                    <div class="border rounded-xl p-4 bg-slate-50/50 space-y-1.5 text-xs">
                                         <h5 class="font-bold text-blue-900 uppercase mb-2 flex items-center gap-1.5">👨 Profil Ayah</h5>
                                         <p><span class="text-slate-400">Nama:</span> <strong x-text="selectedForm.answers.nama_ayah || selectedForm.answers.father_name || '-'"></strong></p>
                                         <template x-if="selectedForm.answers.usia_ayah || selectedForm.answers.father_age">
@@ -808,7 +808,7 @@
                                         </template>
                                     </div>
 
-                                    <div class="border rounded-2xl p-4 bg-slate-50/50 space-y-1.5 text-xs">
+                                    <div class="border rounded-xl p-4 bg-slate-50/50 space-y-1.5 text-xs">
                                         <h5 class="font-bold text-pink-900 uppercase mb-2 flex items-center gap-1.5">👩 Profil Ibu</h5>
                                         <p><span class="text-slate-400">Nama:</span> <strong x-text="selectedForm.answers.nama_ibu || selectedForm.answers.mother_name || '-'"></strong></p>
                                         <template x-if="selectedForm.answers.usia_ibu || selectedForm.answers.mother_age">
@@ -826,7 +826,7 @@
                                     </div>
                                 </div>
                                 <template x-if="selectedForm.answers.data_saudara || selectedForm.answers.siblings_info">
-                                    <div class="p-3 rounded-xl border bg-slate-50 text-xs">
+                                    <div class="p-3 rounded-lg border bg-slate-50 text-xs">
                                         <span class="text-slate-400 font-semibold block">Informasi Saudara:</span>
                                         <p class="font-medium text-slate-800" x-text="selectedForm.answers.data_saudara || selectedForm.answers.siblings_info"></p>
                                     </div>
@@ -841,7 +841,7 @@
                             <template x-if="selectedForm.answers.alasan_konseling">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Alasan Membutuhkan Konseling</label>
-                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
                                         <p x-text="selectedForm.answers.alasan_konseling"></p>
                                     </div>
                                 </div>
@@ -850,7 +850,7 @@
                             <template x-if="selectedForm.answers.kondisi_anak_saat_ini || selectedForm.answers.kondisi_saat_ini">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Gambaran Kondisi Saat Ini</label>
-                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
                                         <p x-text="selectedForm.answers.kondisi_anak_saat_ini || selectedForm.answers.kondisi_saat_ini"></p>
                                     </div>
                                 </div>
@@ -859,7 +859,7 @@
                             <template x-if="selectedForm.answers.hal_ingin_ditingkatkan">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Hal yang Ingin Ditingkatkan</label>
-                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
                                         <p x-text="selectedForm.answers.hal_ingin_ditingkatkan"></p>
                                     </div>
                                 </div>
@@ -868,7 +868,7 @@
                             <template x-if="selectedForm.answers.self_description || selectedForm.answers.deskripsi_diri_bebas">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Deskripsi Diri</label>
-                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black">
                                         <p x-text="selectedForm.answers.self_description || selectedForm.answers.deskripsi_diri_bebas"></p>
                                     </div>
                                 </div>
@@ -878,31 +878,31 @@
                                 <template x-if="selectedForm.answers.karakter_anak || selectedForm.answers.karakter_kepribadian || selectedForm.answers.kelebihan_diri || selectedForm.answers.strengths">
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Karakter / Kelebihan Diri</label>
-                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.karakter_anak || selectedForm.answers.karakter_kepribadian || selectedForm.answers.kelebihan_diri || selectedForm.answers.strengths || '-'"></div>
+                                        <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.karakter_anak || selectedForm.answers.karakter_kepribadian || selectedForm.answers.kelebihan_diri || selectedForm.answers.strengths || '-'"></div>
                                     </div>
                                 </template>
                                 <template x-if="selectedForm.answers.kelemahan_diri || selectedForm.answers.weaknesses || selectedForm.answers.pikiran_negatif">
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kelemahan / Pikiran Negatif</label>
-                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.kelemahan_diri || selectedForm.answers.weaknesses || selectedForm.answers.pikiran_negatif || '-'"></div>
+                                        <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.kelemahan_diri || selectedForm.answers.weaknesses || selectedForm.answers.pikiran_negatif || '-'"></div>
                                     </div>
                                 </template>
                                 <template x-if="selectedForm.answers.ketakutan_phobia">
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Ketakutan / Phobia</label>
-                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.ketakutan_phobia || '-'"></div>
+                                        <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.ketakutan_phobia || '-'"></div>
                                     </div>
                                 </template>
                                 <template x-if="selectedForm.answers.riwayat_trauma || selectedForm.answers.trauma_history">
                                     <div>
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Trauma</label>
-                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.riwayat_trauma || selectedForm.answers.trauma_history || '-'"></div>
+                                        <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.riwayat_trauma || selectedForm.answers.trauma_history || '-'"></div>
                                     </div>
                                 </template>
                                 <template x-if="selectedForm.answers.riwayat_kesehatan || selectedForm.answers.hospitalization_history">
                                     <div class="col-span-1 sm:col-span-2">
                                         <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Kesehatan / Medis</label>
-                                        <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.riwayat_kesehatan || selectedForm.answers.hospitalization_history || '-'"></div>
+                                        <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.riwayat_kesehatan || selectedForm.answers.hospitalization_history || '-'"></div>
                                     </div>
                                 </template>
                             </div>
@@ -914,19 +914,19 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Pernah Konseling</label>
-                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="`${selectedForm.answers.pernah_konseling || selectedForm.answers.psychologist_consultation || '-'} ${selectedForm.answers.nama_konselor_lama ? '(' + selectedForm.answers.nama_konselor_lama + ')' : ''}`"></div>
+                                    <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="`${selectedForm.answers.pernah_konseling || selectedForm.answers.psychologist_consultation || '-'} ${selectedForm.answers.nama_konselor_lama ? '(' + selectedForm.answers.nama_konselor_lama + ')' : ''}`"></div>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Kontak Darurat</label>
-                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.kontak_darurat || selectedForm.answers.emergency_contact || '-'"></div>
+                                    <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.kontak_darurat || selectedForm.answers.emergency_contact || '-'"></div>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Sumber Info UC PSC</label>
-                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.sumber_info || selectedForm.answers.info_source || '-'"></div>
+                                    <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.sumber_info || selectedForm.answers.info_source || '-'"></div>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-medium text-slate-500 mb-1">Preferensi Proses Konseling</label>
-                                    <div class="px-3.5 py-2.5 rounded-xl border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.preferensi_konseling || selectedForm.answers.preferred_counseling || '-'"></div>
+                                    <div class="px-3.5 py-2.5 rounded-lg border border-slate-100 bg-slate-50 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.preferensi_konseling || selectedForm.answers.preferred_counseling || '-'"></div>
                                 </div>
                             </div>
                         </div>
@@ -941,7 +941,7 @@
                                     </span>
                                     <span class="text-slate-400 group-open:rotate-180 transition-transform">&darr;</span>
                                 </summary>
-                                <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200 overflow-x-auto text-[11px] font-mono space-y-1.5 max-h-60 overflow-y-auto">
+                                <div class="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-200 overflow-x-auto text-[11px] font-mono space-y-1.5 max-h-60 overflow-y-auto">
                                     <template x-for="(val, key) in selectedForm.answers" :key="key">
                                         <div class="flex items-start gap-2 py-1 border-b border-slate-200/60 last:border-b-0">
                                             <span class="w-44 text-slate-500 font-semibold flex-shrink-0" x-text="key + ':'"></span>
@@ -957,12 +957,12 @@
 
             {{-- Modal Footer --}}
             <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                <button type="button" @click="showDossierModal = false" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                <button type="button" @click="showDossierModal = false" class="px-4 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                     Tutup
                 </button>
                 <div class="flex items-center gap-2">
                     <template x-if="selectedForm && selectedForm.client_id">
-                        <a :href="`/daftar-klien/${selectedForm.client_id}`" class="px-4 py-2 rounded-xl bg-purple-deep text-white text-xs font-bold hover:bg-[#4A2F85] transition">
+                        <a :href="`/daftar-klien/${selectedForm.client_id}`" class="px-4 py-2 rounded-lg bg-purple-deep text-white text-xs font-bold hover:bg-[#4A2F85] transition">
                             Buka di Profil Klien &rarr;
                         </a>
                     </template>

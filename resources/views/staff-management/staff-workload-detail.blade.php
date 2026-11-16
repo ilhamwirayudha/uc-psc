@@ -31,17 +31,17 @@
 
     {{-- Quick Action Header --}}
     <div class="flex items-center justify-end">
-        <button type="button" @click="assignModalOpen = true" class="bg-purple-deep text-white px-4 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+        <button type="button" @click="assignModalOpen = true" class="bg-purple-deep text-white px-4 py-2 rounded-lg text-xs font-semibold hover:opacity-90 transition shadow-xs flex items-center gap-1.5 cursor-pointer">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>Tugaskan Klien Baru</span>
         </button>
     </div>
 
     {{-- Staff Profile Card & Quick Stats --}}
-    <div class="glass-card rounded-2xl p-6">
+    <div class="glass-card rounded-xl p-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="flex items-center gap-4">
-                <div class="w-16 h-16 rounded-2xl grad-purple flex items-center justify-center text-white text-2xl font-bold shadow-md flex-shrink-0">
+                <div class="w-16 h-16 rounded-xl grad-purple flex items-center justify-center text-white text-2xl font-bold shadow-md flex-shrink-0">
                     {{ substr($staff->name, 0, 1) }}
                 </div>
                 <div>
@@ -62,15 +62,15 @@
 
             {{-- Stat badges --}}
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div class="bg-[#F7F5FB] rounded-xl p-3.5 border border-[#EDE1FA] text-center">
+                <div class="bg-[#F7F5FB] rounded-lg p-3.5 border border-[#EDE1FA] text-center">
                     <p class="text-xs font-medium text-gray-500">Klien Aktif</p>
                     <p class="text-xl font-bold text-black mt-0.5">{{ $activeClients->count() }}</p>
                 </div>
-                <div class="bg-[#F7F5FB] rounded-xl p-3.5 border border-[#EDE1FA] text-center">
+                <div class="bg-[#F7F5FB] rounded-lg p-3.5 border border-[#EDE1FA] text-center">
                     <p class="text-xs font-medium text-gray-500">Penugasan Kasus</p>
                     <p class="text-xl font-bold text-black mt-0.5">{{ \App\Models\Booking::where('staff_penguji_id', $staff->id)->orWhere('staff_koreksi_id', $staff->id)->orWhere('staff_pelapor_id', $staff->id)->count() }}</p>
                 </div>
-                <div class="bg-[#F7F5FB] rounded-xl p-3.5 border border-[#EDE1FA] text-center col-span-2 sm:col-span-1">
+                <div class="bg-[#F7F5FB] rounded-lg p-3.5 border border-[#EDE1FA] text-center col-span-2 sm:col-span-1">
                     <p class="text-xs font-medium text-gray-500">Riwayat Penugasan</p>
                     <p class="text-xl font-bold text-black mt-0.5">{{ $historyAssignments->count() }}</p>
                 </div>
@@ -79,7 +79,7 @@
     </div>
 
     {{-- Main Section: Daftar Klien Sedang Ditugaskan --}}
-    <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="glass-card rounded-xl overflow-hidden">
         <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
                 <div class="flex items-center gap-2">
@@ -186,7 +186,7 @@
 
     {{-- Section: Riwayat Penugasan Lampau --}}
     @if($historyAssignments->count() > 0)
-    <div class="glass-card rounded-2xl p-6 space-y-4">
+    <div class="glass-card rounded-xl p-6 space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-[#EDE1FA]">
             <div>
                 <h3 class="font-semibold text-black text-sm">Riwayat Penugasan Lampau</h3>
@@ -223,7 +223,7 @@
     <div x-show="assignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
         <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
+            <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-[#EDE1FA]">
                     <h3 class="text-base font-semibold text-black">Tugaskan Klien ke {{ $staff->name }}</h3>
                     <button type="button" @click="assignModalOpen = false" class="text-gray-400 hover:text-black">
@@ -245,7 +245,7 @@
 
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1.5">Pilih Klien yang Belum Ditugaskan <span class="text-red-400">*</span></label>
-                        <select x-ref="unassignedClientSelect" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <select x-ref="unassignedClientSelect" required class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
                             <option value="">-- Pilih Klien --</option>
                             @foreach($unassignedClients as $uClient)
                             <option value="{{ $uClient->id }}">{{ $uClient->name }} ({{ $uClient->service_type ? ucfirst($uClient->service_type) : 'Belum Booking' }})</option>
@@ -255,14 +255,14 @@
 
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1.5">Catatan Penugasan (Opsional)</label>
-                        <input type="text" name="notes" placeholder="Contoh: Tangani tindak lanjut asesmen..." class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <input type="text" name="notes" placeholder="Contoh: Tangani tindak lanjut asesmen..." class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
                     </div>
 
                     <div class="flex items-center justify-end gap-2.5 pt-2">
-                        <button type="button" @click="assignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
+                        <button type="button" @click="assignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-gray-500 border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
                             Batal
                         </button>
-                        <button type="submit" class="bg-purple-deep text-white px-5 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition shadow-xs flex items-center gap-1.5">
+                        <button type="submit" class="bg-purple-deep text-white px-5 py-2 rounded-lg text-xs font-semibold hover:opacity-90 transition shadow-xs flex items-center gap-1.5">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                             <span>Simpan Penugasan</span>
                         </button>
@@ -274,7 +274,7 @@
                     <p>Semua klien saat ini sudah memiliki staff penanggung jawab.</p>
                 </div>
                 <div class="flex justify-end pt-2">
-                    <button type="button" @click="assignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-[#D9C2F0]">
+                    <button type="button" @click="assignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-gray-500 border border-[#D9C2F0]">
                         Tutup
                     </button>
                 </div>
@@ -287,7 +287,7 @@
     <div x-show="reassignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
         <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
+            <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-[#EDE1FA]">
                     <h3 class="text-base font-semibold text-black">Pindahkan Klien ke Staff Lain</h3>
                     <button type="button" @click="reassignModalOpen = false" class="text-gray-400 hover:text-black">
@@ -304,14 +304,14 @@
                     class="space-y-4">
                     @csrf
 
-                    <div class="bg-[#F7F5FB] p-3 rounded-xl border border-[#EDE1FA] text-xs">
+                    <div class="bg-[#F7F5FB] p-3 rounded-lg border border-[#EDE1FA] text-xs">
                         <p class="text-gray-500">Klien yang akan dipindahkan:</p>
                         <p class="text-sm font-semibold text-black mt-0.5" x-text="selectedClientName"></p>
                     </div>
 
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1.5">Pilih Staff Pengganti <span class="text-red-400">*</span></label>
-                        <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
                             <option value="">-- Pilih Staff --</option>
                             @foreach($otherStaffs as $oStaff)
                             <option value="{{ $oStaff->id }}">{{ $oStaff->name }} ({{ $oStaff->email }})</option>
@@ -321,14 +321,14 @@
 
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1.5">Alasan / Catatan Pemindahan</label>
-                        <input type="text" name="notes" placeholder="Contoh: Reassignment tugas operasional..." class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <input type="text" name="notes" placeholder="Contoh: Reassignment tugas operasional..." class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
                     </div>
 
                     <div class="flex items-center justify-end gap-2.5 pt-2">
-                        <button type="button" @click="reassignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
+                        <button type="button" @click="reassignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-gray-500 border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
                             Batal
                         </button>
-                        <button type="submit" class="bg-amber-600 text-white px-5 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition shadow-xs">
+                        <button type="submit" class="bg-amber-600 text-white px-5 py-2 rounded-lg text-xs font-semibold hover:opacity-90 transition shadow-xs">
                             Pindahkan Klien
                         </button>
                     </div>
@@ -341,9 +341,9 @@
     <div x-show="unassignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
         <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
+            <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
                 <div class="flex items-start gap-3 pb-3 border-b border-[#EDE1FA]">
-                    <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+                    <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     </div>
                     <div>
@@ -367,14 +367,14 @@
 
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1.5">Catatan / Alasan Pelepasan (Opsional)</label>
-                        <input type="text" name="notes" placeholder="Contoh: Selesai pendampingan / Reorganisasi..." class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <input type="text" name="notes" placeholder="Contoh: Selesai pendampingan / Reorganisasi..." class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
                     </div>
 
                     <div class="flex items-center justify-end gap-2.5 pt-2">
-                        <button type="button" @click="unassignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
+                        <button type="button" @click="unassignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-gray-500 border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
                             Batal
                         </button>
-                        <button type="submit" class="bg-red-600 text-white px-5 py-2 rounded-xl text-xs font-semibold hover:bg-red-700 transition shadow-xs">
+                        <button type="submit" class="bg-red-600 text-white px-5 py-2 rounded-lg text-xs font-semibold hover:bg-red-700 transition shadow-xs">
                             Ya, Lepaskan Klien
                         </button>
                     </div>

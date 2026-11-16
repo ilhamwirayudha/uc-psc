@@ -25,10 +25,15 @@
 - **Format Skoring Kuesioner**: Hanya tampilkan angka skornya saja tanpa teks kriteria dalam kurung (misal: cukup `2`, bukan `2 (Kadang-kadang)`).
 - **Pemisahan Field seperti IPK**: Letakkan dalam subcard input data tersendiri di body card, bukan digabung dengan head card.
 - **Warna Scrollbar Wajib Abu-abu Netral (Strict Design Rule)**: Dilarang menggunakan warna scrollbar selain abu-abu netral (`#CBD5E1` / `#94A3B8` hover, atau kelas `custom-scrollbar`). Tidak boleh ada scrollbar berwarna ungu, lavender, oranye, atau warna aksen lainnya di seluruh website ini saat ini maupun untuk pembuatan fitur kedepannya (*current and future creation*).
+- **Standar Skala Border Radius Card & Komponen (*Modern Crisp* — Strict Rule)**:
+  - Seluruh card dan komponen wajib menggunakan skala lengkungan terstruktur berikut (dilarang menggunakan `rounded-3xl` pada card/modal):
+    - **Card Utama, Hero Banner, Modal, & Sidebar**: `rounded-2xl` (`16px`)
+    - **Subcard, Dropdown, & Popover**: `rounded-xl` (`12px`)
+    - **Kotak Field Data, Input Formulir, & Tombol**: `rounded-lg` (`8px`)
 - **Desain Field Isian Data: Mode View (Read-Only) vs Mode Edit (Editable) (Strict Rule)**:
   - **Judul/Label di Luar & di Atas**: Label field wajib diletakkan di luar dan di atas box (`text-xs font-medium text-slate-500 mb-1 block`). **Dilarang keras** meletakkan label di dalam kotak abu-abu pada mode view.
-  - **Mode View (Read-Only)**: Kotak field menggunakan background abu-abu netral (`px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center`) dengan teks `text-sm font-medium text-black`.
-  - **Mode Edit (Editable)**: Kotak field yang dapat diedit **wajib berubah warna menjadi putih** (`bg-white`) dengan border outline abu-abu netral (`w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs`).
+  - **Mode View (Read-Only)**: Kotak field menggunakan background abu-abu netral (`px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center`) dengan teks `text-sm font-medium text-black`.
+  - **Mode Edit (Editable)**: Kotak field yang dapat diedit **wajib berubah warna menjadi putih** (`bg-white`) dengan border outline abu-abu netral (`w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs`).
   - **Pemisahan Kolom Tempat & Tanggal Lahir (Zero-Layout-Shift)**: Wajib dipisah menjadi sub-kolom mandiri (`grid grid-cols-2 gap-2`) pada mode view dan edit agar simetris tanpa pergeseran layout.
   - Tinggi, padding, dan struktur grid mode view dan edit wajib selaras agar tata letak tidak bergeser saat berganti mode. Aturan ini mengikat untuk seluruh implementasi saat ini dan masa depan (*current and future creation*).
 - Rujukan aturan lengkap tersedia pada [card-styling-guidelines.md](file:///.agents/rules/card-styling-guidelines.md).

@@ -72,13 +72,13 @@
                 </div>
 
                 {{-- Dynamic AJAX Error Box --}}
-                <div x-show="errorMessage" x-cloak class="bg-red-50/90 text-red-600 p-4 rounded-2xl text-sm mb-6 flex items-center gap-2.5 border border-red-200/80 shadow-xs relative z-10">
+                <div x-show="errorMessage" x-cloak class="bg-red-50/90 text-red-600 p-4 rounded-xl text-sm mb-6 flex items-center gap-2.5 border border-red-200/80 shadow-xs relative z-10">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                     <span x-text="errorMessage"></span>
                 </div>
 
                 @if($errors->any())
-                    <div x-show="!errorMessage" class="bg-red-50/90 text-red-600 p-4 rounded-2xl text-sm mb-6 flex items-center gap-2.5 border border-red-200/80 shadow-xs relative z-10">
+                    <div x-show="!errorMessage" class="bg-red-50/90 text-red-600 p-4 rounded-xl text-sm mb-6 flex items-center gap-2.5 border border-red-200/80 shadow-xs relative z-10">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flex-shrink-0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                         <span>{{ $errors->first() }}</span>
                     </div>
@@ -98,7 +98,7 @@
                                 value="{{ old('email') }}" 
                                 required 
                                 placeholder="Masukkan email di sini"
-                                class="w-full px-4 py-3.5 rounded-2xl bg-white/60 hover:bg-white/80 focus:bg-white/95 text-sm text-[#2A1D42] placeholder:text-[#8E7D9E]/40 font-medium border border-white/90 focus:outline-none focus:ring-4 focus:ring-purple-light/20 focus:border-purple-light transition-all shadow-[inset_0_1px_3px_rgba(255,255,255,0.9),0_2px_8px_rgba(74,35,128,0.02)]"
+                                class="w-full px-4 py-3.5 rounded-xl bg-white/60 hover:bg-white/80 focus:bg-white/95 text-sm text-[#2A1D42] placeholder:text-[#8E7D9E]/40 font-medium border border-white/90 focus:outline-none focus:ring-4 focus:ring-purple-light/20 focus:border-purple-light transition-all shadow-[inset_0_1px_3px_rgba(255,255,255,0.9),0_2px_8px_rgba(74,35,128,0.02)]"
                             >
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                                 name="password" 
                                 required
                                 placeholder="Masukkan password di sini"
-                                class="w-full pl-4 pr-12 py-3.5 rounded-2xl bg-white/60 hover:bg-white/80 focus:bg-white/95 text-sm text-[#2A1D42] placeholder:text-[#8E7D9E]/40 font-medium border border-white/90 focus:outline-none focus:ring-4 focus:ring-purple-light/20 focus:border-purple-light transition-all shadow-[inset_0_1px_3px_rgba(255,255,255,0.9),0_2px_8px_rgba(74,35,128,0.02)]"
+                                class="w-full pl-4 pr-12 py-3.5 rounded-xl bg-white/60 hover:bg-white/80 focus:bg-white/95 text-sm text-[#2A1D42] placeholder:text-[#8E7D9E]/40 font-medium border border-white/90 focus:outline-none focus:ring-4 focus:ring-purple-light/20 focus:border-purple-light transition-all shadow-[inset_0_1px_3px_rgba(255,255,255,0.9),0_2px_8px_rgba(74,35,128,0.02)]"
                             >
                             {{-- Interactive Password Toggle Button --}}
                             <button 
@@ -168,10 +168,10 @@
                     {{-- Tombol Masuk --}}
                     <button 
                         type="submit" 
-                        class="w-full bg-gradient-to-r from-[#4A2380] via-[#5B2C98] to-[#7C4DBE] hover:from-[#260E45] hover:via-[#35145E] hover:to-[#451B78] text-white font-bold py-3.5 px-6 rounded-2xl active:scale-[0.98] transition-all duration-200 shadow-[0_12px_28px_rgba(74,35,128,0.3),0_1px_2px_rgba(255,255,255,0.4)_inset] hover:shadow-[0_12px_28px_rgba(38,14,69,0.45)] cursor-pointer flex items-center justify-center gap-2 mt-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-light/30 min-h-[48px] relative overflow-hidden border border-white/25"
+                        class="w-full bg-gradient-to-r from-[#4A2380] via-[#5B2C98] to-[#7C4DBE] hover:from-[#260E45] hover:via-[#35145E] hover:to-[#451B78] text-white font-bold py-3.5 px-6 rounded-xl active:scale-[0.98] transition-all duration-200 shadow-[0_12px_28px_rgba(74,35,128,0.3),0_1px_2px_rgba(255,255,255,0.4)_inset] hover:shadow-[0_12px_28px_rgba(38,14,69,0.45)] cursor-pointer flex items-center justify-center gap-2 mt-2 focus:outline-none focus-visible:ring-4 focus-visible:ring-purple-light/30 min-h-[48px] relative overflow-hidden border border-white/25"
                     >
                         {{-- Gloss Light Sheen Reflection --}}
-                        <div class="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/30 via-white/10 to-transparent pointer-events-none rounded-t-2xl"></div>
+                        <div class="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/30 via-white/10 to-transparent pointer-events-none rounded-t-xl"></div>
                         <span class="relative z-10 tracking-wide">Masuk</span>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="relative z-10"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </button>
@@ -208,7 +208,7 @@
                 class="relative transform overflow-hidden rounded-[2.4rem] bg-white/90 backdrop-blur-xl text-left shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-6 sm:p-7">
 
                 {{-- Close Button --}}
-                <button type="button" @click="showForgotModal = false" class="absolute top-5 right-5 text-[#827299] hover:text-purple-deep p-1.5 rounded-xl hover:bg-white/60 transition cursor-pointer z-10" title="Tutup">
+                <button type="button" @click="showForgotModal = false" class="absolute top-5 right-5 text-[#827299] hover:text-purple-deep p-1.5 rounded-lg hover:bg-white/60 transition cursor-pointer z-10" title="Tutup">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
 
@@ -224,7 +224,7 @@
                 </div>
 
                 {{-- Single Minimalist Frosted Info Card --}}
-                <div class="bg-white/70 rounded-2xl p-4 sm:p-5 border border-white/80 text-xs sm:text-[13px] leading-relaxed mb-6 shadow-[inset_0_2px_4px_rgba(74,35,128,0.02)] space-y-2.5 text-justify">
+                <div class="bg-white/70 rounded-xl p-4 sm:p-5 border border-white/80 text-xs sm:text-[13px] leading-relaxed mb-6 shadow-[inset_0_2px_4px_rgba(74,35,128,0.02)] space-y-2.5 text-justify">
                     <p class="text-[#4A3E5C] font-semibold">
                         Demi menjaga keamanan data dan rekam medis klien, reset kata sandi dikelola secara terpusat oleh <strong class="text-purple-deep">Administrator UC PSC</strong>.
                     </p>
@@ -236,15 +236,15 @@
                 {{-- Symmetrical 2-Column Action Buttons --}}
                 <div class="grid grid-cols-2 gap-3 pt-3 border-t border-purple-100/70">
                     <button type="button" @click="showForgotModal = false"
-                        class="w-full py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold text-[#6B5B85] hover:text-[#2A2035] bg-white/80 hover:bg-white border border-[#EDE1FA] shadow-xs hover:shadow-sm transition cursor-pointer flex items-center justify-center">
+                        class="w-full py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold text-[#6B5B85] hover:text-[#2A2035] bg-white/80 hover:bg-white border border-[#EDE1FA] shadow-xs hover:shadow-sm transition cursor-pointer flex items-center justify-center">
                         Kembali
                     </button>
                     <a href="https://wa.me/6288232013931?text=Halo%20Admin%20UC%20PSC,%20saya%20membutuhkan%20bantuan%20reset%20password%20akun%20saya."
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="w-full py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-[0_10px_22px_rgba(16,185,129,0.28)] border border-white/20 flex items-center justify-center gap-1.5 cursor-pointer relative overflow-hidden group">
+                        class="w-full py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-xs sm:text-sm font-bold transition shadow-[0_10px_22px_rgba(16,185,129,0.28)] border border-white/20 flex items-center justify-center gap-1.5 cursor-pointer relative overflow-hidden group">
                         {{-- Gloss Sheen Reflection --}}
-                        <div class="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/30 via-white/10 to-transparent pointer-events-none rounded-t-xl"></div>
+                        <div class="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/30 via-white/10 to-transparent pointer-events-none rounded-t-lg"></div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="relative z-10"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
                         <span class="relative z-10">WhatsApp Admin</span>
                     </a>

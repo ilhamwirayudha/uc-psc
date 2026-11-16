@@ -322,7 +322,7 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 1" class="space-y-4">
                     {{-- Kartu Judul Banner Utama (Gradien Khas UC PSC) --}}
-                    <div class="bg-gradient-to-r from-purple-deep via-[#4A2F85] to-purple-light rounded-2xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-deep via-[#4A2F85] to-purple-light rounded-xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
                         <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
                         <div class="relative z-10 space-y-2">
                             <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Formulir Riwayat Hidup Konseling - Dewasa</h1>
@@ -336,13 +336,13 @@
                     </div>
 
                     {{-- Kartu Teks Lembar Persetujuan --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6 space-y-4">
                         <div class="pb-3 border-b border-slate-100">
                             <h2 class="text-lg sm:text-xl font-bold text-slate-900">INFORMED CONSENT</h2>
                             <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Lembar Persetujuan Layanan Konseling Universitas Ciputra PSC</p>
                         </div>
 
-                        <div class="text-sm sm:text-base text-slate-700 leading-relaxed space-y-4 max-h-[380px] overflow-y-auto pr-3 custom-scrollbar border border-slate-100 rounded-xl p-4 sm:p-5 bg-slate-50/50">
+                        <div class="text-sm sm:text-base text-slate-700 leading-relaxed space-y-4 max-h-[380px] overflow-y-auto pr-3 custom-scrollbar border border-slate-100 rounded-lg p-4 sm:p-5 bg-slate-50/50">
                             <div>
                                 <h4 class="font-bold text-purple-deep text-base sm:text-lg">Layanan Konseling</h4>
                                 <p class="mt-1">Layanan konseling bertujuan untuk membantu Anda mengatasi permasalahan yang sedang dihadapi, memahami diri sendiri, dan mencapai tujuan yang diinginkan dalam kehidupan pribadi, profesional, atau sosial. Namun, hasil dari konseling dapat bervariasi, tergantung pada partisipasi aktif Anda.</p>
@@ -412,7 +412,7 @@
                     </div>
 
                     {{-- Kartu Pertanyaan Persetujuan --}}
-                    <div id="card_consent_agree" class="bg-white rounded-2xl border shadow-xs p-6 space-y-3 transition-colors"
+                    <div id="card_consent_agree" class="bg-white rounded-xl border shadow-xs p-6 space-y-3 transition-colors"
                          :class="errors['consent_agree'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-base sm:text-lg font-bold text-slate-900 leading-snug">
                             Dengan menyetujui formulir ini, Anda menyatakan: <span class="text-rose-500">*</span>
@@ -423,13 +423,13 @@
                         </ul>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                            <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3 font-semibold text-base"
+                            <label class="p-3.5 rounded-lg border-2 transition cursor-pointer flex items-center gap-3 font-semibold text-base"
                                    :class="consent_agree === 'Setuju' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="consent_agree" value="Setuju" x-model="consent_agree" @change="delete errors['consent_agree']"
                                        class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
                                 <span>Setuju</span>
                             </label>
-                            <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3 font-semibold text-base"
+                            <label class="p-3.5 rounded-lg border-2 transition cursor-pointer flex items-center gap-3 font-semibold text-base"
                                    :class="consent_agree === 'Tidak Setuju' ? 'border-rose-400 bg-rose-50/70 text-rose-700' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="consent_agree" value="Tidak Setuju" x-model="consent_agree" @change="delete errors['consent_agree']"
                                        class="w-4 h-4 text-rose-600 focus:ring-rose-500">
@@ -445,7 +445,7 @@
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
                         <div></div>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Berikutnya</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -457,38 +457,38 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 2" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">DATA DIRI</h2>
                         <p class="text-sm text-slate-500 mt-1">Silakan lengkapi informasi identitas Anda secara urut di bawah ini.</p>
                     </div>
 
                     {{-- 1. Nama Lengkap --}}
-                    <div id="card_nama_lengkap" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_nama_lengkap" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['nama_lengkap'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Nama Lengkap (Beserta Gelar Jika Ada) <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="nama_lengkap" x-model="nama_lengkap" @input="delete errors['nama_lengkap']"
                                placeholder="Nama lengkap beserta gelar" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['nama_lengkap']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['nama_lengkap']"></p>
                         </template>
                     </div>
 
                     {{-- 2. Jenis Kelamin --}}
-                    <div id="card_jenis_kelamin" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_jenis_kelamin" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['jenis_kelamin'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Jenis Kelamin <span class="text-rose-500">*</span>
                         </label>
                         <div class="grid grid-cols-2 gap-3">
-                            <label class="p-3 rounded-xl border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
+                            <label class="p-3 rounded-lg border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
                                    :class="jenis_kelamin === 'Laki-Laki' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="jenis_kelamin" value="Laki-Laki" x-model="jenis_kelamin" @change="delete errors['jenis_kelamin']" class="sr-only">
                                 <span>Laki-Laki</span>
                             </label>
-                            <label class="p-3 rounded-xl border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
+                            <label class="p-3 rounded-lg border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
                                    :class="jenis_kelamin === 'Perempuan' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="jenis_kelamin" value="Perempuan" x-model="jenis_kelamin" @change="delete errors['jenis_kelamin']" class="sr-only">
                                 <span>Perempuan</span>
@@ -500,7 +500,7 @@
                     </div>
 
                     {{-- 3. Tempat, Tanggal Lahir --}}
-                    <div id="card_tempat_lahir" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_tempat_lahir" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['tempat_lahir'] || errors['tanggal_lahir'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Tempat, Tanggal Lahir <span class="text-rose-500">*</span>
@@ -510,7 +510,7 @@
                                 <span class="block text-xs text-slate-500 mb-1">Tempat Lahir</span>
                                 <input type="text" name="tempat_lahir" x-model="tempat_lahir" @input="delete errors['tempat_lahir']"
                                        placeholder="Kota tempat lahir" 
-                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                       class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                                 <template x-if="errors['tempat_lahir']">
                                     <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['tempat_lahir']"></p>
                                 </template>
@@ -518,7 +518,7 @@
                             <div>
                                 <span class="block text-xs text-slate-500 mb-1">Tanggal Lahir</span>
                                 <input type="date" name="tanggal_lahir" x-model="tanggal_lahir" @change="delete errors['tanggal_lahir']"
-                                       class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                       class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                                 <template x-if="errors['tanggal_lahir']">
                                     <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['tanggal_lahir']"></p>
                                 </template>
@@ -527,7 +527,7 @@
                     </div>
 
                     {{-- 4. Urutan Kelahiran --}}
-                    <div id="card_urutan_kelahiran" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_urutan_kelahiran" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['urutan_kelahiran'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Urutan Kelahiran <span class="text-rose-500">*</span>
@@ -535,48 +535,48 @@
                         <p class="text-xs text-slate-500">Contoh format: Anak ke-2 dari 3 bersaudara</p>
                         <input type="text" name="urutan_kelahiran" x-model="urutan_kelahiran" @input="delete errors['urutan_kelahiran']"
                                placeholder="Jawaban Anda" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['urutan_kelahiran']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['urutan_kelahiran']"></p>
                         </template>
                     </div>
 
                     {{-- 5. Alamat Sekarang --}}
-                    <div id="card_alamat" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_alamat" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['alamat'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Alamat Sekarang <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="alamat" x-model="alamat" @input="delete errors['alamat']" rows="3"
                                   placeholder="Alamat tempat tinggal lengkap saat ini" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['alamat']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['alamat']"></p>
                         </template>
                     </div>
 
                     {{-- 6. No. Telepon --}}
-                    <div id="card_phone" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_phone" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['phone'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             No. Telepon <span class="text-rose-500">*</span>
                         </label>
                         <input type="tel" name="phone" x-model="phone" inputmode="numeric" pattern="[0-9]+" title="Hanya boleh diisi angka (0-9)" @input="phone = $el.value.replace(/[^0-9]/g, ''); $el.value = phone; delete errors['phone']" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                placeholder="Contoh: 081234567890" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['phone']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['phone']"></p>
                         </template>
                     </div>
 
                     {{-- 7. Agama/Kepercayaan --}}
-                    <div id="card_agama" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_agama" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['agama'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Agama/Kepercayaan <span class="text-rose-500">*</span>
                         </label>
                         <select name="agama" x-model="agama" @change="delete errors['agama']"
-                                class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             <option value="">Pilih</option>
                             <option value="Islam">Islam</option>
                             <option value="Kristen Protestan">Kristen Protestan</option>
@@ -592,27 +592,27 @@
                     </div>
 
                     {{-- 8. Suku Bangsa --}}
-                    <div id="card_suku_bangsa" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_suku_bangsa" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['suku_bangsa'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Suku Bangsa <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="suku_bangsa" x-model="suku_bangsa" @input="delete errors['suku_bangsa']"
                                placeholder="Jawaban Anda (misal: Jawa, Tionghoa, Batak...)" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['suku_bangsa']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['suku_bangsa']"></p>
                         </template>
                     </div>
 
                     {{-- 9. Pendidikan Terakhir --}}
-                    <div id="card_pendidikan_terakhir" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_pendidikan_terakhir" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['pendidikan_terakhir'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Pendidikan Terakhir <span class="text-rose-500">*</span>
                         </label>
                         <select name="pendidikan_terakhir" x-model="pendidikan_terakhir" @change="delete errors['pendidikan_terakhir']"
-                                class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                                class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                             <option value="">Pilih</option>
                             <option value="SMA / SMK">SMA / SMK</option>
                             <option value="Diploma / D3">Diploma / D3</option>
@@ -627,41 +627,41 @@
                     </div>
 
                     {{-- 10. Pekerjaan Saat Ini --}}
-                    <div id="card_pekerjaan" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition border-[#EDE1FA]">
+                    <div id="card_pekerjaan" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition border-[#EDE1FA]">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Pekerjaan Saat Ini <span class="text-xs font-normal text-slate-500">(Opsional)</span>
                         </label>
                         <input type="text" name="pekerjaan" x-model="pekerjaan" @input="delete errors['pekerjaan']"
                                placeholder="Jawaban Anda" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['pekerjaan']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['pekerjaan']"></p>
                         </template>
                     </div>
 
                     {{-- 11. Hobi --}}
-                    <div id="card_hobi" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_hobi" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['hobi'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Hobi <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="hobi" x-model="hobi" @input="delete errors['hobi']"
                                placeholder="Jawaban Anda" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['hobi']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['hobi']"></p>
                         </template>
                     </div>
 
                     {{-- 12. Alasan Anda Ingin Melakukan Konseling --}}
-                    <div id="card_alasan_konseling" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_alasan_konseling" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['alasan_konseling'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Alasan Anda Ingin Melakukan Konseling <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="alasan_konseling" x-model="alasan_konseling" @input="delete errors['alasan_konseling']" rows="4"
                                   placeholder="Jawaban Anda" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['alasan_konseling']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['alasan_konseling']"></p>
                         </template>
@@ -669,10 +669,10 @@
 
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Kembali
                         </button>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Berikutnya</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -684,117 +684,117 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 3" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">DATA KONDISI PSIKOLOGIS</h2>
                         <p class="text-sm text-slate-500 mt-1">Informasi mengenai situasi emosi dan psikologis yang sedang Anda rasakan.</p>
                     </div>
 
                     {{-- 1. Gambaran Kondisi Anda Saat Ini terhadap Permasalahan --}}
-                    <div id="card_kondisi_saat_ini" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_kondisi_saat_ini" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['kondisi_saat_ini'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Gambaran Kondisi Anda Saat Ini terhadap Permasalahan yang Anda Rasakan <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="kondisi_saat_ini" x-model="kondisi_saat_ini" @input="delete errors['kondisi_saat_ini']" rows="4"
                                   placeholder="Jawaban Anda" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['kondisi_saat_ini']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['kondisi_saat_ini']"></p>
                         </template>
                     </div>
 
                     {{-- 2. Pikiran-Pikiran Negatif yang Sering Muncul Akhir-Akhir Ini --}}
-                    <div id="card_pikiran_negatif" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_pikiran_negatif" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['pikiran_negatif'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Pikiran-Pikiran Negatif yang Sering Muncul Akhir-Akhir Ini <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="pikiran_negatif" x-model="pikiran_negatif" @input="delete errors['pikiran_negatif']" rows="4"
                                   placeholder="Jawaban Anda" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['pikiran_negatif']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['pikiran_negatif']"></p>
                         </template>
                     </div>
 
                     {{-- 3. Hal-Hal Dalam Hidup Anda yang Ingin Anda Tingkatkan --}}
-                    <div id="card_hal_ingin_ditingkatkan" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_hal_ingin_ditingkatkan" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['hal_ingin_ditingkatkan'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Hal-Hal Dalam Hidup Anda yang Ingin Anda Tingkatkan <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="hal_ingin_ditingkatkan" x-model="hal_ingin_ditingkatkan" @input="delete errors['hal_ingin_ditingkatkan']" rows="3"
                                   placeholder="Jawaban Anda" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['hal_ingin_ditingkatkan']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['hal_ingin_ditingkatkan']"></p>
                         </template>
                     </div>
 
                     {{-- 4. Karakter Kepribadian --}}
-                    <div id="card_karakter_kepribadian" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_karakter_kepribadian" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['karakter_kepribadian'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Karakter Kepribadian <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="karakter_kepribadian" x-model="karakter_kepribadian" @input="delete errors['karakter_kepribadian']" rows="3"
                                   placeholder="Jawaban Anda" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['karakter_kepribadian']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['karakter_kepribadian']"></p>
                         </template>
                     </div>
 
                     {{-- 5. Ketakutan/Phobia yang Dimiliki --}}
-                    <div id="card_ketakutan_phobia" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_ketakutan_phobia" class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Ketakutan/Phobia yang Dimiliki
                         </label>
                         <input type="text" name="ketakutan_phobia" x-model="ketakutan_phobia"
                                placeholder="Jawaban Anda (opsional)" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                     </div>
 
                     {{-- 6. Rata-Rata Jam Tidur per Malam --}}
-                    <div id="card_jam_tidur" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_jam_tidur" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['jam_tidur'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Rata-Rata Jam Tidur per Malam <span class="text-rose-500">*</span>
                         </label>
                         <input type="text" name="jam_tidur" x-model="jam_tidur" @input="delete errors['jam_tidur']"
                                placeholder="Contoh: 6 jam" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['jam_tidur']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['jam_tidur']"></p>
                         </template>
                     </div>
 
                     {{-- 7. Riwayat Hidup yang Menimbulkan Trauma --}}
-                    <div id="card_riwayat_trauma" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_riwayat_trauma" class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Riwayat Hidup yang Menimbulkan Trauma
                         </label>
                         <textarea name="riwayat_trauma" x-model="riwayat_trauma" rows="3"
                                   placeholder="Jawaban Anda (opsional)" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                     </div>
 
                     {{-- 8. Riwayat Kesehatan --}}
-                    <div id="card_riwayat_kesehatan" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_riwayat_kesehatan" class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Riwayat Kesehatan
                         </label>
                         <textarea name="riwayat_kesehatan" x-model="riwayat_kesehatan" rows="3"
                                   placeholder="Jawaban Anda (opsional)" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                     </div>
 
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Kembali
                         </button>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Berikutnya</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -806,75 +806,75 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 4" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">GAMBARAN RELASI</h2>
                         <p class="text-sm text-slate-500 mt-1">Ceritakan kualitas dan dinamika hubungan Anda dengan anggota keluarga dan orang terdekat.</p>
                     </div>
 
                     {{-- 1. Gambarkan Relasi Anda dengan Ayah Anda --}}
-                    <div id="card_relasi_ayah" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_relasi_ayah" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['relasi_ayah'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Gambarkan Relasi Anda dengan Ayah Anda <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="relasi_ayah" x-model="relasi_ayah" @input="delete errors['relasi_ayah']" rows="3"
                                   placeholder="Jawaban Anda" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['relasi_ayah']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['relasi_ayah']"></p>
                         </template>
                     </div>
 
                     {{-- 2. Gambarkan Relasi Anda dengan Ibu Anda --}}
-                    <div id="card_relasi_ibu" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_relasi_ibu" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['relasi_ibu'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Gambarkan Relasi Anda dengan Ibu Anda <span class="text-rose-500">*</span>
                         </label>
                         <textarea name="relasi_ibu" x-model="relasi_ibu" @input="delete errors['relasi_ibu']" rows="3"
                                   placeholder="Jawaban Anda" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                         <template x-if="errors['relasi_ibu']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['relasi_ibu']"></p>
                         </template>
                     </div>
 
                     {{-- 3. Gambarkan Relasi Anda dengan Saudara Kandung Anda --}}
-                    <div id="card_relasi_saudara" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_relasi_saudara" class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Gambarkan Relasi Anda dengan Saudara Kandung Anda
                         </label>
                         <textarea name="relasi_saudara" x-model="relasi_saudara" rows="3"
                                   placeholder="Jawaban Anda (bisa ditulis '-' jika anak tunggal)" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                     </div>
 
                     {{-- 4. Gambarkan Relasi Anda dengan Pasangan Anda --}}
-                    <div id="card_relasi_pasangan" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_relasi_pasangan" class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Gambarkan Relasi Anda dengan Pasangan Anda
                         </label>
                         <textarea name="relasi_pasangan" x-model="relasi_pasangan" rows="3"
                                   placeholder="Jawaban Anda (opsional jika belum memiliki pasangan)" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                     </div>
 
                     {{-- 5. Gambarkan Relasi Anda dengan Anak Anda --}}
-                    <div id="card_relasi_anak" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_relasi_anak" class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Gambarkan Relasi Anda dengan Anak Anda
                         </label>
                         <textarea name="relasi_anak" x-model="relasi_anak" rows="3"
                                   placeholder="Jawaban Anda (opsional jika belum memiliki anak)" 
-                                  class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
+                                  class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white"></textarea>
                     </div>
 
                     {{-- Navigation Bottom Bar --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Kembali
                         </button>
-                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="button" @click="nextPage()" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Berikutnya</span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </button>
@@ -886,24 +886,24 @@
                 {{-- ============================================================== --}}
                 <div x-show="page === 5" x-cloak class="space-y-4">
                     {{-- Section Header Card --}}
-                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-6">
+                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-6">
                         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">LAIN-LAIN</h2>
                         <p class="text-sm text-slate-500 mt-1">Informasi pendukung dan metode pelaksanaan sesi konseling.</p>
                     </div>
 
                     {{-- 1. Apakah Anda Pernah Mengikuti Sesi Konseling Sebelumnya? --}}
-                    <div id="card_pernah_konseling" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_pernah_konseling" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['pernah_konseling'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Apakah Anda Pernah Mengikuti Sesi Konseling Sebelumnya? <span class="text-rose-500">*</span>
                         </label>
                         <div class="grid grid-cols-2 gap-3">
-                            <label class="p-3 rounded-xl border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
+                            <label class="p-3 rounded-lg border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
                                    :class="pernah_konseling === 'Ya' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="pernah_konseling" value="Ya" x-model="pernah_konseling" @change="delete errors['pernah_konseling']" class="sr-only">
                                 <span>Ya</span>
                             </label>
-                            <label class="p-3 rounded-xl border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
+                            <label class="p-3 rounded-lg border-2 transition cursor-pointer font-semibold text-sm flex items-center justify-center gap-2"
                                    :class="pernah_konseling === 'Tidak' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="pernah_konseling" value="Tidak" x-model="pernah_konseling" @change="delete errors['pernah_konseling']" class="sr-only">
                                 <span>Tidak</span>
@@ -915,17 +915,17 @@
                     </div>
 
                     {{-- 2. Nama Konselor yang Menangani --}}
-                    <div id="card_nama_konselor" x-show="pernah_konseling === 'Ya'" x-cloak class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
+                    <div id="card_nama_konselor" x-show="pernah_konseling === 'Ya'" x-cloak class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs p-5 sm:p-6 space-y-2">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Nama Konselor yang Menangani
                         </label>
                         <input type="text" name="nama_konselor" x-model="nama_konselor"
                                placeholder="Nama konselor atau lembaga sebelumnya" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                     </div>
 
                     {{-- 3. Kontak Darurat yang Bisa Kami Hubungi Terkait dengan Kondisi Anda --}}
-                    <div id="card_kontak_darurat" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
+                    <div id="card_kontak_darurat" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-2 transition"
                          :class="errors['kontak_darurat'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Kontak Darurat yang Bisa Kami Hubungi Terkait dengan Kondisi Anda <span class="text-rose-500">*</span>
@@ -933,30 +933,30 @@
                         <p class="text-xs text-slate-500">Tuliskan nama, hubungan (misal: Orang Tua / Saudara / Pasangan), serta nomor telepon aktif.</p>
                         <input type="text" name="kontak_darurat" x-model="kontak_darurat" @input="delete errors['kontak_darurat']"
                                placeholder="Contoh: Siti Rahma (Kakak) - 081234567890" 
-                               class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
+                               class="w-full px-4 py-2.5 rounded-lg border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['kontak_darurat']">
                             <p class="text-xs text-rose-600 font-medium" x-text="errors['kontak_darurat']"></p>
                         </template>
                     </div>
 
                     {{-- 4. Bagaimana Anda Mengetahui Tentang UCPSC? --}}
-                    <div id="card_sumber_info" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_sumber_info" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['sumber_info'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Bagaimana Anda Mengetahui Tentang UCPSC? <span class="text-rose-500">*</span>
                         </label>
                         <div class="space-y-2.5">
-                            <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3"
+                            <label class="p-3.5 rounded-lg border-2 transition cursor-pointer flex items-center gap-3"
                                    :class="sumber_info === 'Referensi dari Kerabat' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD]'">
                                 <input type="radio" name="sumber_info" value="Referensi dari Kerabat" x-model="sumber_info" @change="delete errors['sumber_info']" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
                                 <span class="text-sm">Referensi dari Kerabat</span>
                             </label>
-                            <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3"
+                            <label class="p-3.5 rounded-lg border-2 transition cursor-pointer flex items-center gap-3"
                                    :class="sumber_info === 'Media Sosial' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD]'">
                                 <input type="radio" name="sumber_info" value="Media Sosial" x-model="sumber_info" @change="delete errors['sumber_info']" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
                                 <span class="text-sm">Media Sosial</span>
                             </label>
-                            <label class="p-3.5 rounded-xl border-2 transition cursor-pointer flex items-center gap-3"
+                            <label class="p-3.5 rounded-lg border-2 transition cursor-pointer flex items-center gap-3"
                                    :class="sumber_info === 'Website' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD]'">
                                 <input type="radio" name="sumber_info" value="Website" x-model="sumber_info" @change="delete errors['sumber_info']" class="w-4 h-4 text-purple-deep focus:ring-purple-deep">
                                 <span class="text-sm">Website</span>
@@ -968,13 +968,13 @@
                     </div>
 
                     {{-- 5. Preferensi Proses Konseling --}}
-                    <div id="card_preferensi_konseling" class="bg-white rounded-2xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
+                    <div id="card_preferensi_konseling" class="bg-white rounded-xl border shadow-xs p-5 sm:p-6 space-y-3 transition"
                          :class="errors['preferensi_konseling'] ? 'border-rose-400 bg-rose-50/20' : 'border-[#EDE1FA]'">
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             Preferensi Proses Konseling <span class="text-rose-500">*</span>
                         </label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                            <label class="p-4 rounded-xl border-2 transition cursor-pointer flex items-start gap-3 hover:bg-slate-50"
+                            <label class="p-4 rounded-lg border-2 transition cursor-pointer flex items-start gap-3 hover:bg-slate-50"
                                    :class="preferensi_konseling === 'Online melalui Zoom' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="preferensi_konseling" value="Online melalui Zoom" x-model="preferensi_konseling" @change="delete errors['preferensi_konseling']" class="mt-1 text-purple-deep focus:ring-purple-deep">
                                 <div>
@@ -982,7 +982,7 @@
                                     <p class="text-xs text-slate-500 mt-0.5">Sesi tatap maya interaktif melalui Zoom Meeting.</p>
                                 </div>
                             </label>
-                            <label class="p-4 rounded-xl border-2 transition cursor-pointer flex items-start gap-3 hover:bg-slate-50"
+                            <label class="p-4 rounded-lg border-2 transition cursor-pointer flex items-start gap-3 hover:bg-slate-50"
                                    :class="preferensi_konseling === 'Offline di UCPSC' ? 'border-2 border-purple-deep bg-[#F3EAFB] text-purple-deep ring-2 ring-purple-deep/15 font-semibold' : 'border-[#EDE1FA] text-slate-700 hover:bg-[#FAF9FD] hover:border-purple-light/40'">
                                 <input type="radio" name="preferensi_konseling" value="Offline di UCPSC" x-model="preferensi_konseling" @change="delete errors['preferensi_konseling']" class="mt-1 text-purple-deep focus:ring-purple-deep">
                                 <div>
@@ -998,10 +998,10 @@
 
                     {{-- Navigation Bottom Bar (Final Submit) --}}
                     <div class="flex items-center justify-between pt-3">
-                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-xl border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
+                        <button type="button" @click="prevPage()" class="px-5 py-3 rounded-lg border border-[#EDE1FA] bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition">
                             Kembali
                         </button>
-                        <button type="submit" class="px-5 py-3 rounded-xl bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
+                        <button type="submit" class="px-5 py-3 rounded-lg bg-purple-deep hover:bg-[#3D1D66] text-white font-semibold text-sm shadow-md shadow-purple-deep/20 transition flex items-center gap-2">
                             <span>Kirim Formulir Pendaftaran</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                         </button>

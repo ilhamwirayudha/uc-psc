@@ -5,7 +5,7 @@
         sidebarCollapsed ? 'lg:w-20' : 'lg:w-64',
         sidebarTransitionReady ? 'transition-[transform,width] duration-200 ease-out' : 'max-lg:transition-transform max-lg:duration-300 max-lg:ease-in-out'
     ]"
-    class="fixed inset-y-0 left-0 max-lg:rounded-r-3xl lg:top-3 lg:bottom-3 lg:left-3 lg:rounded-3xl z-40 w-64 glass-sidebar text-white select-none flex flex-col justify-between max-lg:overflow-hidden lg:overflow-visible"
+    class="fixed inset-y-0 left-0 max-lg:rounded-r-2xl lg:top-3 lg:bottom-3 lg:left-3 lg:rounded-2xl z-40 w-64 glass-sidebar text-white select-none flex flex-col justify-between max-lg:overflow-hidden lg:overflow-visible"
 >
     <div class="flex-1 flex flex-col min-h-0">
         {{-- Floating Dock Header (Centered Logo) --}}
@@ -18,22 +18,20 @@
                 <img src="{{ asset('images/logo-ucpsc-white.png') }}" alt="Logo Resmi UC PSC" class="h-24 w-auto object-contain">
             </a>
 
-            {{-- Compact Brand Emblem (Desktop Collapsed Only) --}}
+            {{-- Compact Official Logo (Desktop Collapsed Only) --}}
             <a href="{{ route('dashboard') }}"
                onclick="sessionStorage.setItem('show_splash_logo', '1')"
-               class="hidden w-11 h-11 rounded-2xl bg-white/15 border border-white/20 items-center justify-center hover:bg-white/25 transition"
+               class="hidden items-center justify-center rounded-xl p-1 hover:bg-white/10 transition"
                :class="sidebarCollapsed ? 'lg:flex' : 'lg:hidden'"
                title="UC PSC Dashboard">
-                <span class="text-xs font-extrabold tracking-tight leading-none">
-                    <span class="text-orange">U</span><span class="text-white">P</span>
-                </span>
+                <img src="{{ asset('images/logo-ucpsc-white.png') }}" alt="Logo Resmi UC PSC" class="w-14 h-auto object-contain">
             </a>
 
             {{-- Mobile Drawer Close Button --}}
             <button
                 type="button"
                 @click="sidebarOpen = false"
-                class="lg:hidden absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-xl bg-white/10 text-white hover:bg-white/20 transition cursor-pointer"
+                class="lg:hidden absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 transition cursor-pointer"
                 aria-label="Tutup Menu"
             >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -216,12 +214,148 @@
         </nav>
     </div>
 
-    {{-- User Profile Mini Card inside Floating Dock --}}
-    <div class="p-3 flex-shrink-0">
-        <a href="{{ route('profile.edit') }}"
-           :title="sidebarCollapsed ? '{{ auth()->user()->name }} — Buka Profil Saya' : 'Buka Profil Saya'"
-           class="group/profile flex items-center gap-2.5 p-2.5 rounded-2xl border transition {{ request()->routeIs('profile.*') ? 'bg-white/18 border-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]' : 'bg-white/10 border-white/15 hover:bg-white/15 hover:border-white/25' }}"
-           :class="sidebarCollapsed ? 'lg:justify-center lg:p-1.5 lg:w-12 lg:h-12 lg:mx-auto' : ''">
+    {{-- User Profile Mini Card + Floating Drop-Up Menu (Opsi 1) --}}
+    @php
+        $isProfilePage = request()->routeIs('profile.*');
+        $currentProfileTab = $isProfilePage
+            ? (in_array(request('tab'), ['profil', 'log-aktivitas', 'pengaturan'], true) ? request('tab') : 'profil')
+            : '';
+    @endphp
+    <div
+        class="p-3 flex-shrink-0 relative"
+        x-data="{
+            userMenuOpen: false,
+            isProfilePage: @js($isProfilePage),
+            activeProfileTab: @js($currentProfileTab),
+            selectProfileTab(event, tab, fallbackUrl) {
+                this.userMenuOpen = false;
+                if (this.isProfilePage) {
+                    event.preventDefault();
+                    window.dispatchEvent(new CustomEvent('request-profile-tab', { detail: { tab: tab } }));
+                    sidebarOpen = false;
+                    return;
+                }
+                sidebarOpen = false;
+            }
+        }"
+        @profile-tab-changed.window="activeProfileTab = $event.detail.tab"
+        @keydown.escape.window="userMenuOpen = false"
+        @click.outside="userMenuOpen = false"
+    >
+        {{-- Side Flyout Popover Melayang di Samping Kanan (Fallback Drop-Up di Mobile) --}}
+        <div
+            x-show="userMenuOpen"
+            x-cloak
+            x-transition:enter="transition ease-out duration-150"
+            x-transition:enter-start="opacity-0 scale-95 max-lg:translate-y-1.5 lg:-translate-x-1.5"
+            x-transition:enter-end="opacity-100 scale-100 max-lg:translate-y-0 lg:translate-x-0"
+            x-transition:leave="transition ease-in duration-100"
+            x-transition:leave-start="opacity-100 scale-100 max-lg:translate-y-0 lg:translate-x-0"
+            x-transition:leave-end="opacity-0 scale-95 max-lg:translate-y-1.5 lg:-translate-x-1.5"
+            class="absolute z-50 max-lg:bottom-full max-lg:mb-2 max-lg:left-3 max-lg:right-3 lg:left-full lg:bottom-3 lg:ml-3 lg:w-64 rounded-xl bg-white/95 backdrop-blur-xl border border-slate-100 shadow-[0_20px_50px_rgba(74,35,128,0.22)] overflow-hidden"
+            role="menu"
+            aria-label="Menu Akun Pengguna"
+        >
+            {{-- Header Identitas User pada Popover --}}
+            <div class="px-3.5 py-3 bg-slate-50/90 border-b border-slate-100 flex items-center gap-2.5">
+                @if(auth()->user()->avatar_url)
+                    <img src="{{ auth()->user()->avatar_url }}"
+                         alt="{{ auth()->user()->name }}"
+                         class="w-8 h-8 rounded-full object-cover object-top bg-white border border-slate-200 flex-shrink-0">
+                @else
+                    <div class="w-8 h-8 rounded-full bg-purple-deep text-white flex items-center justify-center font-semibold text-xs flex-shrink-0">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                @endif
+                <div class="min-w-0 flex-1">
+                    <p class="text-xs font-semibold text-black truncate">{{ auth()->user()->name }}</p>
+                    <p class="text-[11px] font-medium text-slate-500 truncate">{{ auth()->user()->email }}</p>
+                </div>
+            </div>
+
+            <div class="p-1.5 space-y-0.5">
+                {{-- Item 1: Profil --}}
+                <a
+                    href="{{ route('profile.edit') }}"
+                    @click="selectProfileTab($event, 'profil', '{{ route('profile.edit') }}')"
+                    :class="isProfilePage && activeProfileTab === 'profil'
+                        ? 'bg-purple-50 text-purple-deep'
+                        : 'text-black hover:bg-slate-50 hover:text-purple-deep'"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition cursor-pointer"
+                    role="menuitem"
+                >
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span>Profil</span>
+                </a>
+
+                {{-- Item 2: Log Aktivitas --}}
+                <a
+                    href="{{ route('profile.edit', ['tab' => 'log-aktivitas']) }}"
+                    @click="selectProfileTab($event, 'log-aktivitas', '{{ route('profile.edit', ['tab' => 'log-aktivitas']) }}')"
+                    :class="isProfilePage && activeProfileTab === 'log-aktivitas'
+                        ? 'bg-purple-50 text-purple-deep'
+                        : 'text-black hover:bg-slate-50 hover:text-purple-deep'"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition cursor-pointer"
+                    role="menuitem"
+                >
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>Log Aktivitas</span>
+                </a>
+
+                {{-- Item 3: Pengaturan --}}
+                <a
+                    href="{{ route('profile.edit', ['tab' => 'pengaturan']) }}"
+                    @click="selectProfileTab($event, 'pengaturan', '{{ route('profile.edit', ['tab' => 'pengaturan']) }}')"
+                    :class="isProfilePage && activeProfileTab === 'pengaturan'
+                        ? 'bg-purple-50 text-purple-deep'
+                        : 'text-black hover:bg-slate-50 hover:text-purple-deep'"
+                    class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition cursor-pointer"
+                    role="menuitem"
+                >
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    <span>Pengaturan</span>
+                </a>
+            </div>
+
+            <div class="p-1.5 border-t border-slate-100">
+                <button
+                    type="button"
+                    @click="userMenuOpen = false; sidebarOpen = false; window.dispatchEvent(new CustomEvent('open-logout-modal'))"
+                    class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-red-600 hover:bg-red-50 transition cursor-pointer text-left"
+                    role="menuitem"
+                >
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    <span>Keluar Akun</span>
+                </button>
+            </div>
+        </div>
+
+        {{-- Trigger Button Kartu User --}}
+        <button
+            type="button"
+            @click="userMenuOpen = !userMenuOpen"
+            :aria-expanded="userMenuOpen.toString()"
+            aria-haspopup="menu"
+            :title="sidebarCollapsed ? '{{ auth()->user()->name }} — Menu Akun' : 'Buka Menu Akun'"
+            class="w-full text-left group/profile flex items-center gap-2.5 p-2.5 rounded-xl border transition cursor-pointer {{ $isProfilePage ? 'bg-white/18 border-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]' : 'bg-white/10 border-white/15 hover:bg-white/15 hover:border-white/25' }}"
+            :class="[
+                sidebarCollapsed ? 'lg:justify-center lg:p-1.5 lg:w-12 lg:h-12 lg:mx-auto' : '',
+                userMenuOpen ? 'bg-white/18 border-white/30' : ''
+            ]"
+        >
             @if(auth()->user()->avatar_url)
                 <img src="{{ auth()->user()->avatar_url }}"
                      alt="{{ auth()->user()->name }}"
@@ -240,6 +374,6 @@
                     {{ auth()->user()->isAdmin() ? 'Administrator' : 'Staff' }}
                 </p>
             </div>
-        </a>
+        </button>
     </div>
 </aside>
