@@ -133,7 +133,10 @@
                     <input type="text" id="phone" name="phone" x-model="phone"
                         inputmode="numeric"
                         maxlength="13"
+                        pattern="[0-9]*"
+                        title="Hanya boleh diisi angka (0-9)"
                         @input="phone = $el.value.replace(/[^0-9]/g, '').slice(0, 13); $el.value = phone"
+                        @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                         placeholder="Contoh: 081234567890 (maks. 13 digit)"
                         class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('phone') border-red-300 @enderror">
                     @error('phone') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror

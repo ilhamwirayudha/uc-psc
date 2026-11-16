@@ -655,7 +655,7 @@
                             No. Telepon <span class="text-rose-500">*</span>
                         </label>
                         <p class="text-xs text-slate-500">Nomor telepon anak atau kontak utama</p>
-                        <input type="text" name="phone" x-model="phone" @input="delete errors['phone']"
+                        <input type="text" name="phone" x-model="phone" inputmode="numeric" pattern="[0-9]+" title="Hanya boleh diisi angka (0-9)" @input="phone = $el.value.replace(/[^0-9]/g, ''); $el.value = phone; delete errors['phone']" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                placeholder="08xxxxxxxxxx" 
                                class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['phone']">
@@ -1076,7 +1076,7 @@
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             No. Telepon Ayah <span class="text-rose-500">*</span>
                         </label>
-                        <input type="text" name="phone_ayah" x-model="phone_ayah" @input="delete errors['phone_ayah']"
+                        <input type="text" name="phone_ayah" x-model="phone_ayah" inputmode="numeric" pattern="[0-9]+" title="Hanya boleh diisi angka (0-9)" @input="phone_ayah = $el.value.replace(/[^0-9]/g, ''); $el.value = phone_ayah; delete errors['phone_ayah']" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                placeholder="08xxxxxxxxxx" 
                                class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['phone_ayah']">
@@ -1277,7 +1277,7 @@
                         <label class="block text-sm sm:text-base font-bold text-slate-900">
                             No. Telepon Ibu <span class="text-rose-500">*</span>
                         </label>
-                        <input type="text" name="phone_ibu" x-model="phone_ibu" @input="delete errors['phone_ibu']"
+                        <input type="text" name="phone_ibu" x-model="phone_ibu" inputmode="numeric" pattern="[0-9]+" title="Hanya boleh diisi angka (0-9)" @input="phone_ibu = $el.value.replace(/[^0-9]/g, ''); $el.value = phone_ibu; delete errors['phone_ibu']" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                placeholder="08xxxxxxxxxx" 
                                class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                         <template x-if="errors['phone_ibu']">

@@ -504,8 +504,8 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div>
                                 <span class="text-xs text-slate-500 block mb-1">No. Telepon: <span class="text-rose-500">*</span></span>
-                                <input type="tel" name="phone" x-model="phone" @input="delete errors['phone']"
-                                       placeholder="e.g. +62 812 3456 7890" 
+                                <input type="tel" name="phone" x-model="phone" inputmode="numeric" pattern="[0-9]+" title="Numbers only (0-9)" @input="phone = $el.value.replace(/[^0-9]/g, ''); $el.value = phone; delete errors['phone']" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
+                                       placeholder="e.g. 081234567890" 
                                        class="w-full px-4 py-2.5 rounded-xl border border-[#E4D2F5] focus:border-purple-deep focus:ring-4 focus:ring-purple-deep/10 text-sm outline-none transition bg-[#FAF9FD]/40 focus:bg-white">
                                 <template x-if="errors['phone']">
                                     <p class="text-xs text-rose-600 font-medium mt-1" x-text="errors['phone']"></p>

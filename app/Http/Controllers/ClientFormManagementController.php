@@ -339,6 +339,19 @@ class ClientFormManagementController extends Controller
             $updatedAnswers = [];
         }
 
+        foreach (['phone', 'no_telepon', 'telepon', 'phone_ayah', 'phone_ibu', 'phone_pasangan'] as $phoneKey) {
+            if (array_key_exists($phoneKey, $updatedAnswers)) {
+                $val = trim((string) ($updatedAnswers[$phoneKey] ?? ''));
+                if ($val !== '' && !preg_match('/^[0-9]+$/', $val)) {
+                    return response()->json([
+                        'message' => 'Nomor telepon / WhatsApp hanya boleh diisi angka.',
+                        'errors' => [$phoneKey => ['Nomor telepon / WhatsApp hanya boleh diisi angka.']],
+                    ], 422);
+                }
+                $updatedAnswers[$phoneKey] = $val;
+            }
+        }
+
         $currentAnswers = $clientForm->answers ?? [];
         if (!is_array($currentAnswers)) {
             $currentAnswers = [];

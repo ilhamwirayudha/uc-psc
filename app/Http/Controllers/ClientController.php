@@ -146,9 +146,9 @@ class ClientController extends Controller
             'phone' => [
                 'required',
                 'string',
+                'regex:/^[0-9]+$/',
                 function ($attribute, $value, $fail) {
-                    $digits = preg_replace('/[^0-9]/', '', $value);
-                    $len = strlen($digits);
+                    $len = strlen((string) $value);
                     if ($len < 10 || $len > 13) {
                         $fail('Jumlah nomor telepon harus berjumlah antara 10 hingga 13 digit angka.');
                     }
@@ -179,6 +179,7 @@ class ClientController extends Controller
 
         $validated = $request->validate($rules, [
             'name.regex' => 'Nama tidak boleh mengandung angka. Hanya teks dan simbol yang diperbolehkan.',
+            'phone.regex' => 'Nomor telepon hanya boleh berisi angka.',
             'pic_name.required' => 'Nama perusahaan wajib diisi untuk klien industri.',
             'pic_name.regex' => 'Nama perusahaan / PIC tidak boleh mengandung angka.',
             'dob.required' => 'Tanggal lahir wajib diisi.',
@@ -230,7 +231,7 @@ class ClientController extends Controller
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string',
-            'phone' => 'required|string|max:50',
+            'phone' => 'required|string|max:50|regex:/^[0-9]+$/',
             'email' => 'required|email|max:255',
             'agama' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
@@ -266,6 +267,7 @@ class ClientController extends Controller
             'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
             'alamat.required' => 'Alamat tempat tinggal saat ini wajib diisi.',
             'phone.required' => 'Nomor WhatsApp / HP aktif wajib diisi.',
+            'phone.regex' => 'Nomor WhatsApp / HP hanya boleh berisi angka.',
             'email.required' => 'Alamat email aktif wajib diisi.',
             'agama.required' => 'Agama / kepercayaan wajib dipilih atau diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir wajib dipilih atau diisi.',
@@ -329,7 +331,7 @@ class ClientController extends Controller
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string',
-            'phone' => 'required|string|max:50',
+            'phone' => 'required|string|max:50|regex:/^[0-9]+$/',
             'email' => 'required|email|max:255',
             'agama' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
@@ -357,7 +359,7 @@ class ClientController extends Controller
             'agama_ayah' => 'nullable|string|max:50',
             'urutan_kelahiran_ayah' => 'nullable|string|max:100',
             'alamat_ayah' => 'nullable|string',
-            'phone_ayah' => 'nullable|string|max:50',
+            'phone_ayah' => 'nullable|string|max:50|regex:/^[0-9]+$/',
             'pernikahan_ayah_ke' => 'nullable|string|max:50',
             'jumlah_anak_ayah' => 'nullable|string|max:50',
             'status_nikah_ayah' => 'nullable|string|max:50',
@@ -369,7 +371,7 @@ class ClientController extends Controller
             'agama_ibu' => 'nullable|string|max:50',
             'urutan_kelahiran_ibu' => 'nullable|string|max:100',
             'alamat_ibu' => 'nullable|string',
-            'phone_ibu' => 'nullable|string|max:50',
+            'phone_ibu' => 'nullable|string|max:50|regex:/^[0-9]+$/',
             'pernikahan_ibu_ke' => 'nullable|string|max:50',
             'jumlah_anak_ibu' => 'nullable|string|max:50',
             'status_nikah_ibu' => 'nullable|string|max:50',
@@ -386,6 +388,9 @@ class ClientController extends Controller
             'tanggal_lahir.required' => 'Tanggal lahir anak wajib diisi.',
             'alamat.required' => 'Alamat tinggal anak wajib diisi.',
             'phone.required' => 'Nomor Telp/HP anak atau kontak utama wajib diisi.',
+            'phone.regex' => 'Nomor Telp/HP hanya boleh berisi angka.',
+            'phone_ayah.regex' => 'Nomor HP ayah hanya boleh berisi angka.',
+            'phone_ibu.regex' => 'Nomor HP ibu hanya boleh berisi angka.',
             'email.required' => 'Alamat email aktif wajib diisi.',
             'agama.required' => 'Agama/kepercayaan anak wajib diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir anak wajib diisi.',
@@ -449,7 +454,7 @@ class ClientController extends Controller
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string',
-            'phone' => 'required|string|max:50',
+            'phone' => 'required|string|max:50|regex:/^[0-9]+$/',
             'email' => 'required|email|max:150',
             'agama' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
@@ -466,7 +471,7 @@ class ClientController extends Controller
             'tanggal_lahir_pasangan' => 'nullable|date',
             'urutan_kelahiran_pasangan' => 'nullable|string|max:100',
             'alamat_pasangan' => 'nullable|string',
-            'phone_pasangan' => 'nullable|string|max:50',
+            'phone_pasangan' => 'nullable|string|max:50|regex:/^[0-9]+$/',
             'email_pasangan' => 'nullable|email|max:150',
             'agama_pasangan' => 'nullable|string|max:50',
             'suku_bangsa_pasangan' => 'nullable|string|max:50',
@@ -497,6 +502,8 @@ class ClientController extends Controller
             'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
             'alamat.required' => 'Alamat tinggal wajib diisi.',
             'phone.required' => 'Nomor WhatsApp / HP Anda wajib diisi.',
+            'phone.regex' => 'Nomor WhatsApp / HP Anda hanya boleh berisi angka.',
+            'phone_pasangan.regex' => 'Nomor WhatsApp / HP pasangan hanya boleh berisi angka.',
             'email.required' => 'Alamat email aktif Anda wajib diisi.',
             'agama.required' => 'Agama wajib diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir wajib diisi.',
@@ -560,7 +567,7 @@ class ClientController extends Controller
             'tempat_lahir' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string',
-            'phone' => 'required|string|max:50',
+            'phone' => 'required|string|max:50|regex:/^[0-9]+$/',
             'email' => 'required|email|max:150',
             'agama' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
@@ -577,7 +584,7 @@ class ClientController extends Controller
             'tanggal_lahir_pasangan' => 'nullable|date',
             'urutan_kelahiran_pasangan' => 'nullable|string|max:100',
             'alamat_pasangan' => 'nullable|string',
-            'phone_pasangan' => 'nullable|string|max:50',
+            'phone_pasangan' => 'nullable|string|max:50|regex:/^[0-9]+$/',
             'email_pasangan' => 'nullable|email|max:150',
             'agama_pasangan' => 'nullable|string|max:50',
             'suku_bangsa_pasangan' => 'nullable|string|max:50',
@@ -609,6 +616,8 @@ class ClientController extends Controller
             'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
             'alamat.required' => 'Alamat tinggal wajib diisi.',
             'phone.required' => 'Nomor WhatsApp / HP Anda wajib diisi.',
+            'phone.regex' => 'Nomor WhatsApp / HP Anda hanya boleh berisi angka.',
+            'phone_pasangan.regex' => 'Nomor WhatsApp / HP pasangan hanya boleh berisi angka.',
             'email.required' => 'Alamat email aktif Anda wajib diisi.',
             'agama.required' => 'Agama wajib diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir wajib diisi.',
@@ -671,7 +680,7 @@ class ClientController extends Controller
             'gender' => 'required|string|in:Male,Female',
             'birth_place_date' => 'required|string|max:150',
             'current_address' => 'required|string',
-            'phone' => 'required|string|max:50',
+            'phone' => 'required|string|max:50|regex:/^[0-9]+$/',
             'email' => 'required|email|max:150',
             'religion' => 'required|string|max:50',
             'last_education' => 'required|string|max:100',
@@ -711,6 +720,7 @@ class ClientController extends Controller
             'birth_place_date.required' => 'Place, date of birth is required.',
             'current_address.required' => 'Current address is required.',
             'phone.required' => 'Active Mobile/WhatsApp number is required.',
+            'phone.regex' => 'Mobile/WhatsApp number must contain numbers only.',
             'email.required' => 'Active email address is required.',
             'religion.required' => 'Religion is required.',
             'last_education.required' => 'Last education is required.',
@@ -771,7 +781,7 @@ class ClientController extends Controller
             'jenis_kelamin' => 'required|string|in:Laki-Laki,Perempuan',
             'tempat_tanggal_lahir' => 'required|string|max:150',
             'alamat_sekarang' => 'required|string',
-            'phone' => 'required|string|max:50',
+            'phone' => 'required|string|max:50|regex:/^[0-9]+$/',
             'email' => 'required|email|max:150',
             'agama' => 'required|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
@@ -811,6 +821,7 @@ class ClientController extends Controller
             'tempat_tanggal_lahir.required' => 'Tempat, tanggal lahir wajib diisi.',
             'alamat_sekarang.required' => 'Alamat tempat tinggal sekarang wajib diisi.',
             'phone.required' => 'Nomor Telp/HP/WhatsApp aktif wajib diisi.',
+            'phone.regex' => 'Nomor Telp/HP/WhatsApp hanya boleh berisi angka.',
             'email.required' => 'Alamat email aktif wajib diisi.',
             'agama.required' => 'Agama/kepercayaan wajib diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir yang berijazah wajib diisi.',
@@ -882,7 +893,7 @@ class ClientController extends Controller
             'alamat_sekarang' => 'nullable|string',
             'agama' => 'nullable|string|max:50',
             'pendidikan_terakhir' => 'required|string|max:100',
-            'phone' => 'required|string|max:50',
+            'phone' => 'required|string|max:50|regex:/^[0-9]+$/',
             'email' => 'required|email|max:150',
             'consent_agree' => 'required',
             'urutan_kelahiran' => 'nullable|string|max:100',
@@ -925,6 +936,7 @@ class ClientController extends Controller
             'tempat_tanggal_lahir.required' => 'Tempat & tanggal lahir wajib diisi.',
             'pendidikan_terakhir.required' => 'Pendidikan terakhir wajib dipilih.',
             'phone.required' => 'Nomor Telp/HP/WhatsApp aktif wajib diisi.',
+            'phone.regex' => 'Nomor Telp/HP/WhatsApp hanya boleh berisi angka.',
             'email.required' => 'Alamat email aktif wajib diisi.',
             'consent_agree.required' => 'Pernyataan kejujuran wajib disetujui.',
         ]);
@@ -1060,9 +1072,9 @@ class ClientController extends Controller
                 'required',
                 'string',
                 'max:20',
+                'regex:/^[0-9]+$/',
                 function ($attribute, $value, $fail) {
-                    $digits = preg_replace('/[^0-9]/', '', (string)$value);
-                    $len = strlen($digits);
+                    $len = strlen((string) $value);
                     if ($len < 10 || $len > 13) {
                         $fail('Jumlah nomor telepon harus berjumlah antara 10 hingga 13 digit angka.');
                     }
@@ -1093,6 +1105,7 @@ class ClientController extends Controller
             'participants.*' => 'required|string|max:255',
         ], [
             'name.regex' => 'Nama tidak boleh mengandung angka. Hanya teks dan simbol yang diperbolehkan.',
+            'phone.regex' => 'Nomor telepon hanya boleh berisi angka.',
             'phone.required' => 'Nomor telepon wajib diisi.',
             'email.required' => 'Alamat email wajib diisi.',
             'email.email' => 'Format alamat email tidak valid.',

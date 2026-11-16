@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/profil-saya', [\App\Http\Controllers\ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::post('/profil-saya/avatar', [\App\Http\Controllers\ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
     Route::delete('/profil-saya/avatar', [\App\Http\Controllers\ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
+    Route::delete('/profil-saya/hero-banner', [\App\Http\Controllers\ProfileController::class, 'deleteHeroBanner'])->name('profile.hero-banner.delete');
     Route::put('/profil-saya/email', [\App\Http\Controllers\ProfileController::class, 'updateEmail'])->name('profile.email.update');
     Route::put('/profil-saya/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password.update');
 

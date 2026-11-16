@@ -225,7 +225,7 @@
             @if(auth()->user()->avatar_url)
                 <img src="{{ auth()->user()->avatar_url }}"
                      alt="{{ auth()->user()->name }}"
-                     class="w-9 h-9 rounded-full object-cover border border-white/30 shadow-xs flex-shrink-0">
+                     class="w-9 h-9 rounded-full object-cover object-top bg-white border border-white/30 shadow-xs flex-shrink-0">
             @else
                 <div class="w-9 h-9 rounded-full bg-white text-purple-deep border border-white/30 flex items-center justify-center font-bold text-sm flex-shrink-0">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}

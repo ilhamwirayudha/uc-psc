@@ -205,10 +205,7 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-[2.4rem] bg-white/90 backdrop-blur-xl text-left shadow-[0_30px_70px_rgba(74,35,128,0.18),0_0_0_1px_rgba(255,255,255,0.95)_inset,0_2px_6px_rgba(255,255,255,0.85)_inset] transition-all sm:my-8 sm:w-full sm:max-w-md border border-white/90 p-6 sm:p-7">
-                
-                {{-- Specular Top Sheen Highlight --}}
-                <div class="absolute top-0 inset-x-10 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"></div>
+                class="relative transform overflow-hidden rounded-[2.4rem] bg-white/90 backdrop-blur-xl text-left shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-6 sm:p-7">
 
                 {{-- Close Button --}}
                 <button type="button" @click="showForgotModal = false" class="absolute top-5 right-5 text-[#827299] hover:text-purple-deep p-1.5 rounded-xl hover:bg-white/60 transition cursor-pointer z-10" title="Tutup">

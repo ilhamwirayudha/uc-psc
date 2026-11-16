@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['name', 'email', 'password', 'role', 'avatar', 'employee_id', 'position', 'phone', 'gender', 'address'])]
+#[Fillable(['name', 'email', 'password', 'role', 'avatar', 'hero_banner', 'employee_id', 'position', 'phone', 'gender', 'address'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -24,6 +24,14 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): ?string
     {
         return $this->avatar ? Storage::url($this->avatar) : null;
+    }
+
+    /**
+     * Get hero banner url or null.
+     */
+    public function getHeroBannerUrlAttribute(): ?string
+    {
+        return $this->hero_banner ? Storage::url($this->hero_banner) : null;
     }
 
     /**

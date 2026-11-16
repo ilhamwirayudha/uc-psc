@@ -12,6 +12,9 @@
     1. Tombol silang / Close `X` di bagian header modal.
     2. Tombol `Batal` / `Tutup` di bagian footer modal.
     3. Setelah proses submit form berhasil selesai.
+- **Tanpa Outline / Border Putih pada Card Modal Peringatan & Pop-up (Strict Rule)**:
+  - Seluruh modal peringatan, konfirmasi (*unsaved changes*, hapus data, keluar akun), maupun dialog pop-up **DILARANG KERAS** memiliki outline/border putih yang mengelilingi card (`border-white`, `border-white/80`, `border-white/90`, `inset_0_1px_2px_rgba(255,255,255,...)`, maupun garis specular putih di tepi atas).
+  - Gunakan efek elevasi bayangan saja (seperti `shadow-[0_30px_70px_rgba(74,35,128,0.2)]`) tanpa garis border putih pada kontainer luar modal, berlaku untuk seluruh komponen saat ini maupun pembuatan fitur kedepannya (*current and future creation*).
 - Rujukan aturan lengkap tersedia pada [modal-behavior.md](file:///.agents/rules/modal-behavior.md).
 
 ### 2. Card Styling & Presentasi Data Isian (Strict Rule)

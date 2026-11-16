@@ -1428,6 +1428,11 @@ function clientProfileDetail() {
                             <div>
                                 <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
                                 <input type="text" name="phone" x-model="formData.phone" placeholder="Contoh: 08123456789"
+                                       inputmode="numeric"
+                                       pattern="[0-9]+"
+                                       title="Hanya boleh diisi angka (0-9)"
+                                       @input="formData.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = formData.phone"
+                                       @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                        class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
                             </div>
 
@@ -1802,9 +1807,7 @@ function clientProfileDetail() {
                         x-transition:leave="ease-in duration-200"
                         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18),inset_0_1px_2px_rgba(255,255,255,0.95)] transition-all sm:my-8 sm:w-full sm:max-w-md border border-white/80 p-7 sm:p-9">
-                        
-                        <div class="absolute top-0 inset-x-10 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"></div>
+                        class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
 
                         <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1929,9 +1932,7 @@ function clientProfileDetail() {
                     x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18),inset_0_1px_2px_rgba(255,255,255,0.95)] transition-all sm:my-8 sm:w-full sm:max-w-md border border-white/80 p-7 sm:p-9">
-                    
-                    <div class="absolute top-0 inset-x-10 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"></div>
+                    class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
 
                     <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -3193,7 +3194,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'industri_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -4501,7 +4502,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -4705,7 +4706,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pra_nikah_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone_pasangan" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_pasangan = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_pasangan" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -5178,7 +5179,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -5591,23 +5592,6 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.pernah_konseling || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'dewasa_lain'" x-cloak>
-                                                            <select x-model="editFormAnswers.pernah_konseling" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-    <option value="Tidak, pertama kali">Tidak, pertama kali</option>
-    <option value="Ya, pernah sebelumnya">Ya, pernah sebelumnya</option>
-</select>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <label class="block text-xs font-medium text-slate-500 mb-1">Nama Konselor Lama</label>
-                                                        <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                                            <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.nama_konselor || selectedForm.answers.nama_konselor_lama || '-'"></span>
-                                                        </div>
-                                                        <div x-show="editingFormCard === 'dewasa_lain'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.nama_konselor" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <label class="block text-xs font-medium text-slate-500 mb-1">Kontak Darurat</label>
                                                         <div x-show="editingFormCard !== 'dewasa_lain'" class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.kontak_darurat || '-'"></span>
                                                         </div>
@@ -5780,7 +5764,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pendaftar'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -5984,7 +5968,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone_pasangan || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'pernikahan_pasangan'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone_pasangan" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone_pasangan" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_pasangan = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_pasangan" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -6430,7 +6414,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_datadiri'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -6638,7 +6622,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone_ayah || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone_ayah" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone_ayah" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_ayah = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_ayah" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -6721,7 +6705,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone_ibu || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'anak_orangtua'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone_ibu" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone_ibu" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone_ibu = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone_ibu" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -7258,7 +7242,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'non_industri_identitas'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -7820,7 +7804,7 @@ function clientProfileDetail() {
                                                             <span class="text-black text-sm font-medium block " x-text="selectedForm.answers.phone || selectedForm.client_phone || '-'"></span>
                                                         </div>
                                                         <div x-show="editingFormCard === 'biography_en_personal'" x-cloak>
-                                                            <input type="text" x-model="editFormAnswers.phone" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
+                                                            <input type="text" x-model="editFormAnswers.phone" inputmode="numeric" pattern="[0-9]*" title="Hanya boleh diisi angka (0-9)" @input="editFormAnswers.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = editFormAnswers.phone" @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()" class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black min-h-[42px] shadow-xs bg-white">
                                                         </div>
                                                     </div>
                                                     <div>
@@ -8354,10 +8338,7 @@ function clientProfileDetail() {
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18),inset_0_1px_2px_rgba(255,255,255,0.95)] transition-all sm:my-8 sm:w-full sm:max-w-md border border-white/80 p-7 sm:p-9">
-
-                {{-- Specular Top Highlight Edge --}}
-                <div class="absolute top-0 inset-x-10 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"></div>
+                class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
 
                 {{-- Centered Top Icon Badge --}}
                 <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">

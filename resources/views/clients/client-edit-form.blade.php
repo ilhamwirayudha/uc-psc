@@ -327,7 +327,11 @@
                                 value="{{ old('phone', $client->phone) }}"
                                 :placeholder="isPhoneEnabled ? '08xx-xxxx-xxxx' : ''"
                                 maxlength="13"
+                                inputmode="numeric"
+                                pattern="[0-9]+"
+                                title="Hanya boleh diisi angka (0-9)"
                                 @input="phone = $el.value.replace(/[^0-9]/g, '').slice(0, 13); $el.value = phone"
+                                @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                 class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black">
                         </div>
 

@@ -201,11 +201,8 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-[2rem] bg-white/75 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18),inset_0_1px_2px_rgba(255,255,255,0.95)] transition-all sm:my-8 sm:w-full sm:max-w-md border border-white/80 p-7 sm:p-9">
+                class="relative transform overflow-hidden rounded-[2rem] bg-white/75 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
                 
-                {{-- Specular Top Highlight Edge --}}
-                <div class="absolute top-0 inset-x-10 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"></div>
-
                 {{-- Centered Top Icon Badge --}}
                 <div class="mx-auto w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -275,11 +272,8 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18),inset_0_1px_2px_rgba(255,255,255,0.95)] transition-all sm:my-8 sm:w-full sm:max-w-md border border-white/80 p-7 sm:p-9">
+                class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
                 
-                {{-- Specular Top Highlight Edge --}}
-                <div class="absolute top-0 inset-x-10 h-[1.5px] bg-gradient-to-r from-transparent via-white to-transparent pointer-events-none"></div>
-
                 {{-- Centered Top Icon Badge --}}
                 <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">

@@ -101,6 +101,9 @@
                     No. Telepon <span class="text-red-500">*</span>
                 </label>
                 <input type="tel" name="phone" value="{{ old('phone') }}" required
+                    inputmode="numeric" pattern="[0-9]+" title="Hanya boleh diisi angka (0-9)"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                    onkeydown="if (!/[0-9]/.test(event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes(event.key) && !event.ctrlKey && !event.metaKey) event.preventDefault()"
                     placeholder="Contoh: 081234567890"
                     class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep @error('phone') border-red-400 bg-red-50/20 @enderror">
                 @error('phone') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
