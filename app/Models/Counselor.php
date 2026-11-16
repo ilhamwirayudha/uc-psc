@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Services\PublicMediaStorage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
 
 class Counselor extends Model
 {
@@ -41,7 +41,7 @@ class Counselor extends Model
 
     public function getPhotoUrlAttribute(): ?string
     {
-        return $this->photo ? Storage::url($this->photo) : null;
+        return PublicMediaStorage::url($this->photo);
     }
 
     public function getFullAddressAttribute(): string

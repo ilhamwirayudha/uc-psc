@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Client;
 use App\Models\ClientStaffAssignment;
+use App\Services\PublicMediaStorage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use RuntimeException;
+use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
 class ProfileController extends Controller
 {
@@ -187,13 +189,13 @@ class ProfileController extends Controller
             'avatar.max' => 'Ukuran gambar maksimal 5MB.',
         ]);
 
-        // Hapus foto lama jika ada
-        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-            Storage::disk('public')->delete($user->avatar);
+        try {
+            $path = $this->storeOptimizedImage($request->file('avatar'), 'avatars', 400, 400);
+        } catch (RuntimeException $e) {
+            return redirect()->route('profile.edit')->withErrors(['avatar' => $e->getMessage()]);
         }
 
-        // Simpan foto baru dengan resampling proporsional berkualitas tinggi
-        $path = $this->storeOptimizedImage($request->file('avatar'), 'avatars', 400, 400);
+        PublicMediaStorage::delete($user->avatar);
         $user->update(['avatar' => $path]);
 
         return redirect()->route('profile.edit')->with('success', 'Foto profil berhasil diperbarui.');
@@ -206,9 +208,7 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-            Storage::disk('public')->delete($user->avatar);
-        }
+        PublicMediaStorage::delete($user->avatar);
 
         $user->update(['avatar' => null]);
 
@@ -222,9 +222,7 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->hero_banner && Storage::disk('public')->exists($user->hero_banner)) {
-            Storage::disk('public')->delete($user->hero_banner);
-        }
+        PublicMediaStorage::delete($user->hero_banner);
 
         $user->update(['hero_banner' => null]);
 
@@ -266,6 +264,17 @@ class ProfileController extends Controller
             || $request->filled('password')
             || $request->filled('password_confirmation');
 
+        $rawUploadErrors = [];
+        foreach (['avatar' => 'foto profil', 'hero_banner' => 'background hero'] as $field => $label) {
+            $rawFile = $request->files->get($field);
+            if ($rawFile instanceof SymfonyUploadedFile && ! $rawFile->isValid()) {
+                $rawUploadErrors[$field] = 'Upload ' . $label . ' gagal: ' . $rawFile->getErrorMessage();
+            }
+        }
+        if ($rawUploadErrors !== []) {
+            return redirect()->route('profile.edit')->withInput()->withErrors($rawUploadErrors);
+        }
+
         if ($request->hasFile('avatar')) {
             $rules['avatar'] = ['image', 'mimes:jpeg,png,jpg,webp', 'max:5120'];
             $messages['avatar.image'] = 'File harus berupa gambar.';
@@ -301,28 +310,26 @@ class ProfileController extends Controller
             'gender' => $validated['gender'] ?? null,
         ];
 
-        if ($request->hasFile('avatar')) {
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
+        try {
+            if ($request->hasFile('avatar')) {
+                $newAvatarPath = $this->storeOptimizedImage($request->file('avatar'), 'avatars', 400, 400);
+                PublicMediaStorage::delete($user->avatar);
+                $data['avatar'] = $newAvatarPath;
+            } elseif ($request->boolean('remove_avatar')) {
+                PublicMediaStorage::delete($user->avatar);
+                $data['avatar'] = null;
             }
-            $data['avatar'] = $this->storeOptimizedImage($request->file('avatar'), 'avatars', 400, 400);
-        } elseif ($request->boolean('remove_avatar')) {
-            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-            $data['avatar'] = null;
-        }
 
-        if ($request->hasFile('hero_banner')) {
-            if ($user->hero_banner && Storage::disk('public')->exists($user->hero_banner)) {
-                Storage::disk('public')->delete($user->hero_banner);
+            if ($request->hasFile('hero_banner')) {
+                $newBannerPath = $this->storeOptimizedImage($request->file('hero_banner'), 'hero-banners', 1600, null);
+                PublicMediaStorage::delete($user->hero_banner);
+                $data['hero_banner'] = $newBannerPath;
+            } elseif ($request->boolean('remove_hero_banner')) {
+                PublicMediaStorage::delete($user->hero_banner);
+                $data['hero_banner'] = null;
             }
-            $data['hero_banner'] = $this->storeOptimizedImage($request->file('hero_banner'), 'hero-banners', 1600, null);
-        } elseif ($request->boolean('remove_hero_banner')) {
-            if ($user->hero_banner && Storage::disk('public')->exists($user->hero_banner)) {
-                Storage::disk('public')->delete($user->hero_banner);
-            }
-            $data['hero_banner'] = null;
+        } catch (RuntimeException $e) {
+            return redirect()->route('profile.edit')->withInput()->withErrors(['avatar' => $e->getMessage()]);
         }
 
         if ($wantsPasswordChange) {
@@ -390,13 +397,13 @@ class ProfileController extends Controller
         ?int $squareHeight = null
     ): string {
         if (!extension_loaded('gd')) {
-            return $file->store($directory, 'public');
+            return PublicMediaStorage::storeUploadedFile($file, $directory);
         }
 
         $raw = @file_get_contents($file->getRealPath());
         $src = $raw !== false ? @imagecreatefromstring($raw) : false;
         if (!$src) {
-            return $file->store($directory, 'public');
+            return PublicMediaStorage::storeUploadedFile($file, $directory);
         }
 
         $src = $this->applyExifOrientation($file, $src);
@@ -405,7 +412,7 @@ class ProfileController extends Controller
 
         if ($srcW <= 0 || $srcH <= 0) {
             imagedestroy($src);
-            return $file->store($directory, 'public');
+            return PublicMediaStorage::storeUploadedFile($file, $directory);
         }
 
         if ($squareHeight !== null) {
@@ -439,21 +446,22 @@ class ProfileController extends Controller
         if (function_exists('imagewebp')) {
             imagewebp($dst, null, 92);
             $ext = 'webp';
+            $mimeType = 'image/webp';
         } else {
             imagejpeg($dst, null, 92);
             $ext = 'jpg';
+            $mimeType = 'image/jpeg';
         }
         $binary = ob_get_clean();
         imagedestroy($dst);
 
         if ($binary === false || $binary === '') {
-            return $file->store($directory, 'public');
+            return PublicMediaStorage::storeUploadedFile($file, $directory);
         }
 
         $path = trim($directory, '/') . '/' . Str::random(40) . '.' . $ext;
-        Storage::disk('public')->put($path, $binary);
 
-        return $path;
+        return PublicMediaStorage::put($path, $binary, $mimeType);
     }
 
     /**

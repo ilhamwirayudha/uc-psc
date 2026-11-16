@@ -248,27 +248,37 @@ function userProfileHero() {
 <div x-data="userProfileHero()" class="max-w-4xl mx-auto space-y-5">
 
     {{-- Form Terpusat untuk Profil (Hero Banner, Foto Profil, & Biodata User) --}}
-    <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" id="unifiedProfileForm" class="hidden">
+    <form
+        method="POST"
+        action="{{ route('profile.update') }}"
+        enctype="multipart/form-data"
+        id="unifiedProfileForm"
+        @submit="
+            const avEl = document.getElementById('inline_avatar_input');
+            const bnEl = document.getElementById('inline_banner_input');
+            if (hasSelectedAvatarFile && (!avEl || !avEl.files || avEl.files.length === 0)) {
+                $event.preventDefault();
+                alert('File foto profil belum terbaca oleh browser. Silakan pilih ulang foto profil Anda.');
+                return;
+            }
+            if (hasSelectedBannerFile && (!bnEl || !bnEl.files || bnEl.files.length === 0)) {
+                $event.preventDefault();
+                alert('File background hero belum terbaca oleh browser. Silakan pilih ulang gambar Anda.');
+                return;
+            }
+        "
+    >
         @csrf
         @method('PUT')
-    </form>
-
-    {{-- ==================================================================== --}}
-    {{-- KARTU 1: HERO CARD (BACKGROUND, FOTO PROFIL, NAMA & ROLE USER)       --}}
-    {{-- ==================================================================== --}}
-    <div class="glass-card rounded-3xl relative">
-
-        {{-- Hidden Inputs (Terhubung ke #unifiedProfileForm — Tersimpan Hanya Saat Klik Simpan) --}}
-        <input type="hidden" form="unifiedProfileForm" name="remove_avatar" :value="removeAvatar ? '1' : '0'">
-        <input type="hidden" form="unifiedProfileForm" name="remove_hero_banner" :value="removeHeroBanner ? '1' : '0'">
+        {{-- Hidden Inputs (Tersimpan Hanya Saat Klik Simpan) --}}
+        <input type="hidden" name="remove_avatar" :value="removeAvatar ? '1' : '0'">
+        <input type="hidden" name="remove_hero_banner" :value="removeHeroBanner ? '1' : '0'">
 
         <input
             type="file"
-            form="unifiedProfileForm"
             id="inline_avatar_input"
             name="avatar"
             accept="image/jpeg,image/png,image/jpg,image/webp"
-            :disabled="!editMode || activeTab !== 'profil'"
             class="hidden"
             @change="
                 const file = $event.target.files[0];
@@ -284,11 +294,9 @@ function userProfileHero() {
         >
         <input
             type="file"
-            form="unifiedProfileForm"
             id="inline_banner_input"
             name="hero_banner"
             accept="image/jpeg,image/png,image/jpg,image/webp"
-            :disabled="!editMode || activeTab !== 'profil'"
             class="hidden"
             @change="
                 const file = $event.target.files[0];
@@ -302,6 +310,11 @@ function userProfileHero() {
                 }
             "
         >
+
+    {{-- ==================================================================== --}}
+    {{-- KARTU 1: HERO CARD (BACKGROUND, FOTO PROFIL, NAMA & ROLE USER)       --}}
+    {{-- ==================================================================== --}}
+    <div class="glass-card rounded-3xl relative">
 
         {{-- Decorative / Custom Hero Cover Banner + Edit Overlay --}}
         <div class="h-24 sm:h-28 rounded-t-3xl relative overflow-hidden bg-gradient-to-r from-[#4B267D] via-[#6B3FA0] to-[#E67E22]/85 group/banner">
@@ -406,6 +419,7 @@ function userProfileHero() {
         </div>
 
     </div>
+    </form>
 
     {{-- ==================================================================== --}}
     {{-- KARTU WORKSPACE TAB TERPADU (PROFIL / PENGATURAN / LOG AKTIVITAS)    --}}

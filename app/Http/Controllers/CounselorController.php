@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Counselor;
+use App\Services\PublicMediaStorage;
 use Illuminate\Http\Request;
+use RuntimeException;
 
 class CounselorController extends Controller
 {
@@ -74,7 +76,11 @@ class CounselorController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            $validated['photo'] = $request->file('photo')->store('counselors/photos', 'public');
+            try {
+                $validated['photo'] = PublicMediaStorage::storeUploadedFile($request->file('photo'), 'counselors/photos');
+            } catch (RuntimeException $e) {
+                return back()->withInput()->withErrors(['photo' => $e->getMessage()]);
+            }
         }
 
         Counselor::create($validated);
@@ -109,17 +115,19 @@ class CounselorController extends Controller
         ]);
 
         if ($request->boolean('remove_photo')) {
-            if ($counselor->photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($counselor->photo)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($counselor->photo);
-            }
+            PublicMediaStorage::delete($counselor->photo);
             $validated['photo'] = null;
         }
 
         if ($request->hasFile('photo')) {
-            if ($counselor->photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($counselor->photo)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($counselor->photo);
+            try {
+                $newPhotoPath = PublicMediaStorage::storeUploadedFile($request->file('photo'), 'counselors/photos');
+            } catch (RuntimeException $e) {
+                return back()->withInput()->withErrors(['photo' => $e->getMessage()]);
             }
-            $validated['photo'] = $request->file('photo')->store('counselors/photos', 'public');
+
+            PublicMediaStorage::delete($counselor->photo);
+            $validated['photo'] = $newPhotoPath;
         }
 
         $counselor->update($validated);
@@ -137,9 +145,7 @@ class CounselorController extends Controller
 
     public function destroy(Counselor $counselor)
     {
-        if ($counselor->photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($counselor->photo)) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($counselor->photo);
-        }
+        PublicMediaStorage::delete($counselor->photo);
 
         $counselor->delete();
         return redirect()->route('counselors.index')->with('success', 'Konselor berhasil dihapus.');

@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Booking;
 use App\Policies\ClientPolicy;
 use App\Policies\BookingPolicy;
+use Illuminate\Foundation\Console\ServeCommand;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->runningInConsole() && class_exists(ServeCommand::class)) {
+            ServeCommand::$passthroughVariables = array_values(array_unique(array_merge(
+                ServeCommand::$passthroughVariables,
+                ['TEMP', 'TMP', 'LOCALAPPDATA', 'USERPROFILE']
+            )));
+        }
+
         Gate::policy(Client::class, ClientPolicy::class);
         Gate::policy(Booking::class, BookingPolicy::class);
 
