@@ -18,7 +18,7 @@
         <form method="GET" action="{{ route('bookings.counseling') }}" class="w-full sm:w-80 md:w-96 relative">
             <div class="relative w-full">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama klien konseling..."
-                    class="w-full pl-11 pr-10 py-2.5 glass-input rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black placeholder:text-gray-400 font-medium">
+                    class="w-full pl-11 pr-10 py-2.5 glass-input rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black placeholder:text-gray-400 font-medium">
                 <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -37,7 +37,7 @@
 
         {{-- Tombol Booking Konseling Baru --}}
         <button type="button" @click="$dispatch('open-booking-modal', { category: 'konseling' })" 
-            class="px-4.5 py-2.5 bg-orange text-white text-sm font-semibold rounded-xl hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center justify-center gap-2">
+            class="px-4.5 py-2.5 bg-orange text-white text-sm font-semibold rounded-lg hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center justify-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>Booking Konseling Baru</span>
         </button>
@@ -79,7 +79,7 @@
     {{-- ========================================================================= --}}
     {{-- TABEL: LAYANAN KONSELING                                                  --}}
     {{-- ========================================================================= --}}
-    <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between">
+    <div class="glass-card rounded-xl overflow-hidden flex flex-col justify-between">
         {{-- Header Card (Warna Ungu) --}}
         <div class="px-6 py-4 bg-purple-deep/95 text-white flex items-center justify-between border-b border-purple-900/30">
             <h3 class="text-base font-bold text-white tracking-tight">Layanan Konseling</h3>

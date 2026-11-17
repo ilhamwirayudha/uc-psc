@@ -10,7 +10,7 @@
     :title="sidebarCollapsed ? '{{ $label }}' : null"
     {{ $attributes->merge([
         'class' => implode(' ', [
-            'group relative flex items-center gap-3 rounded-2xl border transition-all duration-150',
+            'group relative flex items-center gap-3 rounded-xl border transition-all duration-150',
             $sub ? 'px-3 py-2 text-[14px] whitespace-nowrap' : 'px-3.5 py-2.5 text-[15px]',
             $active
                 ? 'bg-white/18 border-white/25 backdrop-blur-sm text-white font-semibold shadow-[0_6px_20px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.22)]'

@@ -185,7 +185,7 @@
         {{-- Left Column: Identitas & Layanan Klien (7 cols on lg) --}}
         <div class="lg:col-span-7 space-y-6">
             {{-- Card 1: Data Identitas Klien --}}
-            <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+            <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                 <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
                     <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center font-bold text-sm">
                         1
@@ -201,7 +201,7 @@
                     <input type="text" id="name" name="name" x-model="name" value="{{ old('name', $client->name) }}" required
                         @input="capitalizeInput($event)"
                         @keydown="if ($event.key >= '0' && $event.key <= '9') $event.preventDefault()"
-                        class="w-full px-4 py-2.5 rounded-xl bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('name') border-red-300 @enderror">
+                        class="w-full px-4 py-2.5 rounded-lg bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('name') border-red-300 @enderror">
                     @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -216,7 +216,7 @@
                                 :disabled="!isDobEnabled"
                                 :class="isDobEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
                                 value="{{ old('dob', $client->dob ? $client->dob->format('Y-m-d') : '') }}"
-                                class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
+                                class="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
                         </div>
 
                         {{-- 2. Jenis Kelamin --}}
@@ -225,7 +225,7 @@
                             <select id="gender" name="gender" x-model="gender"
                                 :disabled="!isGenderEnabled"
                                 :class="isGenderEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
-                                class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black">
+                                class="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black">
                                 <option value="" x-text="isGenderEnabled ? 'Pilih Jenis Kelamin' : ''"></option>
                                 <option value="l" {{ old('gender', $client->gender) === 'l' ? 'selected' : '' }}>Laki-laki</option>
                                 <option value="p" {{ old('gender', $client->gender) === 'p' ? 'selected' : '' }}>Perempuan</option>
@@ -242,7 +242,7 @@
                             <select id="religion" name="religion" x-model="religion" required
                                 :disabled="!isReligionEnabled"
                                 :class="isReligionEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
-                                class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('religion') border-red-300 @enderror">
+                                class="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('religion') border-red-300 @enderror">
                                 <option value="" x-text="isReligionEnabled ? '-- Pilih Agama --' : ''"></option>
                                 <option value="Islam" {{ old('religion', $client->religion) === 'Islam' ? 'selected' : '' }}>Islam</option>
                                 <option value="Kristen" {{ old('religion', $client->religion) === 'Kristen' ? 'selected' : '' }}>Kristen Protestan</option>
@@ -262,7 +262,7 @@
                             <select id="marital_status" name="marital_status" x-model="marital_status" required
                                 :disabled="!isMaritalStatusEnabled"
                                 :class="isMaritalStatusEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
-                                class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('marital_status') border-red-300 @enderror">
+                                class="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('marital_status') border-red-300 @enderror">
                                 <option value="" x-text="isMaritalStatusEnabled ? 'Pilih Status...' : ''"></option>
                                 <option value="belum_menikah" {{ old('marital_status', $client->marital_status) === 'belum_menikah' ? 'selected' : '' }}>Belum Menikah</option>
                                 <option value="menikah" {{ old('marital_status', $client->marital_status) === 'menikah' ? 'selected' : '' }}>Menikah</option>
@@ -281,7 +281,7 @@
                             <select id="education" name="education" x-model="education" required
                                 :disabled="!isEducationEnabled"
                                 :class="isEducationEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
-                                class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('education') border-red-300 @enderror">
+                                class="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('education') border-red-300 @enderror">
                                 <option value="" x-text="isEducationEnabled ? '-- Pilih Pendidikan Terakhir --' : ''"></option>
                                 <option value="tk" {{ in_array(strtolower((string)old('education', $client->education)), ['tk', 'paud', 'paud_tk', 'paud / tk']) ? 'selected' : '' }}>TK</option>
                                 <option value="sd" {{ in_array(strtolower((string)old('education', $client->education)), ['sd', 'sd / sederajat']) ? 'selected' : '' }}>SD / Sederajat</option>
@@ -302,7 +302,7 @@
                             <select id="occupation" name="occupation" x-model="occupation"
                                 :disabled="!isOccupationEnabled"
                                 :class="isOccupationEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
-                                class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black">
+                                class="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black">
                                 <option value="" x-text="isOccupationEnabled ? '-- Pilih Pekerjaan --' : ''"></option>
                                 <option value="Belum Bekerja" {{ old('occupation', $client->occupation) === 'Belum Bekerja' ? 'selected' : '' }}>Belum Bekerja</option>
                                 <option value="Pelajar" {{ old('occupation', $client->occupation) === 'Pelajar' ? 'selected' : '' }}>Pelajar</option>
@@ -332,7 +332,7 @@
                                 title="Hanya boleh diisi angka (0-9)"
                                 @input="phone = $el.value.replace(/[^0-9]/g, '').slice(0, 13); $el.value = phone"
                                 @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
-                                class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black">
+                                class="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black">
                         </div>
 
                         {{-- 4. Email --}}
@@ -344,13 +344,13 @@
                                 value="{{ old('email', $client->email) }}"
                                 :placeholder="isEmailEnabled ? 'nama@email.com' : ''"
                                 @input="email = $el.value.toLowerCase(); $el.value = email"
-                                class="w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('email') border-red-300 @enderror">
+                                class="w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black @error('email') border-red-300 @enderror">
                             @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
                 </div>
             </div>            {{-- Card: Alamat & Domisili --}}
-            <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+            <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                 <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
                     <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center font-bold text-sm">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -371,7 +371,7 @@
                         <button type="button" 
                             :disabled="!isAddressAllowed"
                             @click="isAddressAllowed && (countryOpen ? (countryOpen = false) : openCountry())" 
-                            class="w-full px-4 py-2.5 rounded-xl text-sm flex items-center justify-between text-left transition"
+                            class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
                             :class="isAddressAllowed
                                 ? 'bg-white border hover:border-[#B59BD6] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer text-black font-medium @error('country') border-red-400 @else border-[#D9C2F0] @enderror' 
                                 : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
@@ -395,7 +395,7 @@
                             x-transition:leave="transition ease-in duration-100"
                             x-transition:leave-start="opacity-100 translate-y-0"
                             x-transition:leave-end="opacity-0 translate-y-1"
-                            class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
+                            class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
                             
                             {{-- Sticky Search Input Paling Atas --}}
                             <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
@@ -444,7 +444,7 @@
                         <button type="button" 
                             :disabled="!isAddressAllowed || country !== 'Indonesia'"
                             @click="(isAddressAllowed && country === 'Indonesia') && (provinceOpen ? (provinceOpen = false) : openProvince())" 
-                            class="w-full px-4 py-2.5 rounded-xl text-sm flex items-center justify-between text-left transition"
+                            class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
                             :class="(isAddressAllowed && country === 'Indonesia') 
                                 ? 'bg-white border hover:border-[#B59BD6] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer text-black font-medium @error('province') border-red-400 @else border-[#D9C2F0] @enderror' 
                                 : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
@@ -468,7 +468,7 @@
                             x-transition:leave="transition ease-in duration-100"
                             x-transition:leave-start="opacity-100 translate-y-0"
                             x-transition:leave-end="opacity-0 translate-y-1"
-                            class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
+                            class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
                             
                             {{-- Sticky Search Input Paling Atas --}}
                             <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
@@ -517,7 +517,7 @@
                         <button type="button" 
                             :disabled="!isAddressAllowed || country !== 'Indonesia' || !province"
                             @click="(isAddressAllowed && country === 'Indonesia' && province) && (cityOpen ? (cityOpen = false) : openCity())" 
-                            class="w-full px-4 py-2.5 rounded-xl text-sm flex items-center justify-between text-left transition"
+                            class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
                             :class="(isAddressAllowed && country === 'Indonesia' && province)
                                 ? 'bg-white border hover:border-[#B59BD6] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer text-black font-medium @error('city') border-red-400 @else border-[#D9C2F0] @enderror' 
                                 : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
@@ -541,7 +541,7 @@
                             x-transition:leave="transition ease-in duration-100"
                             x-transition:leave-start="opacity-100 translate-y-0"
                             x-transition:leave-end="opacity-0 translate-y-1"
-                            class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
+                            class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
                             
                             {{-- Sticky Search Input Paling Atas --}}
                             <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
@@ -585,13 +585,13 @@
                                 ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep @error('address') border-red-400 @enderror' 
                                 : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
                             :placeholder="isAddressEnabled ? 'Contoh: Jl. Soekarno Hatta No. 112, RT 002/RW 005, Kel. Jatimulyo, Kec. Lowokwaru' : ''"
-                            class="w-full px-4 py-2.5 rounded-xl border transition text-sm font-medium text-black">{{ old('address', $client->address) }}</textarea>
+                            class="w-full px-4 py-2.5 rounded-lg border transition text-sm font-medium text-black">{{ old('address', $client->address) }}</textarea>
                         @error('address')
                             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                         @enderror
 
                         {{-- Live Preview Format Penulisan Alamat Standar --}}
-                        <div x-show="isAddressEnabled && (address || city || province)" class="mt-2 p-3 rounded-xl bg-[#FAF8FD] border border-[#EDE1FA] text-xs space-y-1">
+                        <div x-show="isAddressEnabled && (address || city || province)" class="mt-2 p-3 rounded-lg bg-[#FAF8FD] border border-[#EDE1FA] text-xs space-y-1">
                             <div class="flex items-center gap-1.5 font-bold text-purple-deep text-[11px]">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                                 <span>Format Alamat Lengkap Otomatis:</span>
@@ -614,7 +614,7 @@
                 $currentSessionType = old('session_type', $upcomingRecord?->type ?? 'tatap_muka');
                 $currentLocation = old('location', $upcomingRecord?->location ?? '');
             @endphp
-            <div class="bg-[#FBF9FE] rounded-2xl border border-[#E9DAFA] p-6 space-y-4">
+            <div class="bg-[#FBF9FE] rounded-xl border border-[#E9DAFA] p-6 space-y-4">
                 <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
                     <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center font-bold text-sm">
                         2
@@ -629,7 +629,7 @@
                     <div>
                         <label for="counselor_id" class="block text-xs font-medium text-gray-500 mb-1.5" x-text="serviceType === 'psikotes' ? 'Pilih Psikolog / Tester' : 'Pilih Psikolog'">Pilih Konselor</label>
                         <select id="counselor_id" name="counselor_id"
-                            class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
+                            class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
                             <option value="">Belum Ditentukan (Unassigned)</option>
                             @foreach($counselors as $counselor)
                             <option value="{{ $counselor->id }}" {{ $currentCounselorId == $counselor->id ? 'selected' : '' }}>
@@ -642,7 +642,7 @@
                     <div>
                         <label for="session_type" class="block text-xs font-medium text-gray-500 mb-1.5">Tipe Sesi</label>
                         <select id="session_type" name="session_type"
-                            class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
+                            class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
                             <option value="tatap_muka" {{ $currentSessionType === 'tatap_muka' ? 'selected' : '' }}>Tatap Muka (Offline)</option>
                             <option value="online" {{ $currentSessionType === 'online' ? 'selected' : '' }}>Online (Zoom / GMeet)</option>
                             <option value="whatsapp" {{ $currentSessionType === 'whatsapp' ? 'selected' : '' }}>WhatsApp</option>
@@ -653,36 +653,36 @@
                         <div>
                             <label for="scheduled_at" class="block text-xs font-medium text-gray-500 mb-1.5">Jadwal Mulai</label>
                             <input type="datetime-local" id="scheduled_at" name="scheduled_at" value="{{ $currentScheduledAt }}"
-                                class="w-full px-3 py-2 rounded-xl border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
+                                class="w-full px-3 py-2 rounded-lg border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
                         </div>
                         <div>
                             <label for="end_time" class="block text-xs font-medium text-gray-500 mb-1.5">Jadwal Selesai</label>
                             <input type="datetime-local" id="end_time" name="end_time" value="{{ $currentEndTime }}"
-                                class="w-full px-3 py-2 rounded-xl border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
+                                class="w-full px-3 py-2 rounded-lg border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
                         </div>
                     </div>
 
                     <div>
                         <label for="location" class="block text-xs font-medium text-gray-500 mb-1.5">Lokasi / Ruangan / Link Meeting</label>
                         <input type="text" id="location" name="location" value="{{ $currentLocation }}" placeholder="Contoh: Ruang Konseling 2 atau link GMeet..."
-                            class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
+                            class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black">
                     </div>
                 </div>
             </div>
 
             {{-- Card 4: Catatan --}}
-            <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-3">
+            <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-3">
                 <label for="notes" class="block text-xs font-medium text-gray-500 mb-1.5">Catatan & Keterangan Tambahan</label>
                 <textarea id="notes" name="notes" rows="4" placeholder="Tuliskan keluhan awal, preferensi jadwal, atau catatan penting lainnya..."
-                    class="w-full px-4 py-3 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black resize-none">{{ old('notes', $client->notes_text) }}</textarea>
+                    class="w-full px-4 py-3 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black resize-none">{{ old('notes', $client->notes_text) }}</textarea>
             </div>
 
             {{-- Action Buttons --}}
             <div class="flex items-center justify-end gap-3 pt-2">
-                <a href="{{ route('clients.index') }}" class="px-6 py-3 rounded-xl text-sm font-semibold text-black border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
+                <a href="{{ route('clients.index') }}" class="px-6 py-3 rounded-lg text-sm font-semibold text-black border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
                     Batal
                 </a>
-                <button type="submit" class="bg-purple-deep text-white px-8 py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition shadow-sm flex items-center gap-2">
+                <button type="submit" class="bg-purple-deep text-white px-8 py-3 rounded-lg text-sm font-semibold hover:opacity-90 transition shadow-sm flex items-center gap-2">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                     Perbarui Data Klien
                 </button>

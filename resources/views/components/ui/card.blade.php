@@ -1,6 +1,6 @@
 @props([
     'padding' => 'p-6',
-    'rounded' => 'rounded-2xl',
+    'rounded' => 'rounded-xl',
 ])
 
 <div {{ $attributes->merge(['class' => "glass-card {$rounded} overflow-hidden"]) }}>

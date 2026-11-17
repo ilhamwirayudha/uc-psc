@@ -119,7 +119,7 @@
         @method('PUT')
 
         {{-- FOTO PROFIL KONSELOR (FRAME LINGKARAN) --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6">
+        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6">
             <div class="flex flex-col sm:flex-row items-center gap-6">
                 {{-- Circular Avatar Frame Preview --}}
                 <div class="relative group flex-shrink-0">
@@ -139,7 +139,7 @@
                     
                     <div class="pt-1">
                         <input type="file" id="edit_photo_input" name="photo" accept="image/*" class="hidden" @change="handlePhotoSelect($event)">
-                        <label for="edit_photo_input" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-[#D9C2F0] bg-white text-xs font-semibold text-purple-deep hover:bg-[#FAF8FD] transition cursor-pointer shadow-2xs">
+                        <label for="edit_photo_input" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[#D9C2F0] bg-white text-xs font-semibold text-purple-deep hover:bg-[#FAF8FD] transition cursor-pointer shadow-2xs">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                             <span x-text="photoPreview ? 'Ganti Foto Profil' : 'Unggah Foto Profil'"></span>
                         </label>
@@ -150,7 +150,7 @@
         </div>
 
         {{-- CARD 1: DATA IDENTITAS & KONTAK --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Data Identitas & Kontak</h3>
                 <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif psikolog</p>
@@ -162,7 +162,7 @@
                     <label for="name" class="block text-xs font-medium text-gray-500 mb-1.5">Nama Psikolog / Psikolog <span class="text-red-500">*</span></label>
                     <input type="text" id="name" name="name" value="{{ old('name', $counselor->name) }}" required
                         placeholder="Contoh: Dr. Amanda Wijaya, M.Psi., Psikolog"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('name') border-red-300 @enderror">
+                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('name') border-red-300 @enderror">
                     @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -175,7 +175,7 @@
                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13)"
                         onkeydown="if (!/[0-9]/.test(event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'].includes(event.key) && !event.ctrlKey && !event.metaKey) event.preventDefault()"
                         placeholder="Contoh: 081234567890 (maks. 13 digit)"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('phone') border-red-300 @enderror">
+                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('phone') border-red-300 @enderror">
                     @error('phone') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -184,14 +184,14 @@
                     <label for="email" class="block text-xs font-medium text-gray-500 mb-1.5">Email</label>
                     <input type="email" id="email" name="email" value="{{ old('email', $counselor->email) }}"
                         placeholder="Contoh: amanda.wijaya@uc.ac.id"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                     @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>
         </div>
 
         {{-- CARD 2: ALAMAT DOMISILI --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Alamat Domisili</h3>
                 <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat</p>
@@ -203,11 +203,11 @@
                     <label class="block text-xs font-medium text-gray-500 mb-1.5">Negara</label>
                     <input type="hidden" name="country" :value="country">
                     <button type="button" @click="countryOpen ? (countryOpen = false) : openCountry()"
-                        class="w-full px-4 py-2.5 rounded-xl text-sm flex items-center justify-between text-left transition bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                         <span x-text="country || 'Indonesia'"></span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': countryOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
-                    <div x-cloak x-show="countryOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
+                    <div x-cloak x-show="countryOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
                         <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
                             <input type="text" x-ref="countrySearchInput" x-model="countrySearch" placeholder="Cari negara..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
                         </div>
@@ -230,12 +230,12 @@
                     </label>
                     <input type="hidden" name="province" :value="country === 'Indonesia' ? province : ''">
                     <button type="button" :disabled="country !== 'Indonesia'" @click="country === 'Indonesia' && (provinceOpen ? (provinceOpen = false) : openProvince())"
-                        class="w-full px-4 py-2.5 rounded-xl text-sm flex items-center justify-between text-left transition"
+                        class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
                         :class="country === 'Indonesia' ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
                         <span x-text="country === 'Indonesia' ? (province || '-- Pilih Provinsi --') : '-'"></span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': provinceOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
-                    <div x-cloak x-show="country === 'Indonesia' && provinceOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
+                    <div x-cloak x-show="country === 'Indonesia' && provinceOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
                         <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
                             <input type="text" x-ref="provinceSearchInput" x-model="provinceSearch" placeholder="Cari provinsi..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
                         </div>
@@ -258,12 +258,12 @@
                     </label>
                     <input type="hidden" name="city" :value="country === 'Indonesia' ? city : ''">
                     <button type="button" :disabled="country !== 'Indonesia' || !province" @click="country === 'Indonesia' && province && (cityOpen ? (cityOpen = false) : openCity())"
-                        class="w-full px-4 py-2.5 rounded-xl text-sm flex items-center justify-between text-left transition"
+                        class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
                         :class="(country === 'Indonesia' && province) ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
                         <span x-text="country === 'Indonesia' ? (province ? (city || '-- Pilih Kota / Kabupaten --') : '-') : '-'"></span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': cityOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
-                    <div x-cloak x-show="country === 'Indonesia' && province && cityOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
+                    <div x-cloak x-show="country === 'Indonesia' && province && cityOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
                         <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
                             <input type="text" x-ref="citySearchInput" x-model="citySearch" :placeholder="province ? 'Cari kota di ' + province + '...' : 'Cari kota / kabupaten...'" class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
                         </div>
@@ -282,14 +282,14 @@
                 <div class="sm:col-span-3">
                     <textarea id="address" name="address" rows="2" x-model="address"
                         placeholder="Contoh: Jl. CitraLand CBD Boulevard No. 8, Sambikerep, Surabaya, 60219"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] transition"></textarea>
+                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] transition"></textarea>
                     @error('address') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>
         </div>
 
         {{-- CARD 3: KUALIFIKASI & LEGALITAS PROFESI --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Kualifikasi, Izin Praktik & Status</h3>
                 <p class="text-xs font-medium text-gray-500">Bidang keahlian, nomor izin legalitas psikolog, dan status keaktifan</p>
@@ -300,7 +300,7 @@
                 <div class="sm:col-span-2">
                     <label for="specialization" class="block text-xs font-medium text-gray-500 mb-1.5">Bidang Spesialisasi / Keahlian</label>
                     <select id="specialization" name="specialization"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                         <option value="">-- Pilih Bidang Spesialisasi / Keahlian --</option>
                         @foreach(\App\Models\Counselor::SPECIALIZATIONS as $spec)
                             <option value="{{ $spec }}" {{ old('specialization', $counselor->specialization) === $spec ? 'selected' : '' }}>{{ $spec }}</option>
@@ -314,7 +314,7 @@
                     <label for="sipp_number" class="block text-xs font-medium text-gray-500 mb-1.5">Nomor SIPP (Surat Izin Praktik Psikologi)</label>
                     <input type="text" id="sipp_number" name="sipp_number" value="{{ old('sipp_number', $counselor->sipp_number) }}"
                         placeholder="Contoh: SIPP-12345/2024"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                     @error('sipp_number') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -323,7 +323,7 @@
                     <label for="str_number" class="block text-xs font-medium text-gray-500 mb-1.5">Nomor STR (Surat Tanda Registrasi)</label>
                     <input type="text" id="str_number" name="str_number" value="{{ old('str_number', $counselor->str_number) }}"
                         placeholder="Contoh: STR-98765/2024"
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                     @error('str_number') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -331,7 +331,7 @@
                 <div class="sm:col-span-2">
                     <label for="status" class="block text-xs font-medium text-gray-500 mb-1.5">Status Keaktifan Psikolog <span class="text-red-500">*</span></label>
                     <select id="status" name="status" required
-                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                        class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
                         <option value="active" class="text-emerald-600 font-semibold" {{ old('status', $counselor->status) === 'active' ? 'selected' : '' }}>Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
                         <option value="inactive" class="text-red-500 font-semibold" {{ old('status', $counselor->status) === 'inactive' ? 'selected' : '' }}>Nonaktif (Sedang Tidak Bertugas)</option>
                     </select>
@@ -341,7 +341,7 @@
         </div>
 
         {{-- CARD 4: CATATAN TAMBAHAN --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
+        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Catatan & Keterangan Tambahan</h3>
                 <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus psikolog (opsional)</p>
@@ -350,7 +350,7 @@
             <div>
                 <textarea id="notes" name="notes" rows="3"
                     placeholder="Contoh: Bersedia praktek hari Selasa & Kamis pukul 09:00 - 15:00 WIB..."
-                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] leading-relaxed">{{ old('notes', $counselor->notes) }}</textarea>
+                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] leading-relaxed">{{ old('notes', $counselor->notes) }}</textarea>
                 @error('notes') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
         </div>
@@ -358,11 +358,11 @@
         {{-- ACTION BUTTONS --}}
         <div class="flex items-center justify-end gap-3 pt-2">
             <a href="{{ route('counselors.index') }}" 
-                class="px-5 py-2.5 rounded-xl text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-white transition cursor-pointer">
+                class="px-5 py-2.5 rounded-lg text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-white transition cursor-pointer">
                 Batal
             </a>
             <button type="submit" 
-                class="px-6 py-2.5 rounded-xl text-sm font-semibold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
+                class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 <span>Simpan Perubahan</span>
             </button>

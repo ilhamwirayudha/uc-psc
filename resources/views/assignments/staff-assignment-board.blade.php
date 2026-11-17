@@ -27,7 +27,7 @@
     {{-- ========================================================================= --}}
     {{-- 1. BAGIAN ATAS: DAFTAR KLIEN YANG SEDANG DITUGASKAN                       --}}
     {{-- ========================================================================= --}}
-    <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="glass-card rounded-xl overflow-hidden">
         <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
             <h3 class="font-bold text-base text-white">Daftar Klien yang Sedang Ditugaskan</h3>
             <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">
@@ -134,7 +134,7 @@
     {{-- ========================================================================= --}}
     <div class="grid lg:grid-cols-3 gap-6">
         {{-- Ringkasan Staff --}}
-        <div class="glass-card rounded-2xl overflow-hidden flex flex-col">
+        <div class="glass-card rounded-xl overflow-hidden flex flex-col">
             <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
                 <h3 class="font-bold text-white">Ringkasan per Staff</h3>
                 <a href="{{ route('staff-management.index') }}" class="text-xs text-purple-200 font-semibold hover:text-white hover:underline transition">Kelola Staff →</a>
@@ -165,7 +165,7 @@
         </div>
 
         {{-- Klien Belum Ditugaskan --}}
-        <div class="lg:col-span-2 glass-card rounded-2xl overflow-hidden flex flex-col">
+        <div class="lg:col-span-2 glass-card rounded-xl overflow-hidden flex flex-col">
             <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
                 <h3 class="font-bold text-white">Klien Menunggu Penugasan</h3>
                 <span class="px-2.5 py-0.5 rounded-full text-xs font-bold {{ $unassignedClients->count() > 0 ? 'bg-amber-300 text-amber-950' : 'bg-white/20 text-white' }}">
@@ -178,7 +178,7 @@
                 <div class="px-6 py-4" x-data="{ open: false }">
                     <div class="flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-10 h-10 rounded-xl bg-purple-deep/10 flex items-center justify-center text-purple-deep font-bold flex-shrink-0">
+                            <div class="w-10 h-10 rounded-lg bg-purple-deep/10 flex items-center justify-center text-purple-deep font-bold flex-shrink-0">
                                 {{ substr($client->name, 0, 1) }}
                             </div>
                             <div class="min-w-0">
@@ -196,7 +196,7 @@
                         </button>
                     </div>
 
-                    <form x-cloak x-show="open" x-transition action="{{ route('assignments.assign', $client) }}" method="POST" class="mt-3 flex flex-col sm:flex-row items-stretch sm:items-end gap-2.5 bg-[#F7F5FB] p-3 rounded-xl border border-[#EDE1FA]">
+                    <form x-cloak x-show="open" x-transition action="{{ route('assignments.assign', $client) }}" method="POST" class="mt-3 flex flex-col sm:flex-row items-stretch sm:items-end gap-2.5 bg-[#F7F5FB] p-3 rounded-lg border border-[#EDE1FA]">
                         @csrf
                         <div class="flex-1">
                             <label class="text-[11px] font-semibold text-[#5B4A73] mb-1 block">Pilih Staff <span class="text-red-400">*</span></label>
@@ -234,7 +234,7 @@
     <div x-show="reassignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
         <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
+            <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-[#EDE1FA]">
                     <h3 class="text-base font-bold text-purple-deep">Pindahkan Klien ke Staff Lain</h3>
                     <button type="button" @click="reassignModalOpen = false" class="text-[#827299] hover:text-purple-deep">
@@ -251,7 +251,7 @@
                     class="space-y-4">
                     @csrf
 
-                    <div class="bg-[#F7F5FB] p-3 rounded-xl border border-[#EDE1FA] text-xs">
+                    <div class="bg-[#F7F5FB] p-3 rounded-lg border border-[#EDE1FA] text-xs">
                         <p class="text-[#827299]">Klien:</p>
                         <p class="text-sm font-bold text-purple-deep mt-0.5" x-text="selectedClientName"></p>
                         <p class="text-[11px] text-[#6B5B85] mt-1">Staff saat ini: <span class="font-semibold" x-text="currentStaffName"></span></p>
@@ -259,7 +259,7 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Pilih Staff Baru <span class="text-red-400">*</span></label>
-                        <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm text-[#5B4A73] focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm text-[#5B4A73] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                             <option value="">-- Pilih Staff --</option>
                             @foreach($allStaff as $stf)
                             <option value="{{ $stf->id }}">{{ $stf->name }} ({{ $stf->email }})</option>
@@ -269,14 +269,14 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Catatan / Alasan Pemindahan</label>
-                        <input type="text" name="notes" placeholder="Contoh: Reassignment tugas operasional..." class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <input type="text" name="notes" placeholder="Contoh: Reassignment tugas operasional..." class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                     </div>
 
                     <div class="flex items-center justify-end gap-2.5 pt-2">
-                        <button type="button" @click="reassignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
+                        <button type="button" @click="reassignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
                             Batal
                         </button>
-                        <button type="submit" class="bg-amber-600 text-white px-5 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition shadow-xs">
+                        <button type="submit" class="bg-amber-600 text-white px-5 py-2 rounded-lg text-xs font-semibold hover:opacity-90 transition shadow-xs">
                             Pindahkan Klien
                         </button>
                     </div>
@@ -289,9 +289,9 @@
     <div x-show="unassignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
         <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
+            <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
                 <div class="flex items-start gap-3 pb-3 border-b border-[#EDE1FA]">
-                    <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
+                    <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                     </div>
                     <div>
@@ -315,14 +315,14 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Catatan / Alasan Pelepasan (Opsional)</label>
-                        <input type="text" name="notes" placeholder="Contoh: Selesai pendampingan / Penyesuaian tugas..." class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <input type="text" name="notes" placeholder="Contoh: Selesai pendampingan / Penyesuaian tugas..." class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                     </div>
 
                     <div class="flex items-center justify-end gap-2.5 pt-2">
-                        <button type="button" @click="unassignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
+                        <button type="button" @click="unassignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
                             Batal
                         </button>
-                        <button type="submit" class="bg-red-600 text-white px-5 py-2 rounded-xl text-xs font-semibold hover:bg-red-700 transition shadow-xs">
+                        <button type="submit" class="bg-red-600 text-white px-5 py-2 rounded-lg text-xs font-semibold hover:bg-red-700 transition shadow-xs">
                             Ya, Lepaskan Klien
                         </button>
                     </div>

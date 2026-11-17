@@ -39,6 +39,7 @@ return [
         'url' => rtrim((string) env('SUPABASE_URL', ''), '/'),
         'service_key' => env('SUPABASE_SERVICE_ROLE_KEY', ''),
         'bucket' => env('SUPABASE_STORAGE_BUCKET', 'ucpsc-media'),
+        'ca_bundle' => env('SUPABASE_CA_BUNDLE'),
     ],
 
 ];

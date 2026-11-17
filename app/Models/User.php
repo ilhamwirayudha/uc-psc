@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Client::class, 'assigned_staff_id');
     }
+
+    public function activityLogs(): HasMany
+    {
+        return $this->hasMany(UserActivityLog::class)->orderByDesc('created_at')->orderByDesc('id');
+    }
 }

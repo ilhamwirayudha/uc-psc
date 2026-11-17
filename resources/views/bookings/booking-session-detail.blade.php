@@ -257,12 +257,12 @@
     {{-- Dialog Wrapper (Centered Modal Container - Landscape Lebar Proporsional Opsi 1) --}}
     <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="min-h-full flex items-center justify-center p-3 sm:p-5 lg:p-6 text-left">
-            <div class="relative bg-purple-deep rounded-3xl w-full max-w-6xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="relative bg-purple-deep rounded-2xl w-full max-w-6xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
 
                 {{-- ========================================================= --}}
                 {{-- 1. MODAL HEADER & PROGRESS STEPPER BAR LANDSCAPE          --}}
                 {{-- ========================================================= --}}
-                <div class="px-6 sm:px-8 pt-5 pb-4 bg-purple-deep text-white shrink-0 shadow-xs border-b border-purple-800/40 rounded-t-3xl">
+                <div class="px-6 sm:px-8 pt-5 pb-4 bg-purple-deep text-white shrink-0 shadow-xs border-b border-purple-800/40 rounded-t-2xl">
                     <div class="flex items-center justify-between gap-4">
                         <div class="flex items-center gap-3">
                             <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight" id="modal-booking-detail-title">
@@ -272,7 +272,7 @@
 
                         {{-- Quick Info Badge & Tombol Close X --}}
                         <div class="flex items-center gap-3 shrink-0">
-                            <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/10 border border-white/15 text-xs text-purple-100 font-medium">
+                            <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 border border-white/15 text-xs text-purple-100 font-medium">
                                 <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                                 <span x-text="getStatusLabel(statusVal)"></span>
                             </span>
@@ -396,7 +396,7 @@
 
                     {{-- Global Alert Success / Error (Tunggal & Bersih) --}}
                     @if(session('success'))
-                    <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms class="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-4 text-sm font-medium flex items-center justify-between gap-2.5 shadow-xs mb-4">
+                    <div x-data="{ show: true }" x-show="show" x-transition.opacity.duration.300ms class="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl p-4 text-sm font-medium flex items-center justify-between gap-2.5 shadow-xs mb-4">
                         <div class="flex items-center gap-2.5 min-w-0">
                             <svg class="w-5 h-5 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                             <span>{{ session('success') }}</span>
@@ -408,9 +408,9 @@
                     @endif
 
                     @if($errors->any())
-                    <div class="bg-red-50 border border-red-200 rounded-2xl p-4 shadow-xs mb-4">
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-4 shadow-xs mb-4">
                         <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-xl bg-red-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-xs">
+                            <div class="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-xs">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                             </div>
                             <div class="flex-1">
@@ -443,14 +443,14 @@
                                 {{-- Kolom Kiri (7/12): Biodata Klien & Riwayat Form --}}
                                 <div class="lg:col-span-7 space-y-4">
                                     {{-- Formulir Terakhir --}}
-                                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Formulir Terakhir yang Diisi
                                             </h4>
                                         </div>
                                         <div class="p-4 bg-white">
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                            <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                                 @if($latestForm)
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block">Formulir Terakhir:</span>
@@ -468,7 +468,7 @@
                                     </div>
 
                                     {{-- Informasi Klien Terdaftar (10 Field Sesuai Biodata Klien) --}}
-                                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Informasi Klien Terdaftar
@@ -480,7 +480,7 @@
                                                 {{-- 1. Nama Lengkap --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Nama Lengkap</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black">{{ $client->name ?? '-' }}</span>
                                                     </div>
                                                 </div>
@@ -488,7 +488,7 @@
                                                 {{-- 2. Nama Perusahaan --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Nama Perusahaan</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black">{{ $client->company_name ?? ($client->pic_name ?? '-') }}</span>
                                                     </div>
                                                 </div>
@@ -496,7 +496,7 @@
                                                 {{-- 3. Pekerjaan / Jabatan Saat Ini --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Pekerjaan / Jabatan Saat Ini</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black">{{ $clientJobTitle ?: '-' }}</span>
                                                     </div>
                                                 </div>
@@ -504,7 +504,7 @@
                                                 {{-- 4. Jenis Kelamin --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Jenis Kelamin</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black">{{ $client->gender_label ?: '-' }}</span>
                                                     </div>
                                                 </div>
@@ -514,13 +514,13 @@
                                                     <div class="grid grid-cols-2 gap-2">
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Lahir</label>
-                                                            <div class="px-3 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div class="px-3 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 {{ $client->birth_place ?? '-' }}
                                                             </div>
                                                         </div>
                                                         <div>
                                                             <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
-                                                            <div class="px-2.5 sm:px-3 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                            <div class="px-2.5 sm:px-3 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                                 {{ $client->dob ? $client->dob->locale('id')->isoFormat('D MMMM Y') : '-' }}
                                                             </div>
                                                         </div>
@@ -530,7 +530,7 @@
                                                 {{-- 6. No. Telepon --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">No. Telepon</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black">{{ $client->phone ?? '-' }}</span>
                                                     </div>
                                                 </div>
@@ -538,7 +538,7 @@
                                                 {{-- 7. Alamat Email --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Alamat Email</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black break-all">{{ $client->email ?? '-' }}</span>
                                                     </div>
                                                 </div>
@@ -546,7 +546,7 @@
                                                 {{-- 8. Pendidikan Terakhir --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Pendidikan Terakhir</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black">{{ $client->education_label ?? $client->education ?? '-' }}</span>
                                                     </div>
                                                 </div>
@@ -554,7 +554,7 @@
                                                 {{-- 9. Agama / Kepercayaan --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Agama / Kepercayaan</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black">{{ $client->religion ?? '-' }}</span>
                                                     </div>
                                                 </div>
@@ -562,7 +562,7 @@
                                                 {{-- 10. Alamat Lengkap --}}
                                                 <div class="sm:col-span-2 lg:col-span-3">
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Alamat</span>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black leading-relaxed">{{ $client->address ?? '-' }}</span>
                                                     </div>
                                                 </div>
@@ -576,7 +576,7 @@
 
                                 {{-- Kolom Kanan (5/12): Paket Layanan & Tarif --}}
                                 <div class="lg:col-span-5 space-y-4">
-                                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Paket Layanan
@@ -610,32 +610,32 @@
                                                 <div class="space-y-2.5">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingJenis"></div>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingJenis"></div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Metode</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingMetode"></div>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingMetode"></div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Klien</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingKlien"></div>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingKlien"></div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kategori</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingKategori"></div>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingKategori"></div>
                                                     </div>
                                                 </div>
 
                                                 {{-- Card Paket Terpilih --}}
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Paket Terpilih</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="fullCounselingTitle"></div>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="fullCounselingTitle"></div>
                                                 </div>
 
                                                 {{-- Card Total Harga per Sesi --}}
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Harga per Sesi</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center justify-between text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between text-sm font-medium text-black">
                                                         <span x-text="formatRupiah(counselingPrice)"></span>
                                                         <span class="text-xs font-medium text-slate-400">*sebelum PPN & PPh</span>
                                                     </div>
@@ -645,28 +645,28 @@
                                             {{-- Edit Mode Paket --}}
                                             <div x-show="editPaket" x-cloak class="space-y-2.5">
                                                 <div class="space-y-2.5">
-                                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                         <label class="block text-xs font-medium text-slate-500">Jenis</label>
                                                         <select x-model="counselingJenis" class="w-full px-3 py-2 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
                                                             <option value="Reguler">Reguler</option>
                                                             <option value="Pro">Pro</option>
                                                         </select>
                                                     </div>
-                                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                         <label class="block text-xs font-medium text-slate-500">Metode</label>
                                                         <select x-model="counselingMetode" class="w-full px-3 py-2 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
                                                             <option value="Offline">Offline</option>
                                                             <option value="Online">Online</option>
                                                         </select>
                                                     </div>
-                                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                         <label class="block text-xs font-medium text-slate-500">Klien</label>
                                                         <select x-model="counselingKlien" class="w-full px-3 py-2 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
                                                             <option value="WNI">WNI</option>
                                                             <option value="WNA">WNA</option>
                                                         </select>
                                                     </div>
-                                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                         <label class="block text-xs font-medium text-slate-500">Kategori</label>
                                                         <select x-model="counselingKategori" class="w-full px-3 py-2 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
                                                             <option value="Umum">Umum</option>
@@ -676,13 +676,13 @@
                                                 </div>
 
                                                 {{-- Card Paket Terpilih (Sinkron dengan View) --}}
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
                                                     <span class="text-xs font-medium text-slate-500 block">Paket Terpilih:</span>
                                                     <span class="text-sm font-medium text-black block mt-0.5" x-text="fullCounselingTitle"></span>
                                                 </div>
 
                                                 {{-- Card Live Estimasi Harga per Sesi (Sinkron dengan View) --}}
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
                                                     <span class="text-xs font-medium text-slate-500 block">Harga per Sesi:</span>
                                                     <div class="flex items-baseline gap-2 mt-0.5">
                                                         <span class="text-sm font-medium text-black" x-text="formatRupiah(counselingPrice)"></span>
@@ -709,7 +709,7 @@
                                 
                                 {{-- Kolom Kiri (5/12): Penugasan Psikolog --}}
                                 <div class="lg:col-span-5 space-y-4">
-                                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 {{ $booking->kategori === 'konseling' ? 'Penugasan Psikolog' : 'Tim Penguji' }}
@@ -740,15 +740,15 @@
                                             @if($booking->kategori === 'konseling')
                                             <div x-show="!editKonselor">
                                                 <label class="block text-xs font-medium text-slate-500 mb-1">Psikolog Bertugas</label>
-                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                     {{ $booking->counselor ? $booking->counselor->name : 'Belum Ditugaskan' }}
                                                 </div>
                                             </div>
 
-                                            <div x-show="editKonselor" x-cloak class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2">
+                                            <div x-show="editKonselor" x-cloak class="bg-slate-50 border border-slate-100 rounded-lg p-4 space-y-2">
                                                 <label class="block text-xs font-medium text-slate-500">Pilih Psikolog Bertugas:</label>
                                                 <select name="counselor_id" x-model="counselorIdVal" @change="syncStatusWithSchedule()"
-                                                    class="w-full px-3 py-2 border border-transparent rounded-xl text-sm focus:outline-none focus:ring-0 bg-white font-medium text-black">
+                                                    class="w-full px-3 py-2 border border-transparent rounded-lg text-sm focus:outline-none focus:ring-0 bg-white font-medium text-black">
                                                     <option value="">-- Belum Ditugaskan --</option>
                                                     @foreach($counselors as $counselor)
                                                     <option value="{{ $counselor->id }}" {{ old('counselor_id', $booking->counselor_id) == $counselor->id ? 'selected' : '' }}>
@@ -762,19 +762,19 @@
                                             <div class="space-y-2.5">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Staff Penguji</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         {{ $booking->staffPenguji->name ?? '-' }}
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Staff Koreksi</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         {{ $booking->staffKoreksi->name ?? '-' }}
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Staff Pelapor</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         {{ $booking->staffPelapor->name ?? '-' }}
                                                     </div>
                                                 </div>
@@ -786,7 +786,7 @@
 
                                 {{-- Kolom Kanan (7/12): Jadwal, Waktu, Durasi & Lokasi --}}
                                 <div class="lg:col-span-7 space-y-4">
-                                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Jadwal, Waktu & Lokasi Pertemuan
@@ -818,35 +818,35 @@
                                             <div x-show="!editJadwal" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Permintaan Booking</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         {{ $booking->tanggal_booking_dibuat ? $booking->tanggal_booking_dibuat->locale('id')->isoFormat('D MMMM Y') : '-' }}
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Sesi Dijadwalkan</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         {{ $booking->tanggal_dijadwalkan ? $booking->tanggal_dijadwalkan->locale('id')->isoFormat('D MMMM Y') : 'Belum Dijadwalkan' }}
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Jam Mulai Sesi</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="startTimeVal ? startTimeVal + ' WIB' : '-' "></div>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="startTimeVal ? startTimeVal + ' WIB' : '-' "></div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Jam Selesai Sesi</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="endTimeVal ? endTimeVal + ' WIB' : '-' "></div>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="endTimeVal ? endTimeVal + ' WIB' : '-' "></div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Durasi Sesi Riil</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="durationFormatted"></div>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="durationFormatted"></div>
                                                 </div>
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Status Overtime (>90 mnt)</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="calculatedDurationMinutes === 0 ? '-' : (isOvertime ? 'Overtime' : 'Tidak')"></div>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="calculatedDurationMinutes === 0 ? '-' : (isOvertime ? 'Overtime' : 'Tidak')"></div>
                                                 </div>
                                                 <div class="sm:col-span-2">
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Metode & Ruangan</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
                                                         {{ match($sessionType) {
                                                             'online' => 'Online (Google Meet / Zoom)',
                                                             'whatsapp' => 'Konsultasi WhatsApp',
@@ -859,27 +859,27 @@
 
                                             {{-- Edit Mode Jadwal --}}
                                             <div x-show="editJadwal" x-cloak class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Tanggal Booking Dibuat</label>
                                                     <input type="date" name="tanggal_booking_dibuat" value="{{ old('tanggal_booking_dibuat', $tanggalBookingVal) }}"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Tanggal Sesi Dijadwalkan</label>
                                                     <input type="date" name="tanggal_dijadwalkan" x-model="tanggalDijadwalkanVal" @change="syncStatusWithSchedule()" @input="syncStatusWithSchedule()"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Jam Mulai Sesi</label>
                                                     <input type="time" name="start_time" x-model="startTimeVal"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Jam Selesai Sesi</label>
                                                     <input type="time" name="end_time" x-model="endTimeVal" @change="syncStatusWithDuration()" @input="syncStatusWithDuration()"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Metode Sesi</label>
                                                     <select name="session_type" x-model="sessionType"
                                                         class="w-full px-3 py-1.5 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
@@ -888,7 +888,7 @@
                                                         <option value="whatsapp">Konsultasi WhatsApp</option>
                                                     </select>
                                                 </div>
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Ruangan / Link Meet</label>
                                                     <input type="text" name="location" value="{{ old('location', $location) }}"
                                                         :placeholder="sessionType === 'online' ? 'https://meet.google.com/...' : 'Ruang Konseling A'"
@@ -910,19 +910,19 @@
                                 
                                 {{-- Kolom Kiri (6/12): Rincian Biaya Pokok & Overtime --}}
                                 <div class="lg:col-span-6 space-y-4">
-                                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Kalkulasi Biaya Sesi & Overtime
                                             </h4>
                                         </div>
                                         <div class="p-4 space-y-3">
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 flex items-center justify-between">
+                                            <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 flex items-center justify-between">
                                                 <span class="text-xs font-medium text-slate-500">Tarif Pokok (1 Sesi / 60 Menit):</span>
                                                 <span class="text-sm font-medium text-black" x-text="formatRupiah(counselingPrice)"></span>
                                             </div>
 
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 flex items-center justify-between">
+                                            <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 flex items-center justify-between">
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block">Biaya Overtime:</span>
                                                     <span class="text-[11px] text-slate-400" x-text="isOvertime ? 'Terhitung (Sesi > 90 mnt)' : 'Tidak Ada Overtime'"></span>
@@ -930,7 +930,7 @@
                                                 <span class="text-sm font-medium text-black" x-text="formatRupiah(overtimeAmount)"></span>
                                             </div>
 
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 flex items-center justify-between">
+                                            <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 flex items-center justify-between">
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block">Total Tagihan Sesi:</span>
                                                     <span class="text-[11px] text-slate-400 italic">*Belum termasuk PPh dan PPN</span>
@@ -943,7 +943,7 @@
 
                                 {{-- Kolom Kanan (6/12): Alur Nota & Pembayaran UC Finance --}}
                                 <div class="lg:col-span-6 space-y-4">
-                                    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                    <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Status Pembayaran UC Finance
@@ -973,7 +973,7 @@
                                         <div class="p-4 space-y-3">
                                             {{-- View Mode Pembayaran --}}
                                             <div x-show="!editPembayaran" class="space-y-3">
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
                                                     <span class="text-xs font-medium text-slate-500 block">Status Pembayaran Saat Ini:</span>
                                                     <span class="text-sm font-medium text-black block mt-0.5">
                                                         {{ match($booking->payment_workflow_status) {
@@ -986,7 +986,7 @@
                                                     </span>
                                                 </div>
 
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3.5 space-y-1">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
                                                     <span class="text-xs font-medium text-slate-500 block">Nomor Virtual Account / Invoice Finance:</span>
                                                     <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->va_number ?: '-' }}</span>
                                                 </div>
@@ -994,10 +994,10 @@
 
                                             {{-- Edit Mode Pembayaran --}}
                                             <div x-show="editPembayaran" x-cloak class="space-y-3">
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1.5">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
                                                     <label class="block text-xs font-medium text-slate-500">Pilih Status Pembayaran</label>
                                                     <select name="payment_workflow_status" x-model="paymentStatusVal" @change="onPaymentStatusChange()"
-                                                        class="w-full px-3 py-2 border border-transparent rounded-xl text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
+                                                        class="w-full px-3 py-2 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
                                                         <option value="menunggu_sesi_selesai">Belum Ada Tagihan</option>
                                                         <option value="draft_ke_finance">Pengajuan Nota (Finance)</option>
                                                         <option value="menunggu_bayar">Menunggu Pembayaran (VA)</option>
@@ -1006,10 +1006,10 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-1.5">
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
                                                     <label class="block text-xs font-medium text-slate-500">Nomor VA / Referensi Invoice</label>
                                                     <input type="text" name="va_number" x-model="vaNumberVal" placeholder="Contoh: 988001234567"
-                                                        class="w-full px-3 py-2 border border-[#D9C2F0] rounded-xl text-xs bg-white font-medium text-black">
+                                                        class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
                                             </div>
                                         </div>
@@ -1023,7 +1023,7 @@
                         {{-- ========================================================= --}}
                         <div x-show="activeStep === 4" x-cloak class="space-y-4">
 
-                            <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                            <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                 <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                     <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                         Status Layanan & Catatan Sesi
@@ -1052,14 +1052,14 @@
 
                                 <div class="p-5 space-y-4">
                                     {{-- Field Status Sesi Booking --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2">
+                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 space-y-2">
                                         <label class="block text-xs font-medium text-slate-500">Status Sesi Booking (Bisa Diatur Otomatis / Manual):</label>
                                         <div x-show="!editStatus">
                                             <p class="text-sm font-medium text-black mt-0.5" x-text="getStatusLabel(statusVal)"></p>
                                         </div>
                                         <div x-show="editStatus" x-cloak>
                                             <select x-model="statusVal"
-                                                class="w-full px-3.5 py-2 border border-transparent rounded-xl text-sm focus:outline-none focus:ring-0 bg-white font-medium text-black">
+                                                class="w-full px-3.5 py-2 border border-transparent rounded-lg text-sm focus:outline-none focus:ring-0 bg-white font-medium text-black">
                                                 <option value="data_masuk" {{ old('status', $booking->status) === 'data_masuk' ? 'selected' : '' }}>Data Masuk</option>
                                                 <option value="waiting_list" {{ old('status', $booking->status) === 'waiting_list' ? 'selected' : '' }}>Waiting List (Cari Psikolog/Jadwal)</option>
                                                 <option value="menunggu_konfirmasi" {{ old('status', $booking->status) === 'menunggu_konfirmasi' ? 'selected' : '' }}>Terjadwal (Belum Konfirmasi)</option>
@@ -1074,14 +1074,14 @@
                                     </div>
 
                                     {{-- Field Catatan Khusus Sesi --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2">
+                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 space-y-2">
                                         <label class="block text-xs font-medium text-slate-500">Catatan Khusus Sesi / Instruksi Ruangan:</label>
                                         <div x-show="!editStatus">
                                             <p class="text-sm font-medium text-black mt-0.5 whitespace-pre-line leading-relaxed">{{ $booking->notes ?: '-' }}</p>
                                         </div>
                                         <div x-show="editStatus" x-cloak>
                                             <textarea name="notes" rows="4" placeholder="Informasi kebutuhan khusus klien, paket yang diambil, atau instruksi ruangan..."
-                                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">{{ old('notes', $booking->notes) }}</textarea>
+                                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">{{ old('notes', $booking->notes) }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -1093,11 +1093,11 @@
                 {{-- ========================================================= --}}
                 {{-- 3. MODAL FOOTER DENGAN STEPPER NAVIGATION                 --}}
                 {{-- ========================================================= --}}
-                <div class="px-6 sm:px-8 py-4 bg-white border-t border-[#EDE1FA] flex items-center justify-between shrink-0 rounded-b-3xl">
+                <div class="px-6 sm:px-8 py-4 bg-white border-t border-[#EDE1FA] flex items-center justify-between shrink-0 rounded-b-2xl">
                     <button type="button" 
                             x-show="activeStep > 1" 
                             @click="setStep(activeStep - 1)" 
-                            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#D9C2F0] text-purple-deep hover:bg-purple-50 text-sm font-semibold transition cursor-pointer">
+                            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#D9C2F0] text-purple-deep hover:bg-purple-50 text-sm font-semibold transition cursor-pointer">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
                         <span>Sebelumnya</span>
                     </button>
@@ -1107,7 +1107,7 @@
                         <button type="button" 
                                 x-show="activeStep < stepsCount" 
                                 @click="setStep(activeStep + 1)" 
-                                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-deep hover:bg-purple-800 text-white text-sm font-bold transition shadow-xs cursor-pointer">
+                                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-800 text-white text-sm font-bold transition shadow-xs cursor-pointer">
                             <span>Langkah Berikutnya</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
@@ -1115,7 +1115,7 @@
                         <button type="button" 
                                 x-show="activeStep === stepsCount" 
                                 @click="attemptClose()" 
-                                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-deep hover:bg-purple-800 text-white text-sm font-bold transition shadow-xs cursor-pointer">
+                                class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-800 text-white text-sm font-bold transition shadow-xs cursor-pointer">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                             <span>Selesai & Tutup</span>
                         </button>
@@ -1148,10 +1148,10 @@
             x-transition:leave="ease-in duration-150" 
             x-transition:leave-start="opacity-100 scale-100" 
             x-transition:leave-end="opacity-0 scale-95" 
-            class="relative bg-white rounded-3xl shadow-2xl border border-[#EDE1FA] max-w-md w-full p-7 z-10 space-y-5"
+            class="relative bg-white rounded-2xl shadow-2xl border border-[#EDE1FA] max-w-md w-full p-7 z-10 space-y-5"
             @click.stop>
             
-            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mx-auto shadow-xs">
+            <div class="w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mx-auto shadow-xs">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
                     <line x1="12" y1="9" x2="12" y2="13"/>
@@ -1167,10 +1167,10 @@
             </div>
 
             <div class="flex items-center justify-center gap-3 pt-2">
-                <button type="button" @click="discardModalOpen = false" class="flex-1 px-5 py-3 rounded-xl text-sm font-semibold text-purple-deep border border-[#D9C2F0] hover:bg-[#FAF8FD] transition cursor-pointer">
+                <button type="button" @click="discardModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold text-purple-deep border border-[#D9C2F0] hover:bg-[#FAF8FD] transition cursor-pointer">
                     Lanjut Mengedit
                 </button>
-                <button type="button" @click="closeDirectly()" class="flex-1 px-5 py-3 rounded-xl text-sm font-bold bg-amber-600 text-white hover:bg-amber-700 transition shadow-xs cursor-pointer">
+                <button type="button" @click="closeDirectly()" class="flex-1 px-5 py-3 rounded-lg text-sm font-bold bg-amber-600 text-white hover:bg-amber-700 transition shadow-xs cursor-pointer">
                     Ya, Keluar
                 </button>
             </div>

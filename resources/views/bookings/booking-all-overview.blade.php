@@ -14,31 +14,31 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <form method="GET" class="flex flex-wrap items-center gap-3">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama klien..."
-                class="px-4 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input min-w-[200px]">
-            <select name="kategori" class="px-3 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input">
+                class="px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input min-w-[200px]">
+            <select name="kategori" class="px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input">
                 <option value="">Semua Kategori</option>
                 <option value="konseling" {{ request('kategori') === 'konseling' ? 'selected' : '' }}>Konseling</option>
                 <option value="psikotes" {{ request('kategori') === 'psikotes' ? 'selected' : '' }}>Psikotes</option>
             </select>
-            <select name="status" class="px-3 py-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input">
+            <select name="status" class="px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep glass-input">
                 <option value="">Semua Status</option>
                 <option value="baru" {{ request('status') === 'baru' ? 'selected' : '' }}>Baru</option>
                 <option value="lanjutan" {{ request('status') === 'lanjutan' ? 'selected' : '' }}>Lanjutan</option>
                 <option value="selesai" {{ request('status') === 'selesai' ? 'selected' : '' }}>Selesai</option>
             </select>
-            <button type="submit" class="px-4 py-2 bg-purple-deep text-white text-sm font-semibold rounded-xl hover:bg-purple-deep/90 transition cursor-pointer">Filter</button>
+            <button type="submit" class="px-4 py-2 bg-purple-deep text-white text-sm font-semibold rounded-lg hover:bg-purple-deep/90 transition cursor-pointer">Filter</button>
             @if(request()->hasAny(['search', 'kategori', 'status']))
             <a href="{{ route('bookings.index') }}" class="text-xs text-[#827299] hover:underline">Reset</a>
             @endif
         </form>
-        <button type="button" @click="$dispatch('open-booking-modal')" class="px-4 py-2 bg-orange text-white text-sm font-semibold rounded-xl hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center gap-1.5">
+        <button type="button" @click="$dispatch('open-booking-modal')" class="px-4 py-2 bg-orange text-white text-sm font-semibold rounded-lg hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center gap-1.5">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>Booking Baru</span>
         </button>
     </div>
 
     {{-- Table --}}
-    <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="glass-card rounded-xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm font-medium">
                 <thead>
@@ -299,12 +299,12 @@
         @keydown.escape.window="detailModalOpen = false"
     >
         <div 
-            class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-[#EDE1FA] overflow-hidden flex flex-col max-h-[92vh]"
+            class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl border border-[#EDE1FA] overflow-hidden flex flex-col max-h-[92vh]"
         >
             {{-- Header Pop-Up: Avatar Klien, Nama Klien, Badge Booking & Status --}}
             <div class="p-5 border-b border-[#EDE1FA] bg-gradient-to-r from-purple-50/70 via-[#FAF8FD] to-white flex items-center justify-between">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-2xl bg-purple-deep text-white flex items-center justify-center font-black text-lg shadow-xs shrink-0">
+                    <div class="w-12 h-12 rounded-xl bg-purple-deep text-white flex items-center justify-center font-black text-lg shadow-xs shrink-0">
                         <span x-text="selectedBooking?.client?.name ? selectedBooking.client.name.charAt(0).toUpperCase() : 'K'"></span>
                     </div>
                     <div>
@@ -359,7 +359,7 @@
             <div class="p-6 overflow-y-auto space-y-5 text-sm">
 
                 {{-- 1. BIODATA & PROFIL KLIEN --}}
-                <div class="bg-[#FAF8FD] rounded-2xl p-4 border border-[#EDE1FA]">
+                <div class="bg-[#FAF8FD] rounded-xl p-4 border border-[#EDE1FA]">
                     <h4 class="font-bold text-xs uppercase tracking-wider text-[#5B4A73] pb-2.5 mb-3 border-b border-[#EDE1FA] flex items-center gap-1.5">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         Biodata & Profil Klien
@@ -405,18 +405,18 @@
                 </div>
 
                 {{-- 2. LAYANAN & PENUGASAN TIM --}}
-                <div class="bg-white rounded-2xl p-4 border border-[#EDE1FA]">
+                <div class="bg-white rounded-xl p-4 border border-[#EDE1FA]">
                     <h4 class="font-bold text-xs uppercase tracking-wider text-[#5B4A73] pb-2.5 mb-3 border-b border-[#EDE1FA] flex items-center gap-1.5">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         Layanan & Penugasan Tim
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                        <div class="bg-[#FAF8FD] p-3 rounded-xl border border-[#EDE1FA]">
+                        <div class="bg-[#FAF8FD] p-3 rounded-lg border border-[#EDE1FA]">
                             <span class="text-[#827299] block font-medium">Layanan yang Diambil</span>
                             <p class="font-bold text-purple-deep mt-0.5 text-sm uppercase" x-text="selectedBooking?.kategori || '-'"></p>
                             <p class="text-[11px] text-[#5B4A73]" x-text="selectedBooking?.client?.counseling_type || selectedBooking?.client?.service_type || '-'"></p>
                         </div>
-                        <div class="bg-[#FAF8FD] p-3 rounded-xl border border-[#EDE1FA]">
+                        <div class="bg-[#FAF8FD] p-3 rounded-lg border border-[#EDE1FA]">
                             <span class="text-[#827299] block font-medium">Staff Pendamping Klien</span>
                             <p class="font-bold text-[#2A2035] mt-0.5 text-sm" x-text="selectedBooking?.client?.assigned_staff?.name || 'Belum Diassign'"></p>
                             <p class="text-[11px] text-[#827299]" x-text="selectedBooking?.client?.assigned_staff?.email || ''"></p>
@@ -425,7 +425,7 @@
 
                     {{-- Psikolog Praktik (Khusus Konseling) --}}
                     <template x-if="selectedBooking?.kategori === 'konseling'">
-                        <div class="mt-3 p-3 bg-purple-50/50 rounded-xl border border-purple-100 flex items-center justify-between text-xs">
+                        <div class="mt-3 p-3 bg-purple-50/50 rounded-lg border border-purple-100 flex items-center justify-between text-xs">
                             <div>
                                 <span class="text-[#827299] block text-[11px] font-medium">Psikolog Praktik</span>
                                 <p class="font-bold text-purple-deep text-sm" x-text="selectedBooking.counselor?.name || 'Belum ditentukan'"></p>
@@ -438,15 +438,15 @@
                     {{-- Tim Psikotes (Khusus Psikotes) --}}
                     <template x-if="selectedBooking?.kategori === 'psikotes'">
                         <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-                            <div class="p-2.5 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA]">
+                            <div class="p-2.5 bg-[#FAF8FD] rounded-lg border border-[#EDE1FA]">
                                 <span class="text-[#827299] block text-[10px] font-semibold uppercase">Staff Penguji</span>
                                 <p class="font-bold text-[#2A2035] text-xs" x-text="selectedBooking.staff_penguji?.name || '-'"></p>
                             </div>
-                            <div class="p-2.5 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA]">
+                            <div class="p-2.5 bg-[#FAF8FD] rounded-lg border border-[#EDE1FA]">
                                 <span class="text-[#827299] block text-[10px] font-semibold uppercase">Staff Koreksi</span>
                                 <p class="font-bold text-[#2A2035] text-xs" x-text="selectedBooking.staff_koreksi?.name || '-'"></p>
                             </div>
-                            <div class="p-2.5 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA]">
+                            <div class="p-2.5 bg-[#FAF8FD] rounded-lg border border-[#EDE1FA]">
                                 <span class="text-[#827299] block text-[10px] font-semibold uppercase">Staff Pelapor</span>
                                 <p class="font-bold text-[#2A2035] text-xs" x-text="selectedBooking.staff_pelapor?.name || '-'"></p>
                             </div>
@@ -455,18 +455,18 @@
                 </div>
 
                 {{-- 3. DETAIL JADWAL & WAKTU PELAKSANAAN --}}
-                <div class="bg-white rounded-2xl p-4 border border-[#EDE1FA]">
+                <div class="bg-white rounded-xl p-4 border border-[#EDE1FA]">
                     <h4 class="font-bold text-xs uppercase tracking-wider text-[#5B4A73] pb-2.5 mb-3 border-b border-[#EDE1FA] flex items-center gap-1.5">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         Detail Jadwal & Waktu Pelaksanaan
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                        <div class="bg-[#FAF8FD] p-3 rounded-xl border border-[#EDE1FA]">
+                        <div class="bg-[#FAF8FD] p-3 rounded-lg border border-[#EDE1FA]">
                             <span class="text-[#827299] block font-medium">Tanggal Booking Dibuat</span>
                             <span class="font-semibold text-[#2A2035] text-sm block mt-0.5" x-text="selectedBooking?.tanggal_booking_dibuat_formatted || '-'"></span>
                             <span class="text-[11px] text-[#827299] block font-mono mt-0.5" x-text="'Pukul ' + (selectedBooking?.jam_dibuat || '-')"></span>
                         </div>
-                        <div class="bg-purple-50/60 p-3 rounded-xl border border-purple-100">
+                        <div class="bg-purple-50/60 p-3 rounded-lg border border-purple-100">
                             <span class="text-purple-deep block font-medium">Jadwal Pelaksanaan Sesi</span>
                             <span class="font-extrabold text-purple-deep text-sm block mt-0.5" x-text="selectedBooking?.tanggal_dijadwalkan_formatted || 'Belum Dijadwalkan'"></span>
                             <template x-if="selectedBooking?.jam_sesi">
@@ -482,7 +482,7 @@
                     <div class="mt-3">
                         <span class="text-[#827299] block font-medium text-xs mb-1">Catatan Sesi & Informasi Tambahan</span>
                         <template x-if="selectedBooking?.notes">
-                            <div class="p-3 bg-[#FAF8FD] rounded-xl border border-[#EDE1FA] text-xs leading-relaxed text-[#2A2035] whitespace-pre-line font-mono" x-text="selectedBooking.notes"></div>
+                            <div class="p-3 bg-[#FAF8FD] rounded-lg border border-[#EDE1FA] text-xs leading-relaxed text-[#2A2035] whitespace-pre-line font-mono" x-text="selectedBooking.notes"></div>
                         </template>
                         <template x-if="!selectedBooking?.notes">
                             <p class="text-xs text-gray-500 italic">Tidak ada catatan tambahan untuk booking ini.</p>
@@ -522,7 +522,7 @@
 
                 {{-- 4. RIWAYAT BOOKING LAIN KLIEN (JIKA ADA > 1 BOOKING) --}}
                 <template x-if="selectedBooking?.client?.bookings && selectedBooking.client.bookings.length > 1">
-                    <div class="bg-white rounded-2xl p-4 border border-[#EDE1FA]">
+                    <div class="bg-white rounded-xl p-4 border border-[#EDE1FA]">
                         <h4 class="font-bold text-xs uppercase tracking-wider text-[#5B4A73] pb-2.5 mb-3 border-b border-[#EDE1FA] flex items-center justify-between">
                             <span class="flex items-center gap-1.5">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
@@ -566,7 +566,7 @@
                     <button 
                         type="button" 
                         @click="openEdit(selectedBooking)"
-                        class="px-4 py-2 bg-purple-deep text-white text-xs font-bold rounded-xl hover:opacity-90 transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+                        class="px-4 py-2 bg-purple-deep text-white text-xs font-bold rounded-lg hover:opacity-90 transition cursor-pointer flex items-center gap-1.5 shadow-xs"
                     >
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         <span>Edit Jadwal</span>
@@ -577,7 +577,7 @@
                     <template x-if="selectedBooking?.client?.edit_url">
                         <a 
                             :href="selectedBooking.client.edit_url" 
-                            class="px-3.5 py-2 border border-[#D9C2F0] bg-white text-[#5B4A73] text-xs font-bold rounded-xl hover:bg-[#F7F5FB] transition cursor-pointer flex items-center gap-1.5"
+                            class="px-3.5 py-2 border border-[#D9C2F0] bg-white text-[#5B4A73] text-xs font-bold rounded-lg hover:bg-[#F7F5FB] transition cursor-pointer flex items-center gap-1.5"
                         >
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                             <span>Edit Profil Klien</span>
@@ -600,7 +600,7 @@
                 <button 
                     type="button" 
                     @click="detailModalOpen = false"
-                    class="px-5 py-2 bg-white border border-[#D9C2F0] text-[#5B4A73] text-xs font-bold rounded-xl hover:bg-[#F3EAFB] transition cursor-pointer"
+                    class="px-5 py-2 bg-white border border-[#D9C2F0] text-[#5B4A73] text-xs font-bold rounded-lg hover:bg-[#F3EAFB] transition cursor-pointer"
                 >
                     Tutup
                 </button>
@@ -618,12 +618,12 @@
         @keydown.escape.window="editModalOpen = false"
     >
         <div 
-            class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-[#EDE1FA] overflow-hidden flex flex-col max-h-[90vh]"
+            class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-[#EDE1FA] overflow-hidden flex flex-col max-h-[90vh]"
         >
             {{-- Header Edit --}}
             <div class="p-5 border-b border-[#EDE1FA] bg-[#FAF8FD] flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-purple-deep/10 text-purple-deep flex items-center justify-center font-bold text-sm">
+                    <div class="w-10 h-10 rounded-xl bg-purple-deep/10 text-purple-deep flex items-center justify-center font-bold text-sm">
                         ✏️
                     </div>
                     <div>
@@ -658,7 +658,7 @@
                             x-model="editForm.client_id" 
                             @change="onClientChange($event)"
                             required
-                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                         >
                             <option value="">Pilih Klien...</option>
                             @foreach($clients as $client)
@@ -677,7 +677,7 @@
                                 name="kategori" 
                                 x-model="editForm.kategori" 
                                 required
-                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                             >
                                 <option value="konseling">Konseling</option>
                                 <option value="psikotes">Psikotes</option>
@@ -689,7 +689,7 @@
                                 name="status" 
                                 x-model="editForm.status" 
                                 required
-                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                             >
                                 <option value="baru">Baru</option>
                                 <option value="lanjutan">Lanjutan</option>
@@ -707,7 +707,7 @@
                                 name="tanggal_booking_dibuat" 
                                 x-model="editForm.tanggal_booking_dibuat" 
                                 required
-                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                             >
                         </div>
                         <div>
@@ -716,18 +716,18 @@
                                 type="date" 
                                 name="tanggal_dijadwalkan" 
                                 x-model="editForm.tanggal_dijadwalkan" 
-                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                             >
                         </div>
                     </div>
 
                     {{-- Konseling: Konselor --}}
-                    <div x-show="editForm.kategori === 'konseling'" class="bg-[#FAF8FD] p-4 rounded-2xl border border-[#EDE1FA]">
+                    <div x-show="editForm.kategori === 'konseling'" class="bg-[#FAF8FD] p-4 rounded-xl border border-[#EDE1FA]">
                         <label class="block font-semibold text-[#5B4A73] mb-1.5">Pilih Psikolog Praktik</label>
                         <select 
                             name="counselor_id" 
                             x-model="editForm.counselor_id"
-                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                         >
                             <option value="">Belum Ditentukan (Unassigned)</option>
                             @foreach($counselors as $counselor)
@@ -739,7 +739,7 @@
                     </div>
 
                     {{-- Psikotes: Penugasan 3 Peran Staff --}}
-                    <div x-show="editForm.kategori === 'psikotes'" class="bg-[#FAF8FD] p-4 rounded-2xl border border-[#EDE1FA] space-y-3">
+                    <div x-show="editForm.kategori === 'psikotes'" class="bg-[#FAF8FD] p-4 rounded-xl border border-[#EDE1FA] space-y-3">
                         <span class="block font-bold text-orange uppercase tracking-wider text-[11px]">Penugasan Staff Psikotes</span>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div>
@@ -747,7 +747,7 @@
                                 <select 
                                     name="staff_penguji_id" 
                                     x-model="editForm.staff_penguji_id"
-                                    class="w-full px-3 py-2 border border-[#D9C2F0] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                                    class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                                 >
                                     <option value="">Pilih Staff...</option>
                                     @foreach($staffs as $staff)
@@ -760,7 +760,7 @@
                                 <select 
                                     name="staff_koreksi_id" 
                                     x-model="editForm.staff_koreksi_id"
-                                    class="w-full px-3 py-2 border border-[#D9C2F0] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                                    class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                                 >
                                     <option value="">Pilih Staff...</option>
                                     @foreach($staffs as $staff)
@@ -773,7 +773,7 @@
                                 <select 
                                     name="staff_pelapor_id" 
                                     x-model="editForm.staff_pelapor_id"
-                                    class="w-full px-3 py-2 border border-[#D9C2F0] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                                    class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                                 >
                                     <option value="">Pilih Staff...</option>
                                     @foreach($staffs as $staff)
@@ -785,7 +785,7 @@
                     </div>
 
                     {{-- Peserta (Jika Industri) --}}
-                    <div x-show="['industri', 'company'].includes(editForm.client_jenis)" class="bg-[#FAF8FD] p-4 rounded-2xl border border-[#EDE1FA] space-y-2.5">
+                    <div x-show="['industri', 'company'].includes(editForm.client_jenis)" class="bg-[#FAF8FD] p-4 rounded-xl border border-[#EDE1FA] space-y-2.5">
                         <label class="block font-semibold text-[#5B4A73]">Daftar Peserta / Karyawan Industri</label>
                         <template x-for="(p, i) in editForm.participants" :key="i">
                             <div class="flex items-center gap-2">
@@ -795,7 +795,7 @@
                                     :name="'participants[' + i + ']'" 
                                     x-model="editForm.participants[i]" 
                                     placeholder="Nama peserta..."
-                                    class="flex-1 px-3 py-2 border border-[#D9C2F0] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
+                                    class="flex-1 px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white"
                                 >
                                 <button 
                                     type="button" 
@@ -823,7 +823,7 @@
                             name="notes" 
                             x-model="editForm.notes" 
                             rows="3" 
-                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-mono"
+                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-mono"
                             placeholder="Catatan tambahan, waktu sesi, atau tautan meeting..."
                         ></textarea>
                     </div>
@@ -835,13 +835,13 @@
                     <button 
                         type="button" 
                         @click="editModalOpen = false" 
-                        class="px-4 py-2 border border-[#D9C2F0] text-[#6B5B85] text-xs font-bold rounded-xl hover:bg-white transition cursor-pointer"
+                        class="px-4 py-2 border border-[#D9C2F0] text-[#6B5B85] text-xs font-bold rounded-lg hover:bg-white transition cursor-pointer"
                     >
                         Batal
                     </button>
                     <button 
                         type="submit" 
-                        class="px-5 py-2 bg-purple-deep text-white text-xs font-bold rounded-xl hover:opacity-90 transition shadow-xs cursor-pointer flex items-center gap-1.5"
+                        class="px-5 py-2 bg-purple-deep text-white text-xs font-bold rounded-lg hover:opacity-90 transition shadow-xs cursor-pointer flex items-center gap-1.5"
                     >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                         <span>Simpan Perubahan</span>

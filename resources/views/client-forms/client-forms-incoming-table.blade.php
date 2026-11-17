@@ -93,7 +93,7 @@
 
 
     {{-- Main Table Card (Exact same design language as Data Klien & Data Konselor) --}}
-    <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="glass-card rounded-xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm font-medium">
                 <thead>
@@ -139,7 +139,7 @@
                                 <div class="relative inline-flex items-center justify-center">
                                     <a href="https://wa.me/?text={{ $invitationMsg }}" target="_blank"
                                        @click="triggerWhatsApp({{ $form['id'] }}, '{{ $form['url'] }}')"
-                                       class="w-9 h-9 rounded-xl border transition flex items-center justify-center shadow-2xs"
+                                       class="w-9 h-9 rounded-lg border transition flex items-center justify-center shadow-2xs"
                                        :class="waClickedId === {{ $form['id'] }} ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : 'border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900'"
                                        title="Kirim link ke WhatsApp">
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
@@ -163,7 +163,7 @@
                                 <div class="relative inline-flex items-center justify-center">
                                     <button type="button"
                                             @click="copyToClipboard('{{ $form['url'] }}', {{ $form['id'] }})"
-                                            class="w-9 h-9 rounded-xl border transition flex items-center justify-center shadow-2xs cursor-pointer"
+                                            class="w-9 h-9 rounded-lg border transition flex items-center justify-center shadow-2xs cursor-pointer"
                                             :class="copiedId === {{ $form['id'] }} ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : 'border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900'"
                                             :title="copiedId === {{ $form['id'] }} ? 'Tersalin ke clipboard!' : 'Copy Link'">
                                         <template x-if="copiedId === {{ $form['id'] }}">
@@ -189,7 +189,7 @@
                                 </div>
                                 {{-- 3. View Form --}}
                                 <a href="{{ $form['url'] }}" target="_blank"
-                                   class="w-9 h-9 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center justify-center shadow-2xs"
+                                   class="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center justify-center shadow-2xs"
                                    title="View Form (Buka formulir di tab baru)">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                                 </a>
@@ -197,14 +197,14 @@
                                 {{-- 4. Edit Form --}}
                                 <button type="button"
                                         @click="openEditModal({{ json_encode($form) }})"
-                                        class="w-9 h-9 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center justify-center shadow-2xs cursor-pointer"
+                                        class="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center justify-center shadow-2xs cursor-pointer"
                                         title="Edit Form">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                 </button>
 
                                 {{-- 5. View Results (Membuka sheets hasil) --}}
                                 <a href="{{ route('client-forms.results', ['category' => $form['key']]) }}"
-                                   class="w-9 h-9 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center justify-center shadow-2xs"
+                                   class="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center justify-center shadow-2xs"
                                    title="View Results (Buka sheets hasil respon)">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
                                 </a>
@@ -229,7 +229,7 @@
     {{-- ============================================================== --}}
     <div x-show="editModalOpen" x-cloak 
          class="fixed inset-0 z-50 overflow-y-auto bg-[#1F0E38]/55 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="glass-modal rounded-3xl w-full max-w-lg overflow-hidden animate-scale-up">
+        <div class="glass-modal rounded-2xl w-full max-w-lg overflow-hidden animate-scale-up">
             
             {{-- Modal Header --}}
             <div class="p-6 bg-gradient-to-r from-purple-deep to-[#4A2F85] text-white flex items-center justify-between">
@@ -246,22 +246,22 @@
             <div class="p-6 space-y-4 text-sm text-slate-800">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Formulir</label>
-                    <input type="text" x-model="editingForm.title" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
+                    <input type="text" x-model="editingForm.title" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Deskripsi Singkat</label>
-                    <textarea x-model="editingForm.description" rows="2" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent"></textarea>
+                    <textarea x-model="editingForm.description" rows="2" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent"></textarea>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Target Klien</label>
-                    <input type="text" x-model="editingForm.target_client" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
+                    <input type="text" x-model="editingForm.target_client" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Status Ketersediaan Formulir</label>
-                    <select x-model="editingForm.status" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
+                    <select x-model="editingForm.status" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
                         <option value="active">Aktif & Siap Digunakan</option>
                         <option value="inactive">Nonaktif / Pemeliharaan</option>
                     </select>
@@ -269,17 +269,17 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pesan Ajakan WhatsApp</label>
-                    <textarea x-model="editingForm.whatsapp_message" rows="3" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-purple-deep focus:border-transparent font-mono"></textarea>
+                    <textarea x-model="editingForm.whatsapp_message" rows="3" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-purple-deep focus:border-transparent font-mono"></textarea>
                     <p class="text-[10px] text-slate-400 mt-1">Pesan ini akan otomatis disiapkan saat menekan tombol "Kirim WA".</p>
                 </div>
             </div>
 
             {{-- Modal Footer --}}
             <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
-                <button type="button" @click="editModalOpen = false" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                <button type="button" @click="editModalOpen = false" class="px-4 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                     Batal
                 </button>
-                <button type="button" @click="saveEditForm()" class="px-4 py-2 rounded-xl bg-purple-deep text-white text-xs font-bold hover:bg-[#4A2F85] transition flex items-center gap-1.5">
+                <button type="button" @click="saveEditForm()" class="px-4 py-2 rounded-lg bg-purple-deep text-white text-xs font-bold hover:bg-[#4A2F85] transition flex items-center gap-1.5">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                     <span>Simpan Pengaturan</span>
                 </button>

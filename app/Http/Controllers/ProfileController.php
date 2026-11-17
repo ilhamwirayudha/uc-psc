@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Client;
 use App\Models\ClientStaffAssignment;
+use App\Models\UserActivityLog;
+use App\Services\ActivityLogger;
 use App\Services\PublicMediaStorage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -21,15 +24,73 @@ class ProfileController extends Controller
     /**
      * Tampilkan halaman profil pengguna beserta data tab Pengaturan & Log Aktivitas.
      */
-    public function edit()
+    public function edit(Request $request)
     {
         $user = auth()->user();
 
         $joinedAtText = $this->formatIndonesianDateTime($user->created_at);
         $updatedAtText = $this->formatIndonesianDateTime($user->updated_at);
         $activityLogs = $this->buildUserActivityLogs($user);
+        $sessionInfo = $this->buildSessionInfo($user, $request);
 
-        return view('profile.edit', compact('user', 'joinedAtText', 'updatedAtText', 'activityLogs'));
+        return view('profile.edit', compact('user', 'joinedAtText', 'updatedAtText', 'activityLogs', 'sessionInfo'));
+    }
+
+    /**
+     * Kumpulkan informasi sesi login & keamanan aktual akun.
+     *
+     * @return array{active_count: int, device: string, ip: string, last_password_change_text: string}
+     */
+    protected function buildSessionInfo($user, Request $request): array
+    {
+        $activeCount = (int) DB::table('sessions')
+            ->where('user_id', $user->id)
+            ->count();
+
+        $lastPasswordChangedAt = UserActivityLog::where('user_id', $user->id)
+            ->whereIn('action', ['password.updated', 'profile.updated'])
+            ->where('description', 'like', '%Kata Sandi%')
+            ->latest('created_at')
+            ->value('created_at');
+
+        return [
+            'active_count' => max(1, $activeCount),
+            'device' => $this->describeDevice($request->userAgent()),
+            'ip' => $request->ip() ?: '-',
+            'last_password_change_text' => $lastPasswordChangedAt
+                ? $this->formatIndonesianDateTime($lastPasswordChangedAt)
+                : 'Belum ada catatan perubahan',
+        ];
+    }
+
+    /**
+     * Ringkas User-Agent menjadi nama browser dan sistem operasi yang mudah dibaca.
+     */
+    protected function describeDevice(?string $userAgent): string
+    {
+        if (! $userAgent) {
+            return 'Perangkat Browser';
+        }
+
+        $browser = match (true) {
+            str_contains($userAgent, 'Edg/') => 'Microsoft Edge',
+            str_contains($userAgent, 'OPR/') || str_contains($userAgent, 'Opera') => 'Opera',
+            str_contains($userAgent, 'Firefox/') => 'Mozilla Firefox',
+            str_contains($userAgent, 'Chrome/') => 'Google Chrome',
+            str_contains($userAgent, 'Safari/') => 'Safari',
+            default => 'Browser',
+        };
+
+        $os = match (true) {
+            str_contains($userAgent, 'Windows') => 'Windows',
+            str_contains($userAgent, 'Macintosh') || str_contains($userAgent, 'Mac OS') => 'macOS',
+            str_contains($userAgent, 'Android') => 'Android',
+            str_contains($userAgent, 'iPhone') || str_contains($userAgent, 'iPad') => 'iOS',
+            str_contains($userAgent, 'Linux') => 'Linux',
+            default => 'Desktop',
+        };
+
+        return $browser . ' · ' . $os;
     }
 
     /**
@@ -48,11 +109,43 @@ class ProfileController extends Controller
     }
 
     /**
-     * Susun daftar log aktivitas pengguna dari data aktual PostgreSQL.
+     * Susun daftar log aktivitas pengguna dari histori persisten (`user_activity_logs`)
+     * serta data historis pra-migrasi pada PostgreSQL.
      */
     protected function buildUserActivityLogs($user): \Illuminate\Support\Collection
     {
+        $categoryLabels = [
+            'akun' => 'Akun',
+            'klien' => 'Klien',
+            'penugasan' => 'Penugasan',
+            'layanan' => 'Layanan',
+        ];
+
+        $persistedLogs = UserActivityLog::where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->limit(50)
+            ->get();
+
+        $earliestPersistedByCategory = $persistedLogs
+            ->groupBy('category')
+            ->map(fn ($items) => $items->min(fn ($item) => Carbon::parse($item->created_at)->timestamp));
+
         $logs = collect();
+
+        foreach ($persistedLogs as $entry) {
+            $logs->push([
+                'id' => 'log-' . $entry->id,
+                'category' => $entry->category,
+                'category_label' => $categoryLabels[$entry->category] ?? Str::title($entry->category),
+                'title' => $entry->title,
+                'description' => $entry->description,
+                'meta' => $entry->meta ?: ($categoryLabels[$entry->category] ?? 'Sistem'),
+                'timestamp_text' => $this->formatIndonesianDateTime($entry->created_at),
+                'ts' => Carbon::parse($entry->created_at)->timestamp,
+                'sort_id' => (int) $entry->id,
+            ]);
+        }
 
         if ($user->created_at) {
             $logs->push([
@@ -64,10 +157,15 @@ class ProfileController extends Controller
                 'meta' => $user->email,
                 'timestamp_text' => $this->formatIndonesianDateTime($user->created_at),
                 'ts' => Carbon::parse($user->created_at)->timestamp,
+                'sort_id' => 0,
             ]);
         }
 
-        if ($user->updated_at && (!$user->created_at || $user->updated_at->gt($user->created_at))) {
+        if (
+            ! $persistedLogs->contains('category', 'akun')
+            && $user->updated_at
+            && (! $user->created_at || $user->updated_at->gt($user->created_at))
+        ) {
             $logs->push([
                 'id' => 'user-updated-' . $user->id,
                 'category' => 'akun',
@@ -77,6 +175,7 @@ class ProfileController extends Controller
                 'meta' => $user->position ?: ($user->isAdmin() ? 'Administrator' : 'Staff Layanan'),
                 'timestamp_text' => $this->formatIndonesianDateTime($user->updated_at),
                 'ts' => Carbon::parse($user->updated_at)->timestamp,
+                'sort_id' => 0,
             ]);
         }
 
@@ -86,6 +185,11 @@ class ProfileController extends Controller
             ->get(['id', 'name', 'service_type', 'created_at']);
 
         foreach ($createdClients as $client) {
+            $ts = $client->created_at ? Carbon::parse($client->created_at)->timestamp : 0;
+            if (isset($earliestPersistedByCategory['klien']) && $ts >= $earliestPersistedByCategory['klien']) {
+                continue;
+            }
+
             $serviceLabel = match ($client->service_type) {
                 'konseling' => 'Layanan Konseling',
                 'psikotes' => 'Layanan Psikotes',
@@ -100,7 +204,8 @@ class ProfileController extends Controller
                 'description' => 'Klien ' . $client->name . ' ditambahkan ke sistem.',
                 'meta' => $serviceLabel,
                 'timestamp_text' => $this->formatIndonesianDateTime($client->created_at),
-                'ts' => Carbon::parse($client->created_at)->timestamp,
+                'ts' => $ts,
+                'sort_id' => 0,
             ]);
         }
 
@@ -114,9 +219,14 @@ class ProfileController extends Controller
             ->get();
 
         foreach ($assignments as $assignment) {
+            $eventTime = $assignment->assigned_at ?? $assignment->created_at;
+            $ts = $eventTime ? Carbon::parse($eventTime)->timestamp : 0;
+            if (isset($earliestPersistedByCategory['penugasan']) && $ts >= $earliestPersistedByCategory['penugasan']) {
+                continue;
+            }
+
             $clientName = $assignment->client?->name ?? 'Klien';
             $isPic = (int) $assignment->staff_id === (int) $user->id;
-            $eventTime = $assignment->assigned_at ?? $assignment->created_at;
 
             $logs->push([
                 'id' => 'assign-' . $assignment->id,
@@ -128,7 +238,8 @@ class ProfileController extends Controller
                     : 'Menugaskan ' . ($assignment->staff?->name ?? 'Staff') . ' untuk klien ' . $clientName . '.',
                 'meta' => $assignment->ended_at ? 'Riwayat Penugasan' : 'Penugasan Aktif',
                 'timestamp_text' => $this->formatIndonesianDateTime($eventTime),
-                'ts' => $eventTime ? Carbon::parse($eventTime)->timestamp : 0,
+                'ts' => $ts,
+                'sort_id' => 0,
             ]);
         }
 
@@ -143,6 +254,12 @@ class ProfileController extends Controller
             ->get();
 
         foreach ($bookings as $booking) {
+            $eventTime = $booking->updated_at ?? $booking->created_at;
+            $ts = $eventTime ? Carbon::parse($eventTime)->timestamp : 0;
+            if (isset($earliestPersistedByCategory['layanan']) && $ts >= $earliestPersistedByCategory['layanan']) {
+                continue;
+            }
+
             $roles = [];
             if ((int) $booking->staff_penguji_id === (int) $user->id) {
                 $roles[] = 'Penguji';
@@ -156,7 +273,6 @@ class ProfileController extends Controller
 
             $kategoriLabel = $booking->kategori === 'psikotes' ? 'Psikotes' : 'Konseling';
             $clientName = $booking->client?->name ?? 'Klien';
-            $eventTime = $booking->updated_at ?? $booking->created_at;
 
             $logs->push([
                 'id' => 'booking-' . $booking->id,
@@ -166,11 +282,15 @@ class ProfileController extends Controller
                 'description' => 'Terlibat sebagai ' . implode(', ', $roles) . ' untuk klien ' . $clientName . '.',
                 'meta' => $booking->status ? Str::title(str_replace('_', ' ', $booking->status)) : $kategoriLabel,
                 'timestamp_text' => $this->formatIndonesianDateTime($eventTime),
-                'ts' => $eventTime ? Carbon::parse($eventTime)->timestamp : 0,
+                'ts' => $ts,
+                'sort_id' => 0,
             ]);
         }
 
-        return $logs->sortByDesc('ts')->take(25)->values();
+        return $logs
+            ->sortByDesc(fn (array $item) => sprintf('%012d-%012d', max(0, (int) ($item['ts'] ?? 0)), max(0, (int) ($item['sort_id'] ?? 0))))
+            ->take(50)
+            ->values();
     }
 
     /**
@@ -198,6 +318,15 @@ class ProfileController extends Controller
         PublicMediaStorage::delete($user->avatar);
         $user->update(['avatar' => $path]);
 
+        UserActivityLog::record(
+            $user->id,
+            'akun',
+            'avatar.updated',
+            'Mengganti Foto Profil',
+            'Foto profil akun diperbarui.',
+            $user->email
+        );
+
         return redirect()->route('profile.edit')->with('success', 'Foto profil berhasil diperbarui.');
     }
 
@@ -212,6 +341,15 @@ class ProfileController extends Controller
 
         $user->update(['avatar' => null]);
 
+        UserActivityLog::record(
+            $user->id,
+            'akun',
+            'avatar.deleted',
+            'Menghapus Foto Profil',
+            'Foto profil akun dihapus dan dikembalikan ke inisial nama.',
+            $user->email
+        );
+
         return redirect()->route('profile.edit')->with('success', 'Foto profil berhasil dihapus.');
     }
 
@@ -225,6 +363,15 @@ class ProfileController extends Controller
         PublicMediaStorage::delete($user->hero_banner);
 
         $user->update(['hero_banner' => null]);
+
+        UserActivityLog::record(
+            $user->id,
+            'akun',
+            'banner.deleted',
+            'Menghapus Background Hero',
+            'Background hero profil dikembalikan ke gradien bawaan.',
+            $user->email
+        );
 
         return redirect()->route('profile.edit')->with('success', 'Background hero berhasil dihapus.');
     }
@@ -301,6 +448,8 @@ class ProfileController extends Controller
 
         $validated = $request->validate($rules, $messages);
 
+        $before = $user->only(['name', 'email', 'employee_id', 'position', 'phone', 'gender']);
+
         $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -310,23 +459,29 @@ class ProfileController extends Controller
             'gender' => $validated['gender'] ?? null,
         ];
 
+        $mediaChanges = [];
+
         try {
             if ($request->hasFile('avatar')) {
                 $newAvatarPath = $this->storeOptimizedImage($request->file('avatar'), 'avatars', 400, 400);
                 PublicMediaStorage::delete($user->avatar);
                 $data['avatar'] = $newAvatarPath;
-            } elseif ($request->boolean('remove_avatar')) {
+                $mediaChanges[] = 'Foto Profil diperbarui';
+            } elseif ($request->boolean('remove_avatar') && $user->avatar) {
                 PublicMediaStorage::delete($user->avatar);
                 $data['avatar'] = null;
+                $mediaChanges[] = 'Foto Profil dihapus';
             }
 
             if ($request->hasFile('hero_banner')) {
                 $newBannerPath = $this->storeOptimizedImage($request->file('hero_banner'), 'hero-banners', 1600, null);
                 PublicMediaStorage::delete($user->hero_banner);
                 $data['hero_banner'] = $newBannerPath;
-            } elseif ($request->boolean('remove_hero_banner')) {
+                $mediaChanges[] = 'Background Hero diperbarui';
+            } elseif ($request->boolean('remove_hero_banner') && $user->hero_banner) {
                 PublicMediaStorage::delete($user->hero_banner);
                 $data['hero_banner'] = null;
+                $mediaChanges[] = 'Background Hero dihapus';
             }
         } catch (RuntimeException $e) {
             return redirect()->route('profile.edit')->withInput()->withErrors(['avatar' => $e->getMessage()]);
@@ -337,6 +492,8 @@ class ProfileController extends Controller
         }
 
         $user->update($data);
+
+        ActivityLogger::logUserProfileUpdate($user, $before, $data, $mediaChanges, $wantsPasswordChange);
 
         return redirect()->route('profile.edit')->with('success', 'Profil akun berhasil diperbarui.');
     }
@@ -356,7 +513,19 @@ class ProfileController extends Controller
             'email.unique' => 'Alamat email sudah digunakan oleh akun lain.',
         ]);
 
+        $oldEmail = $user->email;
         $user->update($validated);
+
+        if ($oldEmail !== $validated['email']) {
+            UserActivityLog::record(
+                $user->id,
+                'akun',
+                'email.updated',
+                'Mengubah Alamat Email',
+                'Email diperbarui ("' . $oldEmail . '" → "' . $validated['email'] . '").',
+                'Email'
+            );
+        }
 
         return redirect()->route('profile.edit')->with('success', 'Alamat email berhasil diperbarui.');
     }
@@ -382,6 +551,15 @@ class ProfileController extends Controller
         $user->update([
             'password' => Hash::make($validated['password']),
         ]);
+
+        UserActivityLog::record(
+            $user->id,
+            'akun',
+            'password.updated',
+            'Mengubah Kata Sandi',
+            'Kata sandi akun berhasil diperbarui.',
+            'Keamanan Akun'
+        );
 
         return redirect()->route('profile.edit', ['tab' => 'pengaturan'])->with('success', 'Kata sandi berhasil diperbarui.');
     }
