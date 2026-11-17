@@ -8,42 +8,42 @@ use App\Models\User;
 class BookingPolicy
 {
     /**
-     * Determine whether the user can view the booking.
+     * Admin melihat semua booking; Staff & Psikolog melihat booking yang ditugaskan kepada mereka.
      */
     public function view(User $user, Booking $booking): bool
     {
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             return true;
         }
 
-        // Staff hanya bisa melihat booking jika dirinya terkait
-        return ($booking->client && $booking->client->assigned_staff_id === $user->id)
-            || $booking->staff_penguji_id === $user->id
-            || $booking->staff_koreksi_id === $user->id
-            || $booking->staff_pelapor_id === $user->id;
+        if ($user->isPsikolog() && $user->counselor_id) {
+            $counselorId = (int) $user->counselor_id;
+            return (int) $booking->counselor_id === $counselorId
+                || $booking->assignees()->where('counselor_id', $counselorId)->exists()
+                || $booking->candidates()->where('assigned_psikolog_id', $counselorId)->exists();
+        }
+
+        if ($user->isStaff()) {
+            return (int) $booking->staff_penguji_id === (int) $user->id
+                || (int) $booking->staff_koreksi_id === (int) $user->id
+                || (int) $booking->staff_pelapor_id === (int) $user->id
+                || $booking->assignees()->where('user_id', $user->id)->exists()
+                || $booking->candidates()->where('assigned_editor_id', $user->id)->exists();
+        }
+
+        return false;
     }
 
     /**
-     * Determine whether the user can update the booking.
+     * Hanya Admin yang mengubah struktur booking/paket/jadwal/pembayaran.
      */
     public function update(User $user, Booking $booking): bool
     {
-        if ($user->role === 'admin') {
-            return true;
-        }
-
-        // Staff hanya bisa mengedit booking jika dirinya terkait
-        return ($booking->client && $booking->client->assigned_staff_id === $user->id)
-            || $booking->staff_penguji_id === $user->id
-            || $booking->staff_koreksi_id === $user->id
-            || $booking->staff_pelapor_id === $user->id;
+        return $user->isAdmin();
     }
 
-    /**
-     * Determine whether the user can delete the booking.
-     */
     public function delete(User $user, Booking $booking): bool
     {
-        return $user->role === 'admin';
+        return $user->isAdmin();
     }
 }

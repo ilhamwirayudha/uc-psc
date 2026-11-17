@@ -8,28 +8,31 @@ use App\Models\User;
 class ClientPolicy
 {
     /**
-     * Determine whether the user can view the client.
+     * Admin & Staff melihat seluruh klien (Opsi 2); Psikolog hanya melihat klien yang ditangani.
      */
     public function view(User $user, Client $client): bool
     {
-        if ($user->role === 'admin') {
+        if ($user->isAdmin() || $user->isStaff()) {
             return true;
         }
 
-        // Staff hanya bisa melihat klien yang ditugaskan kepadanya
-        return $client->assigned_staff_id === $user->id;
+        if ($user->isPsikolog()) {
+            return $client->isHandledByUser($user);
+        }
+
+        return false;
     }
 
     /**
-     * Determine whether the user can update the client.
+     * Admin & Staff dapat memperbarui biodata klien.
      */
     public function update(User $user, Client $client): bool
     {
-        if ($user->role === 'admin') {
-            return true;
-        }
+        return $user->isAdmin() || $user->isStaff();
+    }
 
-        // Staff hanya bisa mengedit klien yang ditugaskan kepadanya
-        return $client->assigned_staff_id === $user->id;
+    public function delete(User $user, Client $client): bool
+    {
+        return $user->isAdmin();
     }
 }

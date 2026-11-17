@@ -34,7 +34,6 @@ class Client extends Model
         'status',
         'notes',
         'created_by',
-        'assigned_staff_id',
     ];
 
     protected $casts = [
@@ -142,14 +141,26 @@ class Client extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function assignedStaff(): BelongsTo
+    /**
+     * Tentukan apakah Psikolog terkait menangani klien ini (Konseling maupun Psikotes).
+     */
+    public function isHandledByUser(User $user): bool
     {
-        return $this->belongsTo(User::class, 'assigned_staff_id');
-    }
+        if ($user->isAdmin() || $user->isStaff()) {
+            return true;
+        }
 
-    public function staffAssignmentHistory(): HasMany
-    {
-        return $this->hasMany(ClientStaffAssignment::class);
+        if ($user->isPsikolog() && $user->counselor_id) {
+            $counselorId = (int) $user->counselor_id;
+            return $this->bookings()->where('counselor_id', $counselorId)->exists()
+                || $this->pairings()->where('counselor_id', $counselorId)->exists()
+                || BookingCandidate::where(function ($q) {
+                    $q->where('client_id', $this->id)
+                      ->orWhereHas('booking', fn ($bq) => $bq->where('client_id', $this->id));
+                })->where('assigned_psikolog_id', $counselorId)->exists();
+        }
+
+        return false;
     }
 
     public function clientParticipants(): HasMany

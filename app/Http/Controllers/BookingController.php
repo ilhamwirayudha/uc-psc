@@ -3,58 +3,81 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\BookingCandidate;
 use App\Models\BookingParticipant;
 use App\Models\Counselor;
 use App\Models\Client;
 use App\Models\ClientForm;
 use App\Models\User;
 use App\Models\Pairing;
+use App\Services\GoogleCalendarService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class BookingController extends Controller
 {
     use AuthorizesRequests;
+
     /**
      * Helper query builder untuk pemisahan layanan booking.
      */
     private function buildScopedBookingQuery(Request $request, string $kategori)
     {
         $query = Booking::with([
-            'client.assignedStaff',
+            'company',
             'client.pairings.counselor',
             'client.clientParticipants',
             'client.bookings.counselor',
             'client.bookings.staffPenguji',
             'client.bookings.staffKoreksi',
             'client.bookings.staffPelapor',
-            
             'counselor',
             'staffPenguji',
             'staffKoreksi',
             'staffPelapor',
+            'assignees.user',
+            'assignees.counselor',
+            'candidates.assignedPsikolog',
+            'candidates.assignedEditor',
+            'serviceItems',
             'followUpOf',
             'followUps',
             'participants',
-            'paymentTransaction'
+            'paymentTransaction',
+            'googleCalendarEvents',
         ])->where('kategori', $kategori);
 
-        // Staff hanya bisa lihat booking dari klien yang ditugaskan kepadanya,
-        // ATAU booking di mana dirinya tercatat sebagai staff penguji/koreksi/pelapor
-        if (auth()->user()->role === 'staff') {
-            $staffId = auth()->id();
+        $user = auth()->user();
+        if ($user->isStaff()) {
+            $staffId = $user->id;
             $query->where(function ($q) use ($staffId) {
-                $q->whereHas('client', fn($p) => $p->where('assigned_staff_id', $staffId))
-                  ->orWhere('staff_penguji_id', $staffId)
+                $q->where('staff_penguji_id', $staffId)
                   ->orWhere('staff_koreksi_id', $staffId)
-                  ->orWhere('staff_pelapor_id', $staffId);
+                  ->orWhere('staff_pelapor_id', $staffId)
+                  ->orWhereHas('assignees', fn ($aq) => $aq->where('user_id', $staffId))
+                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_editor_id', $staffId));
             });
+        } elseif ($user->isPsikolog()) {
+            $counselorId = (int) ($user->counselor_id ?? 0);
+            if ($counselorId > 0) {
+                $query->where(function ($q) use ($counselorId) {
+                    $q->where('counselor_id', $counselorId)
+                      ->orWhereHas('assignees', fn ($aq) => $aq->where('counselor_id', $counselorId))
+                      ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $counselorId));
+                });
+            } else {
+                $query->whereRaw('1 = 0');
+            }
         }
 
-        // Filter pencarian nama klien
+        // Filter pencarian nama klien atau perusahaan
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->whereHas('client', fn($q) => $q->where('name', 'like', "%{$search}%"));
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('client', fn ($cq) => $cq->where('name', 'like', "%{$search}%"))
+                  ->orWhereHas('company', fn ($coq) => $coq->where('name', 'like', "%{$search}%"));
+            });
         }
 
         // Filter status
@@ -124,9 +147,42 @@ class BookingController extends Controller
         $psikotesBookings = $query->paginate(15)->withQueryString();
         $clients = Client::orderBy('name')->get();
         $counselors = Counselor::where('status', 'active')->orderBy('name')->get();
-        $staffs = User::whereIn('role', ['staff', 'admin'])->orderBy('name')->get();
+        $staffs = User::where('role', 'staff')->orderBy('name')->get();
 
-        return view('bookings.booking-psychotest-list', compact('psikotesBookings', 'clients', 'counselors', 'staffs', 'pSort', 'pDir'));
+        // Panel Prioritas KILAT (Opsi A)
+        $kilatQuery = BookingCandidate::with(['booking.company', 'booking.client', 'assignedPsikolog', 'assignedEditor'])
+            ->where('is_kilat', true)
+            ->where('attendance_status', '!=', 'absen')
+            ->whereNull('kilat_sent_at')
+            ->whereNull('step_kirim_at')
+            ->whereHas('booking', fn ($q) => $q->where('kategori', 'psikotes')->where('status', '!=', 'batal'))
+            ->orderBy('client_deadline_date');
+
+        $user = auth()->user();
+        if ($user->isPsikolog()) {
+            $kilatQuery->where('assigned_psikolog_id', (int) ($user->counselor_id ?? 0));
+        } elseif ($user->isStaff()) {
+            $kilatQuery->where(function ($q) use ($user) {
+                $q->where('assigned_editor_id', $user->id)
+                  ->orWhereHas('booking.assignees', fn ($aq) => $aq->where('user_id', $user->id));
+            });
+        }
+
+        $kilatQueue = $kilatQuery->get();
+        $unbookedFormsCount = ClientForm::whereIn('form_type', ['industri', 'non_industri'])
+            ->where(fn ($q) => $q->where('booking_status', 'belum_dibooking')->orWhereNull('booking_id'))
+            ->count();
+
+        return view('bookings.booking-psychotest-list', compact(
+            'psikotesBookings',
+            'clients',
+            'counselors',
+            'staffs',
+            'pSort',
+            'pDir',
+            'kilatQueue',
+            'unbookedFormsCount'
+        ));
     }
 
     /**
@@ -135,33 +191,42 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $query = Booking::with([
-            'client.assignedStaff',
+            'company',
             'client.pairings.counselor',
             'client.clientParticipants',
             'client.bookings.counselor',
             'client.bookings.staffPenguji',
             'client.bookings.staffKoreksi',
             'client.bookings.staffPelapor',
-            
             'counselor',
             'staffPenguji',
             'staffKoreksi',
             'staffPelapor',
+            'assignees.user',
+            'assignees.counselor',
+            'candidates',
             'followUpOf',
             'followUps',
             'participants',
             'paymentTransaction'
         ])->latest();
 
-        // Staff hanya bisa lihat booking dari klien yang ditugaskan kepadanya,
-        // ATAU booking di mana dirinya tercatat sebagai staff penguji/koreksi/pelapor
-        if (auth()->user()->role === 'staff') {
-            $staffId = auth()->id();
+        $user = auth()->user();
+        if ($user->isStaff()) {
+            $staffId = $user->id;
             $query->where(function ($q) use ($staffId) {
-                $q->whereHas('client', fn($p) => $p->where('assigned_staff_id', $staffId))
-                  ->orWhere('staff_penguji_id', $staffId)
+                $q->where('staff_penguji_id', $staffId)
                   ->orWhere('staff_koreksi_id', $staffId)
-                  ->orWhere('staff_pelapor_id', $staffId);
+                  ->orWhere('staff_pelapor_id', $staffId)
+                  ->orWhereHas('assignees', fn ($aq) => $aq->where('user_id', $staffId))
+                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_editor_id', $staffId));
+            });
+        } elseif ($user->isPsikolog()) {
+            $counselorId = (int) ($user->counselor_id ?? 0);
+            $query->where(function ($q) use ($counselorId) {
+                $q->where('counselor_id', $counselorId)
+                  ->orWhereHas('assignees', fn ($aq) => $aq->where('counselor_id', $counselorId))
+                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $counselorId));
             });
         }
 
@@ -280,10 +345,6 @@ class BookingController extends Controller
         if ($request->filled('counseling_type')) {
             $clientUpdates['counseling_type'] = $request->input('counseling_type');
         }
-        if (!empty($validated['staff_penguji_id']) && empty($client->assigned_staff_id)) {
-            $clientUpdates['assigned_staff_id'] = $validated['staff_penguji_id'];
-            $clientUpdates['status'] = 'assigned';
-        }
         $client->update($clientUpdates);
 
         // Jika konseling dan konselor dipilih: sinkronkan Pairing
@@ -301,7 +362,8 @@ class BookingController extends Controller
             return redirect()->back()->with('success', 'Booking berhasil dibuat.');
         }
 
-        return redirect()->route('bookings.index')->with('success', 'Booking berhasil dibuat.');
+        return redirect()->route($validated['kategori'] === 'psikotes' ? 'bookings.psychotest' : 'bookings.counseling')
+            ->with('success', 'Booking berhasil dibuat.');
     }
 
     /**
@@ -309,18 +371,20 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
+        if ($booking->kategori === 'psikotes') {
+            return redirect()->route('psychotest-bookings.show', $booking);
+        }
+
         $this->authorize('view', $booking);
 
         $booking->load([
             'client.clientForms' => fn($q) => $q->latest(),
-            'client.assignedStaff',
             'client.pairings.counselor',
             'client.clientParticipants',
             'client.bookings.counselor',
             'client.bookings.staffPenguji',
             'client.bookings.staffKoreksi',
             'client.bookings.staffPelapor',
-            
             'counselor',
             'staffPenguji',
             'staffKoreksi',
@@ -329,6 +393,7 @@ class BookingController extends Controller
             'followUps',
             'participants',
             'paymentTransaction',
+            'googleCalendarEvents.user',
         ]);
 
         $jamDibuat = $booking->created_at ? $booking->created_at->format('H:i') . ' WIB' : '-';
@@ -366,10 +431,6 @@ class BookingController extends Controller
             'service_type' => $booking->client->service_type ?? '-',
             'counseling_type' => $booking->client->counseling_type ?? '-',
             'notes' => $booking->client->notes ?? '',
-            'assigned_staff' => $booking->client->assignedStaff ? [
-                'name' => $booking->client->assignedStaff->name,
-                'email' => $booking->client->assignedStaff->email,
-            ] : null,
             'active_counselor' => $booking->client->pairings->where('status', 'active')->first()?->counselor ? [
                 'name' => $booking->client->pairings->where('status', 'active')->first()->counselor->name,
                 'specialization' => $booking->client->pairings->where('status', 'active')->first()->counselor->specialization,
@@ -437,11 +498,17 @@ class BookingController extends Controller
             'location' => 'nullable|string|max:255',
             'counseling_type' => 'nullable|string|max:255',
             'price' => 'nullable|numeric',
+            'final_price' => 'nullable|numeric|min:0',
             'overtime_price' => 'nullable|numeric',
             'actual_duration_minutes' => 'nullable|integer|min:0',
             'is_overtime' => 'nullable|boolean',
             'payment_workflow_status' => 'nullable|string|max:60',
             'va_number' => 'nullable|string|max:50',
+            'finance_invoice_number' => 'nullable|string|max:100',
+            'payment_proof_notes' => 'nullable|string|max:2000',
+            'overtime_payment_status' => 'nullable|string|max:40',
+            'overtime_va_number' => 'nullable|string|max:50',
+            'overtime_final_price' => 'nullable|numeric|min:0',
         ]);
 
         $validated['tanggal_booking_dibuat'] = $validated['tanggal_booking_dibuat'] ?? $booking->tanggal_booking_dibuat ?? now()->toDateString();
@@ -458,6 +525,42 @@ class BookingController extends Controller
             $validated['session_end'] = $request->input('end_time') ?: null;
         }
 
+        // Deteksi Reschedule Konseling: jika reschedule < 24 jam atau saat sesi dan sudah lunas => HANGUS & BAYAR ULANG
+        $forfeitNotice = null;
+        $oldDateStr = $booking->tanggal_dijadwalkan ? $booking->tanggal_dijadwalkan->format('Y-m-d') : null;
+        $newDateStr = !empty($validated['tanggal_dijadwalkan']) ? Carbon::parse($validated['tanggal_dijadwalkan'])->format('Y-m-d') : $oldDateStr;
+        $oldStartStr = $booking->session_start ? substr($booking->session_start, 0, 5) : null;
+        $newStartStr = !empty($validated['session_start']) ? substr($validated['session_start'], 0, 5) : $oldStartStr;
+
+        $isScheduleChanged = ($oldDateStr && $newDateStr && $oldDateStr !== $newDateStr)
+            || ($oldStartStr && $newStartStr && $oldStartStr !== $newStartStr);
+
+        if ($booking->kategori === 'konseling' && $isScheduleChanged && $oldDateStr) {
+            $originalSessionAt = Carbon::parse($oldDateStr . ' ' . ($oldStartStr ?: '09:00'));
+            $validated['rescheduled_at'] = now();
+
+            $hoursBeforeSession = now()->diffInMinutes($originalSessionAt, false) / 60;
+            if ($hoursBeforeSession < 24 && $booking->isPaid()) {
+                $validated['is_payment_forfeited'] = true;
+                $validated['forfeited_amount'] = $booking->final_price ?? $booking->price ?? 0;
+                $validated['forfeited_reason'] = 'Reschedule mendadak (< 24 jam sebelum sesi atau saat sesi berlangsung)';
+                $validated['payment_workflow_status'] = 'draft_ke_finance';
+                $validated['va_number'] = null;
+                $validated['finance_invoice_number'] = null;
+                $validated['paid_at'] = null;
+                $forfeitNotice = ' Perhatian: Reschedule dilakukan < 24 jam / saat sesi berlangsung, sehingga pembayaran sebelumnya HANGUS dan tagihan baru perlu diajukan ke UC Finance.';
+            }
+        }
+
+        // Catat paid_at otomatis bila status berubah ke lunas
+        if (isset($validated['payment_workflow_status'])) {
+            if (in_array($validated['payment_workflow_status'], ['lunas', 'lunas_overtime'], true) && !$booking->paid_at && empty($forfeitNotice)) {
+                $validated['paid_at'] = now();
+            } elseif (!in_array($validated['payment_workflow_status'], ['lunas', 'lunas_overtime'], true)) {
+                $validated['paid_at'] = null;
+            }
+        }
+
         // Kalkulasi otomatis durasi riil & overtime sesuai aturan 30 menit UC PSC
         $startTime = $validated['session_start'] ?? $booking->session_start;
         $endTime = $validated['session_end'] ?? $booking->session_end;
@@ -469,18 +572,25 @@ class BookingController extends Controller
             $totalMins = ($eh * 60 + $em) - ($sh * 60 + $sm);
             if ($totalMins > 0) {
                 $validated['actual_duration_minutes'] = $totalMins;
-                // Rule UC PSC: 1 sesi = 60 mnt. Jika kelebihan >= 30 mnt (total > 90 mnt), kena overtime
+                // Rule UC PSC: 1 sesi = 60 mnt. Jika kelebihan > 30 mnt (total > 90 mnt), kena overtime
                 if ($totalMins > 90) {
                     $validated['is_overtime'] = true;
                     $validated['overtime_minutes'] = $totalMins - 60;
+                    if (empty($validated['overtime_payment_status']) && $booking->overtime_payment_status === 'tidak_ada') {
+                        $validated['overtime_payment_status'] = 'menunggu_nota';
+                    }
                 } else {
                     $validated['is_overtime'] = false;
                     $validated['overtime_minutes'] = 0;
+                    $validated['overtime_payment_status'] = 'tidak_ada';
                 }
             }
         }
 
         $booking->update($validated);
+
+        // Sinkronisasi Google Calendar jika Konseling memasuki status terkonfirmasi atau di-reschedule/batal
+        app(GoogleCalendarService::class)->syncBooking($booking);
 
         if ($request->filled('counseling_type')) {
             $booking->client?->update([
@@ -513,7 +623,7 @@ class BookingController extends Controller
             'step-4' => 'Status layanan dan catatan booking berhasil disimpan.',
         ];
         $submittedCard = $request->input('submitted_card', '');
-        $successMsg = $cardMessages[$submittedCard] ?? 'Booking berhasil diperbarui.';
+        $successMsg = ($cardMessages[$submittedCard] ?? 'Booking berhasil diperbarui.') . ($forfeitNotice ?? '');
 
         return redirect()->back()
             ->with('success', $successMsg)
@@ -579,6 +689,42 @@ class BookingController extends Controller
 
         return redirect()->back()->with('success', 'Realisasi sesi berhasil disimpan.' .
             ($overtimeMinutes > 0 ? " Overtime: {$overtimeMinutes} menit." : ''));
+    }
+
+    /**
+     * Buat booking tindak lanjut (follow-up) dari sesi konseling sebelumnya.
+     */
+    public function createFollowUp(Request $request, Booking $booking)
+    {
+        $this->authorize('update', $booking);
+
+        $validated = $request->validate([
+            'tanggal_dijadwalkan' => 'nullable|date',
+            'notes' => 'nullable|string',
+        ]);
+
+        $followUp = Booking::create([
+            'client_id' => $booking->client_id,
+            'kategori' => $booking->kategori,
+            'service_tier' => $booking->service_tier,
+            'service_package_key' => $booking->service_package_key,
+            'service_package_name' => $booking->service_package_name,
+            'price' => $booking->price,
+            'overtime_price' => $booking->overtime_price,
+            'tanggal_booking_dibuat' => now()->toDateString(),
+            'tanggal_dijadwalkan' => $validated['tanggal_dijadwalkan'] ?? null,
+            'session_type' => $booking->session_type,
+            'location' => $booking->location,
+            'status' => 'lanjutan',
+            'follow_up_of_booking_id' => $booking->id,
+            'counselor_id' => $booking->counselor_id,
+            'notes' => $validated['notes'] ?? null,
+        ]);
+
+        app(GoogleCalendarService::class)->syncBooking($followUp);
+
+        return redirect()->route('bookings.show', $followUp)
+            ->with('success', 'Sesi lanjutan (follow-up) berhasil dibuat.');
     }
 
     /**

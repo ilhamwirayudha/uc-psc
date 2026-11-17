@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\PublicMediaStorage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Counselor extends Model
 {
@@ -96,5 +97,25 @@ class Counselor extends Model
     public function pairings(): HasMany
     {
         return $this->hasMany(Pairing::class);
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
+    }
+
+    public function counselingBookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function assignedCandidates(): HasMany
+    {
+        return $this->hasMany(BookingCandidate::class, 'assigned_psikolog_id');
+    }
+
+    public function bookingAssignees(): HasMany
+    {
+        return $this->hasMany(BookingAssignee::class);
     }
 }

@@ -2,22 +2,27 @@
 
 @section('title', 'Layanan Psikotes — UC PSC')
 @section('page-title', 'Layanan Psikotes')
-@section('page-subtitle', 'Kelola jadwal asesmen dan reservasi klien psikotes')
+@section('page-subtitle', 'Kelola jadwal asesmen, pelacakan per kandidat, dan progres tim psikotes')
 
 @section('content')
-@include('bookings.partials.build-booking-data')
+@php
+    $getNextPsychotestSortUrl = function ($column) use ($pSort, $pDir) {
+        if ($pSort !== $column) {
+            return request()->fullUrlWithQuery(['p_sort' => $column, 'p_dir' => 'asc']);
+        }
+        if ($pDir === 'asc') {
+            return request()->fullUrlWithQuery(['p_sort' => $column, 'p_dir' => 'desc']);
+        }
+        return request()->fullUrlWithQuery(['p_sort' => null, 'p_dir' => null]);
+    };
+@endphp
 
-<div 
-    x-data="bookingManager()"
-    x-cloak
-    class="space-y-6"
->
-    {{-- Header & Search Bar --}}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        {{-- Search Bar --}}
-        <form method="GET" action="{{ route('bookings.psychotest') }}" class="w-full sm:w-80 md:w-96 relative">
+<div class="space-y-6">
+    {{-- Header & Action Bar --}}
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <form method="GET" action="{{ route('bookings.psychotest') }}" class="w-full lg:w-96 relative">
             <div class="relative w-full">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama klien psikotes..."
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama klien atau perusahaan..."
                     class="w-full pl-11 pr-10 py-2.5 glass-input rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-black placeholder:text-gray-400 font-medium">
                 <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -30,272 +35,162 @@
                     </a>
                 @endif
             </div>
-            @if(request('status'))
-                <input type="hidden" name="status" value="{{ request('status') }}">
-            @endif
         </form>
 
-        {{-- Tombol Booking Psikotes Baru --}}
-        <button type="button" @click="$dispatch('open-booking-modal', { category: 'psikotes' })" 
-            class="px-4.5 py-2.5 bg-orange text-white text-sm font-semibold rounded-lg hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center justify-center gap-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <span>Booking Psikotes Baru</span>
-        </button>
+        <div class="flex flex-wrap items-center gap-3">
+            @if(auth()->user()->isAdmin())
+                <a href="{{ route('psychotest-bookings.monthly-recap') }}"
+                    class="px-4 py-2.5 bg-white border border-[#D9C2F0] text-black hover:text-purple-deep text-sm font-semibold rounded-lg shadow-xs transition inline-flex items-center gap-2">
+                    <span>Rekap Bulanan (I/R)</span>
+                </a>
+                <a href="{{ route('psychotest-bookings.create') }}"
+                    class="px-4.5 py-2.5 bg-orange hover:bg-orange/90 text-white text-sm font-semibold rounded-lg transition shadow-xs inline-flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Booking Psikotes Baru</span>
+                </a>
+            @endif
+        </div>
     </div>
 
-    {{-- Tag Filter Aktif (Jika ada filter atau pencarian) --}}
-    @if(request()->hasAny(['search', 'status']))
-    <div class="flex items-center gap-2 flex-wrap text-xs pt-0.5">
-        <span class="text-gray-500 font-medium">Filter aktif:</span>
-        @if(request('search'))
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50 text-purple-deep border border-purple-200 font-semibold">
-                <span>Cari: "{{ request('search') }}"</span>
-                <a href="{{ request()->fullUrlWithQuery(['search' => null]) }}" class="hover:text-red-500 text-sm font-bold leading-none">&times;</a>
-            </span>
-        @endif
-        @if(request('status'))
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50 text-purple-deep border border-purple-200 font-semibold">
-                <span>Status: {{ ucfirst(request('status')) }}</span>
-                <a href="{{ request()->fullUrlWithQuery(['status' => null]) }}" class="hover:text-red-500 text-sm font-bold leading-none">&times;</a>
-            </span>
-        @endif
-        <a href="{{ route('bookings.psychotest') }}" class="text-purple-deep hover:underline font-semibold ml-1">Reset Semua</a>
-    </div>
+    {{-- Info Antrean Formulir Belum Dibooking --}}
+    @if((auth()->user()->isAdmin() || auth()->user()->isStaff()) && $unbookedFormsCount > 0)
+        <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <p class="text-sm font-medium text-black">
+                    Terdapat {{ $unbookedFormsCount }} formulir pendaftaran Psikotes berstatus Belum Dibooking.
+                </p>
+                <p class="text-xs font-medium text-slate-500 mt-0.5">
+                    @if(auth()->user()->isAdmin())
+                        Pilih perusahaan dan centang kandidat pada form pembuatan booking psikotes untuk menggabungkannya ke dalam 1 jadwal.
+                    @else
+                        Formulir dapat ditinjau di menu Formulir Klien untuk membantu Admin mencocokkan daftar kandidat PIC.
+                    @endif
+                </p>
+            </div>
+            @if(auth()->user()->isAdmin())
+                <a href="{{ route('psychotest-bookings.create') }}" class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white text-xs font-semibold shadow-xs whitespace-nowrap">
+                    Proses ke Booking Psikotes
+                </a>
+            @endif
+        </div>
     @endif
 
-    {{-- ========================================================================= --}}
-    {{-- Helper fungsi 3-state sort: unselected -> asc -> desc -> unselected (default) --}}
-    @php
-        $getNextPsychotestSortUrl = function($column) use ($pSort, $pDir) {
-            if ($pSort !== $column) {
-                return request()->fullUrlWithQuery(['p_sort' => $column, 'p_dir' => 'asc']);
-            }
-            if ($pDir === 'asc') {
-                return request()->fullUrlWithQuery(['p_sort' => $column, 'p_dir' => 'desc']);
-            }
-            return request()->fullUrlWithQuery(['p_sort' => null, 'p_dir' => null]);
-        };
-    @endphp
+    {{-- Panel Prioritas KILAT (Opsi A) --}}
+    @if($kilatQueue->isNotEmpty())
+        <div class="glass-card rounded-2xl overflow-hidden">
+            <div class="px-6 py-4 bg-purple-deep/95 text-white flex items-center justify-between border-b border-purple-900/30">
+                <h3 class="text-base font-bold text-white">Prioritas KILAT (Butuh Penanganan Cepat)</h3>
+                <span class="text-xs text-purple-100 font-medium">{{ $kilatQueue->count() }} Kandidat Aktif</span>
+            </div>
+            <div class="p-4 sm:p-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                @foreach($kilatQueue as $kc)
+                    @php
+                        $deadlineKlien = $kc->client_deadline_date;
+                        $daysLeft = $deadlineKlien ? now()->startOfDay()->diffInDays($deadlineKlien->startOfDay(), false) : null;
+                        $countdownLabel = $daysLeft === null ? '-' : ($daysLeft < 0 ? 'Terlambat ' . abs($daysLeft) . ' hari' : ($daysLeft === 0 ? 'Jatuh Tempo Hari Ini' : 'H-' . $daysLeft));
+                    @endphp
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-3 flex flex-col justify-between">
+                        <div class="space-y-1.5">
+                            <div class="flex items-start justify-between gap-2">
+                                <a href="{{ route('psychotest-bookings.show', $kc->booking_id) }}" class="text-sm font-medium text-black hover:text-purple-deep">
+                                    {{ $kc->candidate_name }}
+                                </a>
+                                <span class="text-xs font-medium text-slate-500 whitespace-nowrap">{{ $countdownLabel }}</span>
+                            </div>
+                            <p class="text-xs font-medium text-slate-500">
+                                Klien: <span class="text-black">{{ $kc->booking?->company?->name ?? $kc->booking?->client?->name ?? '-' }}</span>
+                            </p>
+                            <p class="text-xs font-medium text-slate-500">
+                                Psikolog: <span class="text-black">{{ $kc->assignedPsikolog?->name ?? '-' }}</span>
+                                · Deadline Klien: <span class="text-black">{{ $deadlineKlien ? $deadlineKlien->locale('id')->isoFormat('D MMMM Y') : '-' }}</span>
+                            </p>
+                        </div>
 
-    {{-- TABEL: LAYANAN PSIKOTES                                                   --}}
-    {{-- ========================================================================= --}}
-    <div class="glass-card rounded-xl overflow-hidden flex flex-col justify-between">
-        {{-- Header Card (Warna Ungu) --}}
+                        <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-200/70">
+                            <a href="{{ route('psychotest-bookings.show', $kc->booking_id) }}" class="text-xs font-medium text-purple-deep hover:underline">
+                                Detail Booking
+                            </a>
+                            <form method="POST" action="{{ route('psychotest-bookings.candidate.kilat-sent', [$kc->booking_id, $kc->id]) }}">
+                                @csrf
+                                <button type="submit" class="px-3.5 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white text-xs font-semibold shadow-xs cursor-pointer">
+                                    Tandai Kilat Terkirim
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    {{-- Tabel Layanan Psikotes --}}
+    <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between">
         <div class="px-6 py-4 bg-purple-deep/95 text-white flex items-center justify-between border-b border-purple-900/30">
-            <h3 class="text-base font-bold text-white tracking-tight">Layanan Psikotes</h3>
-            <span class="text-xs text-purple-100 font-medium bg-white/15 px-2.5 py-1 rounded-full">{{ $psikotesBookings->total() }} Data</span>
+            <h3 class="text-base font-bold text-white tracking-tight">Daftar Layanan Psikotes</h3>
+            <span class="text-xs text-purple-100 font-medium">{{ $psikotesBookings->total() }} Data</span>
         </div>
 
-        {{-- Table Layanan Psikotes --}}
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto custom-scrollbar">
             <table class="w-full text-sm font-medium">
                 <thead>
                     <tr class="bg-slate-50 text-black font-semibold select-none border-b border-[#EDE1FA]">
-                        {{-- 1. ID --}}
                         <th class="px-6 py-3.5 text-left font-semibold">
-                            <a href="{{ $getNextPsychotestSortUrl('id') }}"
-                                class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
-                                title="Urutkan ID angka: 1→9 atau 9→1">
+                            <a href="{{ $getNextPsychotestSortUrl('id') }}" class="inline-flex items-center gap-1.5 hover:text-purple-deep cursor-pointer">
                                 <span>ID</span>
-                                <span class="inline-flex items-center justify-center w-4 h-4 rounded transition {{ $pSort === 'id' ? 'text-purple-deep' : 'text-slate-400 group-hover:text-slate-600' }}">
-                                    @if($pSort === 'id')
-                                        @if($pDir === 'asc')
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                                        @else
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-                                        @endif
-                                    @else
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
-                                    @endif
+                                <span class="text-xs {{ $pSort === 'id' ? 'text-purple-deep' : 'text-slate-400' }}">
+                                    {{ $pSort === 'id' ? ($pDir === 'asc' ? '↑' : '↓') : '↕' }}
                                 </span>
                             </a>
                         </th>
-
-                        {{-- 2. Tanggal & Waktu Psikotes --}}
                         <th class="px-6 py-3.5 text-left font-semibold">
-                            <a href="{{ $getNextPsychotestSortUrl('tanggal') }}"
-                                class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
-                                title="Urutkan tanggal: Terlama atau Terkini">
-                                <span>Tanggal</span>
-                                <span class="inline-flex items-center justify-center w-4 h-4 rounded transition {{ $pSort === 'tanggal' ? 'text-purple-deep' : 'text-slate-400 group-hover:text-slate-600' }}">
-                                    @if($pSort === 'tanggal')
-                                        @if($pDir === 'asc')
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                                        @else
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-                                        @endif
-                                    @else
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
-                                    @endif
+                            <a href="{{ $getNextPsychotestSortUrl('tanggal') }}" class="inline-flex items-center gap-1.5 hover:text-purple-deep cursor-pointer">
+                                <span>Tanggal Tes</span>
+                                <span class="text-xs {{ $pSort === 'tanggal' ? 'text-purple-deep' : 'text-slate-400' }}">
+                                    {{ $pSort === 'tanggal' ? ($pDir === 'asc' ? '↑' : '↓') : '↕' }}
                                 </span>
                             </a>
                         </th>
-                        <th class="px-6 py-3.5 text-left font-semibold whitespace-nowrap">Waktu</th>
-
-                        {{-- 3. Nama Klien --}}
                         <th class="px-6 py-3.5 text-left font-semibold">
-                            <a href="{{ $getNextPsychotestSortUrl('klien') }}"
-                                class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
-                                title="Urutkan alfabetis: A→Z atau Z→A">
-                                <span>Nama Klien</span>
-                                <span class="inline-flex items-center justify-center w-4 h-4 rounded transition {{ $pSort === 'klien' ? 'text-purple-deep' : 'text-slate-400 group-hover:text-slate-600' }}">
-                                    @if($pSort === 'klien')
-                                        @if($pDir === 'asc')
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                                        @else
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-                                        @endif
-                                    @else
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
-                                    @endif
+                            <a href="{{ $getNextPsychotestSortUrl('klien') }}" class="inline-flex items-center gap-1.5 hover:text-purple-deep cursor-pointer">
+                                <span>Klien / Perusahaan</span>
+                                <span class="text-xs {{ $pSort === 'klien' ? 'text-purple-deep' : 'text-slate-400' }}">
+                                    {{ $pSort === 'klien' ? ($pDir === 'asc' ? '↑' : '↓') : '↕' }}
                                 </span>
                             </a>
                         </th>
-
-                        {{-- 4. PIC --}}
-                        <th class="px-6 py-3.5 text-left font-semibold">
-                            <a href="{{ $getNextPsychotestSortUrl('pic') }}"
-                                class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
-                                title="Urutkan PIC: A→Z atau Z→A">
-                                <span>PIC</span>
-                                <span class="inline-flex items-center justify-center w-4 h-4 rounded transition {{ $pSort === 'pic' ? 'text-purple-deep' : 'text-slate-400 group-hover:text-slate-600' }}">
-                                    @if($pSort === 'pic')
-                                        @if($pDir === 'asc')
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                                        @else
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-                                        @endif
-                                    @else
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
-                                    @endif
-                                </span>
-                            </a>
-                        </th>
-
-                        {{-- 5. Jenis Psikotes --}}
-                        <th class="px-6 py-3.5 text-left font-semibold">
-                            <a href="{{ $getNextPsychotestSortUrl('tipe') }}"
-                                class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
-                                title="Urutkan alfabetis: A→Z atau Z→A">
-                                <span>Jenis Psikotes</span>
-                                <span class="inline-flex items-center justify-center w-4 h-4 rounded transition {{ $pSort === 'tipe' ? 'text-purple-deep' : 'text-slate-400 group-hover:text-slate-600' }}">
-                                    @if($pSort === 'tipe')
-                                        @if($pDir === 'asc')
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                                        @else
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-                                        @endif
-                                    @else
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
-                                    @endif
-                                </span>
-                            </a>
-                        </th>
+                        <th class="px-6 py-3.5 text-left font-semibold">PIC</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Jenis Paket</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Psikolog</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Invoice</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Progres Kandidat</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Bayar</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#F3EAFB]">
                     @forelse($psikotesBookings as $booking)
                         @php
-                            $bookingData = buildBookingDataPayload($booking);
-                            $jamSesi = $bookingData['jam_sesi'];
-                            $client = $booking->client;
-                            $isIndustri = $client && ($client->jenis === 'industri' || $client->jenis === 'company');
-                            $cType = $client->service_type ?? '';
-                            $participantList = $booking->participants->pluck('nama_peserta')->filter()->values();
-                            if ($participantList->isEmpty() && $client && $client->clientParticipants->isNotEmpty()) {
-                                $participantList = $client->clientParticipants->pluck('nama_peserta')->filter()->values();
-                            }
-
-                            // Format Lengkap Jenis Metode Format Level Kategori
-                            $rawPackage = $client->counseling_type ?? '';
-                            $isConfiguredPackage = !empty($rawPackage)
-                                && str_contains($rawPackage, ' - ')
-                                && (str_starts_with($rawPackage, 'Psikotes') || str_contains($rawPackage, 'Short') || str_contains($rawPackage, 'Long') || str_contains($rawPackage, 'Bakat Minat') || str_contains($rawPackage, 'Khusus'));
-
-                            $jenisMetodeFormatLevelKategori = $isConfiguredPackage ? $rawPackage : null;
+                            $clientDisplay = $booking->company?->name ?? $booking->client?->name ?? '-';
+                            $picDisplay = $booking->pic_name ?? $booking->client?->pic_name ?? '-';
+                            $totalCand = $booking->candidates->count();
+                            $doneCand = $booking->candidates->filter(fn ($c) => $c->isCompletedForDelivery())->count();
+                            $progressText = $totalCand > 0 ? "{$doneCand}/{$totalCand} selesai" : ucfirst(str_replace('_', ' ', $booking->status));
                         @endphp
-                        <tr class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
-                            {{-- 1. ID --}}
-                            <td class="px-6 py-3.5 text-black font-medium whitespace-nowrap">
-                                {{ $booking->id }}
+                        <tr class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 cursor-pointer" onclick="window.location='{{ route('psychotest-bookings.show', $booking) }}'">
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $booking->id }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">
+                                {{ $booking->tanggal_dijadwalkan ? $booking->tanggal_dijadwalkan->format('d/m/Y') : '-' }}
                             </td>
-
-                            {{-- 2. Tanggal & Waktu Psikotes --}}
-                            <td class="px-6 py-3.5 text-black font-medium whitespace-nowrap">
-                                @if($booking->tanggal_dijadwalkan)
-                                    {{ $booking->tanggal_dijadwalkan->locale('id')->translatedFormat('d F Y') }}
-                                @else
-                                    <span class="text-gray-400 font-medium">-</span>
-                                @endif
-                            </td>
-                            <td class="px-6 py-3.5 text-black font-medium whitespace-nowrap">
-                                {{ $jamSesi ?: '-' }}
-                            </td>
-
-                            {{-- 3. Nama Klien --}}
-                            <td class="px-6 py-3.5 text-black font-medium">
-                                @if($isIndustri)
-                                    <div x-data="{ openParticipants: false }" class="relative inline-block text-left" @click.outside="openParticipants = false">
-                                        <button 
-                                            type="button" 
-                                            @click.stop="openParticipants = !openParticipants"
-                                            class="font-medium text-black hover:text-purple-deep transition cursor-pointer inline-flex items-center gap-1.5 text-left"
-                                            title="Klik untuk melihat daftar klien perusahaan terdaftar"
-                                        >
-                                            <span>{{ $client->name ?? 'Perusahaan' }}</span>
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400 transition-transform" :class="{ 'rotate-180': openParticipants }"><polyline points="6 9 12 15 18 9"/></svg>
-                                        </button>
-
-                                        {{-- Dropdown List Klien Perusahaan --}}
-                                        <div 
-                                            x-show="openParticipants" 
-                                            x-transition 
-                                            class="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-[#EDE1FA] p-3 z-50 text-xs font-normal"
-                                            @click.stop
-                                            x-cloak
-                                        >
-                                            <div class="font-medium text-black mb-2 pb-1.5 border-b border-gray-100 flex items-center justify-between">
-                                                <span>Klien Terdaftar</span>
-                                                <span class="text-gray-500 font-normal text-[11px]">{{ $participantList->count() }} orang</span>
-                                            </div>
-                                            @if($participantList->isNotEmpty())
-                                                <ul class="max-h-48 overflow-y-auto space-y-1.5 text-black">
-                                                    @foreach($participantList as $idx => $pName)
-                                                        <li class="flex items-center gap-2">
-                                                            <span class="text-gray-400 text-[10px] w-4">{{ $idx + 1 }}.</span>
-                                                            <span class="truncate">{{ $pName }}</span>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            @else
-                                                <div class="text-gray-400 italic py-1">Belum ada klien terdaftar</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @else
-                                    {{ $client->name ?? '-' }}
-                                @endif
-                            </td>
-
-                            {{-- 4. PIC --}}
-                            <td class="px-6 py-3.5 text-black font-medium">
-                                {{ $client->pic_name ?? '-' }}
-                            </td>
-
-                            {{-- 5. Jenis Psikotes (Jenis Metode Format Level Kategori) --}}
-                            <td class="px-6 py-3.5 text-black font-medium">
-                                @if($booking->service_package_name)
-                                    {{ $booking->service_package_name }}
-                                @elseif($jenisMetodeFormatLevelKategori)
-                                    {{ $jenisMetodeFormatLevelKategori }}
-                                @else
-                                    <span class="text-gray-400 font-medium">-</span>
-                                @endif
-                            </td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $clientDisplay }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $picDisplay }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $booking->service_package_name ?: '-' }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $booking->formatPsychologistQuotaSummary() }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $booking->billing_scheme ?: 'v' }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $progressText }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $booking->isPaid() ? 'Lunas' : 'Belum' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-10 text-center text-gray-400 font-medium">Belum ada data booking layanan psikotes.</td>
+                            <td colspan="9" class="px-6 py-10 text-center text-slate-400 text-xs font-medium">Belum ada data booking layanan psikotes.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -303,15 +198,10 @@
         </div>
 
         @if($psikotesBookings->hasPages())
-        <div class="px-6 py-4 border-t border-[#EDE1FA]">
-            {{ $psikotesBookings->links() }}
-        </div>
+            <div class="px-6 py-4 border-t border-[#EDE1FA]">
+                {{ $psikotesBookings->links() }}
+            </div>
         @endif
     </div>
-
-    @include('bookings.partials.detail-modal')
-    @include('bookings.partials.confirm-modal')
 </div>
-
-@include('bookings.partials.script')
 @endsection

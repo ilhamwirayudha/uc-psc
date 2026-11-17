@@ -6,7 +6,6 @@ use App\Models\Client;
 use App\Models\Counselor;
 use App\Models\Pairing;
 use App\Models\User;
-use App\Models\ClientStaffAssignment;
 use App\Models\Booking;
 use App\Models\BookingParticipant;
 use App\Models\ClientParticipant;
@@ -22,10 +21,20 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         $query = Client::with('creator');
+        $user = auth()->user();
 
-        // Staff hanya melihat klien yang ditugaskan kepadanya
-        if (auth()->user()->role === 'staff') {
-            $query->where('assigned_staff_id', auth()->id());
+        // Opsi 2: Admin & Staff melihat seluruh Daftar Klien; Psikolog hanya melihat klien yang ditangani
+        if ($user->isPsikolog()) {
+            $counselorId = (int) ($user->counselor_id ?? 0);
+            if ($counselorId > 0) {
+                $query->where(function ($q) use ($counselorId) {
+                    $q->whereHas('bookings', fn ($bq) => $bq->where('counselor_id', $counselorId))
+                      ->orWhereHas('pairings', fn ($pq) => $pq->where('counselor_id', $counselorId))
+                      ->orWhereHas('bookings.candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $counselorId));
+                });
+            } else {
+                $query->whereRaw('1 = 0');
+            }
         }
 
         if ($request->filled('search')) {
@@ -852,18 +861,18 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('non_industri');
-            $booking = Booking::createInitialForForm($client, 'non_industri', 'offline');
 
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'non_industri',
                 'client_id' => $client->id,
-                'booking_id' => $booking->id,
+                'booking_id' => null,
                 'client_name' => $client->name,
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => 'offline',
+                'booking_status' => 'belum_dibooking',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
@@ -969,18 +978,19 @@ class ClientController extends Controller
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('industri');
-            $booking = Booking::createInitialForForm($client, 'industri', 'offline');
 
             ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'industri',
                 'client_id' => $client->id,
-                'booking_id' => $booking->id,
+                'booking_id' => null,
                 'client_name' => $client->name,
                 'client_phone' => trim($request->phone),
+                'company_name' => trim($request->nama_perusahaan),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => 'offline',
+                'booking_status' => 'belum_dibooking',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
@@ -1005,8 +1015,6 @@ class ClientController extends Controller
             'creator',
             'pairings.counselor',
             'pairings.assigner',
-            'staffAssignmentHistory.staff',
-            'staffAssignmentHistory.assigner',
             'bookings.followUps',
             'bookings.clientForm',
             'bookings.clientForms',
@@ -1016,7 +1024,10 @@ class ClientController extends Controller
             'bookings.staffPenguji',
             'bookings.staffKoreksi',
             'bookings.staffPelapor',
-            'assignedStaff',
+            'bookings.assignees.user',
+            'bookings.assignees.counselor',
+            'bookings.candidates.assignedPsikolog',
+            'bookings.candidates.assignedEditor',
             'clientParticipants',
         ]);
 

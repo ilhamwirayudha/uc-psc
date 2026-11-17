@@ -31,10 +31,6 @@ if (!function_exists('buildBookingDataPayload')) {
             'service_type' => $booking->client->service_type ?? '-',
             'counseling_type' => $booking->client->counseling_type ?? '-',
             'notes' => $booking->client->notes ?? '',
-            'assigned_staff' => $booking->client->assignedStaff ? [
-                'name' => $booking->client->assignedStaff->name,
-                'email' => $booking->client->assignedStaff->email,
-            ] : null,
             'active_counselor' => $booking->client->pairings->where('status', 'active')->first()?->counselor ? [
                 'name' => $booking->client->pairings->where('status', 'active')->first()->counselor->name,
                 'specialization' => $booking->client->pairings->where('status', 'active')->first()->counselor->specialization,

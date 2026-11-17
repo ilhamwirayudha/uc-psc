@@ -1042,7 +1042,27 @@ function userProfileHero() {
                         </div>
                     </div>
 
-                    <div class="pt-4 border-t border-slate-100">
+                    <div class="pt-4 border-t border-slate-100 space-y-4">
+                        <div>
+                            <span class="text-xs font-medium text-slate-500 mb-1.5 block">Integrasi Google Calendar Pribadi (OAuth)</span>
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-wrap items-center justify-between gap-2 text-sm font-medium text-black">
+                                @if($user->hasGoogleCalendarConnected())
+                                    <span>Terhubung ({{ $user->google_email ?: $user->email }})</span>
+                                    <form method="POST" action="{{ route('gcal.disconnect') }}">
+                                        @csrf
+                                        <button type="submit" class="px-3 py-1.5 rounded-lg bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-50 text-xs font-semibold cursor-pointer">
+                                            Putuskan
+                                        </button>
+                                    </form>
+                                @else
+                                    <span>Belum Terhubung</span>
+                                    <a href="{{ route('gcal.connect') }}" class="px-3.5 py-1.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white text-xs font-semibold shadow-xs">
+                                        Hubungkan Google Calendar
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+
                         <button
                             type="button"
                             @click="requestLogout()"

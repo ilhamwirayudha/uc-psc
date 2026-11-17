@@ -196,6 +196,7 @@ class PublicClientFormController extends Controller
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
+                    'booking_status' => 'sudah_dibooking',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
@@ -345,6 +346,7 @@ class PublicClientFormController extends Controller
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
+                    'booking_status' => 'sudah_dibooking',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
@@ -493,6 +495,7 @@ class PublicClientFormController extends Controller
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
+                    'booking_status' => 'sudah_dibooking',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
@@ -638,6 +641,7 @@ class PublicClientFormController extends Controller
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
+                    'booking_status' => 'sudah_dibooking',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
@@ -734,6 +738,7 @@ class PublicClientFormController extends Controller
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => $counselingType,
+                    'booking_status' => 'sudah_dibooking',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
@@ -826,23 +831,21 @@ class PublicClientFormController extends Controller
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('non_industri');
-                $booking = Booking::createInitialForForm($client, 'non_industri', 'offline');
 
-                $clientForm = ClientForm::create([
+                ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'non_industri',
                     'client_id' => $client->id,
-                    'booking_id' => $booking->id,
+                    'booking_id' => null,
                     'client_name' => $client->name,
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => 'offline',
+                    'booking_status' => 'belum_dibooking',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
-                $booking->client_form_id = $clientForm->id;
-                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
@@ -986,23 +989,22 @@ class PublicClientFormController extends Controller
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('industri');
-                $booking = Booking::createInitialForForm($client, 'industri', 'offline');
 
-                $clientForm = ClientForm::create([
+                ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'industri',
                     'client_id' => $client->id,
-                    'booking_id' => $booking->id,
+                    'booking_id' => null,
                     'client_name' => $client->name,
                     'client_phone' => trim($request->phone),
+                    'company_name' => $company !== '' ? $company : null,
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
                     'service_preference' => 'offline',
+                    'booking_status' => 'belum_dibooking',
                     'answers' => $request->except(['_token', 'consent_agree']),
                     'ip_address' => $request->ip(),
                 ]);
-                $booking->client_form_id = $clientForm->id;
-                $booking->save();
 
                 return redirect()->route('public.client-form.success', ['ticket' => $ticketNumber]);
             });
