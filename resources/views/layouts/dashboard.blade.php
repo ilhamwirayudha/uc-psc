@@ -59,7 +59,7 @@
         <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[680px] bg-gradient-to-tr from-[#E9D5FF]/32 via-[#FED7AA]/14 to-transparent rounded-full blur-[95px] transform-gpu"></div>
     </div>
 
-    <div class="flex min-h-screen relative overflow-x-hidden z-10">
+    <div class="flex min-h-screen relative overflow-x-hidden z-10 @hasSection('lock_viewport') lg:h-[calc(100vh/0.85)] lg:overflow-hidden @endif">
         {{-- Mobile Overlay Backdrop --}}
         <div 
             x-show="sidebarOpen" 
@@ -83,7 +83,7 @@
                  sidebarCollapsed ? 'lg:ml-[92px]' : 'lg:ml-[268px]',
                  sidebarTransitionReady ? 'transition-[margin] duration-200 ease-out' : ''
              ]"
-             class="flex-1 flex flex-col min-w-0">
+             class="flex-1 flex flex-col min-w-0 @hasSection('lock_viewport') lg:h-full lg:min-h-0 @endif">
             {{-- Borderless Editorial Header (Desktop Transparent on Aurora Canvas, Sticky Glass on Mobile) --}}
             <header class="z-30 flex items-center justify-between gap-4 px-6 max-lg:sticky max-lg:top-0 max-lg:h-16 max-lg:glass-topbar lg:pt-5 lg:pb-1">
                 <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
@@ -111,71 +111,66 @@
             </header>
 
             {{-- ========================================================================= --}}
-            {{-- NOTIFIKASI SUKSES PERSEGI PANJANG HIJAU (MUNCUL DARI BAWAH HEADER)         --}}
+            {{-- TOAST NOTIFIKASI SUKSES / GAGAL (POJOK KANAN BAWAH, COMPACT)              --}}
             {{-- ========================================================================= --}}
-            @if(session('success'))
-            <div x-data="{ show: true }"
-                x-init="setTimeout(() => show = false, 3500)"
-                x-show="show"
-                x-cloak
-                x-transition:enter="transition ease-out duration-300 transform"
-                x-transition:enter-start="opacity-0 -translate-y-4"
-                x-transition:enter-end="opacity-100 translate-y-0"
-                x-transition:leave="transition ease-in duration-200 transform"
-                x-transition:leave-start="opacity-100 translate-y-0"
-                x-transition:leave-end="opacity-0 -translate-y-4"
-                class="sticky top-16 lg:top-4 z-30 px-6 pt-3 pb-1">
-                <div class="w-full bg-emerald-600/90 backdrop-blur-md text-white rounded-xl px-5 py-3.5 shadow-lg shadow-emerald-600/15 flex items-center justify-between gap-4 border border-white/25">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center flex-shrink-0">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                        </div>
-                        <p class="text-sm font-semibold text-white min-w-0">
-                            {{ session('success') }}
-                        </p>
+            @if(session('success') || session('error') || $errors->any())
+            <div class="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[120] flex flex-col items-end gap-2.5 max-w-[calc(100vw-2rem)] sm:max-w-md pointer-events-none">
+                @if(session('success'))
+                <div x-data="{ show: true }"
+                    x-init="setTimeout(() => show = false, 3500)"
+                    x-show="show"
+                    x-cloak
+                    x-transition:enter="transition ease-out duration-300 transform"
+                    x-transition:enter-start="opacity-0 translate-y-3"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-200 transform"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 translate-y-3"
+                    class="pointer-events-auto w-auto bg-emerald-600/95 backdrop-blur-md text-white rounded-xl px-4 py-3 shadow-lg shadow-emerald-600/20 flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center shrink-0">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
                     </div>
-                    <button @click="show = false" type="button" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer flex-shrink-0" title="Tutup">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <p class="text-sm font-medium text-white leading-snug">
+                        {{ session('success') }}
+                    </p>
+                    <button @click="show = false" type="button" class="text-white/80 hover:text-white p-1 rounded-md hover:bg-white/10 transition cursor-pointer shrink-0" title="Tutup">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
-            </div>
-            @endif
+                @endif
 
-            @if(session('error') || $errors->any())
-            <div x-data="{ show: true }"
-                x-init="setTimeout(() => show = false, 4000)"
-                x-show="show"
-                x-cloak
-                x-transition:enter="transition ease-out duration-300 transform"
-                x-transition:enter-start="opacity-0 -translate-y-4"
-                x-transition:enter-end="opacity-100 translate-y-0"
-                x-transition:leave="transition ease-in duration-200 transform"
-                x-transition:leave-start="opacity-100 translate-y-0"
-                x-transition:leave-end="opacity-0 -translate-y-4"
-                class="sticky top-16 lg:top-4 z-30 px-6 pt-3 pb-1">
-                <div class="w-full bg-rose-600/90 backdrop-blur-md text-white rounded-xl px-5 py-3.5 shadow-lg shadow-rose-600/15 flex items-center justify-between gap-4 border border-white/25">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center flex-shrink-0">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
-                            </svg>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-x-2 min-w-0 text-sm">
-                            <span class="font-bold">Terjadi Kesalahan!</span>
-                            <span class="text-rose-50 font-normal">{{ session('error') ?: $errors->first() }}</span>
-                        </div>
+                @if(session('error') || $errors->any())
+                <div x-data="{ show: true }"
+                    x-init="setTimeout(() => show = false, 4000)"
+                    x-show="show"
+                    x-cloak
+                    x-transition:enter="transition ease-out duration-300 transform"
+                    x-transition:enter-start="opacity-0 translate-y-3"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-200 transform"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 translate-y-3"
+                    class="pointer-events-auto w-auto bg-rose-600/95 backdrop-blur-md text-white rounded-xl px-4 py-3 shadow-lg shadow-rose-600/20 flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center shrink-0">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                        </svg>
                     </div>
-                    <button @click="show = false" type="button" class="text-white/80 hover:text-white p-1 rounded-lg hover:bg-white/10 transition cursor-pointer flex-shrink-0" title="Tutup">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <p class="text-sm font-medium text-white leading-snug">
+                        <span class="font-semibold">Terjadi Kesalahan!</span> {{ session('error') ?: $errors->first() }}
+                    </p>
+                    <button @click="show = false" type="button" class="text-white/80 hover:text-white p-1 rounded-md hover:bg-white/10 transition cursor-pointer shrink-0" title="Tutup">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
+                @endif
             </div>
             @endif
 
             {{-- Page Content --}}
-            <main class="p-6 lg:pt-4">
+            <main class="p-6 lg:pt-4 @hasSection('lock_viewport') lg:pb-3 lg:flex-1 lg:flex lg:flex-col lg:min-h-0 @endif">
                 @yield('content')
             </main>
         </div>

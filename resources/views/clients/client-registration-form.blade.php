@@ -4,6 +4,23 @@
 @section('page-title', !empty($existingClient) ? 'Buat Layanan Baru' : 'Tambah Klien Baru')
 @section('page-subtitle', !empty($existingClient) ? 'Pendaftaran formulir layanan baru untuk klien terdaftar: ' . $existingClient->name : 'Pendaftaran data klien berdasarkan jenis formulir layanan UC Psychological Service Center')
 
+@if(!empty($existingClient))
+@section('breadcrumbs')
+    @php
+        $breadcrumbTabKey = ($initialJenis === 'industri') ? 'psikotes' : 'konseling';
+        $breadcrumbTabLabel = ($initialJenis === 'industri') ? 'Psikotes' : 'Konseling';
+    @endphp
+    <x-ui.breadcrumbs :items="[
+        ['label' => 'Klien & Psikolog'],
+        ['label' => 'Daftar Klien', 'url' => route('clients.index')],
+        ['label' => 'Detail Klien', 'url' => route('clients.show', $existingClient)],
+        ['label' => $existingClient->name, 'url' => route('clients.show', $existingClient)],
+        ['label' => $breadcrumbTabLabel, 'url' => route('clients.show', ['client' => $existingClient->id, 'tab' => $breadcrumbTabKey])],
+        ['label' => 'Buat Layanan Baru'],
+    ]" />
+@endsection
+@endif
+
 @section('content')
 @php
     $resolvedJenis = old('jenis', $initialJenis ?: (!empty($existingClient) ? ($existingClient->jenis ?: 'individu') : ''));
@@ -129,13 +146,13 @@ function clientRegistrationForm() {
     {{-- Tombol Kembali --}}
     <div class="flex items-center justify-between pb-2">
         <a href="{{ !empty($existingClient) ? route('clients.show', ['client' => $existingClient->id, 'tab' => $initialJenis === 'industri' ? 'psikotes' : 'konseling']) : route('clients.index') }}"
-            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-semibold text-black hover:text-purple-deep hover:border-purple-deep shadow-xs transition cursor-pointer w-fit">
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white hover:bg-purple-50 text-sm font-semibold text-purple-deep hover:border-purple-deep shadow-xs transition cursor-pointer w-fit">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             <span>{{ !empty($existingClient) ? 'Kembali ke Detail Klien' : 'Kembali ke Daftar Klien' }}</span>
         </a>
 
         @if(!empty($existingClient))
-        <div class="flex items-center gap-2 text-xs font-semibold text-purple-deep bg-purple-50 px-3.5 py-1.5 rounded-xl border border-[#EDE1FA]">
+        <div class="flex items-center gap-2 text-xs font-semibold text-purple-deep bg-white px-3.5 py-2 rounded-xl border border-[#D9C2F0] shadow-xs">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span>Pendaftaran Klien: <span class="font-bold underline">{{ $existingClient->name }}</span></span>
         </div>
@@ -180,7 +197,7 @@ function clientRegistrationForm() {
                 
                 {{-- Dropdown 1: Tipe Pemohon / Klien --}}
                 <div>
-                    <label for="select_jenis" class="block text-xs font-medium text-gray-500 mb-1.5">
+                    <label for="select_jenis" class="block text-[13px] font-medium text-slate-500 mb-1.5">
                         Tipe Pemohon / Klien
                     </label>
                     <select id="select_jenis"
@@ -195,7 +212,7 @@ function clientRegistrationForm() {
 
                     {{-- Dropdown 2: Formulir Layanan Klien --}}
                     <div>
-                        <label for="select_form_type" class="block text-xs font-medium text-gray-500 mb-1.5">
+                        <label for="select_form_type" class="block text-[13px] font-medium text-slate-500 mb-1.5">
                             Formulir Layanan Klien
                         </label>
                         <select id="select_form_type"

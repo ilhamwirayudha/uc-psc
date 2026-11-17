@@ -111,12 +111,12 @@
                             </a>
                         </th>
 
-                        {{-- 2. Tanggal Psikotes --}}
+                        {{-- 2. Tanggal & Waktu Psikotes --}}
                         <th class="px-6 py-3.5 text-left font-semibold">
                             <a href="{{ $getNextPsychotestSortUrl('tanggal') }}"
                                 class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer"
                                 title="Urutkan tanggal: Terlama atau Terkini">
-                                <span>Tanggal Psikotes</span>
+                                <span>Tanggal</span>
                                 <span class="inline-flex items-center justify-center w-4 h-4 rounded transition {{ $pSort === 'tanggal' ? 'text-purple-deep' : 'text-slate-400 group-hover:text-slate-600' }}">
                                     @if($pSort === 'tanggal')
                                         @if($pDir === 'asc')
@@ -130,6 +130,7 @@
                                 </span>
                             </a>
                         </th>
+                        <th class="px-6 py-3.5 text-left font-semibold whitespace-nowrap">Waktu</th>
 
                         {{-- 3. Nama Klien --}}
                         <th class="px-6 py-3.5 text-left font-semibold">
@@ -219,13 +220,16 @@
                                 {{ $booking->id }}
                             </td>
 
-                            {{-- 2. Tanggal Psikotes --}}
+                            {{-- 2. Tanggal & Waktu Psikotes --}}
                             <td class="px-6 py-3.5 text-black font-medium whitespace-nowrap">
                                 @if($booking->tanggal_dijadwalkan)
-                                    {{ $booking->tanggal_dijadwalkan->format('d/m/Y') }}{{ $jamSesi ? ' ' . $jamSesi : '' }}
+                                    {{ $booking->tanggal_dijadwalkan->locale('id')->translatedFormat('d F Y') }}
                                 @else
                                     <span class="text-gray-400 font-medium">-</span>
                                 @endif
+                            </td>
+                            <td class="px-6 py-3.5 text-black font-medium whitespace-nowrap">
+                                {{ $jamSesi ?: '-' }}
                             </td>
 
                             {{-- 3. Nama Klien --}}

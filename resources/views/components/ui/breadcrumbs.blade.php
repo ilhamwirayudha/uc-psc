@@ -118,7 +118,7 @@
 @endphp
 
 @if(count($resolvedItems) > 0)
-<nav aria-label="Breadcrumb" class="hidden sm:flex items-center gap-1.5 text-[11px] font-medium text-purple-deep/55 mb-0.5 flex-wrap">
+<nav aria-label="Breadcrumb" class="hidden sm:flex items-center gap-1.5 text-[13px] font-medium text-purple-deep/55 mb-1.5 flex-wrap">
     @foreach($resolvedItems as $item)
         @php
             $isFirst = $loop->first;

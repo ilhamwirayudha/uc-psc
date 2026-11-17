@@ -2,12 +2,34 @@
 
 @section('title', 'Detail Klien — ' . $client->name . ' — UC PSC')
 @section('page-title', 'Detail Klien')
+@section('lock_viewport', '1')
 @section('breadcrumbs')
-    <x-ui.breadcrumbs :items="[
-        ['label' => 'Klien & Psikolog'],
-        ['label' => 'Daftar Klien', 'url' => route('clients.index')],
-        ['label' => $client->name],
-    ]" />
+    @php
+        $initialTabMap = [
+            'biodata' => 'Biodata Klien',
+            'catatan' => 'Catatan Klien',
+            'konseling' => 'Konseling',
+            'psikotes' => 'Psikotes',
+            'riwayat' => 'Riwayat Layanan',
+            'pengaturan' => 'Pengaturan',
+        ];
+        $initialTabKey = in_array(request('tab'), array_keys($initialTabMap)) ? request('tab') : 'biodata';
+        $initialTabLabel = $initialTabMap[$initialTabKey];
+    @endphp
+    <nav aria-label="Breadcrumb"
+         x-data="{ activeTabLabel: @js($initialTabLabel) }"
+         @client-tab-changed.window="activeTabLabel = $event.detail.label"
+         class="hidden sm:flex items-center gap-1.5 text-[13px] font-medium text-purple-deep/55 mb-1.5 flex-wrap">
+        <span class="text-purple-deep/55 truncate max-w-[160px] md:max-w-[220px]">Klien & Psikolog</span>
+        <span class="text-purple-deep/30 select-none" aria-hidden="true">/</span>
+        <a href="{{ route('clients.index') }}" class="hover:text-orange transition-colors truncate max-w-[160px] md:max-w-[220px]">Daftar Klien</a>
+        <span class="text-purple-deep/30 select-none" aria-hidden="true">/</span>
+        <a href="{{ route('clients.show', $client) }}" class="hover:text-orange transition-colors truncate max-w-[160px] md:max-w-[220px]">{{ $client->name }}</a>
+        <span class="text-purple-deep/30 select-none" aria-hidden="true">/</span>
+        <span aria-current="page" x-text="activeTabLabel" class="text-purple-deep/85 font-semibold truncate max-w-[200px] md:max-w-[280px]">
+            {{ $initialTabLabel }}
+        </span>
+    </nav>
 @endsection
 @section('page-subtitle', 'Informasi profil, riwayat seluruh layanan terdaftar, reservasi konseling, dan berkas asesmen')
 @section('content')
@@ -53,9 +75,12 @@
 
         return array_merge($f->toArray(), [
             'ticket' => $f->ticket_number ?? '#' . $f->id,
+            'form_category' => $f->form_type === 'industri' ? 'Industri' : 'Individu',
             'form_type_label' => $f->form_type_label,
             'created_at_raw' => $f->created_at ? $f->created_at->format('Y-m-d H:i:s') : '',
-            'created_at_formatted' => $f->created_at ? $f->created_at->format('d/m/Y H:i') : '-',
+            'created_at_formatted' => $f->created_at ? $f->created_at->locale('id')->translatedFormat('d F Y - H:i:s') : '-',
+            'created_date_formatted' => $f->created_at ? $f->created_at->locale('id')->translatedFormat('d F Y') : '-',
+            'created_time_formatted' => $f->created_at ? $f->created_at->format('H:i:s') : '-',
             'media_konseling' => $mediaKonseling,
             'booking' => $f->booking ? [
             'id' => $f->booking->id,
@@ -84,9 +109,12 @@
     $psychotestFormsJson = $psychotestForms->map(function($f) {
         return array_merge($f->toArray(), [
         'ticket' => $f->ticket_number ?? '#' . $f->id,
+        'form_category' => $f->form_type === 'industri' ? 'Industri' : 'Individu',
         'form_type_label' => $f->form_type_label,
         'created_at_raw' => $f->created_at ? $f->created_at->format('Y-m-d H:i:s') : '',
-        'created_at_formatted' => $f->created_at ? $f->created_at->format('d/m/Y H:i') : '-',
+        'created_at_formatted' => $f->created_at ? $f->created_at->locale('id')->translatedFormat('d F Y - H:i:s') : '-',
+        'created_date_formatted' => $f->created_at ? $f->created_at->locale('id')->translatedFormat('d F Y') : '-',
+        'created_time_formatted' => $f->created_at ? $f->created_at->format('H:i:s') : '-',
         'booking' => $f->booking ? [
             'id' => $f->booking->id,
             'kategori' => $f->booking->kategori,
@@ -278,10 +306,10 @@
 
         $pkgName = $b->service_package_name ?: ($b->service_tier ? ucwords(str_replace('_', ' ', $b->service_tier)) : ($isKonseling ? 'Layanan Konseling' : 'Layanan Psikotes'));
 
-        $bookingDateFormatted = $b->tanggal_booking_dibuat ? $b->tanggal_booking_dibuat->format('d/m/Y') : '-';
+        $bookingDateFormatted = $b->tanggal_booking_dibuat ? $b->tanggal_booking_dibuat->locale('id')->translatedFormat('d F Y') : '-';
         $scheduledDateFormatted = '-';
         if ($b->tanggal_dijadwalkan) {
-            $tgl = $b->tanggal_dijadwalkan->format('d/m/Y');
+            $tgl = $b->tanggal_dijadwalkan->locale('id')->translatedFormat('d F Y');
             $jam = ($b->session_start && $b->session_end) 
                 ? ' ' . substr($b->session_start, 0, 5) . ' - ' . substr($b->session_end, 0, 5)
                 : '';
@@ -1093,6 +1121,20 @@ function clientProfileDetail() {
             } else {
                 this.activeTab = 'biodata';
             }
+            const tabLabels = {
+                biodata: 'Biodata Klien',
+                catatan: 'Catatan Klien',
+                konseling: 'Konseling',
+                psikotes: 'Psikotes',
+                riwayat: 'Riwayat Layanan',
+                pengaturan: 'Pengaturan',
+            };
+            const emitTabBreadcrumb = (tab) => {
+                window.dispatchEvent(new CustomEvent('client-tab-changed', {
+                    detail: { tab, label: tabLabels[tab] || 'Biodata Klien' }
+                }));
+            };
+            emitTabBreadcrumb(this.activeTab);
             this.$watch('activeTab', (tab) => {
                 if (validTabs.includes(tab)) {
                     const url = new URL(window.location.href);
@@ -1102,6 +1144,7 @@ function clientProfileDetail() {
                         url.searchParams.set('tab', tab);
                     }
                     window.history.replaceState({}, '', url);
+                    emitTabBreadcrumb(tab);
                 }
             });
         }
@@ -1109,14 +1152,14 @@ function clientProfileDetail() {
 }
 </script>
 
-<div id="client-profile-detail-root" x-data="clientProfileDetail()" class="space-y-4">
+<div id="client-profile-detail-root" x-data="clientProfileDetail()" class="space-y-4 lg:flex-1 lg:flex lg:flex-col lg:min-h-0">
 
     {{-- ========================================================================= --}}
     
     {{-- ========================================================================= --}}
     {{-- CARD 1: PROFILE HEADER BANNER (ELEGANT PURPLE CARD DENGAN KONTRAS HARMONIS) --}}
     {{-- ========================================================================= --}}
-    <div class="bg-purple-deep/92 backdrop-blur-lg rounded-2xl border border-white/20 shadow-[0_14px_34px_rgba(74,35,128,0.16)] overflow-hidden text-white relative">
+    <div class="bg-purple-deep/92 backdrop-blur-lg rounded-2xl border border-white/20 shadow-[0_14px_34px_rgba(74,35,128,0.16)] overflow-hidden text-white relative lg:shrink-0">
         {{-- Background Soft Accent Tint --}}
         <div class="absolute -right-12 -top-12 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -1140,8 +1183,8 @@ function clientProfileDetail() {
             </div>
 
             {{-- Sisi Kanan: Action Buttons Glossy Glass Transparan --}}
+            @if(!empty($waPhone))
             <div class="flex items-center gap-2.5 shrink-0 self-start md:self-center">
-                @if(!empty($waPhone))
                 <a href="https://wa.me/{{ $waPhone }}" target="_blank"
                    class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-white backdrop-blur-md transition-all flex items-center justify-center shadow-xs cursor-pointer group"
                    title="Hubungi Klien via WhatsApp">
@@ -1149,20 +1192,8 @@ function clientProfileDetail() {
                         <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
                     </svg>
                 </a>
-                @endif
-                {{-- Tombol Edit Profil: Ikon Putih, Tanpa Teks, Glossy Glass Transparan --}}
-                <button type="button" @click="handleToggleEdit()"
-                        class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl transition-all flex items-center justify-center shadow-xs cursor-pointer group"
-                        :class="editMode ? 'bg-white text-purple-deep shadow-sm' : 'bg-white/15 hover:bg-white/25 border border-white/25 text-white backdrop-blur-md'"
-                        :title="editMode ? 'Tutup Mode Edit' : 'Edit Biodata Klien'">
-                    <template x-if="!editMode">
-                        <svg class="w-4 h-4 text-white group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                    </template>
-                    <template x-if="editMode">
-                        <svg class="w-4 h-4 text-purple-deep group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </template>
-                </button>
             </div>
+            @endif
         </div>
     </div>
 
@@ -1170,9 +1201,9 @@ function clientProfileDetail() {
     {{-- ========================================================================= --}}
     {{-- CARD 2: TABS WORKSPACE CONTAINER (BIODATA, CATATAN, KONSELING, PSIKOTES, RIWAYAT, PENGATURAN) --}}
     {{-- ========================================================================= --}}
-    <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="glass-card rounded-2xl overflow-hidden lg:flex-1 lg:flex lg:flex-col lg:min-h-0">
         {{-- Unified Tabs Navigation Header (Pertinggi & Font Lebih Tebal & Jelas) --}}
-        <div class="px-4 sm:px-6 bg-purple-deep/95 border-b border-purple-900/30 flex items-center gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none">
+        <div class="px-4 sm:px-6 bg-purple-deep/95 border-b border-purple-900/30 flex items-center gap-4 sm:gap-6 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none lg:shrink-0">
             {{-- Tab 1: Biodata Klien --}}
             <button type="button" @click="handleTabClick('biodata')"
                     class="py-3 sm:py-3.5 text-xs sm:text-sm transition-all flex items-center gap-2 cursor-pointer border-b-2 whitespace-nowrap"
@@ -1257,250 +1288,269 @@ function clientProfileDetail() {
         </div>
 
         {{-- Content Container --}}
-        <div class="p-4 sm:p-5 lg:p-6 bg-white">
+        <div class="p-4 sm:p-5 lg:p-6 bg-white lg:flex-1 lg:min-h-0 lg:overflow-y-auto custom-scrollbar"
+             :class="activeTab === 'catatan' ? 'lg:flex lg:flex-col' : ''">
 
 
             {{-- ========================================================================= --}}
             {{-- TAB 1: BIODATA KLIEN (FULL WIDTH CONTAINER)                               --}}
             {{-- ========================================================================= --}}
-            <div x-show="activeTab === 'biodata'" x-cloak class="space-y-6">
+            <div x-show="activeTab === 'biodata'" x-cloak>
                 @include('clients.partials.address-script')
 
                 {{-- ---- VIEW MODE BIODATA ---- --}}
-                <div x-show="!editMode" class="space-y-5">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {{-- 1. Nama Lengkap --}}
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                {{ $client->name ?? '-' }}
-                            </div>
-                        </div>
-
-                        {{-- 2. Nama Perusahaan --}}
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Nama Perusahaan</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                {{ $client->company_name ?? ($client->pic_name ?? '-') }}
-                            </div>
-                        </div>
-
-                        {{-- 3. Pekerjaan / Jabatan Saat Ini --}}
-                        @php
-                            $jobTitle = $client->occupation;
-                            if ($jobTitle && str_contains($jobTitle, ' - ')) {
-                                $parts = explode(' - ', $jobTitle);
-                                $jobTitle = trim($parts[0]);
-                            }
-                        @endphp
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan / Jabatan Saat Ini</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                {{ $jobTitle ?: '-' }}
-                            </div>
-                        </div>
-
-                        {{-- 4. Jenis Kelamin --}}
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                {{ $client->gender_label ?: '-' }}
-                            </div>
-                        </div>
-
-                        {{-- 5 & 6. Tempat, Tanggal Lahir (Bersebelahan dalam satu kolom selaras dengan Edit Mode) --}}
-                        <div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Lahir</label>
-                                    <div class="px-3 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                        {{ $client->birth_place ?? '-' }}
-                                    </div>
+                @php
+                    $jobTitle = $client->occupation;
+                    if ($jobTitle && str_contains($jobTitle, ' - ')) {
+                        $parts = explode(' - ', $jobTitle);
+                        $jobTitle = trim($parts[0]);
+                    }
+                @endphp
+                <div x-show="!editMode" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {{-- Samping Kiri Turun ke Bawah --}}
+                        <div class="space-y-4">
+                            {{-- 1. Nama Lengkap --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $client->name ?? '-' }}
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
-                                    <div class="px-2.5 sm:px-3 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                        {{ $client->dob ? $client->dob->locale('id')->isoFormat('D MMMM Y') : '-' }}
-                                    </div>
+                            </div>
+
+                            {{-- 2. Jenis Kelamin --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $client->gender_label ?: '-' }}
+                                </div>
+                            </div>
+
+                            {{-- 3. Tempat Lahir --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Lahir</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $client->birth_place ?? '-' }}
+                                </div>
+                            </div>
+
+                            {{-- 4. Tanggal Lahir --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $client->dob ? $client->dob->locale('id')->isoFormat('D MMMM Y') : '-' }}
+                                </div>
+                            </div>
+
+                            {{-- 5. Agama / Kepercayaan --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $client->religion ?? '-' }}
                                 </div>
                             </div>
                         </div>
 
-                        {{-- 7. No. Telepon / WhatsApp --}}
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
+                        {{-- Samping Kanan Turun ke Bawah --}}
+                        <div class="space-y-4">
+                            {{-- 6. No. Telepon / WhatsApp --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $client->phone ?? '-' }}
+                                </div>
+                            </div>
+
+                            {{-- 7. Email --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Email</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black break-all">
+                                    {{ $client->email ?? '-' }}
+                                </div>
+                            </div>
+
+                            {{-- 8. Pendidikan Terakhir --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $client->education_label ?? $client->education ?? '-' }}
+                                </div>
+                            </div>
+
+                            {{-- 9. Industri / Perusahaan --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Industri / Perusahaan</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $client->company_name ?? ($client->pic_name ?? '-') }}
+                                </div>
+                            </div>
+
+                            {{-- 10. Pekerjaan / Jabatan Saat Ini --}}
+                            <div>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan / Jabatan Saat Ini</label>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                    {{ $jobTitle ?: '-' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Di Bawah Sendiri Membentang dari Kiri ke Kanan --}}
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Domisili</label>
                             <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                {{ $client->phone ?? '-' }}
-                            </div>
-                        </div>
-
-                        {{-- 8. Alamat Email --}}
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black break-all">
-                                {{ $client->email ?? '-' }}
-                            </div>
-                        </div>
-
-                        {{-- 9. Pendidikan Terakhir --}}
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                {{ $client->education_label ?? $client->education ?? '-' }}
-                            </div>
-                        </div>
-
-                        {{-- 10. Agama / Kepercayaan --}}
-                        <div>
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                                {{ $client->religion ?? '-' }}
-                            </div>
-                        </div>
-
-                        {{-- 11. Alamat Domisili Lengkap --}}
-                        <div class="sm:col-span-2 lg:col-span-3">
-                            <label class="block text-xs font-medium text-slate-500 mb-1">Alamat</label>
-                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black leading-relaxed">
                                 {{ $client->address ?? '-' }}
                             </div>
                         </div>
                     </div>
+
+                    <div class="pt-1 flex justify-end">
+                        <button type="button" @click="handleToggleEdit()"
+                                class="px-5 py-2.5 min-h-[42px] rounded-xl bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] hover:border-purple-deep font-semibold text-xs sm:text-sm transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            <span>Edit Biodata</span>
+                        </button>
+                    </div>
                 </div>
 
                 {{-- ---- EDIT MODE BIODATA ---- --}}
-                <div x-show="editMode" x-cloak class="space-y-4">
+                <div x-show="editMode" x-cloak>
                     <form id="client-edit-biodata-form" data-no-unsaved-guard @submit="window.isSubmittingForm = true" action="{{ route('clients.update', $client) }}" method="POST"
                           class="space-y-4">
                         @csrf
                         @method('PUT')
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {{-- 1. Nama Lengkap (Wajib) --}}
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
-                                <input type="text" name="name" x-model="formData.name" required placeholder="Nama lengkap klien..."
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                            </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {{-- Samping Kiri Turun ke Bawah --}}
+                            <div class="space-y-4">
+                                {{-- 1. Nama Lengkap (Wajib) --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+                                    <input type="text" name="name" x-model="formData.name" required placeholder="Nama lengkap klien..."
+                                           class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                </div>
 
-                            {{-- 2. Nama Perusahaan --}}
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Nama Perusahaan</label>
-                                <input type="text" name="company_name" x-model="formData.company_name" placeholder="Nama perusahaan atau instansi..."
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                            </div>
+                                {{-- 2. Jenis Kelamin --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
+                                    <select name="gender" x-model="formData.gender"
+                                            class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                        <option value="">Pilih Jenis Kelamin...</option>
+                                        <option value="l">Laki-laki</option>
+                                        <option value="p">Perempuan</option>
+                                    </select>
+                                </div>
 
-                            {{-- 3. Pekerjaan / Jabatan Saat Ini --}}
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan / Jabatan Saat Ini</label>
-                                <input type="text" name="occupation" x-model="formData.occupation" placeholder="Jabatan atau profesi..."
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                            </div>
+                                {{-- 3. Tempat Lahir --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Lahir</label>
+                                    <input type="text" name="birth_place" x-model="formData.birth_place" placeholder="Kota kelahiran..."
+                                           class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                </div>
 
-                            {{-- 4. Jenis Kelamin --}}
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Jenis Kelamin</label>
-                                <select name="gender" x-model="formData.gender"
-                                        class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                                    <option value="">Pilih Jenis Kelamin...</option>
-                                    <option value="l">Laki-laki</option>
-                                    <option value="p">Perempuan</option>
-                                </select>
-                            </div>
+                                {{-- 4. Tanggal Lahir --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
+                                    <input type="date" name="dob" x-model="formData.dob"
+                                           class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                </div>
 
-                            {{-- 5 & 6. Tempat, Tanggal Lahir (Bersebelahan dalam satu kolom selaras dengan View Mode) --}}
-                            <div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-500 mb-1">Tempat Lahir</label>
-                                        <input type="text" name="birth_place" x-model="formData.birth_place" placeholder="Kota kelahiran..."
-                                               class="w-full px-3 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Lahir</label>
-                                        <input type="date" name="dob" x-model="formData.dob"
-                                               class="w-full px-2.5 sm:px-3 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                                    </div>
+                                {{-- 5. Agama / Kepercayaan --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
+                                    <select name="religion" x-model="formData.religion"
+                                            class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                        <option value="">Pilih Agama...</option>
+                                        <option value="Islam" {{ strcasecmp($client->religion ?? '', 'Islam') === 0 ? 'selected' : '' }}>Islam</option>
+                                        <option value="Kristen" {{ strcasecmp($client->religion ?? '', 'Kristen') === 0 || strcasecmp($client->religion ?? '', 'Kristen Protestan') === 0 ? 'selected' : '' }}>Kristen</option>
+                                        <option value="Katolik" {{ strcasecmp($client->religion ?? '', 'Katolik') === 0 ? 'selected' : '' }}>Katolik</option>
+                                        <option value="Hindu" {{ strcasecmp($client->religion ?? '', 'Hindu') === 0 ? 'selected' : '' }}>Hindu</option>
+                                        <option value="Buddha" {{ strcasecmp($client->religion ?? '', 'Buddha') === 0 ? 'selected' : '' }}>Buddha</option>
+                                        <option value="Khonghucu" {{ in_array(strtolower($client->religion ?? ''), ['khonghucu', 'konghucu']) ? 'selected' : '' }}>Khonghucu</option>
+                                        <option value="Lainnya" {{ strcasecmp($client->religion ?? '', 'Lainnya') === 0 ? 'selected' : '' }}>Lainnya</option>
+                                    </select>
                                 </div>
                             </div>
 
-                            {{-- 7. No. Telepon / WhatsApp --}}
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
-                                <input type="text" name="phone" x-model="formData.phone" placeholder="Contoh: 08123456789"
-                                       inputmode="numeric"
-                                       pattern="[0-9]+"
-                                       title="Hanya boleh diisi angka (0-9)"
-                                       @input="formData.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = formData.phone"
-                                       @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
+                            {{-- Samping Kanan Turun ke Bawah --}}
+                            <div class="space-y-4">
+                                {{-- 6. No. Telepon / WhatsApp --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">No. Telepon / WhatsApp</label>
+                                    <input type="text" name="phone" x-model="formData.phone" placeholder="Contoh: 08123456789"
+                                           inputmode="numeric"
+                                           pattern="[0-9]+"
+                                           title="Hanya boleh diisi angka (0-9)"
+                                           @input="formData.phone = $el.value.replace(/[^0-9]/g, ''); $el.value = formData.phone"
+                                           @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
+                                           class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                </div>
+
+                                {{-- 7. Email --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Email</label>
+                                    <input type="email" name="email" x-model="formData.email" placeholder="Contoh: klien@email.com"
+                                           class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                </div>
+
+                                {{-- 8. Pendidikan Terakhir --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
+                                    <select name="education" x-model="formData.education"
+                                            class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                        <option value="">Pilih Pendidikan...</option>
+                                        <option value="SD" {{ $client->education === 'SD' ? 'selected' : '' }}>SD</option>
+                                        <option value="SMP" {{ $client->education === 'SMP' ? 'selected' : '' }}>SMP</option>
+                                        <option value="SMA" {{ in_array($client->education, ['SMA', 'SMK']) ? 'selected' : '' }}>SMA / SMK</option>
+                                        <option value="D3" {{ $client->education === 'D3' ? 'selected' : '' }}>Diploma (D3)</option>
+                                        <option value="S1" {{ $client->education === 'S1' ? 'selected' : '' }}>Sarjana (S1)</option>
+                                        <option value="S2" {{ $client->education === 'S2' ? 'selected' : '' }}>Magister (S2)</option>
+                                        <option value="S3" {{ $client->education === 'S3' ? 'selected' : '' }}>Doktor (S3)</option>
+                                        <option value="Lainnya" {{ !in_array($client->education, ['SD', 'SMP', 'SMA', 'SMK', 'D3', 'S1', 'S2', 'S3']) && !empty($client->education) ? 'selected' : '' }}>Lainnya</option>
+                                    </select>
+                                </div>
+
+                                {{-- 9. Industri / Perusahaan --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Industri / Perusahaan</label>
+                                    <input type="text" name="company_name" x-model="formData.company_name" placeholder="Nama perusahaan atau instansi..."
+                                           class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                </div>
+
+                                {{-- 10. Pekerjaan / Jabatan Saat Ini --}}
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-1">Pekerjaan / Jabatan Saat Ini</label>
+                                    <input type="text" name="occupation" x-model="formData.occupation" placeholder="Jabatan atau profesi..."
+                                           class="block w-full px-3.5 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs">
+                                </div>
                             </div>
 
-                            {{-- 8. Alamat Email --}}
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Email</label>
-                                <input type="email" name="email" x-model="formData.email" placeholder="Contoh: klien@email.com"
-                                       class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                            </div>
-
-                            {{-- 9. Pendidikan Terakhir --}}
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Pendidikan Terakhir</label>
-                                <select name="education" x-model="formData.education"
-                                        class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                                    <option value="">Pilih Pendidikan...</option>
-                                    <option value="SD" {{ $client->education === 'SD' ? 'selected' : '' }}>SD</option>
-                                    <option value="SMP" {{ $client->education === 'SMP' ? 'selected' : '' }}>SMP</option>
-                                    <option value="SMA" {{ in_array($client->education, ['SMA', 'SMK']) ? 'selected' : '' }}>SMA / SMK</option>
-                                    <option value="D3" {{ $client->education === 'D3' ? 'selected' : '' }}>Diploma (D3)</option>
-                                    <option value="S1" {{ $client->education === 'S1' ? 'selected' : '' }}>Sarjana (S1)</option>
-                                    <option value="S2" {{ $client->education === 'S2' ? 'selected' : '' }}>Magister (S2)</option>
-                                    <option value="S3" {{ $client->education === 'S3' ? 'selected' : '' }}>Doktor (S3)</option>
-                                    <option value="Lainnya" {{ !in_array($client->education, ['SD', 'SMP', 'SMA', 'SMK', 'D3', 'S1', 'S2', 'S3']) && !empty($client->education) ? 'selected' : '' }}>Lainnya</option>
-                                </select>
-                            </div>
-
-                            {{-- 10. Agama / Kepercayaan --}}
-                            <div>
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Agama / Kepercayaan</label>
-                                <select name="religion" x-model="formData.religion"
-                                        class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white">
-                                    <option value="">Pilih Agama...</option>
-                                    <option value="Islam" {{ strcasecmp($client->religion ?? '', 'Islam') === 0 ? 'selected' : '' }}>Islam</option>
-                                    <option value="Kristen" {{ strcasecmp($client->religion ?? '', 'Kristen') === 0 || strcasecmp($client->religion ?? '', 'Kristen Protestan') === 0 ? 'selected' : '' }}>Kristen</option>
-                                    <option value="Katolik" {{ strcasecmp($client->religion ?? '', 'Katolik') === 0 ? 'selected' : '' }}>Katolik</option>
-                                    <option value="Hindu" {{ strcasecmp($client->religion ?? '', 'Hindu') === 0 ? 'selected' : '' }}>Hindu</option>
-                                    <option value="Buddha" {{ strcasecmp($client->religion ?? '', 'Buddha') === 0 ? 'selected' : '' }}>Buddha</option>
-                                    <option value="Khonghucu" {{ in_array(strtolower($client->religion ?? ''), ['khonghucu', 'konghucu']) ? 'selected' : '' }}>Khonghucu</option>
-                                    <option value="Lainnya" {{ strcasecmp($client->religion ?? '', 'Lainnya') === 0 ? 'selected' : '' }}>Lainnya</option>
-                                </select>
-                            </div>
-
-                            {{-- 11. Alamat Lengkap --}}
-                            <div class="sm:col-span-2 lg:col-span-3">
-                                <label class="block text-xs font-medium text-slate-500 mb-1">Alamat</label>
-                                <textarea name="address" x-model="formData.address" rows="2" placeholder="Alamat domisili saat ini..."
-                                          class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white"></textarea>
+                            {{-- Di Bawah Sendiri Membentang dari Kiri ke Kanan --}}
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Alamat Domisili</label>
+                                <textarea name="address" x-model="formData.address" rows="1" placeholder="Alamat domisili saat ini..."
+                                          x-effect="if (editMode) { $nextTick(() => { $el.style.height = 'auto'; $el.style.height = Math.max(42, $el.scrollHeight + 2) + 'px'; }); }"
+                                          @input="$el.style.height = 'auto'; $el.style.height = Math.max(42, $el.scrollHeight + 2) + 'px'"
+                                          class="block w-full px-3.5 py-2.5 min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-sm font-medium text-black bg-white shadow-xs resize-none overflow-hidden"></textarea>
                             </div>
                         </div>
 
-                        {{-- Form Action Buttons Sesuai Aturan Button Design System --}}
-                        <div class="pt-2 flex items-center justify-end gap-2.5">
+                        <div class="pt-1 flex items-center justify-end gap-2.5">
                             <button type="button" @click="handleCancelEdit()"
-                                    class="px-5 py-2.5 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs sm:text-sm transition cursor-pointer shadow-xs">
+                                    class="px-5 py-2.5 min-h-[42px] rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs sm:text-sm transition cursor-pointer shadow-xs">
                                 Batal
                             </button>
                             <button type="submit" @click="window.isSubmittingForm = true"
-                                    class="px-5 py-2.5 rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs sm:text-sm transition shadow-xs cursor-pointer flex items-center gap-1.5">
+                                    class="px-5 py-2.5 min-h-[42px] rounded-xl bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs sm:text-sm transition shadow-xs cursor-pointer flex items-center gap-1.5">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                                 <span>Simpan Biodata</span>
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
 
-<div x-show="activeTab === 'catatan'" x-cloak class="space-y-6" x-data="{ 
+<div x-show="activeTab === 'catatan'" x-cloak class="space-y-6 lg:flex-1 lg:min-h-0 lg:flex lg:flex-col lg:space-y-0 lg:gap-6" x-data="{ 
         showAddNoteModal: false,
         showAddUnsavedModal: false,
         addNoteText: '',
@@ -1513,6 +1563,7 @@ function clientProfileDetail() {
         editActionUrl: '',
         noteSortCol: null,
         noteSortDir: 'desc',
+        noteSearch: '',
         rawNotes: {{ json_encode($client->notes_list) }},
         toggleNoteSort(column) {
             if (this.noteSortCol !== column) {
@@ -1526,7 +1577,15 @@ function clientProfileDetail() {
             }
         },
         get sortedNotes() {
-            const list = [...(this.rawNotes || [])];
+            const q = (this.noteSearch || '').trim().toLowerCase();
+            let list = [...(this.rawNotes || [])];
+            if (q) {
+                list = list.filter(item => {
+                    const noteText = (item.note || '').toLowerCase();
+                    const dateText = this.formatDateTimeDisplay(item.date).toLowerCase();
+                    return noteText.includes(q) || dateText.includes(q);
+                });
+            }
             if (!this.noteSortCol) {
                 return list;
             }
@@ -1550,18 +1609,31 @@ function clientProfileDetail() {
             if (!dateStr) return '-';
             const d = new Date(dateStr.replace(' ', 'T'));
             if (isNaN(d.getTime())) return dateStr;
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             const day = String(d.getDate()).padStart(2, '0');
-            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const month = months[d.getMonth()];
             const year = d.getFullYear();
             const h = String(d.getHours()).padStart(2, '0');
             const m = String(d.getMinutes()).padStart(2, '0');
-            return `${day}/${month}/${year} ${h}:${m}`;
+            const s = String(d.getSeconds()).padStart(2, '0');
+            return `${day} ${month} ${year} - ${h}:${m}:${s}`;
         },
         formatDateDisplay(dateStr) {
-            return this.formatDateTimeDisplay(dateStr);
+            if (!dateStr) return '-';
+            const d = new Date(dateStr.replace(' ', 'T'));
+            if (isNaN(d.getTime())) return dateStr;
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${day} ${months[d.getMonth()]} ${d.getFullYear()}`;
         },
         formatTimeDisplay(dateStr) {
-            return '';
+            if (!dateStr) return '-';
+            const d = new Date(dateStr.replace(' ', 'T'));
+            if (isNaN(d.getTime())) return '-';
+            const h = String(d.getHours()).padStart(2, '0');
+            const m = String(d.getMinutes()).padStart(2, '0');
+            const s = String(d.getSeconds()).padStart(2, '0');
+            return `${h}:${m}:${s}`;
         },
         openAddModal() {
             this.addNoteText = '';
@@ -1610,30 +1682,39 @@ function clientProfileDetail() {
         }
     }">
 
-        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
-            <div class="px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
-                <div>
-                    <h3 class="font-semibold text-white text-base">Catatan Klien</h3>
+        {{-- TABEL PENYAJIAN CATATAN (Langsung di dalam card tab Catatan Klien, tanpa nested card) --}}
+        @if(!empty($client->notes_list) && count($client->notes_list) > 0)
+        <div class="space-y-4 lg:flex-1 lg:min-h-0 lg:flex lg:flex-col lg:space-y-0 lg:gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 lg:shrink-0">
+                <div class="relative w-full sm:max-w-xs">
+                    <span class="absolute inset-y-0 left-3 flex items-center text-slate-400 pointer-events-none">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </span>
+                    <input type="text" x-model="noteSearch" placeholder="Cari isi catatan..."
+                           class="block w-full pl-9 pr-8 py-2.5 h-[42px] min-h-[42px] rounded-xl border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep text-xs sm:text-sm font-medium text-black bg-white shadow-xs">
+                    <button type="button" x-show="noteSearch.trim() !== ''" x-cloak @click="noteSearch = ''"
+                            class="absolute inset-y-0 right-2.5 flex items-center text-slate-400 hover:text-purple-deep cursor-pointer"
+                            title="Hapus pencarian">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
                 </div>
                 <button type="button" @click="openAddModal()"
-                        class="px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-purple-deep font-semibold text-sm transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                        class="px-4 py-2.5 min-h-[42px] rounded-xl bg-orange hover:bg-orange/90 text-white font-semibold text-xs sm:text-sm transition flex items-center justify-center gap-1.5 shadow-xs cursor-pointer shrink-0">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     <span>Tambah Catatan</span>
                 </button>
             </div>
 
-            {{-- TABEL PENYAJIAN CATATAN (Dibatasi 6 baris data teratas, selebihnya scroll vertikal) --}}
-
-            @if(!empty($client->notes_list) && count($client->notes_list) > 0)
-            <div class="overflow-y-auto max-h-[460px] custom-scrollbar">
+            <div class="rounded-xl border border-[#EDE1FA] overflow-hidden lg:flex-1 lg:min-h-0 lg:flex lg:flex-col">
+                <div class="overflow-y-auto max-h-[460px] lg:max-h-none lg:flex-1 lg:min-h-0 custom-scrollbar">
                 <table class="w-full table-fixed text-left text-xs font-medium">
                     <thead class="bg-slate-50 text-black font-semibold border-b border-[#EDE1FA] text-xs select-none sticky top-0 z-10 shadow-xs">
                         <tr>
-                            <th class="py-3 px-4 font-semibold text-black w-48 shrink-0 whitespace-nowrap bg-slate-50">
+                            <th class="py-3 px-4 font-semibold text-black w-40 shrink-0 whitespace-nowrap bg-slate-50">
                                 <button type="button" 
                                         @click="toggleNoteSort('date')"
                                         class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer select-none">
-                                    <span>Tanggal & Waktu</span>
+                                    <span>Tanggal</span>
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition"
                                           :class="noteSortCol === 'date' ? 'bg-purple-100 text-purple-deep font-bold' : 'text-slate-400 group-hover:text-purple-deep'">
                                         <template x-if="noteSortCol === 'date' && noteSortDir === 'asc'">
@@ -1648,6 +1729,7 @@ function clientProfileDetail() {
                                     </span>
                                 </button>
                             </th>
+                            <th class="py-3 px-4 font-semibold text-black w-28 shrink-0 whitespace-nowrap bg-slate-50">Waktu</th>
                             <th class="py-3 px-4 font-semibold text-black bg-slate-50">
                                 <button type="button" 
                                         @click="toggleNoteSort('note')"
@@ -1674,7 +1756,8 @@ function clientProfileDetail() {
                         <template x-for="(item, idx) in sortedNotes" :key="item.id">
                             <tr class="transition-colors duration-150 group">
                                 {{-- Kolom Kiri: Tanggal & Waktu (Seragam text-xs font-medium text-black) --}}
-                                <td class="py-3.5 px-6 text-black align-top whitespace-nowrap text-xs font-medium w-48 shrink-0" x-text="formatDateTimeDisplay(item.date)"></td>
+                                <td class="py-3.5 px-4 text-black align-top whitespace-nowrap text-xs font-medium w-40 shrink-0" x-text="formatDateDisplay(item.date)"></td>
+                                <td class="py-3.5 px-4 text-black align-top whitespace-nowrap text-xs font-medium w-28 shrink-0" x-text="formatTimeDisplay(item.date)"></td>
 
                                 {{-- Kolom Kanan: Catatan (Seragam text-xs font-medium text-black) --}}
                                 <td class="py-3.5 px-6 text-black align-top text-xs leading-relaxed whitespace-pre-line font-medium break-words" x-text="item.note"></td>
@@ -1705,21 +1788,29 @@ function clientProfileDetail() {
                                 </td>
                             </tr>
                         </template>
+                        <template x-if="sortedNotes.length === 0">
+                            <tr>
+                                <td colspan="3" class="py-8 px-6 text-center text-xs font-medium text-slate-500">
+                                    Tidak ada catatan yang cocok dengan pencarian.
+                                </td>
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
+                </div>
             </div>
-            @else
-            <div class="py-12 text-center text-slate-400 space-y-3">
-                <svg class="w-12 h-12 mx-auto text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                <p class="text-sm font-medium text-black">Belum ada catatan hasil inputan formulir untuk klien ini.</p>
-                <button type="button" @click="openAddModal()"
-                        class="px-4 py-2 rounded-xl bg-purple-deep text-white text-xs font-semibold hover:opacity-90 transition inline-flex items-center gap-1.5 shadow-xs cursor-pointer">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    <span>Tambah Catatan Pertama</span>
-                </button>
-            </div>
-            @endif
         </div>
+        @else
+        <div class="py-12 text-center text-slate-400 space-y-3">
+            <svg class="w-12 h-12 mx-auto text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <p class="text-sm font-medium text-black">Belum ada catatan hasil inputan formulir untuk klien ini.</p>
+            <button type="button" @click="openAddModal()"
+                    class="px-4 py-2.5 rounded-xl bg-orange hover:bg-orange/90 text-white text-xs font-semibold transition inline-flex items-center gap-1.5 shadow-xs cursor-pointer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>Tambah Catatan Pertama</span>
+            </button>
+        </div>
+        @endif
 
         {{-- ============================================================== --}}
 
@@ -2023,6 +2114,26 @@ function clientProfileDetail() {
                                 </button>
                             </th>
 
+                            {{-- Filter Kolom Kategori Formulir --}}
+                            <th class="py-3 px-4 font-semibold text-black">
+                                <button type="button" @click="toggleCounselingSort('form_category')"
+                                        class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer select-none">
+                                    <span>Kategori</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition"
+                                          :class="counselingSortCol === 'form_category' ? 'bg-purple-100 text-purple-deep font-bold' : 'text-slate-400 group-hover:text-purple-deep'">
+                                        <template x-if="counselingSortCol === 'form_category' && counselingSortDir === 'asc'">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                                        </template>
+                                        <template x-if="counselingSortCol === 'form_category' && counselingSortDir === 'desc'">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                                        </template>
+                                        <template x-if="counselingSortCol !== 'form_category'">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                                        </template>
+                                    </span>
+                                </button>
+                            </th>
+
                             {{-- Filter Kolom Jenis Formulir --}}
                             <th class="py-3 px-4 font-semibold text-black">
                                 <button type="button" @click="toggleCounselingSort('form_type')"
@@ -2043,11 +2154,11 @@ function clientProfileDetail() {
                                 </button>
                             </th>
 
-                            {{-- Filter Kolom Waktu Formulir Masuk --}}
+                            {{-- Filter Kolom Tanggal & Waktu Formulir Masuk --}}
                             <th class="py-3 px-4 font-semibold text-black">
                                 <button type="button" @click="toggleCounselingSort('created_at')"
                                         class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer select-none">
-                                    <span>Waktu Formulir Masuk</span>
+                                    <span>Tanggal</span>
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition"
                                           :class="counselingSortCol === 'created_at' ? 'bg-purple-100 text-purple-deep font-bold' : 'text-slate-400 group-hover:text-purple-deep'">
                                         <template x-if="counselingSortCol === 'created_at' && counselingSortDir === 'asc'">
@@ -2062,6 +2173,7 @@ function clientProfileDetail() {
                                     </span>
                                 </button>
                             </th>
+                            <th class="py-3 px-4 font-semibold text-black whitespace-nowrap">Waktu</th>
 
                             {{-- Filter Kolom Media Konseling --}}
                             <th class="py-3 px-4 font-semibold text-black">
@@ -2088,8 +2200,10 @@ function clientProfileDetail() {
                         <template x-for="form in sortedCounselingForms" :key="form.id">
                             <tr @click="openDossier(form)" class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 cursor-pointer" title="Klik untuk melihat detail formulir">
                                 <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.ticket"></td>
+                                <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.form_category || '-'"></td>
                                 <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.form_type_label"></td>
-                                <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.created_at_formatted"></td>
+                                <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.created_date_formatted"></td>
+                                <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.created_time_formatted"></td>
                                 <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.media_konseling || '-'"></td>
                             </tr>
                         </template>
@@ -2418,6 +2532,26 @@ function clientProfileDetail() {
                                 </button>
                             </th>
 
+                            {{-- Filter Kolom Kategori Formulir --}}
+                            <th class="py-3 px-4 font-semibold text-black">
+                                <button type="button" @click="togglePsychotestSort('form_category')"
+                                        class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer select-none">
+                                    <span>Kategori</span>
+                                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition"
+                                          :class="psychotestSortCol === 'form_category' ? 'bg-purple-100 text-purple-deep font-bold' : 'text-slate-400 group-hover:text-purple-deep'">
+                                        <template x-if="psychotestSortCol === 'form_category' && psychotestSortDir === 'asc'">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                                        </template>
+                                        <template x-if="psychotestSortCol === 'form_category' && psychotestSortDir === 'desc'">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                                        </template>
+                                        <template x-if="psychotestSortCol !== 'form_category'">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 15l5 5 5-5M7 9l5-5 5 5"/></svg>
+                                        </template>
+                                    </span>
+                                </button>
+                            </th>
+
                             {{-- Filter Kolom Jenis Layanan --}}
                             <th class="py-3 px-4 font-semibold text-black">
                                 <button type="button" @click="togglePsychotestSort('form_type')"
@@ -2438,11 +2572,11 @@ function clientProfileDetail() {
                                 </button>
                             </th>
 
-                            {{-- Filter Kolom Waktu Pendaftaran Masuk --}}
+                            {{-- Filter Kolom Tanggal & Waktu Pendaftaran Masuk --}}
                             <th class="py-3 px-4 font-semibold text-black">
                                 <button type="button" @click="togglePsychotestSort('created_at')"
                                         class="inline-flex items-center gap-1.5 hover:text-purple-deep group transition cursor-pointer select-none">
-                                    <span>Waktu Pendaftaran Masuk</span>
+                                    <span>Tanggal</span>
                                     <span class="inline-flex items-center justify-center w-5 h-5 rounded-md transition"
                                           :class="psychotestSortCol === 'created_at' ? 'bg-purple-100 text-purple-deep font-bold' : 'text-slate-400 group-hover:text-purple-deep'">
                                         <template x-if="psychotestSortCol === 'created_at' && psychotestSortDir === 'asc'">
@@ -2457,6 +2591,7 @@ function clientProfileDetail() {
                                     </span>
                                 </button>
                             </th>
+                            <th class="py-3 px-4 font-semibold text-black whitespace-nowrap">Waktu</th>
 
                             <th class="py-3 px-4 font-semibold text-black">Status Layanan</th>
                         </tr>
@@ -2465,9 +2600,11 @@ function clientProfileDetail() {
                         <template x-for="form in sortedPsychotestForms" :key="form.id">
                             <tr @click="openDossier(form)" class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 cursor-pointer" title="Klik untuk melihat detail formulir">
                                 <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.ticket"></td>
+                                <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.form_category || '-'"></td>
                                 <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.form_type_label"></td>
+                                <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.created_date_formatted"></td>
+                                <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.created_time_formatted"></td>
                                 <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="(form.booking && form.booking.tanggal_dijadwalkan) ? ('Terjadwal: ' + form.booking.tanggal_dijadwalkan_formatted) : 'Menunggu Penjadwalan'"></td>
-                                <td class="py-3 px-4 font-medium text-black text-xs whitespace-nowrap" x-text="form.created_at_formatted"></td>
                             </tr>
                         </template>
                     </tbody>
@@ -2988,7 +3125,7 @@ function clientProfileDetail() {
                  class="fixed inset-0 bg-[#160B29]/70 backdrop-blur-md transition-opacity"></div>
 
             {{-- Dialog Wrapper (Tanpa outline/border yang keluar) --}}
-            <div class="min-h-full flex items-center justify-center p-3 sm:p-6 lg:p-8 text-left">
+            <div class="min-h-full flex items-center justify-center p-3 sm:p-5 lg:p-6 text-left">
 
                 <div x-show="showDossierModal"
                      x-transition:enter="ease-out duration-300"
@@ -2997,7 +3134,7 @@ function clientProfileDetail() {
                      x-transition:leave="ease-in duration-200"
                      x-transition:leave-start="opacity-100 scale-100"
                      x-transition:leave-end="opacity-0 scale-95"
-                     class="relative bg-white rounded-3xl w-full max-w-5xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+                     class="relative bg-white rounded-3xl w-full max-w-4xl max-h-[calc(92vh/0.85)] flex flex-col shadow-2xl overflow-hidden">
 
                     {{-- Modal Header (Nama Formulir yang Diisi) --}}
                     <div class="px-7 py-5 bg-purple-deep text-white flex items-center justify-between shrink-0">

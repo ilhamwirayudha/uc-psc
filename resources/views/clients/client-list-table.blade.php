@@ -165,7 +165,7 @@
                     <thead>
                         <tr class="bg-purple-deep/95 text-white font-semibold select-none border-b border-purple-900/30">
                             {{-- No. Column with Numeric Sort --}}
-                            <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16">
+                            <th class="text-center align-middle px-3 py-3.5 font-semibold w-16">
                                 <div class="flex items-center justify-center">
                                     <a href="{{ $getNextSortUrl('id') }}"
                                         @click.prevent="goToUrl($event.currentTarget.href)"
@@ -271,15 +271,15 @@
                                 </a>
                             </th>
 
-                            {{-- Waktu Pendaftaran Column with Oldest/Newest Sort --}}
+                            {{-- Tanggal & Waktu Pendaftaran Column with Oldest/Newest Sort --}}
                             <th class="text-center align-middle px-4 py-3.5 font-semibold">
                                 <div class="flex items-center justify-center">
                                     <a href="{{ $getNextSortUrl('created_at') }}"
                                         @click.prevent="goToUrl($event.currentTarget.href)"
                                         class="inline-flex items-center justify-center gap-1.5 hover:text-white group transition cursor-pointer whitespace-nowrap"
-                                        title="Urutkan waktu pendaftaran: Ascending → Descending → Default">
+                                        title="Urutkan tanggal pendaftaran: Ascending → Descending → Default">
                                         <span class="w-5 shrink-0" aria-hidden="true"></span>
-                                        <span class="text-white font-semibold">Waktu Pendaftaran</span>
+                                        <span class="text-white font-semibold">Tanggal</span>
                                         <span class="inline-flex items-center justify-center w-5 h-5 rounded-md shrink-0 transition {{ $sort === 'created_at' ? 'bg-white/20 text-white' : 'text-purple-200 group-hover:text-white group-hover:bg-white/10' }}">
                                             @if($sort === 'created_at')
                                                  @if($direction === 'asc')
@@ -293,6 +293,9 @@
                                         </span>
                                     </a>
                                 </div>
+                            </th>
+                            <th class="text-center align-middle px-4 py-3.5 font-semibold">
+                                <span class="text-white font-semibold whitespace-nowrap">Waktu</span>
                             </th>
 
                         </tr>
@@ -339,12 +342,15 @@
                             </td>
 
                             <td class="text-center align-middle px-4 py-3.5 text-black font-medium whitespace-nowrap">
-                                {{ $client->created_at ? $client->created_at->format('d/m/Y H:i') : '-' }}
+                                {{ $client->created_at ? $client->created_at->locale('id')->translatedFormat('d F Y') : '-' }}
+                            </td>
+                            <td class="text-center align-middle px-4 py-3.5 text-black font-medium whitespace-nowrap">
+                                {{ $client->created_at ? $client->created_at->format('H:i:s') : '-' }}
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-black font-medium">
+                            <td colspan="7" class="px-6 py-12 text-center text-black font-medium">
                                 <svg class="mx-auto mb-3 text-[#D9C2F0]" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                                 Belum ada data klien.
                             </td>

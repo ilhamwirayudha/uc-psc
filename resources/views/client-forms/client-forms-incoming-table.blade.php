@@ -99,7 +99,7 @@
                 <thead>
                     <tr class="bg-purple-deep/95 text-white font-semibold select-none border-b border-purple-900/30">
                         {{-- No. --}}
-                        <th class="text-center align-middle px-3 py-3.5 font-semibold text-xs w-16 text-white">
+                        <th class="text-center align-middle px-3 py-3.5 font-semibold w-16 text-white">
                             No.
                         </th>
 

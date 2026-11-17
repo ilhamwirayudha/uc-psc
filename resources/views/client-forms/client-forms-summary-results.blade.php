@@ -256,7 +256,8 @@
                     <thead class="sticky top-0 z-20 bg-[#F7F5FB] text-black uppercase tracking-wider font-semibold shadow-xs select-none">
                         <tr class="divide-x divide-slate-300 border-b-2 border-slate-300">
                             <th class="py-2.5 px-3 bg-[#E8EAED] text-center w-12 font-mono text-slate-500 no-export">#</th>
-                            <th class="py-2.5 px-3 whitespace-nowrap min-w-[140px] text-black">Timestamp</th>
+                            <th class="py-2.5 px-3 whitespace-nowrap min-w-[130px] text-black">Tanggal</th>
+                            <th class="py-2.5 px-3 whitespace-nowrap min-w-[90px] text-black">Waktu</th>
                             <th class="py-2.5 px-3 whitespace-nowrap min-w-[90px] text-center">Informed Consent</th>
                             <th class="py-2.5 px-3 whitespace-nowrap min-w-[180px] text-black font-semibold">Nama Lengkap</th>
                             <th class="py-2.5 px-3 whitespace-nowrap min-w-[100px]">Jenis Kelamin</th>
@@ -417,9 +418,12 @@
                                 {{ $submissions->firstItem() + $index }}
                             </td>
 
-                            {{-- Timestamp --}}
+                            {{-- Tanggal & Waktu --}}
                             <td class="py-2 px-3 whitespace-nowrap text-slate-600">
-                                {{ $sub->created_at->format('d/m/Y H:i') }}
+                                {{ $sub->created_at->locale('id')->translatedFormat('d F Y') }}
+                            </td>
+                            <td class="py-2 px-3 whitespace-nowrap text-slate-600">
+                                {{ $sub->created_at->format('H:i:s') }}
                             </td>
 
                             {{-- Consent --}}
@@ -619,7 +623,7 @@
     {{-- ============================================================== --}}
     <div x-show="showDossierModal" x-cloak 
          class="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-scale-up">
+        <div class="bg-white rounded-3xl w-full max-w-3xl max-h-[calc(92vh/0.85)] flex flex-col shadow-2xl overflow-hidden animate-scale-up">
             
             {{-- Modal Header --}}
             <div class="p-6 bg-purple-deep text-white flex items-center justify-between">
