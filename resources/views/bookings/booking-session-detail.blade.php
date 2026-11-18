@@ -257,7 +257,7 @@
     {{-- Dialog Wrapper (Centered Modal Container - Landscape Lebar Proporsional Opsi 1) --}}
     <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="min-h-full flex items-center justify-center p-3 sm:p-5 lg:p-6 text-left">
-            <div class="relative bg-purple-deep rounded-2xl w-full max-w-6xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="relative bg-purple-deep rounded-2xl w-full max-w-4xl h-[calc(92vh/0.85)] max-h-[calc(92vh/0.85)] flex flex-col shadow-2xl overflow-hidden">
 
                 {{-- ========================================================= --}}
                 {{-- 1. MODAL HEADER & PROGRESS STEPPER BAR LANDSCAPE          --}}
@@ -438,10 +438,10 @@
                         {{-- ========================================================= --}}
                         <div x-show="activeStep === 1" x-cloak class="space-y-4">
 
-                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                            <div class="grid grid-cols-1 gap-5 items-start">
                                 
-                                {{-- Kolom Kiri (7/12): Biodata Klien & Riwayat Form --}}
-                                <div class="lg:col-span-7 space-y-4">
+                                {{-- Card: Formulir Terakhir & Informasi Klien Terdaftar --}}
+                                <div class="space-y-4">
                                     {{-- Formulir Terakhir --}}
                                     <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
@@ -476,7 +476,7 @@
                                         </div>
                                         <div class="p-4 bg-white">
                                             @if($client)
-                                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            <div class="grid grid-cols-1 gap-4">
                                                 {{-- 1. Nama Lengkap --}}
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Nama Lengkap</span>
@@ -560,7 +560,7 @@
                                                 </div>
 
                                                 {{-- 10. Alamat Lengkap --}}
-                                                <div class="sm:col-span-2 lg:col-span-3">
+                                                <div>
                                                     <span class="text-xs font-medium text-slate-500 block mb-1">Alamat</span>
                                                     <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center">
                                                         <span class="text-sm font-medium text-black leading-relaxed">{{ $client->address ?? '-' }}</span>
@@ -574,8 +574,8 @@
                                     </div>
                                 </div>
 
-                                {{-- Kolom Kanan (5/12): Paket Layanan & Tarif --}}
-                                <div class="lg:col-span-5 space-y-4">
+                                {{-- Card: Paket Layanan & Tarif --}}
+                                <div class="space-y-4">
                                     <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                         <div class="px-5 py-5 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
