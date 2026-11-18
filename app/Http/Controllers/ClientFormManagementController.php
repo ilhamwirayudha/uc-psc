@@ -12,10 +12,21 @@ class ClientFormManagementController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth()->user();
         // Count submissions for all 7 forms
         $formTypes = ['anak', 'dewasa', 'pra_nikah', 'pernikahan', 'biography_en', 'non_industri', 'industri'];
-        $counts = ClientForm::whereHas('client')
-            ->whereIn('form_type', $formTypes)
+        $baseQuery = ClientForm::whereHas('client')->whereIn('form_type', $formTypes);
+
+        if ($user->isPsikolog()) {
+            $counselorId = (int) ($user->counselor_id ?? 0);
+            $baseQuery->whereHas('client', function ($cq) use ($counselorId) {
+                $cq->whereHas('bookings', fn ($bq) => $bq->where('counselor_id', $counselorId))
+                   ->orWhereHas('pairings', fn ($pq) => $pq->where('counselor_id', $counselorId))
+                   ->orWhereHas('bookings.candidates', fn ($kq) => $kq->where('assigned_psikolog_id', $counselorId));
+            });
+        }
+
+        $counts = (clone $baseQuery)
             ->groupBy('form_type')
             ->selectRaw('form_type, count(*) as total')
             ->pluck('total', 'form_type')
@@ -23,7 +34,7 @@ class ClientFormManagementController extends Controller
 
         $latestSubmissions = [];
         foreach ($formTypes as $ft) {
-            $latestSubmissions[$ft] = ClientForm::whereHas('client')->where('form_type', $ft)->latest()->first();
+            $latestSubmissions[$ft] = (clone $baseQuery)->where('form_type', $ft)->latest()->first();
         }
 
         // Forms list
@@ -264,7 +275,18 @@ class ClientFormManagementController extends Controller
         ];
 
         // Count responses per category for badge display
-        $counts = ClientForm::whereHas('client')
+        $user = auth()->user();
+        $scopedFormQuery = ClientForm::whereHas('client');
+        if ($user->isPsikolog()) {
+            $counselorId = (int) ($user->counselor_id ?? 0);
+            $scopedFormQuery->whereHas('client', function ($cq) use ($counselorId) {
+                $cq->whereHas('bookings', fn ($bq) => $bq->where('counselor_id', $counselorId))
+                   ->orWhereHas('pairings', fn ($pq) => $pq->where('counselor_id', $counselorId))
+                   ->orWhereHas('bookings.candidates', fn ($kq) => $kq->where('assigned_psikolog_id', $counselorId));
+            });
+        }
+
+        $counts = (clone $scopedFormQuery)
             ->groupBy('form_type')
             ->selectRaw('form_type, count(*) as total')
             ->pluck('total', 'form_type')
@@ -283,8 +305,7 @@ class ClientFormManagementController extends Controller
         $activeCategory = $categories[$activeKey];
 
         // Query Submissions for the active category
-        $query = ClientForm::with(['client', 'booking'])
-            ->whereHas('client')
+        $query = (clone $scopedFormQuery)->with(['client', 'booking'])
             ->where('form_type', $activeKey)
             ->latest();
 
@@ -307,6 +328,10 @@ class ClientFormManagementController extends Controller
      */
     public function show(ClientForm $clientForm)
     {
+        if (auth()->user()->isPsikolog() && $clientForm->client && !$clientForm->client->isHandledByUser(auth()->user())) {
+            abort(403, 'Anda hanya dapat mengakses formulir klien yang Anda tangani.');
+        }
+
         $clientForm->load(['client', 'booking']);
 
         if (request()->ajax() || request()->wantsJson()) {
@@ -324,6 +349,10 @@ class ClientFormManagementController extends Controller
      */
     public function downloadPdf(ClientForm $clientForm)
     {
+        if (auth()->user()->isPsikolog() && $clientForm->client && !$clientForm->client->isHandledByUser(auth()->user())) {
+            abort(403, 'Anda hanya dapat mengakses formulir klien yang Anda tangani.');
+        }
+
         $clientForm->load(['client', 'booking']);
 
         return view('client-forms.client-form-print-dossier', compact('clientForm'));
@@ -334,6 +363,10 @@ class ClientFormManagementController extends Controller
      */
     public function update(Request $request, ClientForm $clientForm)
     {
+        if (auth()->user()->isPsikolog()) {
+            abort(403, 'Psikolog tidak memiliki akses mengubah arsip formulir klien.');
+        }
+
         $updatedAnswers = $request->input('answers', $request->except(['_token', '_method']));
         if (!is_array($updatedAnswers)) {
             $updatedAnswers = [];

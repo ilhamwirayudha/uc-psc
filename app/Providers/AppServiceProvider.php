@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\Booking;
 use App\Models\Client;
 use App\Models\ClientForm;
-use App\Models\ClientStaffAssignment;
 use App\Models\PaymentTransaction;
 use App\Policies\BookingPolicy;
 use App\Policies\ClientPolicy;
@@ -41,7 +40,16 @@ class AppServiceProvider extends ServiceProvider
 
         // Bagikan data untuk modal booking ke komponen booking-modal
         \Illuminate\Support\Facades\View::composer('components.booking-modal', function ($view) {
-            $view->with('clients', \App\Models\Client::with(['clientForms' => fn($q) => $q->latest()])->latest()->get()->map(function ($client) {
+            $clientQuery = \App\Models\Client::with(['clientForms' => fn($q) => $q->latest()])->latest();
+            if (auth()->check() && auth()->user()->isPsikolog()) {
+                $counselorId = (int) (auth()->user()->counselor_id ?? 0);
+                $clientQuery->where(function ($q) use ($counselorId) {
+                    $q->whereHas('bookings', fn ($bq) => $bq->where('counselor_id', $counselorId))
+                      ->orWhereHas('pairings', fn ($pq) => $pq->where('counselor_id', $counselorId))
+                      ->orWhereHas('bookings.candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $counselorId));
+                });
+            }
+            $view->with('clients', $clientQuery->get()->map(function ($client) {
                 $latestForm = $client->clientForms->first();
                 $client->setAttribute('latest_form_type_label', $latestForm ? $latestForm->form_type_label : null);
                 $client->setAttribute('latest_form_date', $latestForm ? ($latestForm->created_at ? $latestForm->created_at->locale('id')->isoFormat('D MMMM Y, HH:mm') : null) : null);
@@ -105,7 +113,6 @@ class AppServiceProvider extends ServiceProvider
                 'counseling_type' => 'Jenis Konseling',
                 'status' => 'Status',
                 'notes' => 'Catatan',
-                'assigned_staff_id' => 'PIC Staff',
             ]);
 
             if ($changed === '') {
@@ -128,40 +135,6 @@ class AppServiceProvider extends ServiceProvider
                 'Menghapus Data Klien',
                 'Data klien ' . $client->name . ' dihapus dari sistem.',
                 'Hapus Klien'
-            );
-        });
-
-        ClientStaffAssignment::created(function (ClientStaffAssignment $assignment) {
-            $clientName = $assignment->client?->name ?? 'Klien #' . $assignment->client_id;
-            $staffName = $assignment->staff?->name ?? 'Staff #' . $assignment->staff_id;
-
-            ActivityLogger::recordForCurrentUser(
-                'penugasan',
-                'assignment.created',
-                'Menetapkan Penugasan Staff',
-                'Menugaskan ' . $staffName . ' untuk menangani klien ' . $clientName . '.',
-                'Penugasan Aktif'
-            );
-        });
-
-        ClientStaffAssignment::updated(function (ClientStaffAssignment $assignment) {
-            $changed = ActivityLogger::summarizeDirtyFields($assignment, [
-                'staff_id' => 'PIC Staff',
-                'ended_at' => 'Tanggal Selesai Penugasan',
-                'notes' => 'Catatan Penugasan',
-            ]);
-
-            if ($changed === '') {
-                return;
-            }
-
-            $clientName = $assignment->client?->name ?? 'Klien #' . $assignment->client_id;
-            ActivityLogger::recordForCurrentUser(
-                'penugasan',
-                'assignment.updated',
-                'Memperbarui Penugasan Staff',
-                'Penugasan untuk klien ' . $clientName . ' diperbarui pada: ' . $changed . '.',
-                $changed
             );
         });
 

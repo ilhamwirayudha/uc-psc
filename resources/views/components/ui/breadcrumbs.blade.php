@@ -69,6 +69,28 @@
                 ['label' => 'Layanan & Jadwal'],
                 ['label' => 'Layanan Psikotes'],
             ],
+            'psychotest-bookings.create' => [
+                ['label' => 'Layanan & Jadwal'],
+                ['label' => 'Layanan Psikotes', 'url' => route('bookings.psychotest')],
+                ['label' => 'Buat Booking Psikotes'],
+            ],
+            'psychotest-bookings.show' => [
+                ['label' => 'Layanan & Jadwal'],
+                ['label' => 'Layanan Psikotes', 'url' => route('bookings.psychotest')],
+                ['label' => 'Detail & Progres Psikotes'],
+            ],
+            'psychotest-bookings.monthly-recap' => [
+                ['label' => 'Administrasi'],
+                ['label' => 'Rekap Bulanan (I / R)'],
+            ],
+            'companies.index' => [
+                ['label' => 'Administrasi'],
+                ['label' => 'Master Perusahaan'],
+            ],
+            'holidays.index' => [
+                ['label' => 'Administrasi'],
+                ['label' => 'Hari Libur Nasional'],
+            ],
             'bookings.create' => [
                 ['label' => 'Layanan & Jadwal'],
                 ['label' => 'Layanan Konseling', 'url' => route('bookings.counseling')],

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\BookingAssignee;
 use App\Models\Client;
-use App\Models\ClientStaffAssignment;
 use App\Models\UserActivityLog;
 use App\Services\ActivityLogger;
 use App\Services\PublicMediaStorage;
@@ -209,34 +209,33 @@ class ProfileController extends Controller
             ]);
         }
 
-        $assignments = ClientStaffAssignment::with(['client:id,name', 'staff:id,name'])
+        $assignees = BookingAssignee::with(['booking.client:id,name', 'booking.company:id,name'])
             ->where(function ($query) use ($user) {
-                $query->where('staff_id', $user->id)
-                    ->orWhere('assigned_by', $user->id);
+                $query->where('user_id', $user->id);
+                if ($user->counselor_id) {
+                    $query->orWhere('counselor_id', $user->counselor_id);
+                }
             })
-            ->latest('assigned_at')
+            ->latest('created_at')
             ->limit(10)
             ->get();
 
-        foreach ($assignments as $assignment) {
-            $eventTime = $assignment->assigned_at ?? $assignment->created_at;
+        foreach ($assignees as $assignment) {
+            $eventTime = $assignment->created_at;
             $ts = $eventTime ? Carbon::parse($eventTime)->timestamp : 0;
             if (isset($earliestPersistedByCategory['penugasan']) && $ts >= $earliestPersistedByCategory['penugasan']) {
                 continue;
             }
 
-            $clientName = $assignment->client?->name ?? 'Klien';
-            $isPic = (int) $assignment->staff_id === (int) $user->id;
+            $clientName = $assignment->booking?->company?->name ?? $assignment->booking?->client?->name ?? 'Klien';
 
             $logs->push([
                 'id' => 'assign-' . $assignment->id,
                 'category' => 'penugasan',
                 'category_label' => 'Penugasan',
-                'title' => $isPic ? 'Ditugaskan sebagai PIC Klien' : 'Menetapkan Penugasan Staff',
-                'description' => $isPic
-                    ? 'Anda ditugaskan menangani klien ' . $clientName . '.'
-                    : 'Menugaskan ' . ($assignment->staff?->name ?? 'Staff') . ' untuk klien ' . $clientName . '.',
-                'meta' => $assignment->ended_at ? 'Riwayat Penugasan' : 'Penugasan Aktif',
+                'title' => 'Ditugaskan sebagai ' . $assignment->role_label,
+                'description' => 'Anda ditugaskan sebagai ' . $assignment->role_label . ' pada layanan untuk ' . $clientName . '.',
+                'meta' => $assignment->batch_completed_at ? 'Tugas Selesai' : 'Tugas Aktif',
                 'timestamp_text' => $this->formatIndonesianDateTime($eventTime),
                 'ts' => $ts,
                 'sort_id' => 0,

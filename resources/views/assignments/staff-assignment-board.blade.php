@@ -2,334 +2,292 @@
 
 @section('title', 'Kelola Penugasan — UC PSC')
 @section('page-title', 'Kelola Penugasan')
+@section('page-subtitle', 'Rekap beban tugas Psikolog dan Staff yang tersinkron otomatis dari Layanan Psikotes dan Konseling')
 
 @section('content')
 <div x-data="{
+    activeTab: '{{ $activeTab }}',
+    expandedPersonId: null,
     reassignModalOpen: false,
-    unassignModalOpen: false,
-    selectedClient: null,
-    selectedClientName: '',
-    currentStaffName: '',
-    openReassign(client, staffName) {
-        this.selectedClient = client;
-        this.selectedClientName = client.name;
-        this.currentStaffName = staffName;
-        this.reassignModalOpen = true;
+    reassignTaskType: '',
+    reassignTargetId: '',
+    reassignTitle: '',
+    reassignRoleKind: 'psikolog',
+    newAssigneeId: '',
+
+    togglePerson(key) {
+        this.expandedPersonId = this.expandedPersonId === key ? null : key;
     },
-    openUnassign(client, staffName) {
-        this.selectedClient = client;
-        this.selectedClientName = client.name;
-        this.currentStaffName = staffName;
-        this.unassignModalOpen = true;
+    openReassign(taskType, targetId, title, roleKind) {
+        this.reassignTaskType = taskType;
+        this.reassignTargetId = targetId;
+        this.reassignTitle = title;
+        this.reassignRoleKind = roleKind;
+        this.newAssigneeId = '';
+        this.reassignModalOpen = true;
     }
 }" class="space-y-6">
 
-    {{-- ========================================================================= --}}
-    {{-- 1. BAGIAN ATAS: DAFTAR KLIEN YANG SEDANG DITUGASKAN                       --}}
-    {{-- ========================================================================= --}}
-    <div class="glass-card rounded-xl overflow-hidden">
-        <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
-            <h3 class="font-bold text-base text-white">Daftar Klien yang Sedang Ditugaskan</h3>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">
-                {{ $assignedClients->count() }} Klien Ter-assign
-            </span>
+    {{-- Tab Selector --}}
+    <div class="flex flex-wrap items-center gap-2">
+        <button type="button" @click="activeTab = 'psikolog'"
+            :class="activeTab === 'psikolog' ? 'bg-purple-deep text-white' : 'bg-white border border-[#D9C2F0] text-black hover:text-purple-deep'"
+            class="px-5 py-2.5 rounded-lg text-sm font-semibold shadow-xs transition cursor-pointer">
+            Beban Tugas Psikolog ({{ $psychologistWorkloads->count() }})
+        </button>
+        <button type="button" @click="activeTab = 'staff'"
+            :class="activeTab === 'staff' ? 'bg-purple-deep text-white' : 'bg-white border border-[#D9C2F0] text-black hover:text-purple-deep'"
+            class="px-5 py-2.5 rounded-lg text-sm font-semibold shadow-xs transition cursor-pointer">
+            Beban Tugas Staff ({{ $staffWorkloads->count() }})
+        </button>
+    </div>
+
+    {{-- TAB 1: PSIKOLOG --}}
+    <div x-show="activeTab === 'psikolog'" class="glass-card rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 bg-purple-deep/95 text-white flex items-center justify-between">
+            <h3 class="text-base font-bold text-white">Daftar Beban Tugas Psikolog (Konseling &amp; Psikotes)</h3>
+            <span class="text-xs text-purple-100 font-medium">Klik baris untuk melihat rincian tugas dan mengalihkan petugas</span>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto custom-scrollbar">
             <table class="w-full text-sm font-medium">
                 <thead>
-                    <tr class="bg-slate-50 text-black font-semibold select-none border-b border-[#EDE1FA]">
-                        <th class="text-center px-4 py-3.5 font-semibold text-black w-14">No.</th>
-                        <th class="text-left px-5 py-3.5 font-semibold text-black">Nama Klien</th>
-                        <th class="text-center px-4 py-3.5 font-semibold text-black">Layanan</th>
-                        <th class="text-left px-5 py-3.5 font-semibold text-black">Staff Penanggung Jawab</th>
-                        <th class="text-center px-4 py-3.5 font-semibold text-black">Status Klien</th>
-                        <th class="text-center px-5 py-3.5 font-semibold text-black">Aksi Pengelolaan</th>
+                    <tr class="bg-slate-50 text-black font-semibold border-b border-[#EDE1FA]">
+                        <th class="px-6 py-3.5 text-left font-semibold">Nama Psikolog</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Konseling Aktif</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Kandidat Psikotes Aktif</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Prioritas KILAT</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Terlambat SLA</th>
+                        <th class="px-6 py-3.5 text-right font-semibold">Total Tugas</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#F3EAFB]">
-                    @forelse($assignedClients as $aClient)
-                    <tr class="hover:bg-[#FDFBFF] transition">
-                        <td class="text-center px-4 py-3.5 text-black font-medium">{{ $loop->iteration }}</td>
-                        <td class="px-5 py-3.5">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-purple-deep/10 flex items-center justify-center text-purple-deep text-xs font-bold flex-shrink-0">
-                                    {{ substr($aClient->name, 0, 1) }}
-                                </div>
-                                <div class="min-w-0">
-                                    <a href="{{ route('clients.show', $aClient) }}" class="font-medium text-black hover:text-orange transition truncate block">
-                                        {{ $aClient->name }}
-                                    </a>
-                                    <p class="text-[11px] text-gray-500 font-medium truncate">{{ $aClient->phone ?? 'Tanpa nomor' }}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="text-center px-4 py-3.5">
-                            <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-bold {{ $aClient->service_type === 'konseling' ? 'bg-indigo-50 text-indigo-700' : ($aClient->service_type === 'psikotes' ? 'bg-amber-50 text-amber-700' : 'bg-gray-100 text-gray-600') }}">
-                                {{ $aClient->service_type ? ucfirst($aClient->service_type) : 'Belum Booking' }}
-                            </span>
-                        </td>
-                        <td class="px-5 py-3.5">
-                            <div class="flex items-center gap-2">
-                                <div class="w-7 h-7 rounded-full bg-orange/20 flex items-center justify-center text-orange text-xs font-bold flex-shrink-0">
-                                    {{ substr($aClient->assignedStaff->name ?? 'S', 0, 1) }}
-                                </div>
-                                <div class="min-w-0">
-                                    @if($aClient->assignedStaff)
-                                    <a href="{{ route('staff-management.show', $aClient->assignedStaff) }}" class="text-xs font-medium text-black hover:text-orange truncate block">
-                                        {{ $aClient->assignedStaff->name }}
-                                    </a>
-                                    @else
-                                    <span class="text-xs text-gray-400 font-medium">-</span>
-                                    @endif
-                                </div>
-                            </div>
-                        </td>
-                        <td class="text-center px-4 py-3.5">
-                            <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
-                                {{ $aClient->status === 'completed' ? 'bg-emerald-50 text-emerald-700' : 
-                                  ($aClient->status === 'ongoing' ? 'bg-blue-50 text-blue-700' : 
-                                  ($aClient->status === 'assigned' ? 'bg-purple-50 text-purple-700' : 'bg-gray-100 text-gray-700')) }}">
-                                {{ str_replace('_', ' ', $aClient->status) }}
-                            </span>
-                        </td>
-                        <td class="px-5 py-3.5 text-center">
-                            <div class="inline-flex items-center justify-center gap-1.5">
-                                {{-- Detail Klien --}}
-                                <a href="{{ route('clients.show', $aClient) }}" 
-                                    class="p-1.5 rounded-lg text-gray-400 hover:text-purple-deep hover:bg-purple-deep/10 transition" title="Lihat Detail Klien">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                </a>
+                    @forelse($psychologistWorkloads as $item)
+                        @php $p = $item['counselor']; @endphp
+                        <tr class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 cursor-pointer" @click="togglePerson('p-{{ $p->id }}')">
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $p->name }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $item['active_counseling_count'] }} sesi</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $item['active_candidate_count'] }} kandidat</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $item['kilat_count'] }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $item['overdue_count'] }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap text-right">{{ $item['total_active'] }} tugas</td>
+                        </tr>
+                        <tr x-show="expandedPersonId === 'p-{{ $p->id }}'" x-cloak>
+                            <td colspan="6" class="px-6 py-4 bg-slate-50">
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 mb-2">Kandidat Psikotes yang Ditangani</p>
+                                        @if($item['psychotest_candidates']->isNotEmpty())
+                                            <div class="space-y-2">
+                                                @foreach($item['psychotest_candidates'] as $cand)
+                                                    <div class="p-3 bg-white rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                                                        <div>
+                                                            <a href="{{ route('psychotest-bookings.show', $cand->booking_id) }}" class="text-xs font-medium text-black hover:text-purple-deep">
+                                                                {{ $cand->candidate_name }}{{ $cand->is_kilat ? ' [KILAT]' : '' }} — {{ $cand->booking?->company?->name ?? $cand->booking?->client?->name ?? '-' }}
+                                                            </a>
+                                                            <p class="text-[11px] font-medium text-slate-500">
+                                                                Tanggal Tes: {{ $cand->booking?->tanggal_dijadwalkan ? $cand->booking->tanggal_dijadwalkan->format('d/m/Y') : '-' }} ·
+                                                                Deadline Laporan: {{ $cand->psychologist_deadline_date ? $cand->psychologist_deadline_date->format('d/m/Y') : '-' }}
+                                                                {{ $cand->isPsychologistReportOverdue() ? ' (Terlambat)' : '' }}
+                                                            </p>
+                                                        </div>
+                                                        <button type="button"
+                                                            @click="openReassign('candidate_psikolog', {{ $cand->id }}, '{{ addslashes($cand->candidate_name) }}', 'psikolog')"
+                                                            class="px-3 py-1.5 rounded-lg bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-50 text-xs font-semibold cursor-pointer">
+                                                            Alihkan Psikolog
+                                                        </button>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <p class="text-xs font-medium text-slate-400">Tidak ada kandidat psikotes aktif.</p>
+                                        @endif
+                                    </div>
 
-                                {{-- Pindahkan (Reassign) --}}
-                                <button type="button" 
-                                    @click="openReassign({ id: {{ $aClient->id }}, name: '{{ addslashes($aClient->name) }}' }, '{{ addslashes($aClient->assignedStaff->name ?? 'Staff') }}')"
-                                    class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition cursor-pointer" title="Alihkan klien ke staff lain">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                                    <span>Pindahkan</span>
-                                </button>
-
-                                {{-- Lepaskan (Unassign) --}}
-                                <button type="button" 
-                                    @click="openUnassign({ id: {{ $aClient->id }}, name: '{{ addslashes($aClient->name) }}' }, '{{ addslashes($aClient->assignedStaff->name ?? 'Staff') }}')"
-                                    class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-red-50 text-red-600 hover:bg-red-100 transition cursor-pointer" title="Hapus/lepaskan klien dari staff penanggung jawab">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                    <span>Lepas</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 mb-2">Jadwal Konseling Aktif</p>
+                                        @if($item['counseling_tasks']->isNotEmpty())
+                                            <div class="space-y-2">
+                                                @foreach($item['counseling_tasks'] as $cb)
+                                                    <div class="p-3 bg-white rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                                                        <div>
+                                                            <a href="{{ route('bookings.show', $cb) }}" class="text-xs font-medium text-black hover:text-purple-deep">
+                                                                Konseling: {{ $cb->client?->name ?? '-' }}
+                                                            </a>
+                                                            <p class="text-[11px] font-medium text-slate-500">
+                                                                Tanggal: {{ $cb->tanggal_dijadwalkan ? $cb->tanggal_dijadwalkan->format('d/m/Y') : 'Belum Dijadwalkan' }} · Status: {{ ucfirst(str_replace('_', ' ', $cb->status)) }}
+                                                            </p>
+                                                        </div>
+                                                        <button type="button"
+                                                            @click="openReassign('counseling_counselor', {{ $cb->id }}, '{{ addslashes($cb->client?->name ?? 'Klien') }}', 'psikolog')"
+                                                            class="px-3 py-1.5 rounded-lg bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-50 text-xs font-semibold cursor-pointer">
+                                                            Alihkan Konselor
+                                                        </button>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <p class="text-xs font-medium text-slate-400">Tidak ada sesi konseling aktif.</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="6" class="px-6 py-10 text-center text-black font-medium">Belum ada klien yang ditugaskan ke staff.</td>
-                    </tr>
+                        <tr><td colspan="6" class="px-6 py-10 text-center text-slate-400 text-xs font-medium">Belum ada Psikolog aktif.</td></tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
     </div>
 
-    {{-- ========================================================================= --}}
-    {{-- 2. BAGIAN BAWAH: RINGKASAN PER STAFF & KLIEN MENUNGGU PENUGASAN            --}}
-    {{-- ========================================================================= --}}
-    <div class="grid lg:grid-cols-3 gap-6">
-        {{-- Ringkasan Staff --}}
-        <div class="glass-card rounded-xl overflow-hidden flex flex-col">
-            <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
-                <h3 class="font-bold text-white">Ringkasan per Staff</h3>
-                <a href="{{ route('staff-management.index') }}" class="text-xs text-purple-200 font-semibold hover:text-white hover:underline transition">Kelola Staff →</a>
-            </div>
-            <div class="divide-y divide-[#F3EAFB] max-h-96 overflow-y-auto custom-scrollbar">
-                @forelse($staffSummary as $staff)
-                <div class="px-6 py-3.5 flex items-center justify-between hover:bg-[#FAF8FD] transition">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-purple-deep/10 flex items-center justify-center text-purple-deep text-xs font-bold flex-shrink-0">
-                            {{ substr($staff->name, 0, 1) }}
-                        </div>
-                        <div class="min-w-0">
-                            <a href="{{ route('staff-management.show', $staff) }}" class="text-sm font-semibold text-[#2A2035] hover:text-purple-deep truncate block">
-                                {{ $staff->name }}
-                            </a>
-                            <p class="text-xs text-[#6B5B85] truncate">{{ $staff->email }}</p>
-                        </div>
-                    </div>
-                    <a href="{{ route('staff-management.show', $staff) }}" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-deep/10 text-purple-deep hover:bg-purple-deep/20 transition flex-shrink-0">
-                        <span>{{ $staff->active_clients_count }}</span>
-                        <span class="text-[10px]">klien</span>
-                    </a>
-                </div>
-                @empty
-                <div class="px-6 py-6 text-center text-[#6B5B85] text-sm">Belum ada staff terdaftar.</div>
-                @endforelse
-            </div>
+    {{-- TAB 2: STAFF --}}
+    <div x-show="activeTab === 'staff'" x-cloak class="glass-card rounded-2xl overflow-hidden">
+        <div class="px-6 py-4 bg-purple-deep/95 text-white flex items-center justify-between">
+            <h3 class="text-base font-bold text-white">Daftar Beban Tugas Staff (Tester, Skorer, Editor)</h3>
+            <span class="text-xs text-purple-100 font-medium">Klik baris untuk melihat rincian tugas dan mengalihkan staff</span>
         </div>
 
-        {{-- Klien Belum Ditugaskan --}}
-        <div class="lg:col-span-2 glass-card rounded-xl overflow-hidden flex flex-col">
-            <div class="px-6 py-4 bg-purple-deep/95 border-b border-purple-900/30 flex items-center justify-between">
-                <h3 class="font-bold text-white">Klien Menunggu Penugasan</h3>
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold {{ $unassignedClients->count() > 0 ? 'bg-amber-300 text-amber-950' : 'bg-white/20 text-white' }}">
-                    {{ $unassignedClients->count() }} Klien
-                </span>
-            </div>
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-sm font-medium">
+                <thead>
+                    <tr class="bg-slate-50 text-black font-semibold border-b border-[#EDE1FA]">
+                        <th class="px-6 py-3.5 text-left font-semibold">Nama Staff</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Tugas Batch (Tester / Skorer)</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Tugas Editor (Kandidat)</th>
+                        <th class="px-6 py-3.5 text-left font-semibold">Prioritas KILAT</th>
+                        <th class="px-6 py-3.5 text-right font-semibold">Total Tugas Aktif</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-[#F3EAFB]">
+                    @forelse($staffWorkloads as $item)
+                        @php $s = $item['staff']; @endphp
+                        <tr class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 cursor-pointer" @click="togglePerson('s-{{ $s->id }}')">
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $s->name }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $item['batch_count'] }} batch</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $item['editor_count'] }} kandidat</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $item['kilat_count'] }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap text-right">{{ $item['total_active'] }} tugas</td>
+                        </tr>
+                        <tr x-show="expandedPersonId === 's-{{ $s->id }}'" x-cloak>
+                            <td colspan="5" class="px-6 py-4 bg-slate-50">
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 mb-2">Tugas Kolektif Batch (Tester / Skorer Manual / Skorer Software)</p>
+                                        @if($item['batch_tasks']->isNotEmpty())
+                                            <div class="space-y-2">
+                                                @foreach($item['batch_tasks'] as $bt)
+                                                    <div class="p-3 bg-white rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                                                        <div>
+                                                            <a href="{{ route('psychotest-bookings.show', $bt->booking_id) }}" class="text-xs font-medium text-black hover:text-purple-deep">
+                                                                {{ $bt->role_label }} — {{ $bt->booking?->company?->name ?? $bt->booking?->client?->name ?? '-' }}
+                                                            </a>
+                                                            <p class="text-[11px] font-medium text-slate-500">
+                                                                Tanggal Tes: {{ $bt->booking?->tanggal_dijadwalkan ? $bt->booking->tanggal_dijadwalkan->format('d/m/Y') : '-' }}
+                                                            </p>
+                                                        </div>
+                                                        <button type="button"
+                                                            @click="openReassign('batch_assignee', {{ $bt->id }}, '{{ addslashes($bt->role_label . ' - ' . ($bt->booking?->company?->name ?? $bt->booking?->client?->name ?? 'Booking')) }}', 'staff')"
+                                                            class="px-3 py-1.5 rounded-lg bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-50 text-xs font-semibold cursor-pointer">
+                                                            Alihkan Staff
+                                                        </button>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <p class="text-xs font-medium text-slate-400">Tidak ada tugas batch aktif.</p>
+                                        @endif
+                                    </div>
 
-            <div class="divide-y divide-[#F3EAFB] max-h-96 overflow-y-auto custom-scrollbar">
-                @forelse($unassignedClients as $client)
-                <div class="px-6 py-4" x-data="{ open: false }">
-                    <div class="flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-10 h-10 rounded-lg bg-purple-deep/10 flex items-center justify-center text-purple-deep font-bold flex-shrink-0">
-                                {{ substr($client->name, 0, 1) }}
-                            </div>
-                            <div class="min-w-0">
-                                <a href="{{ route('clients.show', $client) }}" class="text-sm font-semibold text-[#2A2035] hover:text-purple-deep truncate block">
-                                    {{ $client->name }}
-                                </a>
-                                <p class="text-xs text-[#6B5B85] truncate">
-                                    <span class="font-medium text-purple-deep">{{ $client->service_type ? ucfirst($client->service_type) : 'Belum Ada Layanan' }}</span>
-                                    · Terdaftar {{ $client->created_at ? $client->created_at->format('d M Y') : '-' }}
-                                </p>
-                            </div>
-                        </div>
-                        <button @click="open = !open" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-purple-deep text-white hover:opacity-90 transition cursor-pointer flex-shrink-0">
-                            <span x-text="open ? 'Tutup' : 'Tugaskan Staff'"></span>
-                        </button>
-                    </div>
-
-                    <form x-cloak x-show="open" x-transition action="{{ route('assignments.assign', $client) }}" method="POST" class="mt-3 flex flex-col sm:flex-row items-stretch sm:items-end gap-2.5 bg-[#F7F5FB] p-3 rounded-lg border border-[#EDE1FA]">
-                        @csrf
-                        <div class="flex-1">
-                            <label class="text-[11px] font-semibold text-[#5B4A73] mb-1 block">Pilih Staff <span class="text-red-400">*</span></label>
-                            <select name="staff_id" required class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white focus:outline-none focus:ring-1 focus:ring-purple-deep">
-                                <option value="">-- Pilih Staff --</option>
-                                @foreach($allStaff as $staff)
-                                <option value="{{ $staff->id }}">{{ $staff->name }} ({{ $staff->email }})</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="flex-1">
-                            <label class="text-[11px] font-semibold text-[#5B4A73] mb-1 block">Catatan Penugasan</label>
-                            <input type="text" name="notes" class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white focus:outline-none focus:ring-1 focus:ring-purple-deep" placeholder="Catatan opsional...">
-                        </div>
-                        <button type="submit" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition flex-shrink-0 cursor-pointer flex items-center gap-1.5">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                            <span>Simpan</span>
-                        </button>
-                    </form>
-                </div>
-                @empty
-                <div class="px-6 py-10 text-center">
-                    <div class="w-12 h-12 mx-auto mb-2 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    </div>
-                    <p class="text-sm font-semibold text-[#2A2035]">Semua klien sudah ditugaskan!</p>
-                    <p class="text-xs text-[#6B5B85] mt-0.5">Tidak ada klien yang menunggu penugasan saat ini.</p>
-                </div>
-                @endforelse
-            </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 mb-2">Tugas Editor Per-Kandidat</p>
+                                        @if($item['editor_candidates']->isNotEmpty())
+                                            <div class="space-y-2">
+                                                @foreach($item['editor_candidates'] as $ec)
+                                                    <div class="p-3 bg-white rounded-lg border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                                                        <div>
+                                                            <a href="{{ route('psychotest-bookings.show', $ec->booking_id) }}" class="text-xs font-medium text-black hover:text-purple-deep">
+                                                                Editor: {{ $ec->candidate_name }}{{ $ec->is_kilat ? ' [KILAT]' : '' }} — {{ $ec->booking?->company?->name ?? $ec->booking?->client?->name ?? '-' }}
+                                                            </a>
+                                                            <p class="text-[11px] font-medium text-slate-500">
+                                                                Deadline Klien: {{ $ec->client_deadline_date ? $ec->client_deadline_date->format('d/m/Y') : '-' }}
+                                                            </p>
+                                                        </div>
+                                                        <button type="button"
+                                                            @click="openReassign('candidate_editor', {{ $ec->id }}, '{{ addslashes($ec->candidate_name) }}', 'staff')"
+                                                            class="px-3 py-1.5 rounded-lg bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-50 text-xs font-semibold cursor-pointer">
+                                                            Alihkan Editor
+                                                        </button>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <p class="text-xs font-medium text-slate-400">Tidak ada tugas editor aktif.</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="5" class="px-6 py-10 text-center text-slate-400 text-xs font-medium">Belum ada Staff terdaftar.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 
-    {{-- ===== MODAL REASSIGN ===== --}}
+    {{-- Modal Reassign Tugas --}}
     <div x-show="reassignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
+        <div class="fixed inset-0 bg-[#1F0E38]/50 backdrop-blur-md"></div>
         <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
-                <div class="flex items-center justify-between pb-3 border-b border-[#EDE1FA]">
-                    <h3 class="text-base font-bold text-purple-deep">Pindahkan Klien ke Staff Lain</h3>
-                    <button type="button" @click="reassignModalOpen = false" class="text-[#827299] hover:text-purple-deep">
+            <div class="relative w-full max-w-md rounded-2xl bg-white shadow-[0_30px_70px_rgba(74,35,128,0.2)] overflow-hidden">
+                <div class="px-6 py-4 bg-purple-deep flex items-center justify-between text-white">
+                    <h3 class="text-base font-semibold">Alihkan Penugasan</h3>
+                    <button type="button" @click="reassignModalOpen = false" class="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/15 cursor-pointer">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
-
-                <form action="#" method="POST" x-ref="globalReassignForm"
-                    @submit.prevent="
-                        if (!selectedClient) return;
-                        $el.action = '{{ url('assignments') }}/' + selectedClient.id + '/reassign';
-                        $el.submit();
-                    "
-                    class="space-y-4">
+                <form method="POST" action="{{ route('assignments.reassign-task') }}" class="p-6 space-y-4">
                     @csrf
+                    <input type="hidden" name="task_type" x-model="reassignTaskType">
+                    <input type="hidden" name="target_id" x-model="reassignTargetId">
 
-                    <div class="bg-[#F7F5FB] p-3 rounded-lg border border-[#EDE1FA] text-xs">
-                        <p class="text-[#827299]">Klien:</p>
-                        <p class="text-sm font-bold text-purple-deep mt-0.5" x-text="selectedClientName"></p>
-                        <p class="text-[11px] text-[#6B5B85] mt-1">Staff saat ini: <span class="font-semibold" x-text="currentStaffName"></span></p>
+                    <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-100">
+                        <span class="text-xs font-medium text-slate-500 block">Tugas yang Dialihkan</span>
+                        <span class="text-sm font-medium text-black" x-text="reassignTitle"></span>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Pilih Staff Baru <span class="text-red-400">*</span></label>
-                        <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm text-[#5B4A73] focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                            <option value="">-- Pilih Staff --</option>
-                            @foreach($allStaff as $stf)
-                            <option value="{{ $stf->id }}">{{ $stf->name }} ({{ $stf->email }})</option>
-                            @endforeach
+                        <label class="text-xs font-medium text-slate-500 mb-1 block">Pilih Petugas Pengganti *</label>
+                        <select name="new_assignee_id" x-model="newAssigneeId" required class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
+                            <option value="">-- Pilih Pengganti --</option>
+                            <template x-if="reassignRoleKind === 'psikolog'">
+                                <optgroup label="Psikolog">
+                                    @foreach($counselors as $c)
+                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                    @endforeach
+                                </optgroup>
+                            </template>
+                            <template x-if="reassignRoleKind === 'staff'">
+                                <optgroup label="Staff">
+                                    @foreach($staffUsers as $su)
+                                        <option value="{{ $su->id }}">{{ $su->name }}</option>
+                                    @endforeach
+                                </optgroup>
+                            </template>
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Catatan / Alasan Pemindahan</label>
-                        <input type="text" name="notes" placeholder="Contoh: Reassignment tugas operasional..." class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                    </div>
-
-                    <div class="flex items-center justify-end gap-2.5 pt-2">
-                        <button type="button" @click="reassignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
-                            Batal
-                        </button>
-                        <button type="submit" class="bg-amber-600 text-white px-5 py-2 rounded-lg text-xs font-semibold hover:opacity-90 transition shadow-xs">
-                            Pindahkan Klien
+                    <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
+                        <button type="button" @click="reassignModalOpen = false" class="px-5 py-2.5 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-sm shadow-xs cursor-pointer">Batal</button>
+                        <button type="submit" class="px-5 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-sm shadow-xs cursor-pointer inline-flex items-center gap-2">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            <span>Simpan</span>
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    {{-- ===== MODAL UNASSIGN ===== --}}
-    <div x-show="unassignModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"></div>
-        <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md border border-[#EDE1FA] p-6 space-y-4">
-                <div class="flex items-start gap-3 pb-3 border-b border-[#EDE1FA]">
-                    <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center flex-shrink-0">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-bold text-[#2A2035]">Lepaskan Klien dari Staff?</h3>
-                        <p class="text-xs text-[#827299] mt-0.5">Klien akan dikembalikan ke status belum ditugaskan (*unassigned*)</p>
-                    </div>
-                </div>
-
-                <form action="#" method="POST" x-ref="globalUnassignForm"
-                    @submit.prevent="
-                        if (!selectedClient) return;
-                        $el.action = '{{ url('assignments') }}/' + selectedClient.id + '/unassign';
-                        $el.submit();
-                    "
-                    class="space-y-4">
-                    @csrf
-
-                    <p class="text-xs text-[#5B4A73] leading-relaxed">
-                        Anda akan melepaskan penugasan klien <strong class="text-purple-deep" x-text="selectedClientName"></strong> dari staff <strong x-text="currentStaffName"></strong>.
-                    </p>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-[#5B4A73] mb-1.5">Catatan / Alasan Pelepasan (Opsional)</label>
-                        <input type="text" name="notes" placeholder="Contoh: Selesai pendampingan / Penyesuaian tugas..." class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                    </div>
-
-                    <div class="flex items-center justify-end gap-2.5 pt-2">
-                        <button type="button" @click="unassignModalOpen = false" class="px-4 py-2 rounded-lg text-xs font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
-                            Batal
-                        </button>
-                        <button type="submit" class="bg-red-600 text-white px-5 py-2 rounded-lg text-xs font-semibold hover:bg-red-700 transition shadow-xs">
-                            Ya, Lepaskan Klien
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
 </div>
 @endsection

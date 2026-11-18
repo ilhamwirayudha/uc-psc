@@ -440,9 +440,6 @@
 function clientProfileDetail() {
     return {
         activeTab: @js(in_array(request('tab'), ['biodata', 'catatan', 'konseling', 'psikotes', 'riwayat', 'pengaturan']) ? request('tab') : 'biodata'),
-        assignModalOpen: false,
-        reassignModalOpen: false,
-        unassignModalOpen: false,
         deleteModalOpen: false,
         shareFormDropdownOpen: false,
         editMode: false,
@@ -8355,82 +8352,7 @@ function clientProfileDetail() {
 
     @if(auth()->user()->isAdmin())
 
-    {{-- 1. Modal Tugaskan Staff Baru --}}
-    <div x-cloak x-show="assignModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-
-        <div x-show="assignModalOpen" class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>
-
-        <div x-show="assignModalOpen" class="relative bg-white rounded-2xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
-            <h3 class="text-base font-semibold text-black">Tugaskan Staff Pengelola</h3>
-            <form action="{{ route('assignments.assign', $client) }}" method="POST" class="space-y-4">
-                @csrf
-                <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1.5">Pilih Staff <span class="text-red-500">*</span></label>
-                    <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-xs font-medium text-black focus:ring-2 focus:ring-purple-deep bg-white">
-                        <option value="">-- Pilih Staff --</option>
-                        @foreach($staffMembers as $staff)
-                        <option value="{{ $staff->id }}">{{ $staff->name }} ({{ $staff->email }})</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="flex items-center justify-end gap-2 pt-2">
-                    <button type="button" @click="assignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
-                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-deep text-white shadow-xs flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span>Simpan</span></button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    {{-- 2. Modal Alihkan Staff --}}
-    <div x-cloak x-show="reassignModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-
-        <div x-show="reassignModalOpen" class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>
-
-        <div x-show="reassignModalOpen" class="relative bg-white rounded-2xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
-            <h3 class="text-base font-semibold text-black">Alihkan Staff Pengelola</h3>
-            <form action="{{ route('assignments.reassign', $client) }}" method="POST" class="space-y-4">
-                @csrf
-                <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1.5">Pilih Staff Pengganti <span class="text-red-500">*</span></label>
-                    <select name="staff_id" required class="w-full px-3.5 py-2.5 rounded-xl border border-[#D9C2F0] text-xs font-medium text-black focus:ring-2 focus:ring-purple-deep bg-white">
-                        <option value="">-- Pilih Staff Baru --</option>
-                        @foreach($staffMembers as $staff)
-                        <option value="{{ $staff->id }}" {{ $client->assigned_staff_id === $staff->id ? 'disabled' : '' }}>
-                            {{ $staff->name }} ({{ $staff->email }}) {{ $client->assigned_staff_id === $staff->id ? '(Saat ini)' : '' }}
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="flex items-center justify-between gap-2 pt-2">
-                    <button type="button" @click="reassignModalOpen = false; unassignModalOpen = true" class="text-xs font-semibold text-red-600 hover:underline">Lepaskan Staff</button>
-                    <div class="flex items-center gap-2">
-                        <button type="button" @click="reassignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
-                        <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-deep text-white shadow-xs flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span>Simpan</span></button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    {{-- 3. Modal Lepaskan Staff --}}
-    <div x-cloak x-show="unassignModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-
-        <div x-show="unassignModalOpen" class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>
-
-        <div x-show="unassignModalOpen" class="relative bg-white rounded-2xl shadow-xl border border-[#EDE1FA] max-w-md w-full p-6 z-10 space-y-4">
-            <h3 class="text-base font-semibold text-red-600">Lepaskan Penugasan Staff</h3>
-            <p class="text-xs font-medium text-gray-500">Klien <strong class="text-black font-semibold">{{ $client->name }}</strong> akan dikembalikan ke status belum ditugaskan.</p>
-            <form action="{{ route('assignments.unassign', $client) }}" method="POST" class="space-y-4">
-                @csrf
-                <div class="flex items-center justify-end gap-2 pt-2">
-                    <button type="button" @click="unassignModalOpen = false" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 border border-slate-200">Batal</button>
-                    <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-red-600 text-white shadow-xs">Ya, Lepaskan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    {{-- 4. Modal Hapus Klien --}}
+    {{-- Modal Hapus Klien --}}
     <div x-cloak x-show="deleteModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
 
         <div x-show="deleteModalOpen" class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>

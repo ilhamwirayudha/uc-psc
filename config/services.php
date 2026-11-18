@@ -42,4 +42,10 @@ return [
         'ca_bundle' => env('SUPABASE_CA_BUNDLE'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', '/profil-saya/google-calendar/callback'),
+    ],
+
 ];

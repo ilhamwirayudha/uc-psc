@@ -8,9 +8,15 @@ use App\Http\Controllers\CounselorController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\OperationalCalendarController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PsychotestBookingController;
 use App\Http\Controllers\PublicClientFormController;
 use App\Http\Controllers\ClientFormManagementController;
+use App\Http\Controllers\StaffManagementController;
 
 // Guest → login
 Route::get('/', function () {
@@ -40,12 +46,10 @@ Route::prefix('daftar')->name('public.client-form.')->group(function () {
     Route::get('/sukses/{ticket?}', [PublicClientFormController::class, 'success'])->name('success');
 });
 
-
 // Auth Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
-
 });
 
 // Authenticated Routes
@@ -55,14 +59,18 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Profile (Profil Saya)
-    Route::get('/profil-saya', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profil-saya', [\App\Http\Controllers\ProfileController::class, 'updateProfile'])->name('profile.update');
-    Route::post('/profil-saya/avatar', [\App\Http\Controllers\ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
-    Route::delete('/profil-saya/avatar', [\App\Http\Controllers\ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
-    Route::delete('/profil-saya/hero-banner', [\App\Http\Controllers\ProfileController::class, 'deleteHeroBanner'])->name('profile.hero-banner.delete');
-    Route::put('/profil-saya/email', [\App\Http\Controllers\ProfileController::class, 'updateEmail'])->name('profile.email.update');
-    Route::put('/profil-saya/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    // Profile (Profil Saya) & Google Calendar OAuth Per-User
+    Route::get('/profil-saya', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profil-saya', [ProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/profil-saya/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::delete('/profil-saya/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
+    Route::delete('/profil-saya/hero-banner', [ProfileController::class, 'deleteHeroBanner'])->name('profile.hero-banner.delete');
+    Route::put('/profil-saya/email', [ProfileController::class, 'updateEmail'])->name('profile.email.update');
+    Route::put('/profil-saya/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+
+    Route::get('/profil-saya/google-calendar/connect', [GoogleCalendarController::class, 'redirect'])->name('gcal.connect');
+    Route::get('/profil-saya/google-calendar/callback', [GoogleCalendarController::class, 'callback'])->name('gcal.callback');
+    Route::post('/profil-saya/google-calendar/disconnect', [GoogleCalendarController::class, 'disconnect'])->name('gcal.disconnect');
 
     // Daftar Klien
     Route::post('daftar-klien/{client}/catatan', [ClientController::class, 'storeNote'])->name('clients.notes.store');
@@ -89,8 +97,21 @@ Route::middleware('auth')->group(function () {
     // Layanan Konseling & Layanan Psikotes
     Route::get('layanan-konseling', [BookingController::class, 'counseling'])->name('bookings.counseling');
     Route::get('layanan-psikotes', [BookingController::class, 'psychotest'])->name('bookings.psychotest');
+
+    // Workflow Psikotes Multi-Kandidat & Checklist
+    Route::get('layanan-psikotes/buat', [PsychotestBookingController::class, 'create'])->name('psychotest-bookings.create');
+    Route::post('layanan-psikotes/buat', [PsychotestBookingController::class, 'store'])->name('psychotest-bookings.store');
+    Route::get('layanan-psikotes/rekap-bulanan', [PsychotestBookingController::class, 'monthlyRecap'])->name('psychotest-bookings.monthly-recap');
+    Route::get('layanan-psikotes/{booking}', [PsychotestBookingController::class, 'show'])->name('psychotest-bookings.show');
+    Route::put('layanan-psikotes/{booking}/meta', [PsychotestBookingController::class, 'updateMeta'])->name('psychotest-bookings.update-meta');
+    Route::post('layanan-psikotes/{booking}/kandidat/{candidate}/kehadiran', [PsychotestBookingController::class, 'updateAttendance'])->name('psychotest-bookings.candidate.attendance');
+    Route::post('layanan-psikotes/{booking}/kandidat/{candidate}/langkah', [PsychotestBookingController::class, 'toggleCandidateStep'])->name('psychotest-bookings.candidate.step');
+    Route::post('layanan-psikotes/{booking}/kandidat/{candidate}/kilat-kirim', [PsychotestBookingController::class, 'toggleKilatSent'])->name('psychotest-bookings.candidate.kilat-sent');
+    Route::post('layanan-psikotes/{booking}/petugas/{assignee}/selesai', [PsychotestBookingController::class, 'toggleAssigneeBatch'])->name('psychotest-bookings.assignee.toggle');
+
     Route::post('layanan/{booking}/tindak-lanjut', [BookingController::class, 'createFollowUp'])->name('bookings.follow-up');
     Route::post('layanan/{booking}/realisasi', [BookingController::class, 'storeRealisasi'])->name('bookings.realisasi');
+    Route::post('layanan/{booking}/sync-gcal', [GoogleCalendarController::class, 'syncBooking'])->name('bookings.sync-gcal');
     Route::resource('layanan', BookingController::class)
         ->names('bookings')
         ->parameters(['layanan' => 'booking']);
@@ -100,15 +121,24 @@ Route::middleware('auth')->group(function () {
 
     // Admin-only routes
     Route::middleware(\App\Http\Middleware\EnsureAdmin::class)->group(function () {
-        Route::resource('kelola-staff', \App\Http\Controllers\StaffManagementController::class)
+        Route::resource('kelola-staff', StaffManagementController::class)
             ->except(['edit', 'update'])
             ->names('staff-management')
             ->parameters(['kelola-staff' => 'staff']);
 
-        // Kelola Penugasan
+        // Kelola Penugasan (Workload & Task Tracker)
         Route::get('kelola-penugasan', [AssignmentController::class, 'index'])->name('assignments.index');
-        Route::post('kelola-penugasan/{client}/assign', [AssignmentController::class, 'assign'])->name('assignments.assign');
-        Route::post('kelola-penugasan/{client}/unassign', [AssignmentController::class, 'unassign'])->name('assignments.unassign');
-        Route::post('kelola-penugasan/{client}/reassign', [AssignmentController::class, 'reassign'])->name('assignments.reassign');
+        Route::post('kelola-penugasan/reassign', [AssignmentController::class, 'reassignTask'])->name('assignments.reassign-task');
+
+        // Master Perusahaan & Hari Libur Nasional
+        Route::resource('kelola-perusahaan', CompanyController::class)
+            ->only(['index', 'store', 'update', 'destroy'])
+            ->names('companies')
+            ->parameters(['kelola-perusahaan' => 'company']);
+
+        Route::resource('hari-libur', HolidayController::class)
+            ->only(['index', 'store', 'update', 'destroy'])
+            ->names('holidays')
+            ->parameters(['hari-libur' => 'holiday']);
     });
 });

@@ -2,40 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Client;
 use App\Models\Counselor;
-use App\Models\Booking;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OperationalCalendarController extends Controller
 {
     public function index(Request $request)
     {
-        $today = Carbon::today();
+        $user = auth()->user();
 
         // 1. Ambil Konselor Aktif untuk Filter
         $counselors = Counselor::where('status', 'active')
             ->orderBy('name')
             ->get(['id', 'name', 'specialization', 'photo']);
 
-        // 2. Ambil Staff Aktif untuk Filter
+        // 2. Ambil Staff & Psikolog Login Aktif untuk Filter
         $staffList = User::whereIn('role', ['admin', 'staff'])
             ->orderBy('name')
             ->get(['id', 'name', 'role', 'email']);
 
         // 3. Sesi Konseling (Praktik Konselor)
-        $counselingBookings = Booking::with(['client', 'counselor'])
+        $counselingQuery = Booking::with(['client', 'counselor'])
             ->where('kategori', 'konseling')
             ->whereNotNull('tanggal_dijadwalkan')
-            ->get();
+            ->where('status', '!=', 'batal');
 
-        // 4. Sesi Pelaksanaan Psikotes (Tugas Staff Penguji)
-        $psikotesBookings = Booking::with(['client', 'staffPenguji', 'staffKoreksi', 'staffPelapor'])
+        if ($user->isPsikolog()) {
+            $counselingQuery->where('counselor_id', (int) ($user->counselor_id ?? 0));
+        }
+
+        $counselingBookings = $counselingQuery->get();
+
+        // 4. Sesi Pelaksanaan Psikotes (Multi-Assignee: Psikolog, Tester, Skorer, Editor)
+        $psikotesQuery = Booking::with(['company', 'client', 'assignees.user', 'assignees.counselor', 'candidates.assignedPsikolog', 'staffPenguji'])
             ->where('kategori', 'psikotes')
             ->whereNotNull('tanggal_dijadwalkan')
-            ->get();
+            ->where('status', '!=', 'batal');
+
+        if ($user->isPsikolog()) {
+            $cId = (int) ($user->counselor_id ?? 0);
+            $psikotesQuery->where(function ($q) use ($cId) {
+                $q->whereHas('assignees', fn ($aq) => $aq->where('counselor_id', $cId))
+                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $cId));
+            });
+        } elseif ($user->isStaff()) {
+            $psikotesQuery->where(function ($q) use ($user) {
+                $q->where('staff_penguji_id', $user->id)
+                  ->orWhereHas('assignees', fn ($aq) => $aq->where('user_id', $user->id))
+                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_editor_id', $user->id));
+            });
+        }
+
+        $psikotesBookings = $psikotesQuery->get();
 
         $calendarEvents = [];
 
@@ -69,37 +90,41 @@ class OperationalCalendarController extends Controller
             ];
         }
 
-        // --- Agregasi 2: Pelaksanaan Tes Psikotes (Staff Penguji) ---
+        // --- Agregasi 2: Pelaksanaan Tes Psikotes (Multi-Role Team) ---
         foreach ($psikotesBookings as $booking) {
             $dateStr = $booking->tanggal_dijadwalkan->format('Y-m-d');
-            $staffName = $booking->staffPenguji->name ?? 'Belum Diassign';
-            $clientName = $booking->client->name ?? 'Klien';
+            $clientName = $booking->company?->name ?? $booking->client?->name ?? 'Klien';
+
+            $testerNames = $booking->assignees->where('role_type', 'tester')->map(fn ($a) => $a->user?->name)->filter()->implode(', ');
+            $psychNames = $booking->formatPsychologistQuotaSummary();
+            $staffName = $testerNames ?: ($booking->staffPenguji?->name ?? ($psychNames !== '-' ? $psychNames : 'Tim Psikotes'));
+            $firstTesterId = $booking->assignees->where('role_type', 'tester')->first()?->user_id ?? $booking->staff_penguji_id;
+            $firstPsychId = $booking->candidates->whereNotNull('assigned_psikolog_id')->first()?->assigned_psikolog_id;
 
             $calendarEvents[] = [
                 'id' => 'testing-booking-' . $booking->id,
                 'category' => 'testing',
-                'category_label' => 'Pelaksanaan Tes',
+                'category_label' => 'Pelaksanaan Psikotes',
                 'bg_chip' => 'bg-[#E38B2C] hover:bg-[#D97715] text-white',
                 'dot_color' => 'bg-orange-500',
                 'date' => $dateStr,
                 'formatted_date' => $booking->tanggal_dijadwalkan->locale('id')->isoFormat('dddd, D MMMM Y'),
-                'title' => 'Tes: ' . $clientName . ' (' . $staffName . ')',
-                'short_title' => 'Tes Psikotes: ' . $clientName,
+                'title' => 'Psikotes: ' . $clientName . ' (' . $staffName . ')',
+                'short_title' => 'Psikotes: ' . $clientName,
                 'client_name' => $clientName,
                 'client_id' => $booking->client_id,
-                'counselor_name' => '-',
-                'counselor_id' => null,
+                'counselor_name' => $psychNames,
+                'counselor_id' => $firstPsychId,
                 'staff_name' => $staffName,
-                'staff_id' => $booking->staff_penguji_id,
-                'role_label' => 'Staff Penguji',
+                'staff_id' => $firstTesterId,
+                'role_label' => 'Tim Psikotes',
                 'status' => $booking->status,
                 'status_label' => ucfirst(str_replace('_', ' ', $booking->status)),
                 'notes' => $booking->notes,
-                'url' => route('bookings.show', $booking),
+                'url' => route('psychotest-bookings.show', $booking),
             ];
         }
 
-        // Quick Stats Ringkas
         $stats = [
             'total_counselors' => $counselors->count(),
             'total_staff' => $staffList->count(),
@@ -107,8 +132,8 @@ class OperationalCalendarController extends Controller
             'total_events' => count($calendarEvents),
             'counseling_count' => collect($calendarEvents)->where('category', 'counseling')->count(),
             'testing_count' => collect($calendarEvents)->where('category', 'testing')->count(),
-            'correction_count' => collect($calendarEvents)->where('category', 'correction')->count(),
-            'reporting_count' => collect($calendarEvents)->where('category', 'reporting')->count(),
+            'correction_count' => 0,
+            'reporting_count' => 0,
         ];
 
         return view('calendar.operational-calendar-board', compact(

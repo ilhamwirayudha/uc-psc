@@ -12,13 +12,19 @@ class Booking extends Model
 
     protected $fillable = [
         'client_id',
+        'company_id',
+        'pic_name',
         'client_form_id',
         'kategori',
         'service_tier',
         'service_package_key',
         'service_package_name',
         'price',
+        'final_price',
         'overtime_price',
+        'billing_scheme',
+        'requires_outgoing_letter',
+        'delivery_mode',
         'tanggal_booking_dibuat',
         'tanggal_dijadwalkan',
         'status',
@@ -38,6 +44,19 @@ class Booking extends Model
         'is_overtime',
         'payment_workflow_status',
         'va_number',
+        'finance_invoice_number',
+        'payment_proof_notes',
+        'payment_proof_path',
+        'paid_at',
+        'overtime_payment_status',
+        'overtime_va_number',
+        'overtime_final_price',
+        'is_payment_forfeited',
+        'forfeited_amount',
+        'forfeited_reason',
+        'rescheduled_at',
+        'gcal_sync_status',
+        'last_gcal_synced_at',
         'session_notes',
         'session_type',
         'location',
@@ -113,6 +132,17 @@ class Booking extends Model
         return [
             'tanggal_booking_dibuat' => 'date',
             'tanggal_dijadwalkan' => 'date',
+            'requires_outgoing_letter' => 'boolean',
+            'is_overtime' => 'boolean',
+            'is_payment_forfeited' => 'boolean',
+            'price' => 'decimal:2',
+            'final_price' => 'decimal:2',
+            'overtime_price' => 'decimal:2',
+            'overtime_final_price' => 'decimal:2',
+            'forfeited_amount' => 'decimal:2',
+            'paid_at' => 'datetime',
+            'rescheduled_at' => 'datetime',
+            'last_gcal_synced_at' => 'datetime',
         ];
     }
 
@@ -227,7 +257,32 @@ class Booking extends Model
 
     // --- Relasi ke hasil psikotes / assessment ---
 
-    // --- Relasi ke formulir klien ---
+    // --- Relasi ke formulir klien & workflow psikotes ---
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function serviceItems(): HasMany
+    {
+        return $this->hasMany(BookingServiceItem::class);
+    }
+
+    public function assignees(): HasMany
+    {
+        return $this->hasMany(BookingAssignee::class);
+    }
+
+    public function candidates(): HasMany
+    {
+        return $this->hasMany(BookingCandidate::class);
+    }
+
+    public function googleCalendarEvents(): HasMany
+    {
+        return $this->hasMany(GoogleCalendarEvent::class);
+    }
 
     public function clientForms(): HasMany
     {
@@ -237,6 +292,118 @@ class Booking extends Model
     public function clientForm(): BelongsTo
     {
         return $this->belongsTo(ClientForm::class, 'client_form_id');
+    }
+
+    // --- Helper Bisnis UC PSC ---
+
+    public function isPaid(): bool
+    {
+        return in_array($this->payment_workflow_status, ['lunas', 'lunas_overtime'], true)
+            || !is_null($this->paid_at);
+    }
+
+    public function allowsDeliveryBeforePayment(): bool
+    {
+        return in_array($this->billing_scheme, ['I', 'R', '-'], true);
+    }
+
+    public function isSpecialNonIndustri(): bool
+    {
+        return $this->service_tier === 'non_industri_khusus';
+    }
+
+    public function getBillingSchemeLabelAttribute(): string
+    {
+        return match ($this->billing_scheme) {
+            'I' => 'Rekap Internal UCS (I)',
+            'R' => 'Rekap Perusahaan (R)',
+            '-' => 'Gratis / Deal Khusus (-)',
+            default => 'Reguler / Invoice (v)',
+        };
+    }
+
+    public function getDeliveryModeLabelAttribute(): string
+    {
+        return match ($this->delivery_mode) {
+            'hardcopy' => 'Hardcopy',
+            'both' => 'Softcopy & Hardcopy',
+            default => 'Softcopy',
+        };
+    }
+
+    public function getEffectivePriceAttribute(): float
+    {
+        return (float) ($this->final_price ?? $this->price ?? 0);
+    }
+
+    /**
+     * Format ringkasan petugas per peran (misal: "Sasa (2) Sisi (2)").
+     */
+    public function formatPsychologistQuotaSummary(): string
+    {
+        $candidates = $this->relationLoaded('candidates') ? $this->candidates : $this->candidates()->with('assignedPsikolog')->get();
+        if ($candidates->isEmpty()) {
+            $assignees = $this->relationLoaded('assignees')
+                ? $this->assignees->where('role_type', 'psikolog')
+                : $this->assignees()->where('role_type', 'psikolog')->with('counselor')->get();
+            return $assignees->map(fn ($a) => $a->counselor?->name)->filter()->implode(', ') ?: '-';
+        }
+
+        $grouped = $candidates->whereNotNull('assigned_psikolog_id')->groupBy('assigned_psikolog_id');
+        if ($grouped->isEmpty()) {
+            return '-';
+        }
+
+        return $grouped->map(function ($items) {
+            $name = $items->first()->assignedPsikolog?->name ?? 'Psikolog';
+            return "{$name} ({$items->count()})";
+        })->implode(', ');
+    }
+
+    public function formatAssigneeSummary(string $roleType): string
+    {
+        if ($roleType === 'psikolog') {
+            return $this->formatPsychologistQuotaSummary();
+        }
+
+        if ($roleType === 'editor') {
+            $candidates = $this->relationLoaded('candidates') ? $this->candidates : $this->candidates()->with('assignedEditor')->get();
+            $grouped = $candidates->whereNotNull('assigned_editor_id')->groupBy('assigned_editor_id');
+            if ($grouped->isNotEmpty()) {
+                return $grouped->map(function ($items) {
+                    $name = $items->first()->assignedEditor?->name ?? 'Editor';
+                    return "{$name} ({$items->count()})";
+                })->implode(', ');
+            }
+        }
+
+        $assignees = $this->relationLoaded('assignees')
+            ? $this->assignees->where('role_type', $roleType)
+            : $this->assignees()->where('role_type', $roleType)->with('user')->get();
+
+        return $assignees->map(fn ($a) => $a->user?->name)->filter()->implode(', ') ?: '-';
+    }
+
+    public function syncOverallCompletionStatus(): void
+    {
+        if ($this->kategori !== 'psikotes') {
+            return;
+        }
+
+        $candidates = $this->candidates()->get();
+        if ($candidates->isEmpty()) {
+            return;
+        }
+
+        $nonKilat = $candidates->where('is_kilat', false);
+        $targetSet = $nonKilat->isNotEmpty() ? $nonKilat : $candidates;
+        $allDelivered = $targetSet->every(fn (BookingCandidate $c) => $c->isCompletedForDelivery());
+
+        if ($allDelivered && $this->status !== 'selesai') {
+            $this->update(['status' => 'selesai']);
+        } elseif (!$allDelivered && $this->status === 'selesai') {
+            $this->update(['status' => 'baru']);
+        }
     }
 }
 

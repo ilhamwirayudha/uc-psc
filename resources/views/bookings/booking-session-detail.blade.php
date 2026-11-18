@@ -855,6 +855,25 @@
                                                         {{ $location ? ' - ' . $location : '' }}
                                                     </div>
                                                 </div>
+                                                <div class="sm:col-span-2">
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Sinkronisasi Google Calendar Pribadi</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-wrap items-center justify-between gap-2 text-sm font-medium text-black">
+                                                        <span>
+                                                            @if($booking->gcal_sync_status === 'synced')
+                                                                Tersinkron ke Google Calendar ({{ $booking->last_gcal_synced_at ? $booking->last_gcal_synced_at->locale('id')->isoFormat('D MMMM Y, HH:mm') : '-' }})
+                                                            @elseif($booking->gcal_sync_status === 'pending_auth' || $booking->gcal_sync_status === 'failed')
+                                                                GCal belum sinkron (pastikan OAuth Google Calendar terhubung di Profil Saya)
+                                                            @else
+                                                                Otomatis disinkronkan saat status Terjadwal &amp; Konfirmasi (GCal)
+                                                            @endif
+                                                        </span>
+                                                        @if($booking->tanggal_dijadwalkan)
+                                                            <button type="submit" form="form-sync-gcal" class="px-3 py-1 rounded-lg bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-50 text-xs font-semibold cursor-pointer">
+                                                                Sync ke GCal
+                                                            </button>
+                                                        @endif
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             {{-- Edit Mode Jadwal --}}
@@ -893,6 +912,11 @@
                                                     <input type="text" name="location" value="{{ old('location', $location) }}"
                                                         :placeholder="sessionType === 'online' ? 'https://meet.google.com/...' : 'Ruang Konseling A'"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
+                                                </div>
+                                                <div class="sm:col-span-2 bg-slate-50 border border-slate-100 rounded-lg p-3">
+                                                    <p class="text-xs font-medium text-slate-500">
+                                                        Catatan Kebijakan Reschedule: Jika jadwal diubah kurang dari 24 jam sebelum sesi dimulai (atau saat sesi berlangsung) dan pembayaran H-1 sudah lunas, pembayaran sebelumnya otomatis dinyatakan hangus dan memerlukan tagihan baru ke UC Finance.
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -973,6 +997,15 @@
                                         <div class="p-4 space-y-3">
                                             {{-- View Mode Pembayaran --}}
                                             <div x-show="!editPembayaran" class="space-y-3">
+                                                @if($booking->is_payment_forfeited)
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
+                                                        <span class="text-xs font-medium text-slate-500 block">Status Pembayaran Sebelumnya:</span>
+                                                        <span class="text-sm font-medium text-black block mt-0.5">
+                                                            Hangus (Rp {{ number_format((float) ($booking->forfeited_amount ?? 0), 0, ',', '.') }}) — {{ $booking->forfeited_reason ?: 'Reschedule mendadak < 24 jam' }}
+                                                        </span>
+                                                    </div>
+                                                @endif
+
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
                                                     <span class="text-xs font-medium text-slate-500 block">Status Pembayaran Saat Ini:</span>
                                                     <span class="text-sm font-medium text-black block mt-0.5">
@@ -986,10 +1019,42 @@
                                                     </span>
                                                 </div>
 
-                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
-                                                    <span class="text-xs font-medium text-slate-500 block">Nomor Virtual Account / Invoice Finance:</span>
-                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->va_number ?: '-' }}</span>
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
+                                                        <span class="text-xs font-medium text-slate-500 block">Nominal Final UC Finance:</span>
+                                                        <span class="text-sm font-medium text-black block mt-0.5">
+                                                            {{ $booking->final_price ? 'Rp ' . number_format((float) $booking->final_price, 0, ',', '.') : 'Belum diinput' }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
+                                                        <span class="text-xs font-medium text-slate-500 block">Nomor VA / Invoice Finance:</span>
+                                                        <span class="text-sm font-medium text-black block mt-0.5">
+                                                            {{ trim(($booking->finance_invoice_number ?: '') . ($booking->va_number ? ' · VA: ' . $booking->va_number : ''), ' ·') ?: '-' }}
+                                                        </span>
+                                                    </div>
                                                 </div>
+
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
+                                                    <span class="text-xs font-medium text-slate-500 block">Catatan Bukti Transfer (Diteruskan ke UC Finance):</span>
+                                                    <span class="text-sm font-medium text-black block mt-0.5">{{ $booking->payment_proof_notes ?: '-' }}</span>
+                                                </div>
+
+                                                @if($booking->is_overtime)
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 space-y-1">
+                                                        <span class="text-xs font-medium text-slate-500 block">Tagihan Nota Overtime Terpisah:</span>
+                                                        <span class="text-sm font-medium text-black block mt-0.5">
+                                                            Status: {{ match($booking->overtime_payment_status) {
+                                                                'menunggu_nota' => 'Perlu Pengajuan Nota Overtime ke Finance',
+                                                                'menunggu_bayar' => 'Menunggu Bayar Overtime (VA: ' . ($booking->overtime_va_number ?: '-') . ')',
+                                                                'lunas' => 'Overtime Lunas',
+                                                                default => 'Belum Diproses',
+                                                            } }}
+                                                            @if($booking->overtime_final_price)
+                                                                · Nominal Final: Rp {{ number_format((float) $booking->overtime_final_price, 0, ',', '.') }}
+                                                            @endif
+                                                        </span>
+                                                    </div>
+                                                @endif
                                             </div>
 
                                             {{-- Edit Mode Pembayaran --}}
@@ -997,13 +1062,26 @@
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
                                                     <label class="block text-xs font-medium text-slate-500">Pilih Status Pembayaran</label>
                                                     <select name="payment_workflow_status" x-model="paymentStatusVal" @change="onPaymentStatusChange()"
-                                                        class="w-full px-3 py-2 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
+                                                        class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                         <option value="menunggu_sesi_selesai">Belum Ada Tagihan</option>
-                                                        <option value="draft_ke_finance">Pengajuan Nota (Finance)</option>
-                                                        <option value="menunggu_bayar">Menunggu Pembayaran (VA)</option>
+                                                        <option value="draft_ke_finance">Pengajuan Nota (Email ke Finance)</option>
+                                                        <option value="menunggu_bayar">Menunggu Pembayaran (Invoice + VA)</option>
                                                         <option value="lunas">Lunas</option>
                                                         <option value="lunas_overtime">Lunas (Overtime)</option>
                                                     </select>
+                                                </div>
+
+                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
+                                                        <label class="block text-xs font-medium text-slate-500">Nominal Final UC Finance (Rp)</label>
+                                                        <input type="number" name="final_price" value="{{ old('final_price', $booking->final_price) }}" placeholder="Harga final + pajak"
+                                                            class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
+                                                    </div>
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
+                                                        <label class="block text-xs font-medium text-slate-500">Nomor Invoice Finance</label>
+                                                        <input type="text" name="finance_invoice_number" value="{{ old('finance_invoice_number', $booking->finance_invoice_number) }}" placeholder="No. Invoice UC Finance"
+                                                            class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
+                                                    </div>
                                                 </div>
 
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
@@ -1011,6 +1089,29 @@
                                                     <input type="text" name="va_number" x-model="vaNumberVal" placeholder="Contoh: 988001234567"
                                                         class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
+
+                                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
+                                                    <label class="block text-xs font-medium text-slate-500">Catatan Bukti Transfer (Dikirim ke Finance)</label>
+                                                    <input type="text" name="payment_proof_notes" value="{{ old('payment_proof_notes', $booking->payment_proof_notes) }}" placeholder="Contoh: Bukti diterima & diteruskan via email"
+                                                        class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
+                                                </div>
+
+                                                @if($booking->is_overtime)
+                                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-2.5">
+                                                        <label class="block text-xs font-medium text-slate-500">Nota &amp; Pembayaran Overtime (Terpisah)</label>
+                                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                                            <select name="overtime_payment_status" class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
+                                                                <option value="menunggu_nota" {{ $booking->overtime_payment_status === 'menunggu_nota' ? 'selected' : '' }}>Pengajuan Nota Overtime</option>
+                                                                <option value="menunggu_bayar" {{ $booking->overtime_payment_status === 'menunggu_bayar' ? 'selected' : '' }}>Menunggu Bayar (VA)</option>
+                                                                <option value="lunas" {{ $booking->overtime_payment_status === 'lunas' ? 'selected' : '' }}>Overtime Lunas</option>
+                                                            </select>
+                                                            <input type="number" name="overtime_final_price" value="{{ old('overtime_final_price', $booking->overtime_final_price) }}" placeholder="Nominal Final OT"
+                                                                class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
+                                                            <input type="text" name="overtime_va_number" value="{{ old('overtime_va_number', $booking->overtime_va_number) }}" placeholder="No. VA Overtime"
+                                                                class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -1088,6 +1189,7 @@
                             </div>
                         </div>
                     </form>
+                    <form id="form-sync-gcal" method="POST" action="{{ route('bookings.sync-gcal', $booking) }}" class="hidden">@csrf</form>
                 </div>
 
                 {{-- ========================================================= --}}

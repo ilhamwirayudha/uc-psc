@@ -89,10 +89,6 @@
                             'service_type' => $booking->client->service_type ?? '-',
                             'counseling_type' => $booking->client->counseling_type ?? '-',
                             'notes' => $booking->client->notes ?? '',
-                            'assigned_staff' => $booking->client->assignedStaff ? [
-                                'name' => $booking->client->assignedStaff->name,
-                                'email' => $booking->client->assignedStaff->email,
-                            ] : null,
                             'active_counselor' => $booking->client->pairings->where('status', 'active')->first()?->counselor ? [
                                 'name' => $booking->client->pairings->where('status', 'active')->first()->counselor->name,
                                 'specialization' => $booking->client->pairings->where('status', 'active')->first()->counselor->specialization,
@@ -415,11 +411,6 @@
                             <span class="text-[#827299] block font-medium">Layanan yang Diambil</span>
                             <p class="font-bold text-purple-deep mt-0.5 text-sm uppercase" x-text="selectedBooking?.kategori || '-'"></p>
                             <p class="text-[11px] text-[#5B4A73]" x-text="selectedBooking?.client?.counseling_type || selectedBooking?.client?.service_type || '-'"></p>
-                        </div>
-                        <div class="bg-[#FAF8FD] p-3 rounded-lg border border-[#EDE1FA]">
-                            <span class="text-[#827299] block font-medium">Staff Pendamping Klien</span>
-                            <p class="font-bold text-[#2A2035] mt-0.5 text-sm" x-text="selectedBooking?.client?.assigned_staff?.name || 'Belum Diassign'"></p>
-                            <p class="text-[11px] text-[#827299]" x-text="selectedBooking?.client?.assigned_staff?.email || ''"></p>
                         </div>
                     </div>
 
