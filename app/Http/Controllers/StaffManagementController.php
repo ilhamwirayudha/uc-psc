@@ -38,14 +38,10 @@ class StaffManagementController extends Controller
         // Hitung tugas aktif per user untuk ditampilkan di tabel
         $taskCounts = [];
         foreach ($staffs as $u) {
-            if ($u->isPsikolog() && $u->counselor_id) {
-                $cId = $u->counselor_id;
-                $taskCounts[$u->id] = Booking::where('kategori', 'konseling')->where('counselor_id', $cId)->whereNotIn('status', ['selesai', 'batal'])->count()
-                    + BookingCandidate::where('assigned_psikolog_id', $cId)->whereNull('step_draft_hpp_at')->where('attendance_status', '!=', 'absen')->count();
+            if ($u->isPsikolog()) {
+                $taskCounts[$u->id] = $u->counselor?->countActiveTasks() ?? 0;
             } else {
-                $taskCounts[$u->id] = BookingAssignee::where('user_id', $u->id)
-                    ->whereHas('booking', fn ($q) => $q->whereNotIn('status', ['selesai', 'batal']))
-                    ->count();
+                $taskCounts[$u->id] = $this->countActiveStaffTasks($u);
             }
         }
 
@@ -141,11 +137,44 @@ class StaffManagementController extends Controller
             return redirect()->route('staff-management.index')->with('error', 'Tidak bisa menghapus akun Admin.');
         }
 
+        if ($staff->isPsikolog() && $staff->counselor_id) {
+            $activeTasks = $staff->counselor?->countActiveTasks() ?? 0;
+            if ($activeTasks > 0) {
+                return redirect()->route('staff-management.index')
+                    ->with('error', "Akun Psikolog {$staff->name} masih memiliki {$activeTasks} tugas aktif. Alihkan tugas di Kelola Penugasan terlebih dahulu sebelum menghapus akun.");
+            }
+
+            Counselor::where('id', $staff->counselor_id)->update(['status' => 'inactive']);
+        } elseif ($staff->isStaff()) {
+            $activeStaffTasks = $this->countActiveStaffTasks($staff);
+            if ($activeStaffTasks > 0) {
+                return redirect()->route('staff-management.index')
+                    ->with('error', "Akun Staff {$staff->name} masih memiliki {$activeStaffTasks} tugas aktif pada batch psikotes. Alihkan tugas di Kelola Penugasan terlebih dahulu sebelum menghapus akun.");
+            }
+        }
+
         BookingAssignee::where('user_id', $staff->id)->delete();
         BookingCandidate::where('assigned_editor_id', $staff->id)->update(['assigned_editor_id' => null]);
 
         $staff->delete();
 
-        return redirect()->route('staff-management.index')->with('success', 'Akun berhasil dihapus dan penugasan aktif telah dilepas.');
+        return redirect()->route('staff-management.index')->with('success', 'Akun berhasil dihapus dan status penugasan aktif telah disesuaikan.');
+    }
+
+    private function countActiveStaffTasks(User $staff): int
+    {
+        $batchTaskCount = BookingAssignee::where('user_id', $staff->id)
+            ->whereNull('batch_completed_at')
+            ->whereHas('booking', fn ($q) => $q->where('kategori', 'psikotes')->whereNotIn('status', ['selesai', 'batal']))
+            ->count();
+
+        $editorCandidateCount = BookingCandidate::where('assigned_editor_id', $staff->id)
+            ->where('attendance_status', '!=', 'absen')
+            ->whereNull('step_editing_at')
+            ->where(fn ($q) => $q->where('is_kilat', false)->orWhereNull('kilat_sent_at'))
+            ->whereHas('booking', fn ($q) => $q->where('kategori', 'psikotes')->whereNotIn('status', ['selesai', 'batal']))
+            ->count();
+
+        return $batchTaskCount + $editorCandidateCount;
     }
 }

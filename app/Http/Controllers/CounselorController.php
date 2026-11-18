@@ -51,11 +51,18 @@ class CounselorController extends Controller
 
     public function create()
     {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Hanya Admin yang dapat menambah data Psikolog.');
+        }
+
         return view('counselors.counselor-create-form');
     }
 
     public function store(Request $request)
     {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Hanya Admin yang dapat menambah data Psikolog.');
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
@@ -90,11 +97,18 @@ class CounselorController extends Controller
 
     public function edit(Counselor $counselor)
     {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Hanya Admin yang dapat mengubah data Psikolog.');
+        }
+
         return view('counselors.counselor-edit-form', compact('counselor'));
     }
 
     public function update(Request $request, Counselor $counselor)
     {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Hanya Admin yang dapat mengubah data Psikolog.');
+        }
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
@@ -132,6 +146,21 @@ class CounselorController extends Controller
 
         $counselor->update($validated);
 
+        if ($counselor->user) {
+            $userUpdates = array_filter([
+                'name' => $validated['name'] ?? null,
+                'phone' => $validated['phone'] ?? null,
+            ], fn ($v) => !is_null($v));
+
+            if (!empty($validated['email']) && !\App\Models\User::where('email', $validated['email'])->where('id', '!=', $counselor->user->id)->exists()) {
+                $userUpdates['email'] = $validated['email'];
+            }
+
+            if (!empty($userUpdates)) {
+                $counselor->user->update($userUpdates);
+            }
+        }
+
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,
@@ -145,7 +174,18 @@ class CounselorController extends Controller
 
     public function destroy(Counselor $counselor)
     {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Hanya Admin yang dapat menghapus data Psikolog.');
+        }
+
+        $activeTasks = $counselor->countActiveTasks();
+        if ($activeTasks > 0) {
+            return redirect()->route('counselors.index')
+                ->with('error', "Psikolog {$counselor->name} masih memiliki {$activeTasks} tugas aktif. Alihkan tugas di Kelola Penugasan atau nonaktifkan statusnya terlebih dahulu.");
+        }
+
         PublicMediaStorage::delete($counselor->photo);
+        \App\Models\User::where('counselor_id', $counselor->id)->update(['counselor_id' => null]);
 
         $counselor->delete();
         return redirect()->route('counselors.index')->with('success', 'Konselor berhasil dihapus.');

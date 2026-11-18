@@ -113,8 +113,8 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                             
                             {{-- Baris 1: Toggle Individu vs Industri --}}
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2.5">
-                                    1. Pilih Tipe Pemohon / Klien
+                                <label class="block text-xs font-medium text-slate-500 mb-2">
+                                    Pilih Tipe Pemohon / Klien
                                 </label>
                                 <div class="grid grid-cols-2 gap-3 p-1.5 bg-[#F7F5FB] rounded-xl border border-[#EDE1FA]">
                                     {{-- Opsi 1: Individu --}}
@@ -139,8 +139,8 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
 
                             {{-- Baris 2: Pemilihan Formulir Spesifik Layanan --}}
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2.5">
-                                    2. Pilih Formulir Layanan Klien
+                                <label class="block text-xs font-medium text-slate-500 mb-2">
+                                    Pilih Formulir Layanan Klien
                                 </label>
 
                                 {{-- Jika Tipe INDIVIDU: Tampilkan 6 Formulir Individu --}}
@@ -316,17 +316,18 @@ aria-labelledby="client-modal-title" role="dialog" aria-modal="true" x-cloak>
                         <div class="sticky -bottom-4 bg-white rounded-xl border border-purple-100 p-4 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-3 z-20">
                             <div class="text-xs text-slate-500 flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-purple-deep animate-pulse"></span>
-                                <span>Tanda bintang merah (<strong class="text-red-500">*</strong>) wajib diisi sesuai form asli.</span>
+                                <span>Tanda bintang merah (<span class="text-red-500 font-medium">*</span>) wajib diisi sesuai form asli.</span>
                             </div>
 
                             <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
                                 <button type="button"
                                     @click="requestClose()"
-                                    class="w-1/2 sm:w-auto px-5 py-2.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 text-sm font-semibold transition cursor-pointer">
-                                    Batal
+                                    class="w-1/2 sm:w-auto px-5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white hover:bg-purple-50 text-purple-deep text-sm font-semibold shadow-xs transition cursor-pointer inline-flex items-center justify-center gap-1.5">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    <span>Batal</span>
                                 </button>
                                 <button type="submit"
-                                    class="w-1/2 sm:w-auto px-6 py-2.5 bg-gradient-to-r from-orange to-[#ff7d1a] hover:from-orange/90 hover:to-[#ff7d1a]/90 text-white text-sm font-semibold rounded-lg shadow-md shadow-orange/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                                    class="w-1/2 sm:w-auto px-6 py-2.5 bg-purple-deep hover:bg-purple-deep/90 text-white text-sm font-semibold rounded-lg shadow-xs transition flex items-center justify-center gap-2 cursor-pointer">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                                         <polyline points="17 21 17 13 7 13 7 21"/>

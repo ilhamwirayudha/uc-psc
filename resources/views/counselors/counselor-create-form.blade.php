@@ -106,14 +106,14 @@
         @csrf
 
         {{-- CARD 1: DATA IDENTITAS & KONTAK --}}
-        <div class="glass-card rounded-xl p-6 space-y-5">
+        <div class="glass-card rounded-2xl p-6 space-y-5">
             <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
-                <div class="w-8 h-8 rounded-lg bg-orange/10 text-orange flex items-center justify-center font-bold text-sm">
-                    1
+                <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
                 <div>
-                    <h3 class="text-base font-semibold text-black">Data Identitas & Kontak</h3>
-                    <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif psikolog</p>
+                    <h3 class="text-base font-semibold text-black">Data Identitas &amp; Kontak</h3>
+                    <p class="text-xs font-medium text-slate-500">Informasi nama lengkap dan kontak aktif psikolog</p>
                 </div>
             </div>
 
@@ -154,14 +154,14 @@
         </div>
 
         {{-- CARD 2: ALAMAT DOMISILI --}}
-        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
-                <div class="w-8 h-8 rounded-lg bg-orange/10 text-orange flex items-center justify-center font-bold text-sm">
-                    2
+                <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 </div>
                 <div>
                     <h3 class="text-base font-semibold text-black">Alamat Domisili</h3>
-                    <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat</p>
+                    <p class="text-xs font-medium text-slate-500">Informasi domisili dan alamat</p>
                 </div>
             </div>
 
@@ -259,14 +259,14 @@
         </div>
 
         {{-- CARD 3: KUALIFIKASI & LEGALITAS PROFESI --}}
-        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
-                <div class="w-8 h-8 rounded-lg bg-orange/10 text-orange flex items-center justify-center font-bold text-sm">
-                    3
+                <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 </div>
                 <div>
-                    <h3 class="text-base font-semibold text-black">Kualifikasi, Izin Praktik & Status</h3>
-                    <p class="text-xs font-medium text-gray-500">Bidang keahlian, nomor izin legalitas psikolog, dan status keaktifan</p>
+                    <h3 class="text-base font-semibold text-black">Kualifikasi, Izin Praktik &amp; Status</h3>
+                    <p class="text-xs font-medium text-slate-500">Bidang keahlian, nomor izin legalitas psikolog, dan status keaktifan</p>
                 </div>
             </div>
 
@@ -316,21 +316,21 @@
         </div>
 
         {{-- CARD 4: CATATAN TAMBAHAN --}}
-        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
+        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
             <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
-                <div class="w-8 h-8 rounded-lg bg-orange/10 text-orange flex items-center justify-center font-bold text-sm">
-                    4
+                <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 </div>
                 <div>
-                    <h3 class="text-base font-semibold text-black">Catatan & Keterangan Tambahan</h3>
-                    <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus psikolog (opsional)</p>
+                    <h3 class="text-base font-semibold text-black">Catatan &amp; Keterangan Tambahan</h3>
+                    <p class="text-xs font-medium text-slate-500">Informasi jadwal ketersediaan atau catatan khusus psikolog (opsional)</p>
                 </div>
             </div>
 
             <div>
                 <textarea id="notes" name="notes" rows="3" x-model="notes"
                     placeholder="Contoh: Bersedia praktek hari Selasa & Kamis pukul 09:00 - 15:00 WIB..."
-                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] leading-relaxed"></textarea>
+                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep leading-relaxed"></textarea>
                 @error('notes') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
         </div>
@@ -338,11 +338,12 @@
         {{-- ACTION BUTTONS --}}
         <div class="flex items-center justify-end gap-3 pt-2">
             <a href="{{ route('counselors.index') }}" 
-                class="px-5 py-2.5 rounded-lg text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-white transition cursor-pointer">
-                Batal
+                class="px-5 py-2.5 rounded-lg text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition cursor-pointer inline-flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <span>Batal</span>
             </a>
             <button type="submit" 
-                class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
+                class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-purple-deep hover:bg-purple-deep/90 text-white transition shadow-xs flex items-center gap-2 cursor-pointer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 <span>Simpan Psikolog</span>
             </button>

@@ -20,7 +20,7 @@ class UpdateClientStatus extends Command
         $today = now()->toDateString();
 
         $bookings = Booking::whereDate('tanggal_dijadwalkan', '<=', $today)
-            ->whereIn('status', ['baru', 'lanjutan'])
+            ->whereNotIn('status', ['selesai', 'batal'])
             ->with('client')
             ->get();
 

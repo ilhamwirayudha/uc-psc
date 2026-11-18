@@ -24,6 +24,25 @@
         'category' => $c->category,
         'pic_name' => $c->pic_name,
     ])->values();
+
+    $oldItems = old('items', [
+        ['service_tier' => 'industri', 'service_package_key' => 'long_staf_kerja_sama', 'quantity' => 1],
+    ]);
+    $oldCandidatesRaw = old('candidates', []);
+    $oldCandidates = collect($oldCandidatesRaw)->values()->map(function ($cand, $idx) {
+        return [
+            'uid' => 'old-' . $idx,
+            'client_form_id' => $cand['client_form_id'] ?? '',
+            'candidate_name' => $cand['candidate_name'] ?? '',
+            'target_position' => $cand['target_position'] ?? '',
+            'job_level' => $cand['job_level'] ?? '',
+            'service_item_index' => (int) ($cand['service_item_index'] ?? 0),
+            'is_kilat' => !empty($cand['is_kilat']),
+            'assigned_psikolog_id' => (string) ($cand['assigned_psikolog_id'] ?? ''),
+            'assigned_editor_id' => (string) ($cand['assigned_editor_id'] ?? ''),
+        ];
+    })->values();
+    $oldSelectedFormIds = collect($oldCandidatesRaw)->pluck('client_form_id')->filter()->map(fn ($id) => (int) $id)->values();
 @endphp
 
 <div x-data="{
@@ -36,9 +55,9 @@
     sessionType: '{{ old('session_type', 'online') }}',
     location: '{{ old('location', '') }}',
     billingScheme: '{{ old('billing_scheme', 'v') }}',
-    requiresOutgoingLetter: false,
+    requiresOutgoingLetter: {{ old('requires_outgoing_letter') ? 'true' : 'false' }},
     deliveryMode: '{{ old('delivery_mode', 'softcopy') }}',
-    notes: '',
+    notes: @js(old('notes', '')),
 
     companies: @js($companiesPayload),
     unbookedForms: @js($formsPayload),
@@ -47,22 +66,18 @@
     staffs: @js($staffs->map(fn($s) => ['id' => $s->id, 'name' => $s->name])->values()),
 
     formSearch: '',
-    selectedFormIds: [],
+    selectedFormIds: @js($oldSelectedFormIds),
     manualCandidates: [],
-    items: [
-        { service_tier: 'industri', service_package_key: 'long_staf_kerja_sama', quantity: 1 }
-    ],
+    items: @js(array_values($oldItems)),
 
     // Kolektif batch roles (multi-select)
-    testerIds: [],
-    skorerManualIds: [],
-    skorerSoftwareIds: [],
+    testerIds: @js(array_map('strval', (array) old('tester_ids', []))),
+    skorerManualIds: @js(array_map('strval', (array) old('skorer_manual_ids', []))),
+    skorerSoftwareIds: @js(array_map('strval', (array) old('skorer_software_ids', []))),
 
-    // State modal unsaved & quick add company
+    // State modal unsaved
     unsavedModalOpen: false,
     pendingCancelUrl: '{{ route('bookings.psychotest') }}',
-    quickCompanyModalOpen: false,
-    quickCompanyForm: { name: '', category: 'umum', pic_name: '', pic_phone: '', pic_email: '' },
 
     get selectedCompany() {
         return this.companies.find(c => String(c.id) === String(this.companyId)) || null;
@@ -76,6 +91,44 @@
         if (this.selectedCompany && !this.picName) {
             this.picName = this.selectedCompany.pic_name || '';
         }
+        if (this.mode === 'industri' && this.selectedCompany) {
+            const targetSuffix = this.companyCategory === 'kerja_sama' ? '_kerja_sama' : '_umum';
+            const altSuffix = this.companyCategory === 'kerja_sama' ? '_umum' : '_kerja_sama';
+            this.items.forEach(it => {
+                if (it.service_tier === 'industri' && it.service_package_key && it.service_package_key.endsWith(altSuffix)) {
+                    const candidateKey = it.service_package_key.slice(0, -altSuffix.length) + targetSuffix;
+                    if (this.packagesForTier('industri')[candidateKey]) {
+                        it.service_package_key = candidateKey;
+                    }
+                }
+            });
+        }
+    },
+
+    onModeChange() {
+        this.selectedFormIds = [];
+        this.syncCandidatesFromForms();
+        const defaultTier = this.mode === 'industri' ? 'industri' : 'non_industri_bakat_minat';
+        const defaultKey = this.mode === 'industri'
+            ? (this.companyCategory === 'kerja_sama' ? 'long_staf_kerja_sama' : 'long_staf_umum')
+            : 'short_umum';
+        this.items = [
+            { service_tier: defaultTier, service_package_key: defaultKey, quantity: Math.max(1, this.candidateRows.length) }
+        ];
+        this.candidateRows.forEach(r => { r.service_item_index = 0; });
+        this.syncItemQuantities();
+    },
+
+    syncItemQuantities() {
+        if (this.candidateRows.length === 0) return;
+        const counts = {};
+        this.candidateRows.forEach(c => {
+            const idx = Number(c.service_item_index || 0);
+            counts[idx] = (counts[idx] || 0) + 1;
+        });
+        this.items.forEach((it, idx) => {
+            it.quantity = counts[idx] || 0;
+        });
     },
 
     get filteredForms() {
@@ -90,7 +143,7 @@
         });
     },
 
-    candidateRows: [],
+    candidateRows: @js($oldCandidates),
 
     syncCandidatesFromForms() {
         // Pertahankan kandidat yang sudah ada & tambahkan form baru yang dicentang
@@ -120,6 +173,7 @@
             }
         });
         this.candidateRows = [...nextRows, ...keepManual];
+        this.syncItemQuantities();
     },
 
     toggleFormCheck(formId) {
@@ -144,6 +198,7 @@
             assigned_psikolog_id: '',
             assigned_editor_id: '',
         });
+        this.syncItemQuantities();
     },
 
     removeCandidate(index) {
@@ -152,21 +207,39 @@
             this.selectedFormIds = this.selectedFormIds.filter(id => String(id) !== String(row.client_form_id));
         }
         this.candidateRows.splice(index, 1);
+        this.syncItemQuantities();
+    },
+
+    defaultPackageForTier(tier) {
+        const pkgs = Object.keys(this.catalog[tier]?.packages || {});
+        if (pkgs.length === 0) return '';
+        if (tier === 'industri' || tier === 'non_industri_bakat_minat') {
+            const suffix = (this.mode === 'industri' && this.companyCategory === 'kerja_sama') ? '_kerja_sama' : '_umum';
+            const match = pkgs.find(k => k.endsWith(suffix));
+            if (match) return match;
+        }
+        return pkgs[0];
     },
 
     addItem() {
         const defaultTier = this.mode === 'industri' ? 'industri' : 'non_industri_bakat_minat';
-        const pkgs = Object.keys(this.catalog[defaultTier]?.packages || {});
         this.items.push({
             service_tier: defaultTier,
-            service_package_key: pkgs[0] || '',
-            quantity: 1,
+            service_package_key: this.defaultPackageForTier(defaultTier),
+            quantity: 0,
         });
+        this.syncItemQuantities();
     },
 
     removeItem(idx) {
         if (this.items.length > 1) {
             this.items.splice(idx, 1);
+            this.candidateRows.forEach(r => {
+                if (Number(r.service_item_index || 0) >= this.items.length) {
+                    r.service_item_index = 0;
+                }
+            });
+            this.syncItemQuantities();
         }
     },
 
@@ -232,37 +305,35 @@
         return 'Rp ' + Number(val || 0).toLocaleString('id-ID');
     },
 
-    async submitQuickCompany() {
-        if (!this.quickCompanyForm.name.trim()) return;
-        const resp = await fetch('{{ route('companies.store') }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify(this.quickCompanyForm)
-        });
-        if (resp.ok) {
-            const data = await resp.json();
-            if (data.company) {
-                this.companies.push(data.company);
-                this.companyId = String(data.company.id);
-                this.picName = data.company.pic_name || '';
-                this.quickCompanyModalOpen = false;
-                this.quickCompanyForm = { name: '', category: 'umum', pic_name: '', pic_phone: '', pic_email: '' };
-            }
-        }
-    },
-
     attemptCancel() {
-        if (this.candidateRows.length > 0 || this.picName || this.notes) {
+        const isDirty = this.candidateRows.length > 0
+            || Boolean(this.companyId)
+            || Boolean(this.picName)
+            || Boolean(this.location)
+            || Boolean(this.notes)
+            || this.requiresOutgoingLetter
+            || this.items.length > 1
+            || this.testerIds.length > 0
+            || this.skorerManualIds.length > 0
+            || this.skorerSoftwareIds.length > 0;
+        if (isDirty) {
             this.unsavedModalOpen = true;
             return;
         }
         window.location.href = this.pendingCancelUrl;
     }
 }" class="space-y-6">
+
+    @if($errors->any())
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-4 space-y-1">
+            <p class="text-xs font-semibold text-red-700">Mohon perbaiki kesalahan berikut sebelum menyimpan booking:</p>
+            <ul class="list-disc list-inside text-xs font-medium text-red-700 space-y-0.5">
+                @foreach($errors->all() as $err)
+                    <li>{{ $err }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('psychotest-bookings.store') }}" class="space-y-6">
         @csrf
@@ -278,7 +349,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="text-xs font-medium text-slate-500 mb-1 block">Jenis Layanan Psikotes *</label>
-                        <select name="mode" x-model="mode" @change="selectedFormIds = []; syncCandidatesFromForms();"
+                        <select name="mode" x-model="mode" @change="onModeChange()"
                             class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
                             <option value="industri">Psikotes Industri (Perusahaan)</option>
                             <option value="non_industri">Psikotes Non-Industri (Individu / Khusus)</option>
@@ -286,12 +357,7 @@
                     </div>
 
                     <div x-show="mode === 'industri'">
-                        <div class="flex items-center justify-between mb-1">
-                            <label class="text-xs font-medium text-slate-500 block">Perusahaan *</label>
-                            <button type="button" @click="quickCompanyModalOpen = true" class="text-xs font-medium text-purple-deep hover:underline cursor-pointer">
-                                + Tambah Perusahaan
-                            </button>
-                        </div>
+                        <label class="text-xs font-medium text-slate-500 mb-1 block">Perusahaan *</label>
                         <select name="company_id" x-model="companyId" @change="onCompanyChange()" :required="mode === 'industri'"
                             class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
                             <option value="">-- Pilih Perusahaan --</option>
@@ -369,7 +435,7 @@
                             <div class="md:col-span-3">
                                 <label class="text-xs font-medium text-slate-500 mb-1 block">Tier</label>
                                 <select :name="`items[${idx}][service_tier]`" x-model="item.service_tier"
-                                    @change="item.service_package_key = Object.keys(packagesForTier(item.service_tier))[0] || ''"
+                                    @change="item.service_package_key = defaultPackageForTier(item.service_tier)"
                                     class="w-full px-3 py-2 rounded-lg border border-[#D9C2F0] bg-white text-xs font-medium text-black min-h-[42px]">
                                     <option value="industri">Psikotes Industri</option>
                                     <option value="non_industri_bakat_minat">Non-Industri Bakat Minat</option>
@@ -387,7 +453,7 @@
                             </div>
                             <div class="md:col-span-2">
                                 <label class="text-xs font-medium text-slate-500 mb-1 block">Jumlah Peserta</label>
-                                <input type="number" min="1" :name="`items[${idx}][quantity]`" x-model="item.quantity"
+                                <input type="number" min="0" :name="`items[${idx}][quantity]`" x-model="item.quantity"
                                     class="w-full px-3 py-2 rounded-lg border border-[#D9C2F0] bg-white text-xs font-medium text-black min-h-[42px]">
                             </div>
                             <div class="md:col-span-2 flex items-center justify-between gap-2">
@@ -543,7 +609,7 @@
                                             class="w-full min-w-[130px] px-3 py-2 rounded-lg border border-[#D9C2F0] bg-white text-xs font-medium text-black">
                                     </td>
                                     <td class="px-4 py-3">
-                                        <select :name="`candidates[${cIdx}][service_item_index]`" x-model="cand.service_item_index"
+                                        <select :name="`candidates[${cIdx}][service_item_index]`" x-model="cand.service_item_index" @change="syncItemQuantities()"
                                             class="w-full min-w-[150px] px-3 py-2 rounded-lg border border-[#D9C2F0] bg-white text-xs font-medium text-black">
                                             <template x-for="(it, iIdx) in items" :key="iIdx">
                                                 <option :value="iIdx" x-text="`Paket #${iIdx + 1}: ${it.service_package_key}`"></option>
@@ -601,42 +667,6 @@
             </div>
         </div>
     </form>
-
-    {{-- Modal Cepat Tambah Perusahaan --}}
-    <div x-show="quickCompanyModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-[#1F0E38]/50 backdrop-blur-md"></div>
-        <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative w-full max-w-md rounded-2xl bg-white shadow-[0_30px_70px_rgba(74,35,128,0.2)] overflow-hidden">
-                <div class="px-6 py-4 bg-purple-deep flex items-center justify-between text-white">
-                    <h3 class="text-base font-semibold">Tambah Perusahaan Baru</h3>
-                    <button type="button" @click="quickCompanyModalOpen = false" class="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/15 cursor-pointer">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
-                </div>
-                <div class="p-6 space-y-4">
-                    <div>
-                        <label class="text-xs font-medium text-slate-500 mb-1 block">Nama Perusahaan *</label>
-                        <input type="text" x-model="quickCompanyForm.name" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
-                    </div>
-                    <div>
-                        <label class="text-xs font-medium text-slate-500 mb-1 block">Kategori Tarif *</label>
-                        <select x-model="quickCompanyForm.category" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
-                            <option value="umum">Umum</option>
-                            <option value="kerja_sama">Kerja Sama</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs font-medium text-slate-500 mb-1 block">Nama PIC</label>
-                        <input type="text" x-model="quickCompanyForm.pic_name" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
-                    </div>
-                    <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
-                        <button type="button" @click="quickCompanyModalOpen = false" class="px-5 py-2.5 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-sm shadow-xs cursor-pointer">Batal</button>
-                        <button type="button" @click="submitQuickCompany()" class="px-5 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-sm shadow-xs cursor-pointer">Simpan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     {{-- Modal Unsaved Changes --}}
     <div x-show="unsavedModalOpen" x-cloak class="fixed inset-0 z-[60] overflow-y-auto" role="dialog" aria-modal="true">

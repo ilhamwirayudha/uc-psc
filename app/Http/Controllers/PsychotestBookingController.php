@@ -103,6 +103,35 @@ class PsychotestBookingController extends Controller
             'candidates.required' => 'Minimal pilih atau tambahkan 1 kandidat peserta.',
         ]);
 
+        $totalItemQty = collect($validated['items'])->sum(fn ($it) => (int) ($it['quantity'] ?? 0));
+        $candidateCount = count($validated['candidates']);
+        if ($totalItemQty !== $candidateCount) {
+            return back()->withInput()->withErrors([
+                'items' => "Total jumlah peserta pada paket ({$totalItemQty}) harus sama dengan jumlah kandidat yang didaftarkan ({$candidateCount}).",
+            ]);
+        }
+
+        $countsByItem = [];
+        foreach ($validated['candidates'] as $cand) {
+            $itemIdx = (int) ($cand['service_item_index'] ?? 0);
+            if (!isset($validated['items'][$itemIdx])) {
+                return back()->withInput()->withErrors([
+                    'candidates' => 'Setiap kandidat wajib dipetakan ke baris paket layanan yang valid.',
+                ]);
+            }
+            $countsByItem[$itemIdx] = ($countsByItem[$itemIdx] ?? 0) + 1;
+        }
+
+        foreach ($validated['items'] as $idx => $it) {
+            $expectedQty = (int) ($it['quantity'] ?? 0);
+            $mappedQty = $countsByItem[$idx] ?? 0;
+            if ($mappedQty !== $expectedQty) {
+                return back()->withInput()->withErrors([
+                    'items' => 'Jumlah peserta pada paket baris #' . ($idx + 1) . " ({$expectedQty}) harus sama dengan jumlah kandidat yang memilih paket tersebut ({$mappedQty}).",
+                ]);
+            }
+        }
+
         // Validasi Anti-Bentrok KILAT: 1 Psikolog maks 1 peserta KILAT di tanggal yang sama
         $kilatByPsych = [];
         foreach ($validated['candidates'] as $cand) {
@@ -123,6 +152,27 @@ class PsychotestBookingController extends Controller
             if ($existingCount >= 1) {
                 return back()->withInput()->withErrors([
                     'candidates' => "{$counselorName} sudah memegang peserta KILAT lain pada tanggal {$validated['tanggal_dijadwalkan']}.",
+                ]);
+            }
+        }
+
+        // Validasi anti-double booking untuk formulir kandidat yang dipilih
+        $requestedFormIds = collect($validated['candidates'])->pluck('client_form_id')->filter()->map(fn ($id) => (int) $id);
+        if ($requestedFormIds->count() !== $requestedFormIds->unique()->count()) {
+            return back()->withInput()->withErrors([
+                'candidates' => 'Formulir kandidat yang sama tidak boleh dipilih lebih dari satu kali dalam satu booking.',
+            ]);
+        }
+        if ($requestedFormIds->isNotEmpty()) {
+            $alreadyBookedForm = ClientForm::whereIn('id', $requestedFormIds->all())
+                ->where(function ($q) {
+                    $q->where('booking_status', 'sudah_dibooking')
+                        ->orWhereNotNull('booking_id');
+                })
+                ->first();
+            if ($alreadyBookedForm) {
+                return back()->withInput()->withErrors([
+                    'candidates' => "Formulir kandidat {$alreadyBookedForm->client_name} ({$alreadyBookedForm->ticket_number}) sudah dibooking sebelumnya.",
                 ]);
             }
         }
@@ -248,9 +298,10 @@ class PsychotestBookingController extends Controller
             foreach ($validated['candidates'] as $cand) {
                 $itemIdx = (int) ($cand['service_item_index'] ?? 0);
                 $serviceItem = $createdItems[$itemIdx] ?? reset($createdItems);
+                $isCandSpecial = ($serviceItem?->service_tier === 'non_industri_khusus') || $allSpecial;
                 $form = !empty($cand['client_form_id']) ? ClientForm::find($cand['client_form_id']) : null;
 
-                $assignedPsikologId = $allSpecial ? null : (!empty($cand['assigned_psikolog_id']) ? (int) $cand['assigned_psikolog_id'] : null);
+                $assignedPsikologId = $isCandSpecial ? null : (!empty($cand['assigned_psikolog_id']) ? (int) $cand['assigned_psikolog_id'] : null);
                 $assignedEditorId = !empty($cand['assigned_editor_id']) ? (int) $cand['assigned_editor_id'] : null;
 
                 if ($assignedPsikologId) {
@@ -280,10 +331,18 @@ class PsychotestBookingController extends Controller
                 ]);
 
                 if ($form) {
-                    $form->update([
+                    $formUpdates = [
                         'booking_id' => $booking->id,
                         'booking_status' => 'sudah_dibooking',
-                    ]);
+                    ];
+                    if ($company && empty(trim((string) $form->company_name))) {
+                        $formUpdates['company_name'] = $company->name;
+                    }
+                    $form->update($formUpdates);
+
+                    if ($company && $form->client && empty(trim((string) $form->client->company_name))) {
+                        $form->client->update(['company_name' => $company->name]);
+                    }
                 }
             }
 
@@ -400,15 +459,75 @@ class PsychotestBookingController extends Controller
                 'location' => 'nullable|string|max:255',
                 'requires_outgoing_letter' => 'nullable|boolean',
                 'delivery_mode' => 'required|in:softcopy,hardcopy,both',
+                'status' => 'nullable|in:baru,selesai,batal',
                 'notes' => 'nullable|string',
             ]);
             $validated['requires_outgoing_letter'] = $request->boolean('requires_outgoing_letter');
 
-            $booking->update($validated);
-            $this->slaService->recalculateForBooking($booking);
+            $booking->loadMissing('candidates');
+            if ($validated['requires_outgoing_letter'] && !$booking->requires_outgoing_letter) {
+                $blockedByDraft = $booking->candidates
+                    ->where('attendance_status', '!=', 'absen')
+                    ->first(fn ($c) => is_null($c->step_surat_keluar_at) && (!is_null($c->step_draft_hpp_at) || !is_null($c->step_editing_at) || !is_null($c->step_cetak_at) || !is_null($c->step_approval_at) || !is_null($c->step_kirim_at)));
+                if ($blockedByDraft) {
+                    return back()->with('error', 'Tidak dapat mengaktifkan wajib Surat Keluar karena ada kandidat yang sudah melewati tahap Draft HPP ke atas. Batalkan tahap tersebut terlebih dahulu.');
+                }
+            }
+
+            if (in_array($validated['delivery_mode'], ['hardcopy', 'both'], true) && $booking->delivery_mode === 'softcopy') {
+                $blockedByApproval = $booking->candidates
+                    ->where('attendance_status', '!=', 'absen')
+                    ->first(fn ($c) => is_null($c->step_cetak_at) && (!is_null($c->step_approval_at) || !is_null($c->step_kirim_at)));
+                if ($blockedByApproval) {
+                    return back()->with('error', 'Tidak dapat mengubah metode pengiriman ke Hardcopy/Keduanya karena sudah ada kandidat yang melewati tahap Approval/Kirim tanpa Cetak. Batalkan tahap tersebut terlebih dahulu.');
+                }
+            }
+
+            $oldDate = $booking->tanggal_dijadwalkan ? Carbon::parse($booking->tanggal_dijadwalkan) : null;
+            $oldPsychIds = $booking->candidates->pluck('assigned_psikolog_id')->filter()->unique()->values()->all();
+
+            if (!isset($validated['status'])) {
+                unset($validated['status']);
+            }
+
+            DB::transaction(function () use ($booking, $validated) {
+                $booking->update($validated);
+
+                if (!$validated['requires_outgoing_letter']) {
+                    $booking->candidates()->whereNotNull('step_surat_keluar_at')->update([
+                        'step_surat_keluar_at' => null,
+                        'step_surat_keluar_by' => null,
+                    ]);
+                }
+
+                if ($validated['delivery_mode'] === 'softcopy') {
+                    $booking->candidates()->whereNotNull('step_cetak_at')->update([
+                        'step_cetak_at' => null,
+                        'step_cetak_by' => null,
+                    ]);
+                }
+
+                if (($validated['status'] ?? null) === 'batal') {
+                    ClientForm::where('booking_id', $booking->id)->update([
+                        'booking_id' => null,
+                        'booking_status' => 'belum_dibooking',
+                    ]);
+                }
+            });
+
+            $booking->refresh();
+            if ($booking->status !== 'batal') {
+                $booking->syncOverallCompletionStatus();
+            }
+
+            $this->slaService->recalculateForBooking($booking, $oldPsychIds, $oldDate);
             $this->gcalService->syncBooking($booking);
 
-            return back()->with('success', 'Jadwal & konfigurasi pengiriman psikotes diperbarui.');
+            $msg = $booking->status === 'batal'
+                ? 'Booking psikotes berhasil dibatalkan; antrean SLA dan Google Calendar telah diperbarui.'
+                : 'Jadwal & konfigurasi pengiriman psikotes diperbarui.';
+
+            return back()->with('success', $msg);
         }
 
         if ($section === 'assignees') {
@@ -426,13 +545,16 @@ class PsychotestBookingController extends Controller
                 'candidate_kilat' => 'nullable|array',
             ]);
 
+            $booking->loadMissing('candidates.serviceItem');
+            $oldPsychIds = $booking->candidates->pluck('assigned_psikolog_id')->filter()->unique()->values()->all();
+
             // Validasi limit KILAT 1 per psikolog di tanggal yang sama
             if ($booking->tanggal_dijadwalkan) {
                 $dateStr = $booking->tanggal_dijadwalkan->toDateString();
                 $kilatCounts = [];
                 foreach ($booking->candidates as $cand) {
                     $isKilat = isset($validated['candidate_kilat'][$cand->id]);
-                    $pId = $validated['candidate_psikolog'][$cand->id] ?? $cand->assigned_psikolog_id;
+                    $pId = $cand->isSpecialPackage() ? null : ($validated['candidate_psikolog'][$cand->id] ?? $cand->assigned_psikolog_id);
                     if ($isKilat && $pId && !$cand->isAbsent()) {
                         $kilatCounts[(int) $pId] = ($kilatCounts[(int) $pId] ?? 0) + 1;
                     }
@@ -450,7 +572,7 @@ class PsychotestBookingController extends Controller
                 $editorIds = collect();
 
                 foreach ($booking->candidates as $cand) {
-                    $pId = $booking->isSpecialNonIndustri() ? null : ($validated['candidate_psikolog'][$cand->id] ?? null);
+                    $pId = $cand->isSpecialPackage() ? null : ($validated['candidate_psikolog'][$cand->id] ?? null);
                     $eId = $validated['candidate_editor'][$cand->id] ?? null;
                     $isKilat = isset($validated['candidate_kilat'][$cand->id]);
 
@@ -509,9 +631,11 @@ class PsychotestBookingController extends Controller
                         ]);
                     }
                 }
+
+                $this->workflowService->syncScorerCompletionState($booking, auth()->user());
             });
 
-            $this->slaService->recalculateForBooking($booking);
+            $this->slaService->recalculateForBooking($booking, $oldPsychIds);
             $this->gcalService->syncBooking($booking);
 
             return back()->with('success', 'Penugasan Psikolog dan Staff berhasil diperbarui dan tersinkron ke Kelola Penugasan.');
@@ -529,11 +653,7 @@ class PsychotestBookingController extends Controller
         $this->authorize('view', $booking);
 
         $user = auth()->user();
-        $canManage = $user->isAdmin()
-            || ($user->isPsikolog() && $user->counselor_id && (int) $candidate->assigned_psikolog_id === (int) $user->counselor_id)
-            || ($user->isStaff() && $booking->assignees()->where('role_type', 'tester')->where('user_id', $user->id)->exists());
-
-        if (!$canManage) {
+        if (!$this->workflowService->canUserManageCandidateAttendance($user, $booking, $candidate)) {
             abort(403, 'Anda tidak berhak mengubah status kehadiran kandidat ini.');
         }
 
@@ -557,9 +677,9 @@ class PsychotestBookingController extends Controller
             abort(403, 'Anda hanya dapat mengonfirmasi tugas yang di-assign kepada Anda.');
         }
 
-        $this->workflowService->toggleBatchAssigneeCompletion($booking, $assignee, $actor);
+        [$ok, $message] = $this->workflowService->toggleBatchAssigneeCompletion($booking, $assignee, $actor);
 
-        return back()->with('success', "Status pengerjaan {$assignee->role_label} ({$assignee->assignee_name}) diperbarui.");
+        return back()->with($ok ? 'success' : 'error', $message);
     }
 
     public function toggleCandidateStep(Request $request, Booking $booking, BookingCandidate $candidate)
@@ -588,10 +708,29 @@ class PsychotestBookingController extends Controller
         return back()->with($ok ? 'success' : 'error', $message);
     }
 
+    public function toggleSoftcopySent(Booking $booking, BookingCandidate $candidate)
+    {
+        if ($candidate->booking_id !== $booking->id) {
+            abort(404);
+        }
+
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Hanya Admin yang dapat menandai pengiriman Softcopy.');
+        }
+
+        [$ok, $message] = $this->workflowService->toggleSoftcopySent($booking, $candidate, auth()->user());
+
+        return back()->with($ok ? 'success' : 'error', $message);
+    }
+
     public function toggleKilatSent(Booking $booking, BookingCandidate $candidate)
     {
         if ($candidate->booking_id !== $booking->id) {
             abort(404);
+        }
+
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Hanya Admin yang dapat menandai laporan KILAT terkirim.');
         }
 
         [$ok, $message] = $this->workflowService->markKilatSent($booking, $candidate, auth()->user());
@@ -605,14 +744,23 @@ class PsychotestBookingController extends Controller
             abort(403, 'Hanya Admin yang dapat mengakses Rekap Tagihan Akhir Bulan.');
         }
 
-        $month = $request->input('month', now()->format('Y-m'));
+        $rawMonth = (string) $request->input('month', '');
+        $month = preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $rawMonth)
+            ? $rawMonth
+            : now()->format('Y-m');
         $scheme = $request->input('scheme');
 
-        $start = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
+        try {
+            $start = Carbon::createFromFormat('!Y-m', $month)->startOfMonth();
+        } catch (\Throwable) {
+            $month = now()->format('Y-m');
+            $start = now()->copy()->startOfMonth();
+        }
         $end = $start->copy()->endOfMonth();
 
         $query = Booking::with(['company', 'client', 'candidates', 'serviceItems'])
             ->where('kategori', 'psikotes')
+            ->where('status', '!=', 'batal')
             ->whereIn('billing_scheme', ['I', 'R'])
             ->whereBetween('tanggal_dijadwalkan', [$start->toDateString(), $end->toDateString()])
             ->orderBy('tanggal_dijadwalkan');

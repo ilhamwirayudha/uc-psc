@@ -20,7 +20,7 @@ class OperationalCalendarController extends Controller
             ->get(['id', 'name', 'specialization', 'photo']);
 
         // 2. Ambil Staff & Psikolog Login Aktif untuk Filter
-        $staffList = User::whereIn('role', ['admin', 'staff'])
+        $staffList = User::whereIn('role', ['admin', 'staff', 'psikolog'])
             ->orderBy('name')
             ->get(['id', 'name', 'role', 'email']);
 
@@ -47,12 +47,6 @@ class OperationalCalendarController extends Controller
             $psikotesQuery->where(function ($q) use ($cId) {
                 $q->whereHas('assignees', fn ($aq) => $aq->where('counselor_id', $cId))
                   ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $cId));
-            });
-        } elseif ($user->isStaff()) {
-            $psikotesQuery->where(function ($q) use ($user) {
-                $q->where('staff_penguji_id', $user->id)
-                  ->orWhereHas('assignees', fn ($aq) => $aq->where('user_id', $user->id))
-                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_editor_id', $user->id));
             });
         }
 
@@ -100,6 +94,19 @@ class OperationalCalendarController extends Controller
             $staffName = $testerNames ?: ($booking->staffPenguji?->name ?? ($psychNames !== '-' ? $psychNames : 'Tim Psikotes'));
             $firstTesterId = $booking->assignees->where('role_type', 'tester')->first()?->user_id ?? $booking->staff_penguji_id;
             $firstPsychId = $booking->candidates->whereNotNull('assigned_psikolog_id')->first()?->assigned_psikolog_id;
+            $allStaffIds = $booking->assignees->pluck('user_id')
+                ->merge($booking->candidates->pluck('assigned_editor_id'))
+                ->push($booking->staff_penguji_id)
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
+            $allCounselorIds = $booking->assignees->pluck('counselor_id')
+                ->merge($booking->candidates->pluck('assigned_psikolog_id'))
+                ->filter()
+                ->unique()
+                ->values()
+                ->all();
 
             $calendarEvents[] = [
                 'id' => 'testing-booking-' . $booking->id,
@@ -115,8 +122,10 @@ class OperationalCalendarController extends Controller
                 'client_id' => $booking->client_id,
                 'counselor_name' => $psychNames,
                 'counselor_id' => $firstPsychId,
+                'counselor_ids' => $allCounselorIds,
                 'staff_name' => $staffName,
                 'staff_id' => $firstTesterId,
+                'staff_ids' => $allStaffIds,
                 'role_label' => 'Tim Psikotes',
                 'status' => $booking->status,
                 'status_label' => ucfirst(str_replace('_', ' ', $booking->status)),

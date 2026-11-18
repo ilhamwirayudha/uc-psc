@@ -89,7 +89,7 @@
 
                     {{-- Kolom Email --}}
                     <div>
-                        <label for="email" class="block text-xs sm:text-sm font-bold text-[#3B2C52] mb-2">Email</label>
+                        <label for="email" class="block text-xs font-medium text-[#3B2C52] mb-1.5">Email</label>
                         <div class="relative">
                             <input 
                                 type="email" 
@@ -105,8 +105,8 @@
 
                     {{-- Kolom Password --}}
                     <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <label for="password" class="block text-xs sm:text-sm font-bold text-[#3B2C52]">Password</label>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label for="password" class="block text-xs font-medium text-[#3B2C52]">Password</label>
                         </div>
                         <div class="relative">
                             <input 
@@ -205,48 +205,44 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-[2.4rem] bg-white/90 backdrop-blur-xl text-left shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-6 sm:p-7">
+                class="relative transform overflow-hidden rounded-2xl bg-white/95 backdrop-blur-xl text-left shadow-[0_30px_70px_rgba(74,35,128,0.2)] transition-all sm:my-8 sm:w-full sm:max-w-md p-6 sm:p-7">
 
                 {{-- Close Button --}}
-                <button type="button" @click="showForgotModal = false" class="absolute top-5 right-5 text-[#827299] hover:text-purple-deep p-1.5 rounded-lg hover:bg-white/60 transition cursor-pointer z-10" title="Tutup">
+                <button type="button" @click="showForgotModal = false" class="absolute top-5 right-5 text-[#827299] hover:text-purple-deep p-1.5 rounded-lg hover:bg-purple-50 transition cursor-pointer z-10" title="Tutup">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
 
-                {{-- Centered 3D Liquid Gem Lock Icon --}}
+                {{-- Centered Icon --}}
                 <div class="text-center mb-5">
-                    <div class="w-14 h-14 rounded-[1.4rem] grad-purple text-white flex items-center justify-center shadow-[0_12px_24px_rgba(74,35,128,0.22),0_0_0_1px_rgba(255,255,255,0.5)_inset,0_2px_4px_rgba(255,255,255,0.7)_inset] mx-auto mb-3.5 relative overflow-hidden">
-                        {{-- Convex Glass Sheen --}}
-                        <div class="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/35 via-white/10 to-transparent pointer-events-none rounded-t-[1.4rem]"></div>
-                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="relative z-10 drop-shadow-xs"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <div class="w-14 h-14 rounded-xl grad-purple text-white flex items-center justify-center shadow-sm mx-auto mb-3.5 relative overflow-hidden">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     </div>
                     <h3 class="text-xl font-extrabold text-[#2A2035] tracking-tight mb-1" id="modal-title">Lupa Password Akun?</h3>
                     <p class="text-xs text-[#6B5B85]">Panduan reset kata sandi sistem UC PSC</p>
                 </div>
 
-                {{-- Single Minimalist Frosted Info Card --}}
-                <div class="bg-white/70 rounded-xl p-4 sm:p-5 border border-white/80 text-xs sm:text-[13px] leading-relaxed mb-6 shadow-[inset_0_2px_4px_rgba(74,35,128,0.02)] space-y-2.5 text-justify">
-                    <p class="text-[#4A3E5C] font-semibold">
-                        Demi menjaga keamanan data dan rekam medis klien, reset kata sandi dikelola secara terpusat oleh <strong class="text-purple-deep">Administrator UC PSC</strong>.
+                {{-- Info Card --}}
+                <div class="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-100 text-xs sm:text-[13px] leading-relaxed mb-6 space-y-2.5 text-justify">
+                    <p class="text-black font-medium">
+                        Demi menjaga keamanan data dan rekam medis klien, reset kata sandi dikelola secara terpusat oleh <span class="font-medium text-purple-deep">Administrator UC PSC</span>.
                     </p>
-                    <p class="text-[#6B5B85]">
+                    <p class="text-slate-600">
                         Silakan hubungi admin melalui WhatsApp resmi untuk verifikasi identitas dan penerbitan kata sandi akun baru Anda.
                     </p>
                 </div>
 
-                {{-- Symmetrical 2-Column Action Buttons --}}
+                {{-- Action Buttons --}}
                 <div class="grid grid-cols-2 gap-3 pt-3 border-t border-purple-100/70">
                     <button type="button" @click="showForgotModal = false"
-                        class="w-full py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold text-[#6B5B85] hover:text-[#2A2035] bg-white/80 hover:bg-white border border-[#EDE1FA] shadow-xs hover:shadow-sm transition cursor-pointer flex items-center justify-center">
+                        class="w-full py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition cursor-pointer flex items-center justify-center">
                         Kembali
                     </button>
                     <a href="https://wa.me/6288232013931?text=Halo%20Admin%20UC%20PSC,%20saya%20membutuhkan%20bantuan%20reset%20password%20akun%20saya."
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="w-full py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-lg text-xs sm:text-sm font-bold transition shadow-[0_10px_22px_rgba(16,185,129,0.28)] border border-white/20 flex items-center justify-center gap-1.5 cursor-pointer relative overflow-hidden group">
-                        {{-- Gloss Sheen Reflection --}}
-                        <div class="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/30 via-white/10 to-transparent pointer-events-none rounded-t-lg"></div>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="relative z-10"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                        <span class="relative z-10">WhatsApp Admin</span>
+                        class="w-full py-2.5 sm:py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs sm:text-sm font-semibold transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                        <span>WhatsApp Admin</span>
                     </a>
                 </div>
 

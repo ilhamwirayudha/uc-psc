@@ -161,10 +161,12 @@ class PublicClientFormController extends Controller
                     default => 'other',
                 };
 
-                // 1. Create or Find Client
-                $client = Client::firstOrNew([
-                    'phone' => trim($primaryPhone),
-                ]);
+                // 1. Create or Find Client without overwriting a different person sharing the same phone
+                $client = Client::resolveForFormSubmission(
+                    (string) $primaryPhone,
+                    (string) $request->nama_lengkap,
+                    'individu'
+                );
                 if (!$client->exists || empty($client->name)) {
                     $client->name = trim($request->nama_lengkap);
                 }
@@ -179,7 +181,7 @@ class PublicClientFormController extends Controller
                 $client->service_type = 'Konseling Anak';
                 $client->counseling_type = $counselingType;
                 $client->source = $sourceEnum;
-                $client->status = 'unassigned';
+                $client->ensureInitialStatus();
                 $client->save();
 
                 // 2. Create ClientForm Record with JSON answers
@@ -312,9 +314,11 @@ class PublicClientFormController extends Controller
                 };
 
                 // 1. Create or Find Client
-                $client = Client::firstOrNew([
-                    'phone' => trim($request->phone),
-                ]);
+                $client = Client::resolveForFormSubmission(
+                    (string) $request->phone,
+                    (string) $request->nama_lengkap,
+                    'individu'
+                );
                 $client->name = trim($request->nama_lengkap);
 
                 $client->jenis = 'individu';
@@ -325,11 +329,11 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
                 $client->occupation = $request->pekerjaan;
-                $client->email = $request->email ?? null;
+                $client->applyOptionalEmail($request->email);
                 $client->service_type = 'Konseling Dewasa';
                 $client->counseling_type = $counselingType;
                 $client->source = $sourceEnum;
-                $client->status = 'unassigned';
+                $client->ensureInitialStatus();
                 $client->save();
 
                 // 2. Create ClientForm Record
@@ -460,9 +464,11 @@ class PublicClientFormController extends Controller
                 $isOnline = str_contains(strtolower($request->preferensi_konseling), 'online');
                 $counselingType = $isOnline ? 'online' : 'offline';
 
-                $client = Client::firstOrNew([
-                    'phone' => trim($request->phone),
-                ]);
+                $client = Client::resolveForFormSubmission(
+                    (string) $request->phone,
+                    (string) $request->nama_lengkap,
+                    'individu'
+                );
                 if (!$client->exists || empty($client->name)) {
                     $client->name = trim($request->nama_lengkap);
                 }
@@ -475,22 +481,27 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
                 $client->occupation = $request->pekerjaan;
-                $client->email = $request->email;
+                $client->applyOptionalEmail($request->email);
                 $client->service_type = 'Konseling Pra-Nikah';
                 $client->counseling_type = $counselingType;
                 $client->source = 'other';
-                $client->status = 'unassigned';
+                $client->ensureInitialStatus();
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('pra_nikah');
                 $booking = Booking::createInitialForForm($client, 'pra_nikah', $counselingType);
+
+                $partnerName = trim((string) $request->nama_pasangan);
+                $formClientName = $partnerName !== ''
+                    ? trim($request->nama_lengkap) . ' & ' . $partnerName
+                    : trim($request->nama_lengkap);
 
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'pra_nikah',
                     'client_id' => $client->id,
                     'booking_id' => $booking->id,
-                    'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
+                    'client_name' => $formClientName,
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
@@ -606,9 +617,11 @@ class PublicClientFormController extends Controller
                 $isOnline = str_contains(strtolower($request->preferensi_konseling), 'online');
                 $counselingType = $isOnline ? 'online' : 'offline';
 
-                $client = Client::firstOrNew([
-                    'phone' => trim($request->phone),
-                ]);
+                $client = Client::resolveForFormSubmission(
+                    (string) $request->phone,
+                    (string) $request->nama_lengkap,
+                    'individu'
+                );
                 if (!$client->exists || empty($client->name)) {
                     $client->name = trim($request->nama_lengkap);
                 }
@@ -621,22 +634,27 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
                 $client->occupation = $request->pekerjaan;
-                $client->email = $request->email;
+                $client->applyOptionalEmail($request->email);
                 $client->service_type = 'Konseling Pernikahan';
                 $client->counseling_type = $counselingType;
                 $client->source = 'other';
-                $client->status = 'unassigned';
+                $client->ensureInitialStatus();
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('pernikahan');
                 $booking = Booking::createInitialForForm($client, 'pernikahan', $counselingType);
+
+                $partnerName = trim((string) $request->nama_pasangan);
+                $formClientName = $partnerName !== ''
+                    ? trim($request->nama_lengkap) . ' & ' . $partnerName
+                    : trim($request->nama_lengkap);
 
                 $clientForm = ClientForm::create([
                     'ticket_number' => $ticketNumber,
                     'form_type' => 'pernikahan',
                     'client_id' => $client->id,
                     'booking_id' => $booking->id,
-                    'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
+                    'client_name' => $formClientName,
                     'client_phone' => trim($request->phone),
                     'consent_agreed' => true,
                     'consent_agreed_at' => now(),
@@ -706,9 +724,11 @@ class PublicClientFormController extends Controller
                 $pref = strtolower($request->preferred_counseling ?? 'offline');
                 $counselingType = str_contains($pref, 'online') ? 'online' : 'offline';
 
-                $client = Client::firstOrNew([
-                    'phone' => trim($request->phone),
-                ]);
+                $client = Client::resolveForFormSubmission(
+                    (string) $request->phone,
+                    (string) $request->full_name,
+                    'individu'
+                );
                 $client->name = trim($request->full_name);
 
                 $client->jenis = 'individu';
@@ -718,11 +738,11 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->religion;
                 $client->education = $request->last_education;
                 $client->occupation = $request->occupation ?? 'General Client';
-                $client->email = $request->email ?? null;
+                $client->applyOptionalEmail($request->email);
                 $client->service_type = 'Biography Form (English)';
                 $client->counseling_type = $counselingType;
                 $client->source = 'other';
-                $client->status = 'unassigned';
+                $client->ensureInitialStatus();
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('biography_en');
@@ -808,9 +828,11 @@ class PublicClientFormController extends Controller
             return DB::transaction(function () use ($request) {
                 $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
 
-                $client = Client::firstOrNew([
-                    'phone' => trim($request->phone),
-                ]);
+                $client = Client::resolveForFormSubmission(
+                    (string) $request->phone,
+                    (string) $request->nama_lengkap,
+                    'individu'
+                );
                 $client->name = trim($request->nama_lengkap);
 
                 $client->jenis = 'individu';
@@ -823,11 +845,11 @@ class PublicClientFormController extends Controller
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
                 $client->occupation = 'Peserta Non-Industri';
-                $client->email = $request->email ?? null;
+                $client->applyOptionalEmail($request->email);
                 $client->service_type = 'Layanan Non-Industri';
                 $client->counseling_type = 'offline';
                 $client->source = 'other';
-                $client->status = 'unassigned';
+                $client->ensureInitialStatus();
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('non_industri');
@@ -957,13 +979,17 @@ class PublicClientFormController extends Controller
             return DB::transaction(function () use ($request) {
                 $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
 
-                $client = Client::firstOrNew([
-                    'phone' => trim($request->phone),
-                ]);
+                $company = trim((string) $request->input('nama_perusahaan', ''));
+                $client = Client::resolveForFormSubmission(
+                    (string) $request->phone,
+                    (string) $request->nama_lengkap,
+                    'industri',
+                    null,
+                    $company !== '' ? $company : null
+                );
                 $client->name = trim($request->nama_lengkap);
 
                 $client->jenis = 'industri';
-                $company = trim($request->nama_perusahaan ?? $request->instansi_1_nama ?? '');
                 if (!empty($company)) {
                     $client->company_name = $company;
                 }
@@ -981,11 +1007,11 @@ class PublicClientFormController extends Controller
                 $client->address = $request->alamat_sekarang;
                 $client->religion = $request->agama;
                 $client->education = $request->pendidikan_terakhir;
-                $client->email = $request->email ?? null;
+                $client->applyOptionalEmail($request->email);
                 $client->service_type = 'Layanan Industri';
                 $client->counseling_type = 'offline';
                 $client->source = 'other';
-                $client->status = 'unassigned';
+                $client->ensureInitialStatus();
                 $client->save();
 
                 $ticketNumber = ClientForm::generateTicketNumber('industri');

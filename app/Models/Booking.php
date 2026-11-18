@@ -40,6 +40,7 @@ class Booking extends Model
         'session_end',
         'session_duration_standard',
         'overtime_minutes',
+        'overtime_units',
         'actual_duration_minutes',
         'is_overtime',
         'payment_workflow_status',
@@ -55,6 +56,7 @@ class Booking extends Model
         'forfeited_amount',
         'forfeited_reason',
         'rescheduled_at',
+        'rescheduled_by',
         'gcal_sync_status',
         'last_gcal_synced_at',
         'session_notes',
@@ -105,7 +107,7 @@ class Booking extends Model
             'session_notes' => null,
             'session_type' => $sessionType,
             'location' => null,
-            'status' => 'belum_assign',
+            'status' => $isPsikotes ? 'baru' : 'data_masuk',
             'staff_penguji_id' => null,
             'staff_koreksi_id' => null,
             'staff_pelapor_id' => null,
@@ -135,6 +137,7 @@ class Booking extends Model
             'requires_outgoing_letter' => 'boolean',
             'is_overtime' => 'boolean',
             'is_payment_forfeited' => 'boolean',
+            'overtime_units' => 'integer',
             'price' => 'decimal:2',
             'final_price' => 'decimal:2',
             'overtime_price' => 'decimal:2',
@@ -170,13 +173,21 @@ class Booking extends Model
     }
 
     /**
-     * Apakah sesi ini overtime.
+     * Apakah sesi ini overtime (standar 60 menit + toleransi 30 menit = > 90 menit).
+     * Hanya berlaku pada sesi konseling yang telah masuk tahap realisasi / pasca-sesi.
      */
     public function getIsOvertimeAttribute(): bool
     {
+        if ($this->kategori !== 'konseling' || !in_array($this->status, ['perlu_bayar_overtime', 'perlu_sesi_lanjutan', 'selesai'], true)) {
+            return (bool) ($this->attributes['is_overtime'] ?? false);
+        }
+
         $duration = $this->session_duration_minutes;
-        if ($duration === null) return false;
-        return $duration > $this->session_duration_standard;
+        if ($duration === null) {
+            return (bool) ($this->attributes['is_overtime'] ?? false);
+        }
+        $standard = (int) ($this->session_duration_standard ?: 60);
+        return $duration > ($standard + 30);
     }
 
     /**
@@ -195,13 +206,61 @@ class Booking extends Model
     }
 
     /**
-     * Menit overtime (durasi - standar).
+     * Menit overtime (dihitung dari standar 60 menit apabila durasi melewati batas toleransi 90 menit).
      */
     public function getOvertimeMinutesComputedAttribute(): int
     {
+        if ($this->kategori !== 'konseling' || !in_array($this->status, ['perlu_bayar_overtime', 'perlu_sesi_lanjutan', 'selesai'], true)) {
+            return (int) ($this->attributes['overtime_minutes'] ?? 0);
+        }
+
         $total = $this->session_duration_minutes;
         if ($total === null) return 0;
-        return max(0, $total - $this->session_duration_standard);
+        $standard = (int) ($this->session_duration_standard ?: 60);
+        if ($total <= ($standard + 30)) {
+            return 0;
+        }
+        return max(0, $total - $standard);
+    }
+
+    /**
+     * Hitung kelipatan blok jam overtime sesuai aturan UC PSC (Opsi A):
+     * Standar 60 mnt + toleransi 30 mnt (> 90 mnt baru overtime), lalu tiap blok 60 mnt = +1x tarif overtime.
+     */
+    public static function calculateOvertimeUnits(int $totalMinutes, int $standardMinutes = 60): int
+    {
+        $standard = max(1, $standardMinutes);
+        if ($totalMinutes <= ($standard + 30)) {
+            return 0;
+        }
+
+        return (int) ceil(($totalMinutes - $standard) / 60);
+    }
+
+    /**
+     * Kelipatan unit overtime terhitung (91-120 mnt = 1x, 121-180 mnt = 2x, dst.).
+     */
+    public function getOvertimeUnitsComputedAttribute(): int
+    {
+        if ($this->kategori !== 'konseling' || !in_array($this->status, ['perlu_bayar_overtime', 'perlu_sesi_lanjutan', 'selesai'], true)) {
+            return (int) ($this->attributes['overtime_units'] ?? 0);
+        }
+
+        $total = $this->session_duration_minutes;
+        if ($total === null) {
+            return (int) ($this->attributes['overtime_units'] ?? ($this->is_overtime ? 1 : 0));
+        }
+
+        $standard = (int) ($this->session_duration_standard ?: 60);
+        return self::calculateOvertimeUnits($total, $standard);
+    }
+
+    /**
+     * Total nominal biaya overtime (tarif overtime x kelipatan unit).
+     */
+    public function getOvertimeTotalAmountAttribute(): float
+    {
+        return (float) (($this->overtime_price ?? 0) * $this->overtime_units_computed);
     }
 
     // --- Relasi ke model lain ---
@@ -386,7 +445,7 @@ class Booking extends Model
 
     public function syncOverallCompletionStatus(): void
     {
-        if ($this->kategori !== 'psikotes') {
+        if ($this->kategori !== 'psikotes' || $this->status === 'batal') {
             return;
         }
 
@@ -395,9 +454,7 @@ class Booking extends Model
             return;
         }
 
-        $nonKilat = $candidates->where('is_kilat', false);
-        $targetSet = $nonKilat->isNotEmpty() ? $nonKilat : $candidates;
-        $allDelivered = $targetSet->every(fn (BookingCandidate $c) => $c->isCompletedForDelivery());
+        $allDelivered = $candidates->every(fn (BookingCandidate $c) => $c->isCompletedForDelivery());
 
         if ($allDelivered && $this->status !== 'selesai') {
             $this->update(['status' => 'selesai']);

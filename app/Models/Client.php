@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,9 +25,6 @@ class Client extends Model
         'occupation',
         'education',
         'marital_status',
-        'country',
-        'province',
-        'city',
         'address',
         'source',
         'service_type',
@@ -142,6 +140,32 @@ class Client extends Model
     }
 
     /**
+     * Scope daftar klien sesuai aturan visibilitas role (Admin/Staff: semua; Psikolog: yang ditangani langsung maupun via kandidat batch).
+     */
+    public function scopeVisibleToUser(Builder $query, User $user): Builder
+    {
+        if ($user->isAdmin() || $user->isStaff()) {
+            return $query;
+        }
+
+        if ($user->isPsikolog()) {
+            $counselorId = (int) ($user->counselor_id ?? 0);
+            if ($counselorId <= 0) {
+                return $query->whereRaw('1 = 0');
+            }
+
+            return $query->where(function ($q) use ($counselorId) {
+                $q->whereHas('bookings', fn ($bq) => $bq->where('counselor_id', $counselorId))
+                  ->orWhereHas('pairings', fn ($pq) => $pq->where('counselor_id', $counselorId))
+                  ->orWhereHas('bookings.candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $counselorId))
+                  ->orWhereHas('bookingCandidates', fn ($cq) => $cq->where('assigned_psikolog_id', $counselorId));
+            });
+        }
+
+        return $query->whereRaw('1 = 0');
+    }
+
+    /**
      * Tentukan apakah Psikolog terkait menangani klien ini (Konseling maupun Psikotes).
      */
     public function isHandledByUser(User $user): bool
@@ -171,6 +195,79 @@ class Client extends Model
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function bookingCandidates(): HasMany
+    {
+        return $this->hasMany(BookingCandidate::class);
+    }
+
+    /**
+     * Kumpulkan seluruh booking terkait klien ini, termasuk booking batch Psikotes Industri
+     * di mana klien terdaftar sebagai kandidat (BookingCandidate) meskipun client_id induk
+     * pada tabel bookings mengarah ke profil perusahaan.
+     */
+    public function allRelatedBookings(): \Illuminate\Support\Collection
+    {
+        $direct = $this->relationLoaded('bookings') ? $this->bookings : $this->bookings()->get();
+        $candidateBookings = $this->relationLoaded('bookingCandidates')
+            ? $this->bookingCandidates->pluck('booking')->filter()
+            : $this->bookingCandidates()->with('booking')->get()->pluck('booking')->filter();
+
+        return $direct->merge($candidateBookings)->unique('id')->values();
+    }
+
+    /**
+     * Temukan atau buat record Client baru untuk pengisian formulir tanpa menimpa klien lain
+     * yang kebetulan berbagi nomor HP (mis. orang tua/saudara atau nomor PIC/HRD perusahaan).
+     */
+    public static function resolveForFormSubmission(
+        string $phone,
+        string $name,
+        string $jenis = 'individu',
+        ?int $existingClientId = null,
+        ?string $companyName = null
+    ): self {
+        if ($existingClientId) {
+            $existing = self::find($existingClientId);
+            if ($existing) {
+                return $existing;
+            }
+        }
+
+        $cleanPhone = trim($phone);
+        $cleanName = mb_strtolower(trim($name));
+        $normalizedJenis = in_array(strtolower($jenis), ['industri', 'company', 'perusahaan'], true) ? 'industri' : 'individu';
+
+        $candidates = self::where('phone', $cleanPhone)->get();
+        if ($candidates->isNotEmpty()) {
+            $match = $candidates->first(function (self $candidate) use ($cleanName, $normalizedJenis, $companyName) {
+                $candJenis = $candidate->isIndustri() ? 'industri' : 'individu';
+                if ($candJenis !== $normalizedJenis) {
+                    return false;
+                }
+
+                $candName = mb_strtolower(trim((string) $candidate->name));
+                if ($candName !== '' && $candName !== $cleanName) {
+                    return false;
+                }
+
+                if ($normalizedJenis === 'industri' && $companyName !== null && trim($companyName) !== '') {
+                    $candCompany = mb_strtolower(trim((string) ($candidate->attributes['company_name'] ?? '')));
+                    if ($candCompany !== '' && $candCompany !== mb_strtolower(trim($companyName))) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            if ($match) {
+                return $match;
+            }
+        }
+
+        return new self(['phone' => $cleanPhone]);
     }
 
     public function clientForms(): HasMany
@@ -226,53 +323,50 @@ class Client extends Model
 
     public function getFullAddressAttribute(): string
     {
-        $rawAddress = trim($this->address ?? '');
-        $city = trim($this->city ?? '');
-        $province = trim($this->province ?? '');
-        $country = trim($this->country ?? '');
+        $rawAddress = trim((string) ($this->address ?? ''));
 
-        if (empty($rawAddress) && empty($city) && empty($province) && empty($country)) {
+        if ($rawAddress === '') {
             return '-';
         }
 
-        // Ekstrak 5 digit kode pos jika terdapat dalam raw address
+        // Ekstrak 5 digit kode pos jika terdapat dalam raw address agar selalu berada di akhir
         $postalCode = null;
         if (preg_match('/(?:kode\s*pos\s*[:.-]?\s*)?(\b\d{5}\b)/i', $rawAddress, $matches)) {
             $postalCode = $matches[1];
-            // Bersihkan kode pos dari teks jalan/kelurahan/kecamatan agar tidak berulang
             $cleanedRaw = preg_replace('/,?\s*(?:kode\s*pos\s*[:.-]?\s*)?\b' . $postalCode . '\b/i', '', $rawAddress);
-            $rawAddress = trim(preg_replace('/\s*,\s*/', ', ', $cleanedRaw), " ,\t\n\r\0\x0B");
+            $rawAddress = trim((string) preg_replace('/\s*,\s*/', ', ', (string) $cleanedRaw), " ,\t\n\r\0\x0B");
         }
 
         $parts = [];
-        if (!empty($rawAddress)) {
+        if ($rawAddress !== '') {
             $parts[] = rtrim($rawAddress, ',');
         }
-
-        if (!empty($city)) {
-            if (empty($rawAddress) || !preg_match('/\b' . preg_quote($city, '/') . '\b/i', $rawAddress)) {
-                $parts[] = $city;
-            }
-        }
-
-        if (!empty($province)) {
-            if (empty($rawAddress) || !preg_match('/\b' . preg_quote($province, '/') . '\b/i', $rawAddress)) {
-                $parts[] = $province;
-            }
-        }
-
-        if (!empty($country)) {
-            if (empty($rawAddress) || !preg_match('/\b' . preg_quote($country, '/') . '\b/i', $rawAddress)) {
-                $parts[] = $country;
-            }
-        }
-
-        // Letakkan kode pos di paling akhir setelah negara
-        if (!empty($postalCode)) {
+        if ($postalCode !== null && $postalCode !== '') {
             $parts[] = $postalCode;
         }
 
         return !empty($parts) ? implode(', ', $parts) : '-';
+    }
+
+    /**
+     * Perbarui email klien hanya bila nilai baru terisi (tidak menimpa email lama menjadi null).
+     */
+    public function applyOptionalEmail(?string $email): void
+    {
+        $clean = trim((string) ($email ?? ''));
+        if ($clean !== '') {
+            $this->email = $clean;
+        }
+    }
+
+    /**
+     * Tetapkan status awal hanya untuk klien baru atau belum memiliki status aktif.
+     */
+    public function ensureInitialStatus(string $default = 'unassigned'): void
+    {
+        if (!$this->exists || empty($this->status)) {
+            $this->status = $default;
+        }
     }
 
     /**
@@ -552,8 +646,9 @@ class Client extends Model
                     $answers['nama'] = $this->name;
                 }
 
-                if (in_array($form->form_type, ['pra_nikah', 'pernikahan']) && !empty($answers['nama_pasangan'])) {
-                    $form->client_name = $this->name . ' & ' . trim($answers['nama_pasangan']);
+                $partnerName = trim((string) ($answers['nama_pasangan'] ?? ''));
+                if (in_array($form->form_type, ['pra_nikah', 'pernikahan']) && $partnerName !== '') {
+                    $form->client_name = $this->name . ' & ' . $partnerName;
                 } else {
                     $form->client_name = $this->name;
                 }
@@ -622,11 +717,17 @@ class Client extends Model
 
             // 6. Alamat Lengkap
             if ($this->address !== null) {
-                if (array_key_exists('alamat', $answers) || !isset($answers['address'])) {
+                if (array_key_exists('alamat', $answers) || (!isset($answers['address']) && !in_array($form->form_type, ['industri', 'non_industri', 'biography_en'], true))) {
                     $answers['alamat'] = $this->address;
                 }
                 if (array_key_exists('address', $answers)) {
                     $answers['address'] = $this->address;
+                }
+                if (array_key_exists('alamat_sekarang', $answers) || in_array($form->form_type, ['industri', 'non_industri'], true)) {
+                    $answers['alamat_sekarang'] = $this->address;
+                }
+                if (array_key_exists('current_address', $answers) || $form->form_type === 'biography_en') {
+                    $answers['current_address'] = $this->address;
                 }
             }
 
@@ -642,7 +743,7 @@ class Client extends Model
 
             // 8. Pendidikan Terakhir
             if (!empty($this->education)) {
-                if (array_key_exists('pendidikan_terakhir', $answers) || !isset($answers['education'])) {
+                if (array_key_exists('pendidikan_terakhir', $answers) || (!isset($answers['education']) && $form->form_type !== 'biography_en')) {
                     $answers['pendidikan_terakhir'] = $this->education;
                 }
                 if (array_key_exists('education', $answers)) {
@@ -650,6 +751,9 @@ class Client extends Model
                 }
                 if (array_key_exists('pendidikan', $answers)) {
                     $answers['pendidikan'] = $this->education;
+                }
+                if (array_key_exists('last_education', $answers) || $form->form_type === 'biography_en') {
+                    $answers['last_education'] = $this->education;
                 }
             }
 

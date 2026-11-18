@@ -27,11 +27,6 @@ class DashboardController extends Controller
 
         if ($user->isPsikolog()) {
             $kilatQuery->where('assigned_psikolog_id', (int) ($user->counselor_id ?? 0));
-        } elseif ($user->isStaff()) {
-            $kilatQuery->where(function ($q) use ($user) {
-                $q->where('assigned_editor_id', $user->id)
-                  ->orWhereHas('booking.assignees', fn ($aq) => $aq->where('user_id', $user->id));
-            });
         }
         $kilatCandidates = $kilatQuery->take(10)->get();
 
@@ -46,29 +41,34 @@ class DashboardController extends Controller
 
         if ($user->isPsikolog()) {
             $slaQuery->where('assigned_psikolog_id', (int) ($user->counselor_id ?? 0));
-        } elseif ($user->isStaff()) {
-            $slaQuery->where(function ($q) use ($user) {
-                $q->where('assigned_editor_id', $user->id)
-                  ->orWhereHas('booking.assignees', fn ($aq) => $aq->where('user_id', $user->id));
-            });
         }
         $slaCandidates = $slaQuery->take(12)->get();
 
-        // 3. Antrean Formulir Psikotes Belum Dibooking (Admin & Staff)
+        // 3. Antrean Formulir Psikotes Belum Dibooking & Booking Pending (Biography EN) (Admin & Staff)
         $unbookedForms = collect();
         $unbookedFormsCount = 0;
+        $pendingBiographyBookings = collect();
+        $pendingBiographyCount = 0;
         if ($user->isAdmin() || $user->isStaff()) {
             $unbookedQuery = ClientForm::with('client')
+                ->whereHas('client')
                 ->whereIn('form_type', ['industri', 'non_industri'])
                 ->where(fn ($q) => $q->where('booking_status', 'belum_dibooking')->orWhereNull('booking_id'))
                 ->latest();
             $unbookedFormsCount = (clone $unbookedQuery)->count();
             $unbookedForms = $unbookedQuery->take(10)->get();
+
+            $pendingQuery = Booking::with(['client', 'clientForm'])
+                ->where('kategori', 'pending')
+                ->where('status', '!=', 'batal')
+                ->latest();
+            $pendingBiographyCount = (clone $pendingQuery)->count();
+            $pendingBiographyBookings = $pendingQuery->take(10)->get();
         }
 
         // 4. Pengingat Pembayaran H-1 & Overtime Konseling
         $counselingReminders = collect();
-        if ($user->isAdmin() || $user->isPsikolog()) {
+        if ($user->isAdmin() || $user->isStaff() || $user->isPsikolog()) {
             $reminderQuery = Booking::with(['client', 'counselor'])
                 ->where('kategori', 'konseling')
                 ->whereNotIn('status', ['selesai', 'batal'])
@@ -103,11 +103,6 @@ class DashboardController extends Controller
                   ->orWhereHas('assignees', fn ($aq) => $aq->where('counselor_id', $cId))
                   ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $cId));
             });
-        } elseif ($user->isStaff()) {
-            $gcalPendingQuery->where(function ($q) use ($user) {
-                $q->whereHas('assignees', fn ($aq) => $aq->where('user_id', $user->id))
-                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_editor_id', $user->id));
-            });
         }
         $gcalPendingBookings = $gcalPendingQuery->take(10)->get();
 
@@ -115,7 +110,8 @@ class DashboardController extends Controller
         $stats = [
             'kilat_active' => $kilatCandidates->count(),
             'sla_overdue' => $slaCandidates->filter(fn ($c) => $c->isPsychologistReportOverdue())->count(),
-            'unbooked_forms' => $unbookedFormsCount,
+            'unbooked_forms' => $unbookedFormsCount + $pendingBiographyCount,
+            'pending_biography' => $pendingBiographyCount,
             'gcal_pending' => $gcalPendingBookings->count(),
         ];
 
@@ -124,6 +120,7 @@ class DashboardController extends Controller
             'kilatCandidates',
             'slaCandidates',
             'unbookedForms',
+            'pendingBiographyBookings',
             'counselingReminders',
             'gcalPendingBookings'
         ));

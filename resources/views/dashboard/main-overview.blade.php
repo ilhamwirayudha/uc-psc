@@ -6,9 +6,9 @@
 
 @section('content')
 <div class="space-y-6">
-    {{-- 4 Ringkasan Metrik Utama (Kartu abu-abu netral sesuai AGENTS.md) --}}
+    {{-- Ringkasan Metrik Utama (Kartu abu-abu netral sesuai AGENTS.md) --}}
     <div class="glass-card rounded-2xl p-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 {{ (auth()->user()->isAdmin() || auth()->user()->isStaff()) ? 'lg:grid-cols-4' : 'lg:grid-cols-3' }} gap-4">
             <div>
                 <span class="text-xs font-medium text-slate-500 mb-1 block">Antrean KILAT Aktif</span>
                 <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
@@ -21,12 +21,14 @@
                     {{ $stats['sla_overdue'] }} laporan
                 </div>
             </div>
-            <div>
-                <span class="text-xs font-medium text-slate-500 mb-1 block">Formulir Belum Dibooking</span>
-                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
-                    {{ $stats['unbooked_forms'] }} formulir
+            @if(auth()->user()->isAdmin() || auth()->user()->isStaff())
+                <div>
+                    <span class="text-xs font-medium text-slate-500 mb-1 block">Formulir Belum Dibooking</span>
+                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                        {{ $stats['unbooked_forms'] }} formulir
+                    </div>
                 </div>
-            </div>
+            @endif
             <div>
                 <span class="text-xs font-medium text-slate-500 mb-1 block">Jadwal GCal Belum Sinkron</span>
                 <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
@@ -61,12 +63,16 @@
                             <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $kc->assignedPsikolog?->name ?? '-' }}</td>
                             <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $kc->client_deadline_date ? $kc->client_deadline_date->format('d/m/Y') : '-' }}</td>
                             <td class="px-6 py-3.5 text-right whitespace-nowrap" onclick="event.stopPropagation()">
-                                <form method="POST" action="{{ route('psychotest-bookings.candidate.kilat-sent', [$kc->booking_id, $kc->id]) }}">
-                                    @csrf
-                                    <button type="submit" class="px-3.5 py-1.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white text-xs font-semibold shadow-xs cursor-pointer">
-                                        Tandai Kilat Terkirim
-                                    </button>
-                                </form>
+                                @if(auth()->user()->isAdmin())
+                                    <form method="POST" action="{{ route('psychotest-bookings.candidate.kilat-sent', [$kc->booking_id, $kc->id]) }}">
+                                        @csrf
+                                        <button type="submit" class="px-3.5 py-1.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white text-xs font-semibold shadow-xs cursor-pointer">
+                                            Tandai Kilat Terkirim
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-black text-xs font-medium">Menunggu Kirim Admin</span>
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -138,8 +144,18 @@
                                     <td class="px-5 py-3 text-black text-xs font-medium whitespace-nowrap">{{ $uf->created_at ? $uf->created_at->format('d/m/Y H:i') : '-' }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="4" class="px-5 py-8 text-center text-slate-400 text-xs font-medium">Tidak ada formulir psikotes menunggu booking.</td></tr>
+                                @if(($pendingBiographyBookings ?? collect())->isEmpty())
+                                    <tr><td colspan="4" class="px-5 py-8 text-center text-slate-400 text-xs font-medium">Tidak ada formulir psikotes menunggu booking.</td></tr>
+                                @endif
                             @endforelse
+                            @foreach(($pendingBiographyBookings ?? collect()) as $pb)
+                                <tr class="table-row-clickable hover:bg-slate-100 transition-colors duration-150 cursor-pointer" onclick="window.location='{{ route('bookings.show', $pb) }}'">
+                                    <td class="px-5 py-3 text-black text-xs font-medium whitespace-nowrap">{{ $pb->client?->name ?? '-' }}</td>
+                                    <td class="px-5 py-3 text-black text-xs font-medium whitespace-nowrap">Biography Form (Pending Klasifikasi)</td>
+                                    <td class="px-5 py-3 text-black text-xs font-medium whitespace-nowrap">-</td>
+                                    <td class="px-5 py-3 text-black text-xs font-medium whitespace-nowrap">{{ $pb->created_at ? $pb->created_at->format('d/m/Y H:i') : '-' }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -149,7 +165,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {{-- Panel 4: Pengingat Tagihan H-1 & Overtime Konseling --}}
-        @if(auth()->user()->isAdmin() || auth()->user()->isPsikolog())
+        @if(auth()->user()->isAdmin() || auth()->user()->isStaff() || auth()->user()->isPsikolog())
             <div class="glass-card rounded-2xl overflow-hidden">
                 <div class="px-6 py-4 bg-purple-deep/95 text-white flex items-center justify-between">
                     <h3 class="text-base font-bold text-white">Pengingat Tagihan H-1 &amp; Overtime Konseling</h3>

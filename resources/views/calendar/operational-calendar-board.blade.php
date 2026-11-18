@@ -144,7 +144,8 @@
                                 x-text="day.dayNumber"
                             ></span>
 
-                            {{-- Tombol Quick Add saat hover --}}
+                            {{-- Tombol Quick Add saat hover (Admin Only) --}}
+                            @if(auth()->user()->isAdmin())
                             <button 
                                 type="button" 
                                 @click="$dispatch('open-booking-modal', { date: day.dateStr })"
@@ -153,6 +154,7 @@
                             >
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                             </button>
+                            @endif
                         </div>
 
                         {{-- Event Chips List --}}
@@ -216,14 +218,14 @@
                                     <span class="text-[9px] text-[#827299]" x-text="event.status_label"></span>
                                 </div>
                                 <h4 class="text-xs font-bold text-[#2A2035] group-hover:text-purple-deep line-clamp-2" x-text="event.title"></h4>
-                                <div class="text-[10px] text-[#827299]">
+                                <div class="text-[10px] text-slate-500 font-medium">
                                     <template x-if="event.category === 'counseling'">
-                                        <p>Psikolog: <strong class="text-[#2A2035]" x-text="event.counselor_name"></strong></p>
+                                        <p>Psikolog: <span class="text-black" x-text="event.counselor_name"></span></p>
                                     </template>
                                     <template x-if="event.category !== 'counseling'">
-                                        <p>Staff: <strong class="text-[#2A2035]" x-text="event.staff_name"></strong> (<span x-text="event.role_label"></span>)</p>
+                                        <p>Staff: <span class="text-black" x-text="event.staff_name"></span> (<span x-text="event.role_label"></span>)</p>
                                     </template>
-                                    <p>Klien: <span class="font-medium text-[#2A2035]" x-text="event.client_name"></span></p>
+                                    <p>Klien: <span class="font-medium text-black" x-text="event.client_name"></span></p>
                                 </div>
                             </div>
                         </template>
@@ -270,12 +272,12 @@
                                             <span class="text-[10px] font-bold text-[#827299]" x-text="event.status_label"></span>
                                         </div>
                                         <h4 class="text-sm font-bold text-[#2A2035] group-hover:text-purple-deep" x-text="event.title"></h4>
-                                        <p class="text-xs text-[#6B5B85] mt-0.5">
+                                        <p class="text-xs text-slate-500 font-medium mt-0.5">
                                             <template x-if="event.category === 'counseling'">
-                                                <span>Praktik: <strong class="text-[#2A2035]" x-text="event.counselor_name"></strong> · Klien: <strong class="text-[#2A2035]" x-text="event.client_name"></strong></span>
+                                                <span>Praktik: <span class="text-black" x-text="event.counselor_name"></span> · Klien: <span class="text-black" x-text="event.client_name"></span></span>
                                             </template>
                                             <template x-if="event.category !== 'counseling'">
-                                                <span>Penugasan: <strong class="text-[#2A2035]" x-text="event.staff_name"></strong> (<span x-text="event.role_label"></span>) · Klien: <strong class="text-[#2A2035]" x-text="event.client_name"></strong></span>
+                                                <span>Penugasan: <span class="text-black" x-text="event.staff_name"></span> (<span x-text="event.role_label"></span>) · Klien: <span class="text-black" x-text="event.client_name"></span></span>
                                             </template>
                                         </p>
                                     </div>
@@ -297,6 +299,7 @@
                     </div>
                     <p class="font-bold text-sm text-[#2A2035] mb-1">Belum ada agenda jadwal yang tercatat</p>
                     <p class="mb-4">Tidak ada sesi konseling atau penugasan tes psikotes pada filter yang dipilih.</p>
+                    @if(auth()->user()->isAdmin())
                     <button 
                         type="button" 
                         @click="$dispatch('open-booking-modal')" 
@@ -304,6 +307,7 @@
                     >
                         + Buat Booking / Jadwal Baru
                     </button>
+                    @endif
                 </div>
             </template>
         </div>
@@ -348,35 +352,37 @@
             </div>
 
             {{-- Isi Modal --}}
-            <div class="p-6 space-y-4 text-xs">
+            <div class="p-6 space-y-4">
                 {{-- Judul Acara --}}
                 <div>
-                    <h3 class="text-base font-extrabold text-[#2A2035]" x-text="selectedEvent?.title"></h3>
-                    <p class="text-[#827299] mt-0.5" x-text="selectedEvent?.formatted_date"></p>
+                    <h3 class="text-base font-bold text-[#2A2035]" x-text="selectedEvent?.title"></h3>
+                    <p class="text-xs font-medium text-slate-500 mt-0.5" x-text="selectedEvent?.formatted_date"></p>
                 </div>
 
                 {{-- Detail Penanggung Jawab --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl bg-[#F7F5FB] border border-[#EDE1FA]">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <span class="text-[10px] font-bold text-[#827299] block">
-                            <span x-text="selectedEvent?.category === 'counseling' ? 'Psikolog yang Praktik:' : 'Staff yang Bertugas:'"></span>
-                        </span>
-                        <strong class="text-sm font-extrabold text-purple-deep" x-text="selectedEvent?.category === 'counseling' ? selectedEvent?.counselor_name : selectedEvent?.staff_name"></strong>
-                        <span class="text-[10px] text-[#827299] block" x-text="selectedEvent?.role_label"></span>
+                        <span class="text-xs font-medium text-slate-500 mb-1 block" x-text="selectedEvent?.category === 'counseling' ? 'Psikolog yang Praktik' : 'Staff yang Bertugas'"></span>
+                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                            <span class="text-sm font-medium text-black" x-text="selectedEvent?.category === 'counseling' ? selectedEvent?.counselor_name : selectedEvent?.staff_name"></span>
+                            <span class="text-xs font-medium text-slate-500" x-text="selectedEvent?.role_label"></span>
+                        </div>
                     </div>
 
                     <div>
-                        <span class="text-[10px] font-bold text-[#827299] block">Klien yang Dilayani:</span>
-                        <strong class="text-sm font-extrabold text-[#2A2035]" x-text="selectedEvent?.client_name"></strong>
-                        <span class="text-[10px] text-[#827299] block">Klien Terdaftar</span>
+                        <span class="text-xs font-medium text-slate-500 mb-1 block">Klien yang Dilayani</span>
+                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-col justify-center">
+                            <span class="text-sm font-medium text-black" x-text="selectedEvent?.client_name"></span>
+                            <span class="text-xs font-medium text-slate-500">Klien Terdaftar</span>
+                        </div>
                     </div>
                 </div>
 
                 {{-- Catatan Jika Ada --}}
                 <template x-if="selectedEvent?.notes">
-                    <div class="p-3 rounded-lg bg-amber-50/60 border border-amber-200 text-amber-900">
-                        <span class="font-bold block text-[10px] text-amber-800 mb-0.5">Catatan:</span>
-                        <p x-text="selectedEvent?.notes" class="leading-relaxed"></p>
+                    <div>
+                        <span class="text-xs font-medium text-slate-500 mb-1 block">Catatan</span>
+                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] text-sm font-medium text-black leading-relaxed" x-text="selectedEvent?.notes"></div>
                     </div>
                 </template>
 
@@ -385,13 +391,13 @@
                     <button 
                         type="button" 
                         @click="eventModalOpen = false" 
-                        class="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 font-bold hover:bg-gray-50 transition cursor-pointer"
+                        class="px-4 py-2.5 rounded-lg bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] text-xs font-semibold shadow-xs transition cursor-pointer"
                     >
                         Tutup
                     </button>
                     <a 
                         :href="selectedEvent?.url" 
-                        class="px-5 py-2.5 rounded-lg bg-purple-deep text-white font-bold hover:opacity-90 transition shadow-xs flex items-center gap-1.5"
+                        class="px-5 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white text-xs font-semibold transition shadow-xs flex items-center gap-1.5"
                     >
                         <span>Buka Detail Lengkap</span>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
@@ -529,11 +535,17 @@ function googleCalendar(initialEvents, currentUser) {
                 if (this.filterCategory !== 'all' && e.category !== this.filterCategory) {
                     return false;
                 }
-                if (this.filterCounselorId && String(e.counselor_id) !== String(this.filterCounselorId)) {
-                    return false;
+                if (this.filterCounselorId) {
+                    const cIds = Array.isArray(e.counselor_ids) ? e.counselor_ids.map(String) : (e.counselor_id ? [String(e.counselor_id)] : []);
+                    if (!cIds.includes(String(this.filterCounselorId))) {
+                        return false;
+                    }
                 }
-                if (this.filterStaffId && String(e.staff_id) !== String(this.filterStaffId)) {
-                    return false;
+                if (this.filterStaffId) {
+                    const sIds = Array.isArray(e.staff_ids) ? e.staff_ids.map(String) : (e.staff_id ? [String(e.staff_id)] : []);
+                    if (!sIds.includes(String(this.filterStaffId))) {
+                        return false;
+                    }
                 }
                 if (this.searchQuery) {
                     const q = this.searchQuery.toLowerCase();

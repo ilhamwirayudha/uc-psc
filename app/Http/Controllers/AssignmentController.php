@@ -9,6 +9,7 @@ use App\Models\Counselor;
 use App\Models\User;
 use App\Services\GoogleCalendarService;
 use App\Services\PsychotestSlaService;
+use App\Services\PsychotestWorkflowService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +17,8 @@ class AssignmentController extends Controller
 {
     public function __construct(
         private readonly PsychotestSlaService $slaService,
-        private readonly GoogleCalendarService $gcalService
+        private readonly GoogleCalendarService $gcalService,
+        private readonly PsychotestWorkflowService $workflowService
     ) {
     }
 
@@ -126,6 +128,7 @@ class AssignmentController extends Controller
         $targetId = (int) $validated['target_id'];
         $newId = (int) $validated['new_assignee_id'];
         $affectedBooking = null;
+        $extraPsychologistIds = [];
 
         if ($type === 'counseling_counselor') {
             $booking = Booking::findOrFail($targetId);
@@ -136,6 +139,9 @@ class AssignmentController extends Controller
             $candidate = BookingCandidate::with('booking')->findOrFail($targetId);
             $newCounselor = Counselor::findOrFail($newId);
             $booking = $candidate->booking;
+            if ($candidate->assigned_psikolog_id) {
+                $extraPsychologistIds[] = (int) $candidate->assigned_psikolog_id;
+            }
 
             if ($candidate->is_kilat && $booking?->tanggal_dijadwalkan) {
                 $existingKilat = $this->slaService->countKilatForPsychologistOnDate(
@@ -200,11 +206,14 @@ class AssignmentController extends Controller
                 'completed_by_user_id' => null,
             ]);
             $affectedBooking = $assignee->booking;
+            if ($affectedBooking && in_array($assignee->role_type, ['skorer_manual', 'skorer_software'], true)) {
+                $this->workflowService->syncScorerCompletionState($affectedBooking, auth()->user());
+            }
         }
 
         if ($affectedBooking) {
             if ($affectedBooking->kategori === 'psikotes') {
-                $this->slaService->recalculateForBooking($affectedBooking);
+                $this->slaService->recalculateForBooking($affectedBooking, $extraPsychologistIds);
             }
             $this->gcalService->syncBooking($affectedBooking);
         }

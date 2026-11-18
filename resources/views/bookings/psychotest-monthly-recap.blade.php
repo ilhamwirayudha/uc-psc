@@ -84,7 +84,15 @@
                             <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $b->service_package_name ?: '-' }} ({{ $b->candidates->count() }} org)</td>
                             <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">Rp {{ number_format((float) ($b->price ?? 0), 0, ',', '.') }}</td>
                             <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $b->final_price ? 'Rp ' . number_format((float) $b->final_price, 0, ',', '.') : '-' }}</td>
-                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $b->isPaid() ? 'Lunas' : 'Belum Bayar' }}</td>
+                            <td class="px-6 py-3.5 text-black text-xs font-medium whitespace-nowrap">
+                                {{ $b->billing_scheme === '-' ? 'Gratis / Deal Khusus' : match($b->payment_workflow_status) {
+                                    'lunas' => 'Lunas',
+                                    'lunas_overtime' => 'Lunas (Overtime)',
+                                    'draft_ke_finance' => 'Pengajuan Nota (Finance)',
+                                    'menunggu_bayar' => 'Menunggu VA',
+                                    default => ($b->isPaid() ? 'Lunas' : 'Belum Ada Tagihan'),
+                                } }}
+                            </td>
                         </tr>
                     @empty
                         <tr>

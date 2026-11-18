@@ -118,4 +118,26 @@ class Counselor extends Model
     {
         return $this->hasMany(BookingAssignee::class);
     }
+
+    /**
+     * Hitung jumlah tugas Konseling & Psikotes yang masih aktif pada konselor/psikolog ini.
+     */
+    public function countActiveTasks(): int
+    {
+        $counselingCount = $this->counselingBookings()
+            ->where('kategori', 'konseling')
+            ->whereNotIn('status', ['selesai', 'batal'])
+            ->count();
+
+        $psychotestCount = $this->assignedCandidates()
+            ->where('attendance_status', '!=', 'absen')
+            ->whereNull('step_draft_hpp_at')
+            ->where(function ($q) {
+                $q->where('is_kilat', false)->orWhereNull('kilat_sent_at');
+            })
+            ->whereHas('booking', fn ($q) => $q->where('kategori', 'psikotes')->where('status', '!=', 'batal'))
+            ->count();
+
+        return $counselingCount + $psychotestCount;
+    }
 }

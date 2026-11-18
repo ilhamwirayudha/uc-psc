@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\BookingAssignee;
 use App\Models\BookingCandidate;
 use App\Models\BookingParticipant;
+use App\Models\BookingServiceItem;
 use App\Models\Counselor;
 use App\Models\Client;
 use App\Models\ClientForm;
 use App\Models\User;
 use App\Models\Pairing;
 use App\Services\GoogleCalendarService;
+use App\Services\PsychotestSlaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -49,16 +52,7 @@ class BookingController extends Controller
         ])->where('kategori', $kategori);
 
         $user = auth()->user();
-        if ($user->isStaff()) {
-            $staffId = $user->id;
-            $query->where(function ($q) use ($staffId) {
-                $q->where('staff_penguji_id', $staffId)
-                  ->orWhere('staff_koreksi_id', $staffId)
-                  ->orWhere('staff_pelapor_id', $staffId)
-                  ->orWhereHas('assignees', fn ($aq) => $aq->where('user_id', $staffId))
-                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_editor_id', $staffId));
-            });
-        } elseif ($user->isPsikolog()) {
+        if ($user->isPsikolog()) {
             $counselorId = (int) ($user->counselor_id ?? 0);
             if ($counselorId > 0) {
                 $query->where(function ($q) use ($counselorId) {
@@ -71,12 +65,14 @@ class BookingController extends Controller
             }
         }
 
-        // Filter pencarian nama klien atau perusahaan
+        // Filter pencarian nama klien, perusahaan, PIC, atau kandidat
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->whereHas('client', fn ($cq) => $cq->where('name', 'like', "%{$search}%"))
-                  ->orWhereHas('company', fn ($coq) => $coq->where('name', 'like', "%{$search}%"));
+                $q->where('pic_name', 'like', "%{$search}%")
+                  ->orWhereHas('client', fn ($cq) => $cq->where('name', 'like', "%{$search}%"))
+                  ->orWhereHas('company', fn ($coq) => $coq->where('name', 'like', "%{$search}%"))
+                  ->orWhereHas('candidates', fn ($kq) => $kq->where('candidate_name', 'like', "%{$search}%"));
             });
         }
 
@@ -104,6 +100,16 @@ class BookingController extends Controller
             $query->join('clients', 'bookings.client_id', '=', 'clients.id')
                   ->orderBy('clients.name', $cDir)
                   ->select('bookings.*');
+        } elseif ($cSort === 'kewarganegaraan') {
+            $query->join('clients', 'bookings.client_id', '=', 'clients.id')
+                  ->orderByRaw("CASE WHEN (UPPER(COALESCE(clients.counseling_type, '')) LIKE '%WNA%' OR UPPER(COALESCE(bookings.service_package_name, '')) LIKE '%WNA%' OR UPPER(COALESCE(bookings.notes, '')) LIKE '%WNA%' OR UPPER(COALESCE(clients.notes, '')) LIKE '%WNA%') THEN 1 ELSE 0 END {$cDir}")
+                  ->orderBy('bookings.id', 'desc')
+                  ->select('bookings.*');
+        } elseif ($cSort === 'psikolog') {
+            $query->leftJoin('counselors', 'bookings.counselor_id', '=', 'counselors.id')
+                  ->orderByRaw("COALESCE(counselors.name, 'zzzz') {$cDir}")
+                  ->orderBy('bookings.id', 'desc')
+                  ->select('bookings.*');
         } elseif ($cSort === 'tipe') {
             $query->join('clients', 'bookings.client_id', '=', 'clients.id')
                   ->orderBy('clients.counseling_type', $cDir)
@@ -118,8 +124,11 @@ class BookingController extends Controller
         $clients = Client::orderBy('name')->get();
         $counselors = Counselor::where('status', 'active')->orderBy('name')->get();
         $staffs = User::whereIn('role', ['staff', 'admin'])->orderBy('name')->get();
+        $pendingBiographyCount = auth()->user()->isAdmin()
+            ? Booking::where('kategori', 'pending')->where('status', '!=', 'batal')->count()
+            : 0;
 
-        return view('bookings.booking-counseling-list', compact('counselingBookings', 'clients', 'counselors', 'staffs', 'cSort', 'cDir'));
+        return view('bookings.booking-counseling-list', compact('counselingBookings', 'clients', 'counselors', 'staffs', 'cSort', 'cDir', 'pendingBiographyCount'));
     }
 
     /**
@@ -161,15 +170,11 @@ class BookingController extends Controller
         $user = auth()->user();
         if ($user->isPsikolog()) {
             $kilatQuery->where('assigned_psikolog_id', (int) ($user->counselor_id ?? 0));
-        } elseif ($user->isStaff()) {
-            $kilatQuery->where(function ($q) use ($user) {
-                $q->where('assigned_editor_id', $user->id)
-                  ->orWhereHas('booking.assignees', fn ($aq) => $aq->where('user_id', $user->id));
-            });
         }
 
         $kilatQueue = $kilatQuery->get();
-        $unbookedFormsCount = ClientForm::whereIn('form_type', ['industri', 'non_industri'])
+        $unbookedFormsCount = ClientForm::whereHas('client')
+            ->whereIn('form_type', ['industri', 'non_industri'])
             ->where(fn ($q) => $q->where('booking_status', 'belum_dibooking')->orWhereNull('booking_id'))
             ->count();
 
@@ -212,16 +217,7 @@ class BookingController extends Controller
         ])->latest();
 
         $user = auth()->user();
-        if ($user->isStaff()) {
-            $staffId = $user->id;
-            $query->where(function ($q) use ($staffId) {
-                $q->where('staff_penguji_id', $staffId)
-                  ->orWhere('staff_koreksi_id', $staffId)
-                  ->orWhere('staff_pelapor_id', $staffId)
-                  ->orWhereHas('assignees', fn ($aq) => $aq->where('user_id', $staffId))
-                  ->orWhereHas('candidates', fn ($cq) => $cq->where('assigned_editor_id', $staffId));
-            });
-        } elseif ($user->isPsikolog()) {
+        if ($user->isPsikolog()) {
             $counselorId = (int) ($user->counselor_id ?? 0);
             $query->where(function ($q) use ($counselorId) {
                 $q->where('counselor_id', $counselorId)
@@ -232,7 +228,12 @@ class BookingController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->whereHas('client', fn($q) => $q->where('name', 'like', "%{$search}%"));
+            $query->where(function ($q) use ($search) {
+                $q->where('pic_name', 'like', "%{$search}%")
+                  ->orWhereHas('client', fn ($cq) => $cq->where('name', 'like', "%{$search}%"))
+                  ->orWhereHas('company', fn ($coq) => $coq->where('name', 'like', "%{$search}%"))
+                  ->orWhereHas('candidates', fn ($kq) => $kq->where('candidate_name', 'like', "%{$search}%"));
+            });
         }
 
         if ($request->filled('kategori')) {
@@ -264,14 +265,25 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Booking::class);
+
         $validated = $request->validate([
             'client_id' => 'required|exists:clients,id',
+            'company_id' => 'nullable|exists:companies,id',
+            'pic_name' => 'nullable|string|max:255',
             'kategori' => 'required|in:konseling,psikotes',
+            'service_tier' => 'nullable|string|max:60',
+            'service_package_key' => 'nullable|string|max:100',
+            'billing_scheme' => 'nullable|in:v,I,R,-',
+            'delivery_mode' => 'nullable|in:softcopy,hardcopy,both',
+            'requires_outgoing_letter' => 'nullable|boolean',
+            'is_kilat' => 'nullable|boolean',
             'tanggal_booking_dibuat' => 'nullable|date',
             'tanggal_dijadwalkan' => 'nullable|date',
-            'status' => 'nullable|in:baru,lanjutan,selesai',
+            'status' => 'nullable|string|max:50',
             'staff_penguji_id' => 'nullable|exists:users,id',
             'staff_koreksi_id' => 'nullable|exists:users,id',
+            'staff_koreksi_software_id' => 'nullable|exists:users,id',
             'staff_pelapor_id' => 'nullable|exists:users,id',
             'counselor_id' => 'nullable|exists:counselors,id',
             'payment_transaction_id' => 'nullable|exists:payment_transactions,id',
@@ -287,10 +299,58 @@ class BookingController extends Controller
             'overtime_price' => 'nullable|numeric',
         ]);
 
+        if (
+            $validated['kategori'] === 'psikotes'
+            && $request->boolean('is_kilat')
+            && !empty($validated['counselor_id'])
+            && !empty($validated['tanggal_dijadwalkan'])
+        ) {
+            $slaService = app(PsychotestSlaService::class);
+            $scheduledStr = Carbon::parse($validated['tanggal_dijadwalkan'])->toDateString();
+            if ($slaService->countKilatForPsychologistOnDate((int) $validated['counselor_id'], $scheduledStr) >= 1) {
+                $counselorName = Counselor::find($validated['counselor_id'])?->name ?? 'Psikolog';
+                return back()->withInput()->with('booking_modal_error', true)->withErrors([
+                    'counselor_id' => "{$counselorName} sudah memegang peserta KILAT lain pada tanggal {$scheduledStr}.",
+                ]);
+            }
+        }
+
+        if (!empty($validated['company_id']) && empty($validated['pic_name'])) {
+            $validated['pic_name'] = \App\Models\Company::find($validated['company_id'])?->pic_name;
+        }
+
         $validated['tanggal_booking_dibuat'] = $validated['tanggal_booking_dibuat'] ?? now()->toDateString();
-        $validated['status'] = $validated['status'] ?? 'baru';
+        $validated['status'] = $validated['status'] ?? ($validated['kategori'] === 'konseling' ? 'data_masuk' : 'baru');
+        if ($request->filled('start_time')) {
+            $validated['session_start'] = $request->input('start_time');
+        }
+        if ($request->filled('end_time')) {
+            $validated['session_end'] = $request->input('end_time');
+        }
         if ($request->filled('counseling_type')) {
             $validated['service_package_name'] = $request->input('counseling_type');
+        }
+
+        // Resolusi harga katalog resmi untuk Psikotes bila memilih service_tier + service_package_key
+        $resolvedUnitPrice = (float) ($validated['price'] ?? 0);
+        if ($validated['kategori'] === 'psikotes' && !empty($validated['service_tier']) && !empty($validated['service_package_key'])) {
+            $pkgInfo = config("service_catalog.psikotes.{$validated['service_tier']}.packages.{$validated['service_package_key']}");
+            if ($pkgInfo) {
+                $validated['service_package_name'] = $validated['service_package_name'] ?? ($pkgInfo['label'] ?? $validated['service_package_key']);
+                if (!$request->filled('price')) {
+                    $resolvedUnitPrice = (float) ($pkgInfo['price'] ?? 0);
+                    $validated['price'] = $resolvedUnitPrice;
+                }
+            }
+        }
+
+        $validated['billing_scheme'] = $validated['billing_scheme'] ?? 'v';
+        $validated['delivery_mode'] = $validated['delivery_mode'] ?? 'softcopy';
+        $validated['requires_outgoing_letter'] = $request->boolean('requires_outgoing_letter');
+
+        if ($validated['billing_scheme'] === '-') {
+            $validated['payment_workflow_status'] = 'lunas';
+            $validated['paid_at'] = now();
         }
 
         $extraNotes = [];
@@ -321,18 +381,24 @@ class BookingController extends Controller
                 : $sessionInfo;
         }
 
+        $cleanParticipants = collect($validated['participants'] ?? [])
+            ->map(fn ($p) => trim((string) $p))
+            ->filter(fn ($p) => $p !== '')
+            ->values();
+
+        if ($validated['kategori'] === 'psikotes' && $resolvedUnitPrice > 0 && !$request->filled('price')) {
+            $qtyCount = max(1, $cleanParticipants->count());
+            $validated['price'] = $resolvedUnitPrice * $qtyCount;
+        }
+
         $booking = Booking::create($validated);
 
         // Simpan peserta jika ada
-        if (!empty($validated['participants'])) {
-            foreach ($validated['participants'] as $nama) {
-                if (trim($nama) !== '') {
-                    BookingParticipant::create([
-                        'booking_id' => $booking->id,
-                        'nama_peserta' => trim($nama),
-                    ]);
-                }
-            }
+        foreach ($cleanParticipants as $nama) {
+            BookingParticipant::create([
+                'booking_id' => $booking->id,
+                'nama_peserta' => $nama,
+            ]);
         }
 
         $client = Client::find($validated['client_id']);
@@ -357,6 +423,83 @@ class BookingController extends Controller
                 'assigned_by' => auth()->id(),
             ]);
         }
+
+        // Jika psikotes dibuat dari modal global, pastikan masuk workflow kandidat & Kelola Penugasan
+        if ($validated['kategori'] === 'psikotes') {
+            $candidateNames = $cleanParticipants->isNotEmpty()
+                ? $cleanParticipants
+                : collect([$client->name]);
+
+            $serviceItem = null;
+            if (!empty($validated['service_tier']) && !empty($validated['service_package_key'])) {
+                $serviceItem = BookingServiceItem::create([
+                    'booking_id' => $booking->id,
+                    'service_tier' => $validated['service_tier'],
+                    'service_package_key' => $validated['service_package_key'],
+                    'service_package_name' => $validated['service_package_name'] ?? $validated['service_package_key'],
+                    'quantity' => $candidateNames->count(),
+                    'unit_price' => $resolvedUnitPrice,
+                    'subtotal_price' => $resolvedUnitPrice * $candidateNames->count(),
+                ]);
+            }
+
+            $isSpecial = $booking->isSpecialNonIndustri();
+            $psikologId = (!$isSpecial && !empty($validated['counselor_id'])) ? (int) $validated['counselor_id'] : null;
+            $editorId = !empty($validated['staff_pelapor_id']) ? (int) $validated['staff_pelapor_id'] : null;
+
+            foreach ($candidateNames as $cName) {
+                BookingCandidate::create([
+                    'booking_id' => $booking->id,
+                    'client_id' => $client->id,
+                    'booking_service_item_id' => $serviceItem?->id,
+                    'candidate_name' => $cName,
+                    'is_kilat' => $request->boolean('is_kilat'),
+                    'attendance_status' => 'pending',
+                    'assigned_psikolog_id' => $psikologId,
+                    'assigned_editor_id' => $editorId,
+                ]);
+            }
+
+            if ($psikologId) {
+                BookingAssignee::firstOrCreate([
+                    'booking_id' => $booking->id,
+                    'role_type' => 'psikolog',
+                    'counselor_id' => $psikologId,
+                ]);
+            }
+            if (!$isSpecial && !empty($validated['staff_penguji_id'])) {
+                BookingAssignee::firstOrCreate([
+                    'booking_id' => $booking->id,
+                    'role_type' => 'tester',
+                    'user_id' => (int) $validated['staff_penguji_id'],
+                ]);
+            }
+            if (!empty($validated['staff_koreksi_id'])) {
+                BookingAssignee::firstOrCreate([
+                    'booking_id' => $booking->id,
+                    'role_type' => 'skorer_manual',
+                    'user_id' => (int) $validated['staff_koreksi_id'],
+                ]);
+            }
+            if (!empty($validated['staff_koreksi_software_id'])) {
+                BookingAssignee::firstOrCreate([
+                    'booking_id' => $booking->id,
+                    'role_type' => 'skorer_software',
+                    'user_id' => (int) $validated['staff_koreksi_software_id'],
+                ]);
+            }
+            if ($editorId) {
+                BookingAssignee::firstOrCreate([
+                    'booking_id' => $booking->id,
+                    'role_type' => 'editor',
+                    'user_id' => $editorId,
+                ]);
+            }
+
+            app(PsychotestSlaService::class)->recalculateForBooking($booking);
+        }
+
+        app(GoogleCalendarService::class)->syncBooking($booking);
 
         if ($request->filled('from_modal')) {
             return redirect()->back()->with('success', 'Booking berhasil dibuat.');
@@ -422,9 +565,6 @@ class BookingController extends Controller
             'occupation' => $booking->client->occupation ?? '-',
             'education' => $booking->client->education_label ?? '-',
             'marital_status' => $booking->client->marital_status ?? '-',
-            'city' => $booking->client->city ?? '',
-            'province' => $booking->client->province ?? '',
-            'country' => $booking->client->country ?? 'Indonesia',
             'address' => $booking->client->address ?? '-',
             'status' => $booking->client->status ?? 'unassigned',
             'status_label' => ucfirst(str_replace('_', ' ', $booking->client->status ?? 'unassigned')),
@@ -460,7 +600,11 @@ class BookingController extends Controller
      */
     public function edit(Booking $booking)
     {
-        $this->authorize('view', $booking);
+        if ($booking->kategori === 'psikotes') {
+            return redirect()->route('psychotest-bookings.show', $booking);
+        }
+
+        $this->authorize('update', $booking);
 
         $booking->load(['participants']);
         $clients = Client::orderBy('name')->get();
@@ -509,6 +653,7 @@ class BookingController extends Controller
             'overtime_payment_status' => 'nullable|string|max:40',
             'overtime_va_number' => 'nullable|string|max:50',
             'overtime_final_price' => 'nullable|numeric|min:0',
+            'rescheduled_by' => 'nullable|in:client,psychologist',
         ]);
 
         $validated['tanggal_booking_dibuat'] = $validated['tanggal_booking_dibuat'] ?? $booking->tanggal_booking_dibuat ?? now()->toDateString();
@@ -527,6 +672,7 @@ class BookingController extends Controller
 
         // Deteksi Reschedule Konseling: jika reschedule < 24 jam atau saat sesi dan sudah lunas => HANGUS & BAYAR ULANG
         $forfeitNotice = null;
+        $wasPending = $booking->kategori === 'pending';
         $oldDateStr = $booking->tanggal_dijadwalkan ? $booking->tanggal_dijadwalkan->format('Y-m-d') : null;
         $newDateStr = !empty($validated['tanggal_dijadwalkan']) ? Carbon::parse($validated['tanggal_dijadwalkan'])->format('Y-m-d') : $oldDateStr;
         $oldStartStr = $booking->session_start ? substr($booking->session_start, 0, 5) : null;
@@ -535,20 +681,29 @@ class BookingController extends Controller
         $isScheduleChanged = ($oldDateStr && $newDateStr && $oldDateStr !== $newDateStr)
             || ($oldStartStr && $newStartStr && $oldStartStr !== $newStartStr);
 
-        if ($booking->kategori === 'konseling' && $isScheduleChanged && $oldDateStr) {
+        $isReschedulableStatus = !in_array($booking->status, ['perlu_bayar_overtime', 'perlu_sesi_lanjutan', 'selesai', 'batal'], true);
+        $isNonScheduleCard = in_array($request->input('submitted_card'), ['step-1', 'card-paket-layanan', 'step-3', 'card-status-pembayaran', 'step-4', 'card-status-layanan'], true);
+
+        if ($booking->kategori === 'konseling' && $isScheduleChanged && $oldDateStr && $isReschedulableStatus && !$isNonScheduleCard) {
             $originalSessionAt = Carbon::parse($oldDateStr . ' ' . ($oldStartStr ?: '09:00'));
+            $rescheduledBy = $validated['rescheduled_by'] ?? 'client';
             $validated['rescheduled_at'] = now();
+            $validated['rescheduled_by'] = $rescheduledBy;
 
             $hoursBeforeSession = now()->diffInMinutes($originalSessionAt, false) / 60;
             if ($hoursBeforeSession < 24 && $booking->isPaid()) {
-                $validated['is_payment_forfeited'] = true;
-                $validated['forfeited_amount'] = $booking->final_price ?? $booking->price ?? 0;
-                $validated['forfeited_reason'] = 'Reschedule mendadak (< 24 jam sebelum sesi atau saat sesi berlangsung)';
-                $validated['payment_workflow_status'] = 'draft_ke_finance';
-                $validated['va_number'] = null;
-                $validated['finance_invoice_number'] = null;
-                $validated['paid_at'] = null;
-                $forfeitNotice = ' Perhatian: Reschedule dilakukan < 24 jam / saat sesi berlangsung, sehingga pembayaran sebelumnya HANGUS dan tagihan baru perlu diajukan ke UC Finance.';
+                if ($rescheduledBy === 'psychologist') {
+                    $forfeitNotice = ' Jadwal diperbarui atas permintaan Psikolog — pembayaran klien tetap aman (tidak hangus).';
+                } else {
+                    $validated['is_payment_forfeited'] = true;
+                    $validated['forfeited_amount'] = $booking->final_price ?? $booking->price ?? 0;
+                    $validated['forfeited_reason'] = 'Reschedule mendadak oleh klien (< 24 jam sebelum sesi atau saat sesi berlangsung)';
+                    $validated['payment_workflow_status'] = 'draft_ke_finance';
+                    $validated['va_number'] = null;
+                    $validated['finance_invoice_number'] = null;
+                    $validated['paid_at'] = null;
+                    $forfeitNotice = ' Perhatian: Reschedule dilakukan < 24 jam oleh klien / saat sesi berlangsung, sehingga pembayaran sebelumnya HANGUS dan tagihan baru perlu diajukan ke UC Finance.';
+                }
             }
         }
 
@@ -561,9 +716,11 @@ class BookingController extends Controller
             }
         }
 
-        // Kalkulasi otomatis durasi riil & overtime sesuai aturan 30 menit UC PSC
+        // Kalkulasi otomatis durasi riil & overtime kelipatan blok 60 mnt setelah toleransi 30 mnt (Opsi A).
+        // Hanya tandai overtime jika sesi memasuki status realisasi/pasca-sesi (bukan perencanaan slot awal).
         $startTime = $validated['session_start'] ?? $booking->session_start;
         $endTime = $validated['session_end'] ?? $booking->session_end;
+        $isRealizedStatus = in_array($validated['status'], ['perlu_bayar_overtime', 'perlu_sesi_lanjutan', 'selesai'], true);
         if ($startTime && $endTime) {
             $sh = (int) substr($startTime, 0, 2);
             $sm = (int) substr($startTime, 3, 2);
@@ -572,22 +729,62 @@ class BookingController extends Controller
             $totalMins = ($eh * 60 + $em) - ($sh * 60 + $sm);
             if ($totalMins > 0) {
                 $validated['actual_duration_minutes'] = $totalMins;
-                // Rule UC PSC: 1 sesi = 60 mnt. Jika kelebihan > 30 mnt (total > 90 mnt), kena overtime
-                if ($totalMins > 90) {
+                $standard = (int) ($booking->session_duration_standard ?: 60);
+                // Rule UC PSC: 1 sesi = 60 mnt + toleransi 30 mnt (>90 mnt), lalu kelipatan blok 60 mnt (Opsi A)
+                $otUnits = ($isRealizedStatus && $totalMins > ($standard + 30))
+                    ? Booking::calculateOvertimeUnits($totalMins, $standard)
+                    : 0;
+                if ($otUnits > 0) {
                     $validated['is_overtime'] = true;
-                    $validated['overtime_minutes'] = $totalMins - 60;
+                    $validated['overtime_minutes'] = $totalMins - $standard;
+                    $validated['overtime_units'] = $otUnits;
                     if (empty($validated['overtime_payment_status']) && $booking->overtime_payment_status === 'tidak_ada') {
                         $validated['overtime_payment_status'] = 'menunggu_nota';
                     }
                 } else {
                     $validated['is_overtime'] = false;
                     $validated['overtime_minutes'] = 0;
+                    $validated['overtime_units'] = 0;
                     $validated['overtime_payment_status'] = 'tidak_ada';
                 }
             }
         }
 
+        if ($wasPending && $validated['kategori'] === 'psikotes' && in_array($validated['status'], ['data_masuk', 'waiting_list', 'menunggu_konfirmasi'], true)) {
+            $validated['status'] = 'baru';
+        }
+
         $booking->update($validated);
+
+        if ($booking->kategori === 'psikotes') {
+            if ($wasPending && $booking->candidates()->doesntExist()) {
+                $booking->loadMissing(['client', 'clientForm']);
+                $candForm = $booking->clientForm;
+                $booking->candidates()->create([
+                    'client_id' => $booking->client_id,
+                    'client_form_id' => $candForm?->id,
+                    'candidate_name' => $candForm?->client_name ?? $booking->client?->name ?? 'Kandidat',
+                    'target_position' => $candForm?->answers['posisi_dituju'] ?? ($candForm?->answers['tujuan_asesmen'] ?? null),
+                    'attendance_status' => 'pending',
+                    'assigned_psikolog_id' => (!$booking->isSpecialNonIndustri() && $booking->counselor_id) ? $booking->counselor_id : null,
+                ]);
+            }
+
+            if ($booking->status === 'batal') {
+                ClientForm::where('booking_id', $booking->id)->update([
+                    'booking_id' => null,
+                    'booking_status' => 'belum_dibooking',
+                ]);
+            }
+
+            if ($isScheduleChanged || $wasPending || $booking->status === 'batal') {
+                app(PsychotestSlaService::class)->recalculateForBooking(
+                    $booking,
+                    [],
+                    $oldDateStr ? Carbon::parse($oldDateStr) : null
+                );
+            }
+        }
 
         // Sinkronisasi Google Calendar jika Konseling memasuki status terkonfirmasi atau di-reschedule/batal
         app(GoogleCalendarService::class)->syncBooking($booking);
@@ -598,15 +795,17 @@ class BookingController extends Controller
             ]);
         }
 
-        // Update peserta — hapus lama, simpan baru
-        $booking->participants()->delete();
-        if (!empty($validated['participants'])) {
-            foreach ($validated['participants'] as $nama) {
-                if (trim($nama) !== '') {
-                    BookingParticipant::create([
-                        'booking_id' => $booking->id,
-                        'nama_peserta' => trim($nama),
-                    ]);
+        // Update peserta hanya bila field participants dikirim oleh form
+        if ($request->has('participants')) {
+            $booking->participants()->delete();
+            if (!empty($validated['participants'])) {
+                foreach ($validated['participants'] as $nama) {
+                    if (trim((string) $nama) !== '') {
+                        BookingParticipant::create([
+                            'booking_id' => $booking->id,
+                            'nama_peserta' => trim((string) $nama),
+                        ]);
+                    }
                 }
             }
         }
@@ -625,20 +824,62 @@ class BookingController extends Controller
         $submittedCard = $request->input('submitted_card', '');
         $successMsg = ($cardMessages[$submittedCard] ?? 'Booking berhasil diperbarui.') . ($forfeitNotice ?? '');
 
+        if ($wasPending && $booking->kategori === 'psikotes') {
+            return redirect()->route('psychotest-bookings.show', $booking)
+                ->with('success', 'Booking berhasil diklasifikasikan ke Layanan Psikotes.');
+        }
+
         return redirect()->back()
             ->with('success', $successMsg)
             ->with('updated_card', $submittedCard);
     }
 
     /**
-     * Hapus booking.
+     * Hapus booking beserta pembersihan event GCal, relasi form, dan antrean SLA terkait.
      */
     public function destroy(Booking $booking)
     {
         $this->authorize('delete', $booking);
 
+        $kategori = $booking->kategori;
+        $oldDate = $booking->tanggal_dijadwalkan ? Carbon::parse($booking->tanggal_dijadwalkan) : null;
+        $oldPsychIds = $kategori === 'psikotes'
+            ? $booking->candidates()->pluck('assigned_psikolog_id')->filter()->unique()->values()->all()
+            : [];
+
+        app(GoogleCalendarService::class)->deleteBookingEvents($booking);
+
+        ClientForm::where('booking_id', $booking->id)->update([
+            'booking_id' => null,
+            'booking_status' => 'belum_dibooking',
+        ]);
+
         $booking->delete();
-        return redirect()->route('bookings.index')->with('success', 'Booking berhasil dihapus.');
+
+        if ($kategori === 'psikotes' && $oldDate && !empty($oldPsychIds)) {
+            $slaService = app(PsychotestSlaService::class);
+            foreach ($oldPsychIds as $counselorId) {
+                $slaService->recalculatePsychologistDay((int) $counselorId, $oldDate);
+            }
+        }
+
+        return redirect()->route($kategori === 'psikotes' ? 'bookings.psychotest' : 'bookings.counseling')
+            ->with('success', 'Booking berhasil dihapus.');
+    }
+
+    /**
+     * Tentukan status awal konseling sesuai ketersediaan jadwal dan konselor (PRD 5.1).
+     */
+    private function resolveFollowUpCounselingStatus(?string $scheduledDate, ?int $counselorId): string
+    {
+        if (!empty($scheduledDate) && !empty($counselorId)) {
+            return 'menunggu_konfirmasi';
+        }
+        if (!empty($scheduledDate) || !empty($counselorId)) {
+            return 'waiting_list';
+        }
+
+        return 'data_masuk';
     }
 
     /**
@@ -646,6 +887,8 @@ class BookingController extends Controller
      */
     public function storeRealisasi(Request $request, Booking $booking)
     {
+        $this->authorize('update', $booking);
+
         $validated = $request->validate([
             'session_start'             => 'required|date_format:H:i',
             'session_end'               => 'required|date_format:H:i|after:session_start',
@@ -653,42 +896,63 @@ class BookingController extends Controller
             'session_notes'             => 'nullable|string|max:2000',
             'session_type'              => 'nullable|in:tatap_muka,online,whatsapp',
             'location'                  => 'nullable|string|max:255',
-            'status'                    => 'nullable|in:baru,lanjutan,selesai',
+            'status'                    => 'nullable|string|max:50',
         ]);
 
-        // Hitung overtime secara otomatis
+        // Hitung overtime kelipatan blok 60 mnt setelah masa toleransi 30 menit (total > 90 mnt untuk standar 60 mnt, Opsi A)
         [$sh, $sm] = explode(':', $validated['session_start']);
         [$eh, $em] = explode(':', $validated['session_end']);
         $totalMinutes   = ((int)$eh * 60 + (int)$em) - ((int)$sh * 60 + (int)$sm);
         $standard       = (int)($validated['session_duration_standard'] ?? $booking->session_duration_standard ?? 60);
-        $overtimeMinutes = max(0, $totalMinutes - $standard);
+        $overtimeUnits  = Booking::calculateOvertimeUnits(max(0, $totalMinutes), $standard);
+        $isOvertime     = $overtimeUnits > 0;
+        $overtimeMinutes = $isOvertime ? max(0, $totalMinutes - $standard) : 0;
+
+        $needsFollowUp = $request->boolean('needs_followup');
+        $fallbackStatus = $isOvertime ? 'perlu_bayar_overtime' : ($needsFollowUp ? 'perlu_sesi_lanjutan' : $booking->status);
 
         $booking->update([
             'session_start'             => $validated['session_start'],
             'session_end'               => $validated['session_end'],
             'session_duration_standard' => $standard,
+            'actual_duration_minutes'   => max(0, $totalMinutes),
+            'is_overtime'               => $isOvertime,
             'overtime_minutes'          => $overtimeMinutes,
+            'overtime_units'            => $overtimeUnits,
+            'overtime_payment_status'   => $isOvertime
+                ? ($booking->overtime_payment_status === 'tidak_ada' ? 'menunggu_nota' : $booking->overtime_payment_status)
+                : 'tidak_ada',
             'session_notes'             => $validated['session_notes'] ?? null,
             'session_type'              => $validated['session_type'] ?? null,
             'location'                  => $validated['location'] ?? null,
-            'status'                    => $validated['status'] ?? $booking->status,
+            'status'                    => $validated['status'] ?? $fallbackStatus,
         ]);
 
-        // Jika diminta follow-up, buat booking lanjutan
-        if ($request->boolean('needs_followup')) {
-            Booking::create([
+        // Jika diminta follow-up, buat booking lanjutan dengan status resmi PRD 5.1
+        if ($needsFollowUp) {
+            $followUp = Booking::create([
                 'client_id'               => $booking->client_id,
                 'kategori'                => $booking->kategori,
+                'service_tier'            => $booking->service_tier,
+                'service_package_key'     => $booking->service_package_key,
+                'service_package_name'    => $booking->service_package_name,
+                'price'                   => $booking->price,
+                'overtime_price'          => $booking->overtime_price,
                 'tanggal_booking_dibuat'  => now()->toDateString(),
-                'status'                  => 'lanjutan',
+                'session_type'            => $booking->session_type,
+                'location'                => $booking->location,
+                'status'                  => $booking->kategori === 'psikotes'
+                    ? 'baru'
+                    : $this->resolveFollowUpCounselingStatus(null, $booking->counselor_id),
                 'follow_up_of_booking_id' => $booking->id,
                 'counselor_id'            => $booking->counselor_id,
                 'staff_penguji_id'        => $booking->staff_penguji_id,
             ]);
+            app(GoogleCalendarService::class)->syncBooking($followUp);
         }
 
         return redirect()->back()->with('success', 'Realisasi sesi berhasil disimpan.' .
-            ($overtimeMinutes > 0 ? " Overtime: {$overtimeMinutes} menit." : ''));
+            ($overtimeMinutes > 0 ? " Overtime: {$overtimeMinutes} menit ({$overtimeUnits}x tarif)." : ''));
     }
 
     /**
@@ -703,6 +967,15 @@ class BookingController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        $scheduledDate = $validated['tanggal_dijadwalkan'] ?? null;
+        $followUpStatus = $booking->kategori === 'psikotes'
+            ? 'baru'
+            : $this->resolveFollowUpCounselingStatus($scheduledDate, $booking->counselor_id);
+
+        if ($booking->kategori === 'konseling' && !in_array($booking->status, ['perlu_bayar_overtime', 'batal', 'perlu_sesi_lanjutan'], true)) {
+            $booking->update(['status' => 'perlu_sesi_lanjutan']);
+        }
+
         $followUp = Booking::create([
             'client_id' => $booking->client_id,
             'kategori' => $booking->kategori,
@@ -712,10 +985,10 @@ class BookingController extends Controller
             'price' => $booking->price,
             'overtime_price' => $booking->overtime_price,
             'tanggal_booking_dibuat' => now()->toDateString(),
-            'tanggal_dijadwalkan' => $validated['tanggal_dijadwalkan'] ?? null,
+            'tanggal_dijadwalkan' => $scheduledDate,
             'session_type' => $booking->session_type,
             'location' => $booking->location,
-            'status' => 'lanjutan',
+            'status' => $followUpStatus,
             'follow_up_of_booking_id' => $booking->id,
             'counselor_id' => $booking->counselor_id,
             'notes' => $validated['notes'] ?? null,
@@ -732,6 +1005,8 @@ class BookingController extends Controller
      */
     public function scheduleFromForm(Request $request, ClientForm $clientForm)
     {
+        $this->authorize('create', Booking::class);
+
         $validated = $request->validate([
             'kategori' => 'required|string|in:konseling,psikotes',
             'service_tier' => 'required|string',
@@ -802,13 +1077,24 @@ class BookingController extends Controller
             }
         }
 
-        // Cari atau inisialisasi Booking
+        // Cari atau inisialisasi Booking dengan signature resmi
         $booking = $clientForm->booking;
         if (!$booking) {
-            $booking = Booking::createInitialForForm($clientForm);
+            if (!$clientForm->client) {
+                abort(404, 'Data klien untuk formulir ini tidak ditemukan.');
+            }
+            $booking = Booking::createInitialForForm(
+                $clientForm->client,
+                $clientForm->form_type,
+                $clientForm->service_preference,
+                $clientForm->id
+            );
         }
 
-        $sessionTypeMapped = ($validated['session_type'] === 'offline') ? 'tatap_muka' : 'online';
+        $sessionTypeMapped = ($validated['session_type'] === 'offline' || $validated['session_type'] === 'tatap_muka') ? 'tatap_muka' : 'online';
+        $targetStatus = $kategori === 'konseling'
+            ? (!empty($validated['counselor_id']) ? 'menunggu_konfirmasi' : 'waiting_list')
+            : 'baru';
 
         $booking->update([
             'client_form_id' => $clientForm->id,
@@ -826,19 +1112,71 @@ class BookingController extends Controller
             'counselor_id' => !empty($validated['counselor_id']) ? $validated['counselor_id'] : null,
             'staff_penguji_id' => !empty($validated['staff_penguji_id']) ? $validated['staff_penguji_id'] : null,
             'notes' => !empty($validated['notes']) ? $validated['notes'] : null,
-            'status' => 'baru',
+            'status' => $targetStatus,
         ]);
 
-        if ($clientForm->booking_id !== $booking->id) {
-            $clientForm->booking_id = $booking->id;
-            $clientForm->save();
-        }
+        $clientForm->booking_id = $booking->id;
+        $clientForm->booking_status = 'sudah_dibooking';
+        $clientForm->save();
 
         if ($booking->client) {
-            $booking->client->update([
-                'counseling_type' => $packageName,
-            ]);
+            $clientUpdates = ['service_type' => $kategori];
+            if ($kategori === 'konseling') {
+                $clientUpdates['counseling_type'] = $packageName;
+            }
+            if ($booking->client->status === 'unassigned') {
+                $clientUpdates['status'] = (!empty($validated['counselor_id']) || !empty($validated['staff_penguji_id']) || !empty($validated['tanggal_dijadwalkan']))
+                    ? 'assigned'
+                    : 'unassigned';
+            }
+            $booking->client->update($clientUpdates);
         }
+
+        if ($kategori === 'psikotes') {
+            $serviceItem = $booking->serviceItems()->firstOrCreate(
+                ['service_tier' => $tier, 'service_package_key' => $packageKey],
+                [
+                    'service_package_name' => $packageName,
+                    'quantity' => 1,
+                    'unit_price' => $price,
+                    'subtotal_price' => $price,
+                ]
+            );
+
+            $isSpecial = $booking->isSpecialNonIndustri();
+            $assignedPsikologId = (!$isSpecial && !empty($validated['counselor_id'])) ? (int) $validated['counselor_id'] : null;
+
+            $booking->candidates()->firstOrCreate(
+                ['client_form_id' => $clientForm->id],
+                [
+                    'client_id' => $clientForm->client_id,
+                    'booking_service_item_id' => $serviceItem->id,
+                    'candidate_name' => $clientForm->client_name ?: ($booking->client?->name ?? 'Kandidat'),
+                    'target_position' => $clientForm->answers['posisi_dituju'] ?? ($clientForm->answers['tujuan_asesmen'] ?? null),
+                    'attendance_status' => 'pending',
+                    'assigned_psikolog_id' => $assignedPsikologId,
+                ]
+            );
+
+            if ($assignedPsikologId) {
+                BookingAssignee::firstOrCreate([
+                    'booking_id' => $booking->id,
+                    'role_type' => 'psikolog',
+                    'counselor_id' => $assignedPsikologId,
+                ]);
+            }
+            if (!$isSpecial && !empty($validated['staff_penguji_id'])) {
+                BookingAssignee::firstOrCreate([
+                    'booking_id' => $booking->id,
+                    'role_type' => 'tester',
+                    'user_id' => (int) $validated['staff_penguji_id'],
+                ]);
+            }
+
+            app(PsychotestSlaService::class)->recalculateForBooking($booking);
+        }
+
+        app(GoogleCalendarService::class)->syncBooking($booking);
 
         return redirect()->back()->with('success', "Jadwal & Paket Layanan berhasil ditetapkan: {$packageName}.");
     }

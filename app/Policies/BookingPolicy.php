@@ -8,11 +8,11 @@ use App\Models\User;
 class BookingPolicy
 {
     /**
-     * Admin melihat semua booking; Staff & Psikolog melihat booking yang ditugaskan kepada mereka.
+     * Admin & Staff melihat semua booking; Psikolog melihat booking yang ditugaskan kepadanya.
      */
     public function view(User $user, Booking $booking): bool
     {
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() || $user->isStaff()) {
             return true;
         }
 
@@ -23,15 +23,12 @@ class BookingPolicy
                 || $booking->candidates()->where('assigned_psikolog_id', $counselorId)->exists();
         }
 
-        if ($user->isStaff()) {
-            return (int) $booking->staff_penguji_id === (int) $user->id
-                || (int) $booking->staff_koreksi_id === (int) $user->id
-                || (int) $booking->staff_pelapor_id === (int) $user->id
-                || $booking->assignees()->where('user_id', $user->id)->exists()
-                || $booking->candidates()->where('assigned_editor_id', $user->id)->exists();
-        }
-
         return false;
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->isAdmin();
     }
 
     /**

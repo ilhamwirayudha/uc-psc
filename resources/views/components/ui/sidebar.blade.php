@@ -198,35 +198,6 @@
                 </x-ui.sidebar-link>
 
                 <x-ui.sidebar-link
-                    :href="route('companies.index')"
-                    :active="request()->routeIs('companies.*')"
-                    label="Master Perusahaan"
-                >
-                    <x-slot:icon>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 21h18"/>
-                            <path d="M5 21V7l8-4v18"/>
-                            <path d="M19 21V11l-6-4"/>
-                            <path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/>
-                        </svg>
-                    </x-slot:icon>
-                </x-ui.sidebar-link>
-
-                <x-ui.sidebar-link
-                    :href="route('holidays.index')"
-                    :active="request()->routeIs('holidays.*')"
-                    label="Hari Libur Nasional"
-                >
-                    <x-slot:icon>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                            <path d="m9 16 2 2 4-4"/>
-                        </svg>
-                    </x-slot:icon>
-                </x-ui.sidebar-link>
-
-                <x-ui.sidebar-link
                     :href="route('psychotest-bookings.monthly-recap')"
                     :active="request()->routeIs('psychotest-bookings.monthly-recap')"
                     label="Rekap Bulanan (I/R)"

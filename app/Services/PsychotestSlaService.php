@@ -58,44 +58,63 @@ class PsychotestSlaService
 
     /**
      * Hitung ulang SLA klien dan SLA psikolog untuk seluruh kandidat pada satu booking
-     * serta seluruh jadwal psikolog terkait di tanggal yang sama.
+     * serta seluruh jadwal psikolog terkait di tanggal yang sama (termasuk psikolog/tanggal sebelumnya).
      */
-    public function recalculateForBooking(Booking $booking): void
-    {
+    public function recalculateForBooking(
+        Booking $booking,
+        array $extraPsychologistIds = [],
+        ?Carbon $oldScheduledDate = null
+    ): void {
         if ($booking->kategori !== 'psikotes') {
             return;
         }
 
         $candidates = $booking->candidates()->orderBy('id')->get();
-        if ($candidates->isEmpty()) {
-            return;
-        }
-
         $scheduledDate = $booking->tanggal_dijadwalkan ? Carbon::parse($booking->tanggal_dijadwalkan) : null;
 
-        foreach ($candidates as $candidate) {
-            if ($candidate->isAbsent() || !$scheduledDate) {
+        if ($booking->status === 'batal') {
+            foreach ($candidates as $candidate) {
                 $candidate->update([
                     'psychologist_deadline_date' => null,
-                    'client_deadline_date' => $scheduledDate && !$candidate->isAbsent()
-                        ? $this->calculateClientDeadline($scheduledDate, $candidate->is_kilat)->toDateString()
-                        : null,
+                    'client_deadline_date' => null,
                 ]);
-                continue;
             }
+        } else {
+            foreach ($candidates as $candidate) {
+                $needsClearPsychDeadline = $candidate->isAbsent()
+                    || !$scheduledDate
+                    || empty($candidate->assigned_psikolog_id)
+                    || $candidate->isSpecialPackage();
 
-            $candidate->update([
-                'client_deadline_date' => $this->calculateClientDeadline($scheduledDate, $candidate->is_kilat)->toDateString(),
-            ]);
+                if ($needsClearPsychDeadline) {
+                    $candidate->update([
+                        'psychologist_deadline_date' => null,
+                        'client_deadline_date' => $scheduledDate && !$candidate->isAbsent()
+                            ? $this->calculateClientDeadline($scheduledDate, $candidate->is_kilat)->toDateString()
+                            : null,
+                    ]);
+                    continue;
+                }
+
+                $candidate->update([
+                    'client_deadline_date' => $this->calculateClientDeadline($scheduledDate, $candidate->is_kilat)->toDateString(),
+                ]);
+            }
         }
 
-        if (!$scheduledDate) {
-            return;
-        }
+        $psychologistIds = $candidates->pluck('assigned_psikolog_id')
+            ->merge($extraPsychologistIds)
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->unique();
 
-        $psychologistIds = $candidates->pluck('assigned_psikolog_id')->filter()->unique();
         foreach ($psychologistIds as $counselorId) {
-            $this->recalculatePsychologistDay((int) $counselorId, $scheduledDate);
+            if ($scheduledDate) {
+                $this->recalculatePsychologistDay($counselorId, $scheduledDate);
+            }
+            if ($oldScheduledDate && (!$scheduledDate || $oldScheduledDate->toDateString() !== $scheduledDate->toDateString())) {
+                $this->recalculatePsychologistDay($counselorId, $oldScheduledDate);
+            }
         }
     }
 
@@ -123,6 +142,36 @@ class PsychotestSlaService
             $deadline = $scheduledDate->copy()->addDays($offsetDays)->toDateString();
             $candidate->update(['psychologist_deadline_date' => $deadline]);
             $offsetDays++;
+        }
+    }
+
+    /**
+     * Hitung ulang SLA klien untuk booking psikotes aktif di rentang hari kerja menjelang tanggal libur.
+     *
+     * @param array<int, mixed> $dates
+     */
+    public function recalculateDeadlinesForDates(array $dates): void
+    {
+        $parsed = collect($dates)
+            ->filter()
+            ->map(fn ($d) => Carbon::parse($d)->startOfDay())
+            ->unique(fn ($c) => $c->toDateString())
+            ->values();
+
+        if ($parsed->isEmpty()) {
+            return;
+        }
+
+        $minWindow = $parsed->min()->copy()->subDays(15)->toDateString();
+        $maxWindow = $parsed->max()->toDateString();
+
+        $bookings = Booking::where('kategori', 'psikotes')
+            ->where('status', '!=', 'batal')
+            ->whereBetween('tanggal_dijadwalkan', [$minWindow, $maxWindow])
+            ->get();
+
+        foreach ($bookings as $booking) {
+            $this->recalculateForBooking($booking);
         }
     }
 }

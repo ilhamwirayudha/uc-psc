@@ -18,7 +18,10 @@ class CounselorSeeder extends Seeder
         ];
 
         foreach ($counselors as $counselor) {
-            Counselor::create($counselor);
+            Counselor::firstOrCreate(
+                ['email' => $counselor['email']],
+                $counselor
+            );
         }
     }
 }

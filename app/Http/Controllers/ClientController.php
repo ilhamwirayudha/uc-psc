@@ -24,18 +24,7 @@ class ClientController extends Controller
         $user = auth()->user();
 
         // Opsi 2: Admin & Staff melihat seluruh Daftar Klien; Psikolog hanya melihat klien yang ditangani
-        if ($user->isPsikolog()) {
-            $counselorId = (int) ($user->counselor_id ?? 0);
-            if ($counselorId > 0) {
-                $query->where(function ($q) use ($counselorId) {
-                    $q->whereHas('bookings', fn ($bq) => $bq->where('counselor_id', $counselorId))
-                      ->orWhereHas('pairings', fn ($pq) => $pq->where('counselor_id', $counselorId))
-                      ->orWhereHas('bookings.candidates', fn ($cq) => $cq->where('assigned_psikolog_id', $counselorId));
-                });
-            } else {
-                $query->whereRaw('1 = 0');
-            }
-        }
+        $query->visibleToUser($user);
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
@@ -43,7 +32,7 @@ class ClientController extends Controller
                   ->orWhere('pic_name', 'like', '%' . $request->search . '%')
                   ->orWhere('email', 'like', '%' . $request->search . '%')
                   ->orWhere('phone', 'like', '%' . $request->search . '%')
-                  ->orWhere('city', 'like', '%' . $request->search . '%')
+                  ->orWhere('address', 'like', '%' . $request->search . '%')
                   ->orWhere('occupation', 'like', '%' . $request->search . '%');
             });
         }
@@ -90,7 +79,7 @@ class ClientController extends Controller
                     ELSE 1 END ASC")
                     ->orderBy('clients.created_at', 'desc');
             }
-        } elseif (in_array($sort, ['id', 'name', 'created_at', 'updated_at', 'service_type', 'city', 'phone', 'email'])) {
+        } elseif (in_array($sort, ['id', 'name', 'created_at', 'updated_at', 'service_type', 'address', 'phone', 'email'])) {
             $query->orderBy('clients.' . $sort, $direction);
         } else {
             $query->orderBy('clients.created_at', $direction);
@@ -107,6 +96,8 @@ class ClientController extends Controller
 
     public function create(Request $request)
     {
+        $this->authorize('create', Client::class);
+
         $initialJenis = $request->get('jenis', '');
         $initialFormType = $request->get('form_type', '');
         $clientId = $request->get('client_id');
@@ -117,6 +108,8 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create', Client::class);
+
         $formType = $request->input('form_type');
 
         if (empty($formType)) {
@@ -171,9 +164,6 @@ class ClientController extends Controller
             'marital_status' => 'nullable|string|max:100',
             'education' => 'required|string|max:100',
             'address' => 'required|string|max:1000',
-            'country' => 'nullable|string|max:100',
-            'province' => 'nullable|string|max:100',
-            'city' => 'nullable|string|max:100',
             'source' => 'nullable|string|max:255',
             'status' => 'nullable|in:unassigned,assigned,ongoing,unpaid,paid,needs_followup,completed',
             'notes' => 'nullable|string',
@@ -287,7 +277,12 @@ class ClientController extends Controller
             $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
             $counselingType = $request->filled('preferensi_konseling') ? (str_contains(strtolower($request->preferensi_konseling), 'online') ? 'online' : 'offline') : null;
 
-            $client = Client::firstOrNew(['phone' => trim($request->phone)]);
+            $client = Client::resolveForFormSubmission(
+                (string) $request->phone,
+                (string) $request->nama_lengkap,
+                'individu',
+                $request->filled('existing_client_id') ? (int) $request->input('existing_client_id') : null
+            );
             $client->name = trim($request->nama_lengkap);
             $client->jenis = 'individu';
             $client->gender = $gender;
@@ -297,18 +292,18 @@ class ClientController extends Controller
             $client->religion = $request->agama;
             $client->education = $request->pendidikan_terakhir;
             $client->occupation = $request->pekerjaan;
-            $client->email = $request->email;
+            $client->applyOptionalEmail($request->email);
             $client->service_type = 'Konseling Dewasa';
             $client->counseling_type = $counselingType;
             $client->source = 'other';
-            $client->status = 'unassigned';
-            $client->created_by = auth()->id();
+            $client->ensureInitialStatus();
+            $client->created_by = $client->created_by ?: auth()->id();
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('dewasa');
             $booking = Booking::createInitialForForm($client, 'dewasa', $counselingType);
 
-            ClientForm::create([
+            $clientForm = ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'dewasa',
                 'client_id' => $client->id,
@@ -318,9 +313,11 @@ class ClientController extends Controller
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => $counselingType,
+                'booking_status' => 'sudah_dibooking',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+            $booking->update(['client_form_id' => $clientForm->id]);
 
             if ($request->filled('existing_client_id')) {
                 return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'konseling'])
@@ -411,7 +408,12 @@ class ClientController extends Controller
             $gender = (strtolower($request->jenis_kelamin) === 'laki-laki' || strtolower($request->jenis_kelamin) === 'l') ? 'l' : 'p';
             $counselingType = $request->filled('preferensi_konseling') ? (str_contains(strtolower($request->preferensi_konseling), 'online') ? 'online' : 'offline') : null;
 
-            $client = Client::firstOrNew(['phone' => trim($primaryPhone)]);
+            $client = Client::resolveForFormSubmission(
+                (string) $primaryPhone,
+                (string) $request->nama_lengkap,
+                'individu',
+                $request->filled('existing_client_id') ? (int) $request->input('existing_client_id') : null
+            );
             $client->name = trim($request->nama_lengkap);
             $client->jenis = 'individu';
             $client->gender = $gender;
@@ -420,18 +422,22 @@ class ClientController extends Controller
             $client->address = $request->alamat;
             $client->religion = $request->agama;
             $client->education = $request->pendidikan_terakhir;
-            $client->email = $request->email;
+            if ($request->filled('email')) {
+                $client->email = trim((string) $request->email);
+            }
             $client->service_type = 'Konseling Anak';
             $client->counseling_type = $counselingType;
             $client->source = 'other';
-            $client->status = 'unassigned';
-            $client->created_by = auth()->id();
+            if (!$client->exists || empty($client->status)) {
+                $client->status = 'unassigned';
+            }
+            $client->created_by = $client->created_by ?: auth()->id();
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('anak');
             $booking = Booking::createInitialForForm($client, 'anak', $counselingType);
 
-            ClientForm::create([
+            $clientForm = ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'anak',
                 'client_id' => $client->id,
@@ -441,9 +447,11 @@ class ClientController extends Controller
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => $counselingType,
+                'booking_status' => 'sudah_dibooking',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+            $booking->update(['client_form_id' => $clientForm->id]);
 
             if ($request->filled('existing_client_id')) {
                 return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'konseling'])
@@ -523,7 +531,12 @@ class ClientController extends Controller
             $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
             $counselingType = $request->filled('preferensi_konseling') ? (str_contains(strtolower($request->preferensi_konseling), 'online') ? 'online' : 'offline') : null;
 
-            $client = Client::firstOrNew(['phone' => trim($request->phone)]);
+            $client = Client::resolveForFormSubmission(
+                (string) $request->phone,
+                (string) $request->nama_lengkap,
+                'individu',
+                $request->filled('existing_client_id') ? (int) $request->input('existing_client_id') : null
+            );
             $client->name = trim($request->nama_lengkap);
             $client->jenis = 'individu';
             $client->gender = $gender;
@@ -533,30 +546,37 @@ class ClientController extends Controller
             $client->religion = $request->agama;
             $client->education = $request->pendidikan_terakhir;
             $client->occupation = $request->pekerjaan;
-            $client->email = $request->email;
+            $client->applyOptionalEmail($request->email);
             $client->service_type = 'Konseling Pra-Nikah';
             $client->counseling_type = $counselingType;
             $client->source = 'other';
-            $client->status = 'unassigned';
-            $client->created_by = auth()->id();
+            $client->ensureInitialStatus();
+            $client->created_by = $client->created_by ?: auth()->id();
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('pra_nikah');
             $booking = Booking::createInitialForForm($client, 'pra_nikah', $counselingType);
 
-            ClientForm::create([
+            $partnerName = trim((string) $request->nama_pasangan);
+            $formClientName = $partnerName !== ''
+                ? trim($request->nama_lengkap) . ' & ' . $partnerName
+                : trim($request->nama_lengkap);
+
+            $clientForm = ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'pra_nikah',
                 'client_id' => $client->id,
                 'booking_id' => $booking->id,
-                'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
+                'client_name' => $formClientName,
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => $counselingType,
+                'booking_status' => 'sudah_dibooking',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+            $booking->update(['client_form_id' => $clientForm->id]);
 
             if ($request->filled('existing_client_id')) {
                 return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'konseling'])
@@ -637,7 +657,12 @@ class ClientController extends Controller
             $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
             $counselingType = $request->filled('preferensi_konseling') ? (str_contains(strtolower($request->preferensi_konseling), 'online') ? 'online' : 'offline') : null;
 
-            $client = Client::firstOrNew(['phone' => trim($request->phone)]);
+            $client = Client::resolveForFormSubmission(
+                (string) $request->phone,
+                (string) $request->nama_lengkap,
+                'individu',
+                $request->filled('existing_client_id') ? (int) $request->input('existing_client_id') : null
+            );
             $client->name = trim($request->nama_lengkap);
             $client->jenis = 'individu';
             $client->gender = $gender;
@@ -647,30 +672,37 @@ class ClientController extends Controller
             $client->religion = $request->agama;
             $client->education = $request->pendidikan_terakhir;
             $client->occupation = $request->pekerjaan;
-            $client->email = $request->email;
+            $client->applyOptionalEmail($request->email);
             $client->service_type = 'Konseling Pernikahan';
             $client->counseling_type = $counselingType;
             $client->source = 'other';
-            $client->status = 'unassigned';
-            $client->created_by = auth()->id();
+            $client->ensureInitialStatus();
+            $client->created_by = $client->created_by ?: auth()->id();
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('pernikahan');
             $booking = Booking::createInitialForForm($client, 'pernikahan', $counselingType);
 
-            ClientForm::create([
+            $partnerName = trim((string) $request->nama_pasangan);
+            $formClientName = $partnerName !== ''
+                ? trim($request->nama_lengkap) . ' & ' . $partnerName
+                : trim($request->nama_lengkap);
+
+            $clientForm = ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'pernikahan',
                 'client_id' => $client->id,
                 'booking_id' => $booking->id,
-                'client_name' => trim($request->nama_lengkap) . ' & ' . trim($request->nama_pasangan),
+                'client_name' => $formClientName,
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
                 'service_preference' => $counselingType,
+                'booking_status' => 'sudah_dibooking',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+            $booking->update(['client_form_id' => $clientForm->id]);
 
             if ($request->filled('existing_client_id')) {
                 return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'konseling'])
@@ -697,6 +729,32 @@ class ClientController extends Controller
             'birth_order' => 'nullable|string|max:100',
             'city_of_origin' => 'nullable|string|max:100',
             'ethnicity' => 'nullable|string|max:50',
+            'occupation' => 'nullable|string|max:150',
+            'father_name' => 'nullable|string|max:255',
+            'father_age' => 'nullable|string|max:50',
+            'father_education' => 'nullable|string|max:100',
+            'father_occupation' => 'nullable|string|max:150',
+            'mother_name' => 'nullable|string|max:255',
+            'mother_age' => 'nullable|string|max:50',
+            'mother_education' => 'nullable|string|max:100',
+            'mother_occupation' => 'nullable|string|max:150',
+            'siblings_info' => 'nullable|string',
+            'school_history' => 'nullable|string',
+            'work_history' => 'nullable|string',
+            'organizational_experience' => 'nullable|string',
+            'achievements' => 'nullable|string',
+            'hobbies_interests' => 'nullable|string',
+            'dream_job' => 'nullable|string|max:255',
+            'counseling_reason' => 'nullable|string',
+            'current_condition' => 'nullable|string',
+            'strengths_weaknesses' => 'nullable|string',
+            'trauma_history' => 'nullable|string',
+            'medical_history' => 'nullable|string',
+            'previous_counseling' => 'nullable|string|max:50',
+            'previous_counselor' => 'nullable|string|max:255',
+            'emergency_contact' => 'nullable|string|max:255',
+            'info_source' => 'nullable|string|max:150',
+            'preferred_counseling' => 'nullable|string|max:150',
             'school_1_name' => 'nullable|string|max:255',
             'school_1_city' => 'nullable|string|max:100',
             'school_1_year_entry' => 'nullable|string|max:50',
@@ -715,7 +773,6 @@ class ClientController extends Controller
             'learning_style' => 'nullable|string|max:255',
             'activities_liked' => 'nullable|string|max:255',
             'activities_disliked' => 'nullable|string|max:255',
-            'dream_job' => 'nullable|string|max:255',
             'efforts_for_dream_job' => 'nullable|string',
             'plans_for_dream_job' => 'nullable|string',
             'work_field_liked' => 'nullable|string|max:255',
@@ -738,8 +795,15 @@ class ClientController extends Controller
 
         return DB::transaction(function () use ($request) {
             $gender = ($request->gender === 'Male') ? 'l' : 'p';
+            $pref = strtolower((string) $request->input('preferred_counseling', 'offline'));
+            $counselingType = str_contains($pref, 'online') ? 'online' : 'offline';
 
-            $client = Client::firstOrNew(['phone' => trim($request->phone)]);
+            $client = Client::resolveForFormSubmission(
+                (string) $request->phone,
+                (string) $request->full_name,
+                'individu',
+                $request->filled('existing_client_id') ? (int) $request->input('existing_client_id') : null
+            );
             $client->name = trim($request->full_name);
             $client->jenis = 'individu';
             $client->gender = $gender;
@@ -747,19 +811,19 @@ class ClientController extends Controller
             $client->address = $request->current_address;
             $client->religion = $request->religion;
             $client->education = $request->last_education;
-            $client->occupation = 'General Client';
-            $client->email = $request->email;
+            $client->occupation = $request->filled('occupation') ? trim($request->occupation) : 'General Client';
+            $client->applyOptionalEmail($request->email);
             $client->service_type = 'Biography Form (English)';
-            $client->counseling_type = 'offline';
+            $client->counseling_type = $counselingType;
             $client->source = 'other';
-            $client->status = 'unassigned';
-            $client->created_by = auth()->id();
+            $client->ensureInitialStatus();
+            $client->created_by = $client->created_by ?: auth()->id();
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('biography_en');
-            $booking = Booking::createInitialForForm($client, 'biography_en', 'offline');
+            $booking = Booking::createInitialForForm($client, 'biography_en', $counselingType);
 
-            ClientForm::create([
+            $clientForm = ClientForm::create([
                 'ticket_number' => $ticketNumber,
                 'form_type' => 'biography_en',
                 'client_id' => $client->id,
@@ -768,10 +832,12 @@ class ClientController extends Controller
                 'client_phone' => trim($request->phone),
                 'consent_agreed' => true,
                 'consent_agreed_at' => now(),
-                'service_preference' => 'offline',
+                'service_preference' => $counselingType,
+                'booking_status' => 'sudah_dibooking',
                 'answers' => $request->except(['_token', 'from_client_modal', 'form_type', 'consent_agree']),
                 'ip_address' => $request->ip(),
             ]);
+            $booking->update(['client_form_id' => $clientForm->id]);
 
             if ($request->filled('existing_client_id')) {
                 return redirect()->route('clients.show', ['client' => $client->id, 'tab' => 'psikotes'])
@@ -840,7 +906,12 @@ class ClientController extends Controller
         return DB::transaction(function () use ($request) {
             $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
 
-            $client = Client::firstOrNew(['phone' => trim($request->phone)]);
+            $client = Client::resolveForFormSubmission(
+                (string) $request->phone,
+                (string) $request->nama_lengkap,
+                'individu',
+                $request->filled('existing_client_id') ? (int) $request->input('existing_client_id') : null
+            );
             $client->name = trim($request->nama_lengkap);
             $client->jenis = 'individu';
             $client->gender = $gender;
@@ -852,12 +923,12 @@ class ClientController extends Controller
             $client->religion = $request->agama;
             $client->education = $request->pendidikan_terakhir;
             $client->occupation = 'Peserta Non-Industri';
-            $client->email = $request->email;
+            $client->applyOptionalEmail($request->email);
             $client->service_type = 'Layanan Non-Industri';
             $client->counseling_type = 'offline';
             $client->source = 'other';
-            $client->status = 'unassigned';
-            $client->created_by = auth()->id();
+            $client->ensureInitialStatus();
+            $client->created_by = $client->created_by ?: auth()->id();
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('non_industri');
@@ -953,7 +1024,13 @@ class ClientController extends Controller
         return DB::transaction(function () use ($request) {
             $gender = ($request->jenis_kelamin === 'Laki-Laki') ? 'l' : 'p';
 
-            $client = Client::firstOrNew(['phone' => trim($request->phone)]);
+            $client = Client::resolveForFormSubmission(
+                (string) $request->phone,
+                (string) $request->nama_lengkap,
+                'industri',
+                $request->filled('existing_client_id') ? (int) $request->input('existing_client_id') : null,
+                (string) $request->nama_perusahaan
+            );
             $client->name = trim($request->nama_lengkap);
             $client->jenis = 'industri';
             $client->company_name = trim($request->nama_perusahaan);
@@ -969,12 +1046,12 @@ class ClientController extends Controller
             $client->religion = $request->agama;
             $client->education = $request->pendidikan_terakhir;
             $client->occupation = $request->filled('pekerjaan_saat_ini') ? trim($request->pekerjaan_saat_ini) : null;
-            $client->email = $request->email;
+            $client->applyOptionalEmail($request->email);
             $client->service_type = 'Layanan Industri';
             $client->counseling_type = 'offline';
             $client->source = 'other';
-            $client->status = 'unassigned';
-            $client->created_by = auth()->id();
+            $client->ensureInitialStatus();
+            $client->created_by = $client->created_by ?: auth()->id();
             $client->save();
 
             $ticketNumber = ClientForm::generateTicketNumber('industri');
@@ -1028,10 +1105,20 @@ class ClientController extends Controller
             'bookings.assignees.counselor',
             'bookings.candidates.assignedPsikolog',
             'bookings.candidates.assignedEditor',
+            'bookingCandidates.booking.followUps',
+            'bookingCandidates.booking.clientForm',
+            'bookingCandidates.booking.clientForms',
+            'bookingCandidates.booking.company',
+            'bookingCandidates.booking.counselor',
+            'bookingCandidates.booking.staffPenguji',
+            'bookingCandidates.booking.assignees.user',
+            'bookingCandidates.booking.assignees.counselor',
+            'bookingCandidates.booking.candidates.assignedPsikolog',
+            'bookingCandidates.booking.candidates.assignedEditor',
             'clientParticipants',
         ]);
 
-        $counselors = Counselor::orderBy('name')->get();
+        $counselors = Counselor::where('status', 'active')->orderBy('name')->get();
         $staffMembers = User::where('role', 'staff')->orderBy('name')->get();
         if ($staffMembers->isEmpty()) {
             $staffMembers = User::orderBy('name')->get();
@@ -1042,9 +1129,9 @@ class ClientController extends Controller
 
     public function edit(Client $client)
     {
-        $this->authorize('view', $client);
+        $this->authorize('update', $client);
 
-        $counselors = Counselor::orderBy('name')->get();
+        $counselors = Counselor::where('status', 'active')->orderBy('name')->get();
         $upcomingRecord = null;
         $activePairing = $client->pairings()->where('status', 'active')->latest()->first();
 
@@ -1099,9 +1186,6 @@ class ClientController extends Controller
             'occupation' => 'nullable|string|max:255',
             'education' => 'nullable|string|max:100',
             'marital_status' => 'nullable|string|max:100',
-            'country' => 'sometimes|required|string|max:100',
-            'province' => 'nullable|required_if:country,Indonesia|string|max:100',
-            'city' => 'nullable|required_if:country,Indonesia|string|max:100',
             'address' => 'nullable|string|max:1000',
             'source' => 'nullable|string|max:255',
             'status' => 'sometimes|required|in:unassigned,assigned,ongoing,unpaid,paid,needs_followup,completed',
@@ -1120,9 +1204,6 @@ class ClientController extends Controller
             'phone.required' => 'Nomor telepon wajib diisi.',
             'email.required' => 'Alamat email wajib diisi.',
             'email.email' => 'Format alamat email tidak valid.',
-            'country.required' => 'Negara wajib dipilih.',
-            'province.required_if' => 'Provinsi wajib dipilih untuk negara Indonesia.',
-            'city.required_if' => 'Kota / Kabupaten wajib dipilih untuk negara Indonesia.',
             'address.required' => 'Alamat lengkap wajib diisi.',
             'participants.min' => 'Daftar peserta harus memiliki minimal 2 orang.',
             'participants.*.required' => 'Nama peserta tidak boleh kosong.',
@@ -1181,8 +1262,30 @@ class ClientController extends Controller
 
     public function destroy(Client $client)
     {
+        $this->authorize('delete', $client);
+
+        $gcalService = app(\App\Services\GoogleCalendarService::class);
+        $slaService = app(\App\Services\PsychotestSlaService::class);
+
+        $affectedSlots = [];
+        $client->load(['bookings.candidates']);
+        foreach ($client->bookings as $booking) {
+            $gcalService->deleteBookingEvents($booking);
+            if ($booking->kategori === 'psikotes' && $booking->tanggal_dijadwalkan) {
+                $date = \Carbon\Carbon::parse($booking->tanggal_dijadwalkan);
+                foreach ($booking->candidates->pluck('assigned_psikolog_id')->filter()->unique() as $cId) {
+                    $affectedSlots[] = [(int) $cId, $date];
+                }
+            }
+        }
+
         $client->clientForms()->delete();
         $client->delete();
+
+        foreach ($affectedSlots as [$counselorId, $date]) {
+            $slaService->recalculatePsychologistDay($counselorId, $date);
+        }
+
         return redirect()->route('clients.index')->with('success', 'Klien berhasil dihapus.');
     }
 
@@ -1191,6 +1294,8 @@ class ClientController extends Controller
      */
     public function storeNote(Request $request, Client $client)
     {
+        $this->authorize('view', $client);
+
         $request->validate([
             'note' => 'required|string',
             'date' => 'nullable|date',
@@ -1223,6 +1328,8 @@ class ClientController extends Controller
      */
     public function updateNote(Request $request, Client $client, string $noteId)
     {
+        $this->authorize('view', $client);
+
         $request->validate([
             'note' => 'nullable|string',
             'date' => 'nullable|date',
@@ -1269,6 +1376,8 @@ class ClientController extends Controller
      */
     public function destroyNote(Client $client, string $noteId)
     {
+        $this->authorize('view', $client);
+
         $notes = array_values(array_filter(
             $client->notes_list,
             fn($item) => $item['id'] !== $noteId

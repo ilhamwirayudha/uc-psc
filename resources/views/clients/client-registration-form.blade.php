@@ -146,15 +146,15 @@ function clientRegistrationForm() {
     {{-- Tombol Kembali --}}
     <div class="flex items-center justify-between pb-2">
         <a href="{{ !empty($existingClient) ? route('clients.show', ['client' => $existingClient->id, 'tab' => $initialJenis === 'industri' ? 'psikotes' : 'konseling']) : route('clients.index') }}"
-            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white hover:bg-purple-50 text-sm font-semibold text-purple-deep hover:border-purple-deep shadow-xs transition cursor-pointer w-fit">
+            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-[#D9C2F0] bg-white hover:bg-purple-50 text-sm font-semibold text-purple-deep shadow-xs transition cursor-pointer w-fit">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             <span>{{ !empty($existingClient) ? 'Kembali ke Detail Klien' : 'Kembali ke Daftar Klien' }}</span>
         </a>
 
         @if(!empty($existingClient))
-        <div class="flex items-center gap-2 text-xs font-semibold text-purple-deep bg-white px-3.5 py-2 rounded-xl border border-[#D9C2F0] shadow-xs">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Pendaftaran Klien: <span class="font-bold underline">{{ $existingClient->name }}</span></span>
+        <div class="flex items-center gap-2 text-xs font-medium text-black bg-white px-3.5 py-2 rounded-lg border border-[#D9C2F0] shadow-xs">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-deep"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Pendaftaran Klien: {{ $existingClient->name }}</span>
         </div>
         @endif
     </div>
@@ -197,13 +197,13 @@ function clientRegistrationForm() {
                 
                 {{-- Dropdown 1: Tipe Pemohon / Klien --}}
                 <div>
-                    <label for="select_jenis" class="block text-[13px] font-medium text-slate-500 mb-1.5">
+                    <label for="select_jenis" class="block text-xs font-medium text-slate-500 mb-1">
                         Tipe Pemohon / Klien
                     </label>
                     <select id="select_jenis"
                         x-model="jenis"
                         @change="setJenis($event.target.value)"
-                        class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
+                        class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer">
                         <option value="">-- Pilih Tipe Pemohon / Klien --</option>
                         <option value="individu">Individu</option>
                         <option value="industri">Industri</option>
@@ -212,12 +212,12 @@ function clientRegistrationForm() {
 
                     {{-- Dropdown 2: Formulir Layanan Klien --}}
                     <div>
-                        <label for="select_form_type" class="block text-[13px] font-medium text-slate-500 mb-1.5">
+                        <label for="select_form_type" class="block text-xs font-medium text-slate-500 mb-1">
                             Formulir Layanan Klien
                         </label>
                         <select id="select_form_type"
                             @change="setFormType($event.target.value)"
-                            class="w-full px-4 py-2.5 rounded-xl border border-[#D9C2F0] bg-white text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer transition">
+                            class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer transition">
                             <option value="">-- Pilih Formulir Layanan Klien --</option>
                         </select>
                     </div>
@@ -290,11 +290,12 @@ function clientRegistrationForm() {
         {{-- TOMBOL AKSI BAWAH (HANYA TAMPIL SAAT FORMULIR TERPILIH) --}}
         <div x-show="form_type" x-cloak class="flex items-center justify-end gap-3 pt-3 pb-8">
             <a href="{{ !empty($existingClient) ? route('clients.show', ['client' => $existingClient->id, 'tab' => $initialJenis === 'industri' ? 'psikotes' : 'konseling']) : route('clients.index') }}"
-                class="px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-sm font-semibold transition text-center shadow-xs">
-                Batal
+                class="px-6 py-2.5 rounded-lg border border-[#D9C2F0] bg-white hover:bg-purple-50 text-purple-deep text-sm font-semibold transition text-center shadow-xs inline-flex items-center gap-1.5">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <span>Batal</span>
             </a>
             <button type="submit"
-                class="px-7 py-2.5 bg-orange hover:bg-orange/90 text-white text-sm font-semibold rounded-xl shadow-xs transition flex items-center justify-center gap-2 cursor-pointer">
+                class="px-7 py-2.5 bg-purple-deep hover:bg-purple-deep/90 text-white text-sm font-semibold rounded-lg shadow-xs transition flex items-center justify-center gap-2 cursor-pointer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                     <polyline points="17 21 17 13 7 13 7 21"/>

@@ -37,6 +37,8 @@ class BookingCandidate extends Model
         'step_approval_by',
         'step_kirim_at',
         'step_kirim_by',
+        'softcopy_sent_at',
+        'softcopy_sent_by',
         'kilat_sent_at',
         'kilat_sent_by',
         'resi_date',
@@ -58,6 +60,7 @@ class BookingCandidate extends Model
             'step_cetak_at' => 'datetime',
             'step_approval_at' => 'datetime',
             'step_kirim_at' => 'datetime',
+            'softcopy_sent_at' => 'datetime',
             'kilat_sent_at' => 'datetime',
             'resi_date' => 'date',
         ];
@@ -98,9 +101,19 @@ class BookingCandidate extends Model
         return $this->attendance_status === 'absen';
     }
 
+    public function isSpecialPackage(): bool
+    {
+        if ($this->relationLoaded('serviceItem') ? $this->serviceItem : $this->serviceItem()->first()) {
+            $item = $this->relationLoaded('serviceItem') ? $this->serviceItem : $this->serviceItem()->first();
+            return $item->service_tier === 'non_industri_khusus';
+        }
+
+        return $this->booking?->isSpecialNonIndustri() ?? false;
+    }
+
     public function isPsychologistReportOverdue(): bool
     {
-        if ($this->isAbsent() || !$this->psychologist_deadline_date || $this->step_draft_hpp_at) {
+        if ($this->isAbsent() || !$this->psychologist_deadline_date || $this->step_draft_hpp_at || ($this->is_kilat && $this->kilat_sent_at)) {
             return false;
         }
 

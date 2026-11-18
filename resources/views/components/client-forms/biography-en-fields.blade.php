@@ -1,4 +1,4 @@
-{{-- BIOGRAPHY FORM (ENGLISH) --}}
+{{-- BIOGRAPHY FORM (ENGLISH) — Diselaraskan 1-to-1 dengan Formulir Publik /daftar/biography-en --}}
 <div class="space-y-6">
 
     {{-- CARD: CONSENT STATEMENT --}}
@@ -9,7 +9,7 @@
 
         <div class="p-6 space-y-4">
             <p class="text-sm text-[#6B5B85] leading-relaxed mb-3">
-                All the information I have provided in this Biography Form is true and made in a good faith.
+                All the information I have provided in this Biography Form is true and made in good faith.
             </p>
 
             <label class="inline-flex items-center gap-2.5 cursor-pointer text-sm font-medium text-black">
@@ -29,7 +29,7 @@
         <div class="p-6 space-y-4">
             <div>
                 <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Full Name <span class="text-red-500">*</span></label>
-                <input type="text" name="full_name" value="{{ old('full_name') }}" required placeholder="Your full name..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                <input type="text" name="full_name" value="{{ old('full_name') }}" required placeholder="Your complete legal name..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
             <div>
@@ -47,22 +47,17 @@
             </div>
 
             <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Order of Birth (Optional)</label>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Birth Order in Family</label>
                 <input type="text" name="birth_order" value="{{ old('birth_order') }}" placeholder="e.g. 1st child of 3 siblings" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
             <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">City of Origin (Optional)</label>
-                <input type="text" name="city_of_origin" value="{{ old('city_of_origin') }}" placeholder="e.g. Surabaya" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-
-            <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Address <span class="text-red-500">*</span></label>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Current Residential Address <span class="text-red-500">*</span></label>
                 <textarea name="current_address" rows="2" required placeholder="Current residential address..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('current_address') }}</textarea>
             </div>
 
             <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Mobile Number <span class="text-red-500">*</span></label>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Mobile / WhatsApp Number <span class="text-red-500">*</span></label>
                 <input type="tel" name="phone" value="{{ old('phone') }}" required inputmode="numeric" pattern="[0-9]+" title="Numbers only (0-9)" oninput="this.value = this.value.replace(/[^0-9]/g, '')" onkeydown="if (!/[0-9]/.test(event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter'].includes(event.key) && !event.ctrlKey && !event.metaKey) event.preventDefault()" placeholder="08xxxxxxxx" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
@@ -71,451 +66,201 @@
                 <input type="email" name="email" value="{{ old('email') }}" required placeholder="email@example.com" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
-            <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Religion/Belief <span class="text-red-500">*</span></label>
-                <select name="religion" required class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                    <option value="">-- Select Religion / Belief --</option>
-                    @foreach(['Islam', 'Protestant Christian', 'Catholic', 'Hinduism', 'Buddhism', 'Confucianism', 'Other'] as $rel)
-                        <option value="{{ $rel }}" {{ old('religion') === $rel ? 'selected' : '' }}>{{ $rel }}</option>
-                    @endforeach
-                </select>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Religion / Faith <span class="text-red-500">*</span></label>
+                    <select name="religion" required class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <option value="">-- Select Religion / Faith --</option>
+                        @foreach(['Islam', 'Protestant Christian', 'Catholic', 'Hinduism', 'Buddhism', 'Confucianism', 'Other'] as $rel)
+                            <option value="{{ $rel }}" {{ old('religion') === $rel ? 'selected' : '' }}>{{ $rel }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Ethnicity</label>
+                    <input type="text" name="ethnicity" value="{{ old('ethnicity') }}" placeholder="e.g. Javanese, Chinese, etc" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
             </div>
 
-            <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Ethnicity (Optional)</label>
-                <input type="text" name="ethnicity" value="{{ old('ethnicity') }}" placeholder="e.g. Javanese, Chinese, etc" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Highest Level of Education <span class="text-red-500">*</span></label>
+                    <select name="last_education" required class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <option value="">-- Select Education --</option>
+                        @foreach(['Kindergarten (TK)', 'Elementary School (SD)', 'Junior High School (SMP)', 'Senior High School / Vocational (SMA/SMK)', 'Diploma (D3/D4)', "Bachelor's Degree (S1)", "Master's Degree (S2)", 'Doctorate (S3)', 'Other'] as $edu)
+                            <option value="{{ $edu }}" {{ old('last_education') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Highest Level of Education <span class="text-red-500">*</span></label>
-                <select name="last_education" required class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                    <option value="">-- Select Education --</option>
-                    @foreach(['Kindergarten (TK)', 'Elementary School (SD)', 'Junior High School (SMP)', 'Senior High School / Vocational (SMA/SMK)', 'Diploma (D3/D4)', "Bachelor's Degree (S1)", "Master's Degree (S2)", 'Doctorate (S3)', 'Other'] as $edu)
-                        <option value="{{ $edu }}" {{ old('last_education') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
-                    @endforeach
-                </select>
+                <div>
+                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Current Occupation</label>
+                    <input type="text" name="occupation" value="{{ old('occupation') }}" placeholder="e.g. Student, Graphic Designer" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
             </div>
         </div>
     </div>
 
-    {{-- CARD 2: FAMILY INFORMATION --}}
+    {{-- CARD 2: FAMILY BACKGROUND --}}
     <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
         <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
             <div>
-                <h3 class="text-base font-semibold text-white">Family Information</h3>
+                <h3 class="text-base font-semibold text-white">Family Background</h3>
                 <p class="text-xs text-white mt-0.5">Information about parents and siblings (optional).</p>
             </div>
         </div>
 
         <div class="p-6 space-y-6">
-            {{-- Father's Information --}}
+            {{-- Father's Profile --}}
             <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
-            <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">Father's Information</h4>
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Father's Full Name</label>
-                    <input type="text" name="father_name" value="{{ old('father_name') }}" placeholder="Father's name" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Father's Gender</label>
-                    <select name="father_gender" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        <option value="">-- Select Gender --</option>
-                        <option value="Male" {{ old('father_gender') === 'Male' ? 'selected' : '' }}>Male</option>
-                        <option value="Female" {{ old('father_gender') === 'Female' ? 'selected' : '' }}>Female</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Father's Age</label>
-                    <input type="text" name="father_age" value="{{ old('father_age') }}" placeholder="e.g. 56 Years" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Highest Level of Father's Education</label>
-                    <select name="father_education" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        <option value="">-- Select Education --</option>
-                        @foreach(['Kindergarten (TK)', 'Elementary School (SD)', 'Junior High School (SMP)', 'Senior High School / Vocational (SMA/SMK)', 'Diploma (D3/D4)', "Bachelor's Degree (S1)", "Master's Degree (S2)", 'Doctorate (S3)', 'Other'] as $edu)
-                            <option value="{{ $edu }}" {{ old('father_education') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Father's Occupation</label>
-                    <input type="text" name="father_occupation" value="{{ old('father_occupation') }}" placeholder="Father's job" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-            </div>
-        </div>
-
-        {{-- Mother's Information --}}
-        <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
-            <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">Mother's Information</h4>
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Mother's Full Name</label>
-                    <input type="text" name="mother_name" value="{{ old('mother_name') }}" placeholder="Mother's name" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Mother's Gender</label>
-                    <select name="mother_gender" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        <option value="">-- Select Gender --</option>
-                        <option value="Female" {{ old('mother_gender') === 'Female' ? 'selected' : '' }}>Female</option>
-                        <option value="Male" {{ old('mother_gender') === 'Male' ? 'selected' : '' }}>Male</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Mother's Age</label>
-                    <input type="text" name="mother_age" value="{{ old('mother_age') }}" placeholder="e.g. 52 Years" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Highest Level of Mother's Education</label>
-                    <select name="mother_education" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        <option value="">-- Select Education --</option>
-                        @foreach(['Kindergarten (TK)', 'Elementary School (SD)', 'Junior High School (SMP)', 'Senior High School / Vocational (SMA/SMK)', 'Diploma (D3/D4)', "Bachelor's Degree (S1)", "Master's Degree (S2)", 'Doctorate (S3)', 'Other'] as $edu)
-                            <option value="{{ $edu }}" {{ old('mother_education') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Mother's Occupation</label>
-                    <input type="text" name="mother_occupation" value="{{ old('mother_occupation') }}" placeholder="Mother's job" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-            </div>
-        </div>
-
-        {{-- Sibling Information (1 to 5) --}}
-        <div class="space-y-3">
-            <h4 class="text-sm font-semibold text-black">Sibling Information (1 to 5)</h4>
-            @for($s = 1; $s <= 5; $s++)
-            <div class="p-3.5 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-2">
-                <div class="flex items-center gap-2">
-                    <span class="text-xs font-semibold text-black">Sibling {{ $s }} <span class="text-slate-400 font-normal">(Optional)</span></span>
-                </div>
-                <div class="space-y-2.5">
+                <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">Father's Profile</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
-                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Sibling {{ $s }}'s Name</label>
-                        <input type="text" name="sibling_{{ $s }}_name" value="{{ old('sibling_' . $s . '_name') }}" placeholder="Name" class="w-full px-2.5 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Gender</label>
-                        <select name="sibling_{{ $s }}_gender" class="w-full px-2 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
-                            <option value="">--</option>
-                            <option value="Male" {{ old('sibling_' . $s . '_gender') === 'Male' ? 'selected' : '' }}>Male</option>
-                            <option value="Female" {{ old('sibling_' . $s . '_gender') === 'Female' ? 'selected' : '' }}>Female</option>
-                        </select>
+                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Father's Name</label>
+                        <input type="text" name="father_name" value="{{ old('father_name') }}" placeholder="Father's full name" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                     </div>
                     <div>
                         <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Age</label>
-                        <input type="text" name="sibling_{{ $s }}_age" value="{{ old('sibling_' . $s . '_age') }}" placeholder="Age" class="w-full px-2.5 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
+                        <input type="text" name="father_age" value="{{ old('father_age') }}" placeholder="e.g. 55" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                     </div>
                     <div>
-                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Education</label>
-                        <select name="sibling_{{ $s }}_education" class="w-full px-2.5 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
-                            <option value="">--</option>
-                            @foreach(['Kindergarten (TK)', 'Elementary School (SD)', 'Junior High School (SMP)', 'Senior High School / Vocational (SMA/SMK)', 'Diploma (D3/D4)', "Bachelor's Degree (S1)", "Master's Degree (S2)", 'Doctorate (S3)', 'Other'] as $edu)
-                                <option value="{{ $edu }}" {{ old('sibling_' . $s . '_education') === $edu ? 'selected' : '' }}>{{ $edu }}</option>
-                            @endforeach
-                        </select>
+                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Highest Education</label>
+                        <input type="text" name="father_education" value="{{ old('father_education') }}" placeholder="e.g. Bachelor's" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                     </div>
                     <div>
                         <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Occupation</label>
-                        <input type="text" name="sibling_{{ $s }}_occupation" value="{{ old('sibling_' . $s . '_occupation') }}" placeholder="Occupation" class="w-full px-2.5 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs">
+                        <input type="text" name="father_occupation" value="{{ old('father_occupation') }}" placeholder="e.g. Entrepreneur" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                     </div>
                 </div>
             </div>
-            @endfor
-        </div>
-    </div>
-</div>
 
-    {{-- CARD 3: FORMAL EDUCATION HISTORY --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
-        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
-            <div>
-                <h3 class="text-base font-semibold text-white">Formal Education History</h3>
-                <p class="text-xs text-white mt-0.5">List from the most recent (optional).</p>
-            </div>
-        </div>
-
-        <div class="p-6 space-y-5">
-            {{-- School 1 --}}
+            {{-- Mother's Profile --}}
             <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
-            <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">School 1 (Most Recent)</h4>
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Name of School 1</label>
-                    <input type="text" name="school_1_name" value="{{ old('school_1_name') }}" placeholder="School / University name" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">City of School 1</label>
-                    <input type="text" name="school_1_city" value="{{ old('school_1_city') }}" placeholder="City" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Additional Information 1 (Major/Program)</label>
-                    <input type="text" name="school_1_info" value="{{ old('school_1_info') }}" placeholder="e.g. Science / Business" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Year of Entry 1</label>
-                    <input type="text" name="school_1_year_entry" value="{{ old('school_1_year_entry') }}" placeholder="Year of entry" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Year of Graduation 1</label>
-                    <input type="text" name="school_1_year_graduation" value="{{ old('school_1_year_graduation') }}" placeholder="Year of graduation" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-            </div>
-        </div>
-
-        {{-- Schools 2 to 5 --}}
-        @for($sk = 2; $sk <= 5; $sk++)
-        <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
-            <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">School {{ $sk }} <span class="text-slate-400 font-normal">(Optional)</span></h4>
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Name of School {{ $sk }}</label>
-                    <input type="text" name="school_{{ $sk }}_name" value="{{ old('school_' . $sk . '_name') }}" placeholder="School name" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">City of School {{ $sk }}</label>
-                    <input type="text" name="school_{{ $sk }}_city" value="{{ old('school_' . $sk . '_city') }}" placeholder="City" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Additional Info {{ $sk }}</label>
-                    <input type="text" name="school_{{ $sk }}_info" value="{{ old('school_' . $sk . '_info') }}" placeholder="Major/Program" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Year of Entry {{ $sk }}</label>
-                    <input type="text" name="school_{{ $sk }}_year_entry" value="{{ old('school_' . $sk . '_year_entry') }}" placeholder="Year of entry" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Year of Graduation {{ $sk }}</label>
-                    <input type="text" name="school_{{ $sk }}_year_graduation" value="{{ old('school_' . $sk . '_year_graduation') }}" placeholder="Year of graduation" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                </div>
-            </div>
-        </div>
-        @endfor
-
-        <div>
-            <label class="block text-[13px] font-medium text-slate-500 mb-1.5 leading-snug">
-                Have you ever failed a grade? If yes, which grade and what was the reason? (Optional)
-            </label>
-            <textarea name="failed_grade_reason" rows="2" placeholder="e.g. Never / In grade ... because ..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('failed_grade_reason') }}</textarea>
-        </div>
-    </div>
-</div>
-
-    {{-- CARD 4: NON-FORMAL EDUCATION --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
-        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
-            <div>
-                <h3 class="text-base font-semibold text-white">Non-Formal Education</h3>
-                <p class="text-xs text-white mt-0.5">List from the most recent (optional).</p>
-            </div>
-        </div>
-
-        <div class="p-6 space-y-4">
-            <div class="space-y-4">
-                @for($c = 1; $c <= 3; $c++)
-                <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
-                    <h4 class="text-sm font-semibold text-black">Course / Training {{ $c }}</h4>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Course Type {{ $c }}</label>
-                            <input type="text" name="course_{{ $c }}_type" value="{{ old('course_' . $c . '_type') }}" placeholder="e.g. English Course" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Place / City {{ $c }}</label>
-                            <input type="text" name="course_{{ $c }}_place" value="{{ old('course_' . $c . '_place') }}" placeholder="Institution / City" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Duration {{ $c }}</label>
-                            <input type="text" name="course_{{ $c }}_duration" value="{{ old('course_' . $c . '_duration') }}" placeholder="e.g. 6 Months" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        </div>
+                <h4 class="text-sm font-semibold text-black border-b border-[#EDE1FA] pb-1.5">Mother's Profile</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Mother's Name</label>
+                        <input type="text" name="mother_name" value="{{ old('mother_name') }}" placeholder="Mother's full name" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Age</label>
+                        <input type="text" name="mother_age" value="{{ old('mother_age') }}" placeholder="e.g. 52" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Highest Education</label>
+                        <input type="text" name="mother_education" value="{{ old('mother_education') }}" placeholder="e.g. Bachelor's" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Occupation</label>
+                        <input type="text" name="mother_occupation" value="{{ old('mother_occupation') }}" placeholder="e.g. Homemaker" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
                     </div>
                 </div>
-                @endfor
+            </div>
+
+            <div>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Siblings Information</label>
+                <textarea name="siblings_info" rows="3" placeholder="List name, age, and occupation of your brothers / sisters..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('siblings_info') }}</textarea>
             </div>
         </div>
     </div>
 
-    {{-- CARD 5: ORGANIZATIONAL EXPERIENCE --}}
+    {{-- CARD 3: EDUCATION & EXPERIENCE --}}
     <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
         <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
-            <div>
-                <h3 class="text-base font-semibold text-white">Organizational Experience</h3>
-                <p class="text-xs text-white mt-0.5">List from the most recent (optional).</p>
-            </div>
+            <h3 class="text-base font-semibold text-white">Education &amp; Experience</h3>
         </div>
 
         <div class="p-6 space-y-4">
-            <div class="space-y-4">
-                @for($o = 1; $o <= 3; $o++)
-                <div class="p-4 bg-[#FAF9FD] rounded-xl border border-[#EDE1FA]/80 space-y-3">
-                    <h4 class="text-sm font-semibold text-black">Organization {{ $o }}</h4>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Organization Name {{ $o }}</label>
-                            <input type="text" name="org_{{ $o }}_name" value="{{ old('org_' . $o . '_name') }}" placeholder="Organization name" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Position {{ $o }}</label>
-                            <input type="text" name="org_{{ $o }}_position" value="{{ old('org_' . $o . '_position') }}" placeholder="Position / Role" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Duration {{ $o }}</label>
-                            <input type="text" name="org_{{ $o }}_duration" value="{{ old('org_' . $o . '_duration') }}" placeholder="e.g. 1 Year" class="w-full px-3 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm">
-                        </div>
-                    </div>
+            <div>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Education History</label>
+                <textarea name="school_history" rows="2" placeholder="Schools / Universities attended with majors..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('school_history') }}</textarea>
+            </div>
+            <div>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Work / Internship Experience</label>
+                <textarea name="work_history" rows="2" placeholder="Companies, positions, and responsibilities..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('work_history') }}</textarea>
+            </div>
+            <div>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Organizational / Volunteer Experience</label>
+                <textarea name="organizational_experience" rows="2" placeholder="Clubs, committees, or volunteer roles..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('organizational_experience') }}</textarea>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Hobbies &amp; Interests</label>
+                    <input type="text" name="hobbies_interests" value="{{ old('hobbies_interests') }}" placeholder="e.g. Reading, Swimming, Music" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                 </div>
-                @endfor
+                <div>
+                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Dream Job / Career Goal</label>
+                    <input type="text" name="dream_job" value="{{ old('dream_job') }}" placeholder="Your dream career or job..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                </div>
             </div>
         </div>
     </div>
 
-    {{-- CARD 6: ACHIEVEMENTS --}}
+    {{-- CARD 4: PERSONAL PROFILE & LIFE HISTORY --}}
     <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
         <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
-            <h3 class="text-base font-semibold text-white">Achievements</h3>
+            <h3 class="text-base font-semibold text-white">Personal Profile &amp; Life History</h3>
         </div>
 
         <div class="p-6 space-y-4">
-            <label class="block text-[13px] font-medium text-slate-500 mb-1.5 leading-snug">
-                If you have ever achieved any achievements, please write them down (academic or non-academic).
-            </label>
-            <textarea name="achievements" rows="3" placeholder="List your achievements (optional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('achievements') }}</textarea>
-        </div>
-    </div>
-
-    {{-- CARD 7: SELF DESCRIPTION & CHARACTERISTICS --}}
-    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
-        <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
-            <h3 class="text-base font-semibold text-white">Self Description & Characteristics</h3>
-        </div>
-
-        <div class="p-6 space-y-5">
             <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Traumatic experiences in life (if any).</label>
-                <textarea name="traumatic_experience" rows="2" placeholder="Your answer (optional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('traumatic_experience') }}</textarea>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Reason for Seeking Counseling</label>
+                <textarea name="counseling_reason" rows="3" placeholder="What concerns or struggles bring you to counseling?" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('counseling_reason') }}</textarea>
             </div>
-
             <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">History of illness requiring hospitalization (if any).</label>
-                <textarea name="hospitalization_history" rows="2" placeholder="Your answer (optional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('hospitalization_history') }}</textarea>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Current Psychological / Emotional Condition</label>
+                <textarea name="current_condition" rows="2" placeholder="Describe how you are feeling lately..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('current_condition') }}</textarea>
             </div>
-
             <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Have you ever consulted a psychologist before? If yes, state type and purpose.</label>
-                <textarea name="psychologist_consultation" rows="2" placeholder="Your answer (optional)..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('psychologist_consultation') }}</textarea>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Strengths &amp; Areas for Improvement</label>
+                <textarea name="strengths_weaknesses" rows="2" placeholder="Your main strengths and things you would like to develop..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('strengths_weaknesses') }}</textarea>
             </div>
-
-            {{-- Personal Strengths 1, 2, 3 --}}
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Personal Strength 1 (Optional)</label>
-                    <input type="text" name="personal_strength_1" value="{{ old('personal_strength_1') }}" placeholder="Strength 1" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Personal Strength 2 (Optional)</label>
-                    <input type="text" name="personal_strength_2" value="{{ old('personal_strength_2') }}" placeholder="Strength 2" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Personal Strength 3 (Optional)</label>
-                    <input type="text" name="personal_strength_3" value="{{ old('personal_strength_3') }}" placeholder="Strength 3" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
+            <div>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Past Traumatic Events (Optional)</label>
+                <textarea name="trauma_history" rows="2" placeholder="Significant past experiences that still affect you..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('trauma_history') }}</textarea>
             </div>
-
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Personal Weakness 1 (Optional)</label>
-                    <input type="text" name="personal_weakness_1" value="{{ old('personal_weakness_1') }}" placeholder="Weakness 1" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Personal Weakness 2 (Optional)</label>
-                    <input type="text" name="personal_weakness_2" value="{{ old('personal_weakness_2') }}" placeholder="Weakness 2" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Personal Weakness 3 (Optional)</label>
-                    <input type="text" name="personal_weakness_3" value="{{ old('personal_weakness_3') }}" placeholder="Weakness 3" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
+            <div>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Medical / Physical Health Conditions (Optional)</label>
+                <textarea name="medical_history" rows="2" placeholder="Chronic illnesses, medications, or health concerns..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('medical_history') }}</textarea>
             </div>
         </div>
     </div>
 
-    {{-- CARD 8: OTHER INFORMATION --}}
+    {{-- CARD 5: PREFERENCES & EMERGENCY CONTACT --}}
     <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
         <div class="bg-purple-deep px-6 py-4 flex items-center justify-between">
-            <h3 class="text-base font-semibold text-white">Other Information</h3>
+            <h3 class="text-base font-semibold text-white">Preferences &amp; Emergency Contact</h3>
         </div>
 
         <div class="p-6 space-y-4">
-            <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Subject with Highest Score (Optional)</label>
-                    <input type="text" name="subject_highest_score" value="{{ old('subject_highest_score') }}" placeholder="Subject name..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Previous Counseling?</label>
+                    <select name="previous_counseling" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                        <option value="">-- Select --</option>
+                        <option value="Yes" {{ old('previous_counseling') === 'Yes' ? 'selected' : '' }}>Yes</option>
+                        <option value="No" {{ old('previous_counseling') === 'No' ? 'selected' : '' }}>Never</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Subject with Lowest Score (Optional)</label>
-                    <input type="text" name="subject_lowest_score" value="{{ old('subject_lowest_score') }}" placeholder="Subject name..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Subject that You Like (Optional)</label>
-                    <input type="text" name="subject_liked" value="{{ old('subject_liked') }}" placeholder="Subject you like..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Subject That You Dislike (Optional)</label>
-                    <input type="text" name="subject_disliked" value="{{ old('subject_disliked') }}" placeholder="Subject you dislike..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-            </div>
-
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Learning Style (Optional)</label>
-                    <input type="text" name="learning_style" value="{{ old('learning_style') }}" placeholder="Visual / Auditory / Kinesthetic / etc" class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Things/Activities that You Like (Optional)</label>
-                    <input type="text" name="activities_liked" value="{{ old('activities_liked') }}" placeholder="Activities you enjoy..." class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Things/Activities that You Dislike (Optional)</label>
-                    <input type="text" name="activities_disliked" value="{{ old('activities_disliked') }}" placeholder="Activities you dislike..." class="w-full px-3.5 py-2 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Previous Counselor (Optional)</label>
+                    <input type="text" name="previous_counselor" value="{{ old('previous_counselor') }}" placeholder="Counselor / psychologist name" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
                 </div>
             </div>
 
             <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Dream Job (Optional)</label>
-                <input type="text" name="dream_job" value="{{ old('dream_job') }}" placeholder="Your dream career or job..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">What You Have Done to Achieve Your Dream Job (Optional)</label>
-                    <textarea name="efforts_for_dream_job" rows="2" placeholder="Efforts made so far..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('efforts_for_dream_job') }}</textarea>
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">What Will You Do to Achieve Your Dream Job (Optional)</label>
-                    <textarea name="plans_for_dream_job" rows="2" placeholder="Future plans..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('plans_for_dream_job') }}</textarea>
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Field of Work that You Like (Optional)</label>
-                    <input type="text" name="work_field_liked" value="{{ old('work_field_liked') }}" placeholder="Preferred career fields..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Field of Work that You Dislike (Optional)</label>
-                    <input type="text" name="work_field_disliked" value="{{ old('work_field_disliked') }}" placeholder="Disliked fields..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Activities that You Like but aren't Skilled at (Optional)</label>
-                    <input type="text" name="activities_liked_not_skilled" value="{{ old('activities_liked_not_skilled') }}" placeholder="e.g. Painting, coding..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
-                <div>
-                    <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Activities that You Dislike but Quite Skilled at (Optional)</label>
-                    <input type="text" name="activities_disliked_quite_skilled" value="{{ old('activities_disliked_quite_skilled') }}" placeholder="e.g. Administrative work..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
-                </div>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Emergency Contact</label>
+                <input type="text" name="emergency_contact" value="{{ old('emergency_contact') }}" placeholder="Name, Relationship, and Phone Number" class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
             </div>
 
             <div>
-                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Describe yourself freely in 1-2 paragraphs. (Optional)</label>
-                <textarea name="free_self_description" rows="3" placeholder="Describe yourself freely in 1-2 paragraphs..." class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">{{ old('free_self_description') }}</textarea>
+                <label class="block text-[13px] font-medium text-slate-500 mb-1.5">Preferred Counseling Format <span class="text-red-500">*</span></label>
+                <select name="preferred_counseling" required class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                    <option value="">-- Select Format --</option>
+                    <option value="Offline at UC PSC" {{ old('preferred_counseling') === 'Offline at UC PSC' ? 'selected' : '' }}>Offline at UC PSC</option>
+                    <option value="Online via Zoom" {{ old('preferred_counseling') === 'Online via Zoom' ? 'selected' : '' }}>Online via Zoom</option>
+                </select>
             </div>
         </div>
     </div>

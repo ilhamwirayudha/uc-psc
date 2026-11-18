@@ -66,11 +66,29 @@
         {{-- Status --}}
         <div>
             <label class="block text-xs font-medium text-gray-500 mb-1.5">Status <span class="text-red-500">*</span></label>
+            @php $currentEditStatus = old('status', $booking->status); @endphp
             <select name="status" required
                 class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-purple-deep">
-                <option value="baru" {{ old('status', $booking->status) === 'baru' ? 'selected' : '' }}>Baru</option>
-                <option value="lanjutan" {{ old('status', $booking->status) === 'lanjutan' ? 'selected' : '' }}>Lanjutan</option>
-                <option value="selesai" {{ old('status', $booking->status) === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                <template x-if="kategori === 'konseling'">
+                    <optgroup label="Status Konseling">
+                        <option value="data_masuk" {{ $currentEditStatus === 'data_masuk' ? 'selected' : '' }}>Data Masuk</option>
+                        <option value="waiting_list" {{ $currentEditStatus === 'waiting_list' ? 'selected' : '' }}>Waiting List (Cari Konselor/Jadwal)</option>
+                        <option value="menunggu_konfirmasi" {{ $currentEditStatus === 'menunggu_konfirmasi' ? 'selected' : '' }}>Sudah Dijadwalkan (Belum Konfirmasi)</option>
+                        <option value="terjadwal_gocal" {{ $currentEditStatus === 'terjadwal_gocal' ? 'selected' : '' }}>Terjadwal &amp; Konfirmasi (GCal)</option>
+                        <option value="reminder_h1" {{ $currentEditStatus === 'reminder_h1' ? 'selected' : '' }}>Reminder &amp; Tagihan H-1</option>
+                        <option value="perlu_bayar_overtime" {{ $currentEditStatus === 'perlu_bayar_overtime' ? 'selected' : '' }}>Perlu Bayar Overtime</option>
+                        <option value="perlu_sesi_lanjutan" {{ $currentEditStatus === 'perlu_sesi_lanjutan' ? 'selected' : '' }}>Perlu Sesi Lanjutan</option>
+                        <option value="selesai" {{ $currentEditStatus === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                        <option value="batal" {{ $currentEditStatus === 'batal' ? 'selected' : '' }}>Dibatalkan</option>
+                    </optgroup>
+                </template>
+                <template x-if="kategori !== 'konseling'">
+                    <optgroup label="Status Psikotes">
+                        <option value="baru" {{ $currentEditStatus === 'baru' ? 'selected' : '' }}>Berjalan</option>
+                        <option value="selesai" {{ $currentEditStatus === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                        <option value="batal" {{ $currentEditStatus === 'batal' ? 'selected' : '' }}>Dibatalkan</option>
+                    </optgroup>
+                </template>
             </select>
         </div>
 
@@ -141,7 +159,7 @@
         {{-- Buttons --}}
         <div class="flex items-center gap-3 pt-2">
             <button type="submit" class="px-5 py-2 bg-purple-deep text-white text-sm font-semibold rounded-lg hover:bg-purple-deep/90 transition shadow-sm flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg><span>Simpan Perubahan</span></button>
-            <a href="{{ route('bookings.index') }}" class="px-5 py-2 text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] rounded-lg hover:bg-[#F7F5FB] transition">Batal</a>
+            <a href="{{ route('bookings.index') }}" class="px-5 py-2 text-sm font-semibold bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] rounded-lg transition shadow-xs">Batal</a>
         </div>
     </form>
 </div>

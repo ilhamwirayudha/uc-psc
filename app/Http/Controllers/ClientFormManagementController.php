@@ -15,16 +15,8 @@ class ClientFormManagementController extends Controller
         $user = auth()->user();
         // Count submissions for all 7 forms
         $formTypes = ['anak', 'dewasa', 'pra_nikah', 'pernikahan', 'biography_en', 'non_industri', 'industri'];
-        $baseQuery = ClientForm::whereHas('client')->whereIn('form_type', $formTypes);
-
-        if ($user->isPsikolog()) {
-            $counselorId = (int) ($user->counselor_id ?? 0);
-            $baseQuery->whereHas('client', function ($cq) use ($counselorId) {
-                $cq->whereHas('bookings', fn ($bq) => $bq->where('counselor_id', $counselorId))
-                   ->orWhereHas('pairings', fn ($pq) => $pq->where('counselor_id', $counselorId))
-                   ->orWhereHas('bookings.candidates', fn ($kq) => $kq->where('assigned_psikolog_id', $counselorId));
-            });
-        }
+        $baseQuery = ClientForm::whereHas('client', fn ($cq) => $cq->visibleToUser($user))
+            ->whereIn('form_type', $formTypes);
 
         $counts = (clone $baseQuery)
             ->groupBy('form_type')
@@ -68,7 +60,7 @@ class ClientFormManagementController extends Controller
                 'badge' => 'Aktif & Siap Digunakan',
                 'status' => 'active',
                 'status_label' => 'Aktif',
-                'fields_count' => '33 Pertanyaan',
+                'fields_count' => '36 Pertanyaan',
                 'responses_count' => $counts['dewasa'] ?? 0,
                 'last_submission' => !empty($latestSubmissions['dewasa']) ? $latestSubmissions['dewasa']->created_at->diffForHumans() : 'Belum ada respon',
                 'created_at' => '26 Sep 2026',
@@ -85,7 +77,7 @@ class ClientFormManagementController extends Controller
                 'badge' => 'Aktif & Siap Digunakan',
                 'status' => 'active',
                 'status_label' => 'Aktif',
-                'fields_count' => '35 Pertanyaan',
+                'fields_count' => '49 Pertanyaan',
                 'responses_count' => $counts['pra_nikah'] ?? 0,
                 'last_submission' => !empty($latestSubmissions['pra_nikah']) ? $latestSubmissions['pra_nikah']->created_at->diffForHumans() : 'Belum ada respon',
                 'created_at' => '26 Sep 2026',
@@ -102,7 +94,7 @@ class ClientFormManagementController extends Controller
                 'badge' => 'Aktif & Siap Digunakan',
                 'status' => 'active',
                 'status_label' => 'Aktif',
-                'fields_count' => '38 Pertanyaan',
+                'fields_count' => '63 Pertanyaan',
                 'responses_count' => $counts['pernikahan'] ?? 0,
                 'last_submission' => !empty($latestSubmissions['pernikahan']) ? $latestSubmissions['pernikahan']->created_at->diffForHumans() : 'Belum ada respon',
                 'created_at' => '26 Sep 2026',
@@ -276,15 +268,7 @@ class ClientFormManagementController extends Controller
 
         // Count responses per category for badge display
         $user = auth()->user();
-        $scopedFormQuery = ClientForm::whereHas('client');
-        if ($user->isPsikolog()) {
-            $counselorId = (int) ($user->counselor_id ?? 0);
-            $scopedFormQuery->whereHas('client', function ($cq) use ($counselorId) {
-                $cq->whereHas('bookings', fn ($bq) => $bq->where('counselor_id', $counselorId))
-                   ->orWhereHas('pairings', fn ($pq) => $pq->where('counselor_id', $counselorId))
-                   ->orWhereHas('bookings.candidates', fn ($kq) => $kq->where('assigned_psikolog_id', $counselorId));
-            });
-        }
+        $scopedFormQuery = ClientForm::whereHas('client', fn ($cq) => $cq->visibleToUser($user));
 
         $counts = (clone $scopedFormQuery)
             ->groupBy('form_type')
@@ -328,7 +312,7 @@ class ClientFormManagementController extends Controller
      */
     public function show(ClientForm $clientForm)
     {
-        if (auth()->user()->isPsikolog() && $clientForm->client && !$clientForm->client->isHandledByUser(auth()->user())) {
+        if (auth()->user()->isPsikolog() && (!$clientForm->client || !$clientForm->client->isHandledByUser(auth()->user()))) {
             abort(403, 'Anda hanya dapat mengakses formulir klien yang Anda tangani.');
         }
 
@@ -341,7 +325,7 @@ class ClientFormManagementController extends Controller
             ]);
         }
 
-        return view('client-forms.show', compact('clientForm'));
+        return view('client-forms.client-form-print-dossier', compact('clientForm'));
     }
 
     /**
@@ -349,7 +333,7 @@ class ClientFormManagementController extends Controller
      */
     public function downloadPdf(ClientForm $clientForm)
     {
-        if (auth()->user()->isPsikolog() && $clientForm->client && !$clientForm->client->isHandledByUser(auth()->user())) {
+        if (auth()->user()->isPsikolog() && (!$clientForm->client || !$clientForm->client->isHandledByUser(auth()->user()))) {
             abort(403, 'Anda hanya dapat mengakses formulir klien yang Anda tangani.');
         }
 
@@ -490,7 +474,7 @@ class ClientFormManagementController extends Controller
             }
 
             // 10. Alamat
-            $address = $currentAnswers['alamat'] ?? $currentAnswers['alamat_lengkap'] ?? $currentAnswers['alamat_sekarang'] ?? $currentAnswers['address'] ?? null;
+            $address = $currentAnswers['alamat'] ?? $currentAnswers['alamat_lengkap'] ?? $currentAnswers['alamat_sekarang'] ?? $currentAnswers['address'] ?? $currentAnswers['current_address'] ?? null;
             if (!empty($address) && $client->address !== trim($address)) {
                 $client->address = trim($address);
                 $clientChanged = true;

@@ -13,17 +13,6 @@
     copyTimer: null,
     waTimer: null,
 
-    // Modal Edit Form State
-    editModalOpen: false,
-    editingForm: {
-        id: '',
-        title: '',
-        description: '',
-        target_client: '',
-        status: 'active',
-        whatsapp_message: ''
-    },
-
     copyToClipboard(url, id) {
         this.doCopy(url);
         this.copiedId = id;
@@ -70,24 +59,6 @@
         } catch (err) {
             console.warn('Copy fallback error:', err);
         }
-    },
-
-    openEditModal(form) {
-        this.editingForm = {
-            id: form.id,
-            title: form.title,
-            description: form.description,
-            target_client: form.target_client,
-            status: form.status,
-            whatsapp_message: `Halo Bapak/Ibu, silakan lengkapi ${form.title} UC PSC melalui tautan resmi kami berikut:\n${form.url}\n\nTerima kasih.`
-        };
-        this.editModalOpen = true;
-    },
-
-    saveEditForm() {
-        // Flash feedback
-        alert('Pengaturan formulir berhasil disimpan.');
-        this.editModalOpen = false;
     }
 }">
 
@@ -194,15 +165,7 @@
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                                 </a>
 
-                                {{-- 4. Edit Form --}}
-                                <button type="button"
-                                        @click="openEditModal({{ json_encode($form) }})"
-                                        class="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center justify-center shadow-2xs cursor-pointer"
-                                        title="Edit Form">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                </button>
-
-                                {{-- 5. View Results (Membuka sheets hasil) --}}
+                                {{-- 4. View Results (Membuka sheets hasil) --}}
                                 <a href="{{ route('client-forms.results', ['category' => $form['key']]) }}"
                                    class="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition flex items-center justify-center shadow-2xs"
                                    title="View Results (Buka sheets hasil respon)">
@@ -222,69 +185,6 @@
             </table>
         </div>
 
-    </div>
-
-    {{-- ============================================================== --}}
-    {{-- MODAL EDIT FORMULIR                                            --}}
-    {{-- ============================================================== --}}
-    <div x-show="editModalOpen" x-cloak 
-         class="fixed inset-0 z-50 overflow-y-auto bg-[#1F0E38]/55 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="glass-modal rounded-2xl w-full max-w-lg overflow-hidden animate-scale-up">
-            
-            {{-- Modal Header --}}
-            <div class="p-6 bg-gradient-to-r from-purple-deep to-[#4A2F85] text-white flex items-center justify-between">
-                <div>
-                    <h3 class="text-lg font-extrabold">Edit Pengaturan Formulir</h3>
-                    <p class="text-xs text-white/80" x-text="editingForm.title"></p>
-                </div>
-                <button type="button" @click="editModalOpen = false" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition">
-                    &times;
-                </button>
-            </div>
-
-            {{-- Modal Body --}}
-            <div class="p-6 space-y-4 text-sm text-slate-800">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Formulir</label>
-                    <input type="text" x-model="editingForm.title" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Deskripsi Singkat</label>
-                    <textarea x-model="editingForm.description" rows="2" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent"></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Target Klien</label>
-                    <input type="text" x-model="editingForm.target_client" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Status Ketersediaan Formulir</label>
-                    <select x-model="editingForm.status" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-sm focus:ring-2 focus:ring-purple-deep focus:border-transparent">
-                        <option value="active">Aktif & Siap Digunakan</option>
-                        <option value="inactive">Nonaktif / Pemeliharaan</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pesan Ajakan WhatsApp</label>
-                    <textarea x-model="editingForm.whatsapp_message" rows="3" class="w-full px-3.5 py-2 rounded-lg border border-slate-200 text-xs focus:ring-2 focus:ring-purple-deep focus:border-transparent font-mono"></textarea>
-                    <p class="text-[10px] text-slate-400 mt-1">Pesan ini akan otomatis disiapkan saat menekan tombol "Kirim WA".</p>
-                </div>
-            </div>
-
-            {{-- Modal Footer --}}
-            <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
-                <button type="button" @click="editModalOpen = false" class="px-4 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
-                    Batal
-                </button>
-                <button type="button" @click="saveEditForm()" class="px-4 py-2 rounded-lg bg-purple-deep text-white text-xs font-bold hover:bg-[#4A2F85] transition flex items-center gap-1.5">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                    <span>Simpan Pengaturan</span>
-                </button>
-            </div>
-        </div>
     </div>
 
 </div>

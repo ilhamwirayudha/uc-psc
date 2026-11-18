@@ -119,7 +119,7 @@
         @method('PUT')
 
         {{-- FOTO PROFIL KONSELOR (FRAME LINGKARAN) --}}
-        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6">
             <div class="flex flex-col sm:flex-row items-center gap-6">
                 {{-- Circular Avatar Frame Preview --}}
                 <div class="relative group flex-shrink-0">
@@ -150,7 +150,7 @@
         </div>
 
         {{-- CARD 1: DATA IDENTITAS & KONTAK --}}
-        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Data Identitas & Kontak</h3>
                 <p class="text-xs font-medium text-gray-500">Informasi nama lengkap dan kontak aktif psikolog</p>
@@ -191,7 +191,7 @@
         </div>
 
         {{-- CARD 2: ALAMAT DOMISILI --}}
-        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Alamat Domisili</h3>
                 <p class="text-xs font-medium text-gray-500">Informasi domisili dan alamat</p>
@@ -289,7 +289,7 @@
         </div>
 
         {{-- CARD 3: KUALIFIKASI & LEGALITAS PROFESI --}}
-        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Kualifikasi, Izin Praktik & Status</h3>
                 <p class="text-xs font-medium text-gray-500">Bidang keahlian, nomor izin legalitas psikolog, dan status keaktifan</p>
@@ -341,7 +341,7 @@
         </div>
 
         {{-- CARD 4: CATATAN TAMBAHAN --}}
-        <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
+        <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
             <div class="pb-3 border-b border-[#EDE1FA]">
                 <h3 class="text-base font-semibold text-black">Catatan & Keterangan Tambahan</h3>
                 <p class="text-xs font-medium text-gray-500">Informasi jadwal ketersediaan atau catatan khusus psikolog (opsional)</p>
@@ -358,11 +358,12 @@
         {{-- ACTION BUTTONS --}}
         <div class="flex items-center justify-end gap-3 pt-2">
             <a href="{{ route('counselors.index') }}" 
-                class="px-5 py-2.5 rounded-lg text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-white transition cursor-pointer">
-                Batal
+                class="px-5 py-2.5 rounded-lg text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition cursor-pointer inline-flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <span>Batal</span>
             </a>
             <button type="submit" 
-                class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
+                class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-purple-deep hover:bg-purple-deep/90 text-white transition shadow-xs flex items-center gap-2 cursor-pointer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                 <span>Simpan Perubahan</span>
             </button>

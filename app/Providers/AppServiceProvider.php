@@ -74,12 +74,7 @@ class AppServiceProvider extends ServiceProvider
             }));
             $view->with('counselors', \App\Models\Counselor::where('status', 'active')->orderBy('name')->get());
             $view->with('staffs', \App\Models\User::whereIn('role', ['staff', 'admin'])->orderBy('name')->get());
-        });
-
-        // Bagikan data klien untuk modal upload hasil psikotes
-        \Illuminate\Support\Facades\View::composer('components.test-result-modal', function ($view) {
-            $view->with('clients', \App\Models\Client::orderBy('name')->get());
-            $view->with('psikotesBookings', \App\Models\Booking::where('kategori', 'psikotes')->with(['client', 'staffPenguji', 'staffKoreksi', 'staffPelapor'])->latest()->get());
+            $view->with('companies', \App\Models\Company::where('is_active', true)->orderBy('name')->get());
         });
 
         $this->registerActivityObservers();
@@ -153,15 +148,17 @@ class AppServiceProvider extends ServiceProvider
 
         Booking::updated(function (Booking $booking) {
             $changed = ActivityLogger::summarizeDirtyFields($booking, [
+                'kategori' => 'Kategori Layanan',
                 'status' => 'Status Layanan',
                 'tanggal_dijadwalkan' => 'Jadwal Pelaksanaan',
-                'staff_penguji_id' => 'Staff Penguji',
-                'staff_koreksi_id' => 'Staff Korektor',
-                'staff_pelapor_id' => 'Staff Pelapor',
-                'counselor_id' => 'Konselor',
-                'catatan' => 'Catatan',
-                'harga_total' => 'Total Tarif',
-                'status_pembayaran' => 'Status Pembayaran',
+                'counselor_id' => 'Konselor / Psikolog',
+                'notes' => 'Catatan',
+                'price' => 'Tarif Dasar',
+                'final_price' => 'Nominal Final',
+                'billing_scheme' => 'Skema Penagihan',
+                'payment_workflow_status' => 'Status Pembayaran Finance',
+                'is_overtime' => 'Status Overtime',
+                'overtime_payment_status' => 'Status Pembayaran Overtime',
             ]);
 
             if ($changed === '') {

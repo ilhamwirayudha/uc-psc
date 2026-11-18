@@ -516,13 +516,15 @@
             </select>
         </form>
 
-        {{-- Tombol Tambah Konselor (Membuka Modal Pop-up) --}}
+        {{-- Tombol Tambah Konselor (Membuka Modal Pop-up - Admin Only) --}}
+        @if(auth()->user()->isAdmin())
         <button type="button" 
             @click="openCreateModal()" 
             class="bg-orange text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 transition flex items-center gap-2 whitespace-nowrap shadow-xs cursor-pointer">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>Tambah Psikolog</span>
         </button>
+        @endif
     </div>
 
     {{-- Dynamic Content Area (Filter Indicator + Table + Pagination) --}}
@@ -803,10 +805,7 @@
                                     <button type="button"
                                         @click="open = !open"
                                         :disabled="updating"
-                                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition border focus:outline-none cursor-pointer shadow-2xs select-none"
-                                        :class="counselorData.status === 'active' 
-                                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100/80' 
-                                            : 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100/80'">
+                                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition border border-[#D9C2F0] bg-white hover:bg-purple-50 text-black focus:outline-none cursor-pointer shadow-2xs select-none">
                                         <span class="w-1.5 h-1.5 rounded-full shrink-0"
                                             :class="counselorData.status === 'active' ? 'bg-emerald-500' : 'bg-red-500'"></span>
                                         <span x-text="counselorData.status === 'active' ? 'Aktif' : 'Nonaktif'"></span>
@@ -828,45 +827,45 @@
                                         x-transition:leave="transition ease-in duration-75"
                                         x-transition:leave-start="transform opacity-100 scale-100 translate-y-0"
                                         x-transition:leave-end="transform opacity-0 scale-95 -translate-y-1"
-                                        class="absolute left-1/2 -translate-x-1/2 mt-1.5 w-34 bg-white rounded-lg shadow-lg border border-[#EDE1FA] p-1.5 z-40 space-y-1">
+                                        class="absolute left-1/2 -translate-x-1/2 mt-1.5 w-34 bg-white rounded-xl shadow-lg border border-[#EDE1FA] p-1.5 z-40 space-y-1">
                                         
-                                        {{-- Option 1: Aktif (Selalu Warna Hijau) --}}
+                                        {{-- Option 1: Aktif --}}
                                         <button type="button"
                                             @click="updateStatus('active'); open = false"
-                                            class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer"
+                                            class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
                                             :class="counselorData.status === 'active' 
-                                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200/60' 
-                                                : 'text-emerald-700 hover:bg-emerald-50/70'">
+                                                ? 'bg-slate-100 text-black' 
+                                                : 'text-black hover:bg-slate-50'">
                                             <span class="flex items-center gap-2">
                                                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                                                 <span>Aktif</span>
                                             </span>
-                                            <svg x-show="counselorData.status === 'active'" class="text-emerald-600" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            <svg x-show="counselorData.status === 'active'" class="text-purple-deep" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                                         </button>
 
-                                        {{-- Option 2: Nonaktif (Selalu Warna Merah) --}}
+                                        {{-- Option 2: Nonaktif --}}
                                         <button type="button"
                                             @click="updateStatus('inactive'); open = false"
-                                            class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer"
+                                            class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
                                             :class="counselorData.status === 'inactive' 
-                                                ? 'bg-red-50 text-red-800 border border-red-200/60' 
-                                                : 'text-red-700 hover:bg-red-50/70'">
+                                                ? 'bg-slate-100 text-black' 
+                                                : 'text-black hover:bg-slate-50'">
                                             <span class="flex items-center gap-2">
                                                 <span class="w-2 h-2 rounded-full bg-red-500"></span>
                                                 <span>Nonaktif</span>
                                             </span>
-                                            <svg x-show="counselorData.status === 'inactive'" class="text-red-600" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                            <svg x-show="counselorData.status === 'inactive'" class="text-purple-deep" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                                         </button>
                                     </div>
                                 </div>
                             </td>
 
                             {{-- Tanggal & Waktu Terdaftar --}}
-                            <td class="text-center align-middle px-4 py-3.5 text-black whitespace-nowrap text-sm font-medium">
-                                {{ $counselor->created_at ? $counselor->created_at->locale('id')->translatedFormat('d F Y') : '-' }}
+                            <td class="text-center align-middle px-4 py-3.5 text-black whitespace-nowrap text-xs font-medium">
+                                {{ $counselor->created_at ? $counselor->created_at->format('d/m/Y') : '-' }}
                             </td>
-                            <td class="text-center align-middle px-4 py-3.5 text-black whitespace-nowrap text-sm font-medium">
-                                {{ $counselor->created_at ? $counselor->created_at->format('H:i:s') : '-' }}
+                            <td class="text-center align-middle px-4 py-3.5 text-black whitespace-nowrap text-xs font-medium">
+                                {{ $counselor->created_at ? $counselor->created_at->format('H:i') : '-' }}
                             </td>
                         </tr>
                         @empty
@@ -904,32 +903,32 @@
                 x-transition:enter="ease-out duration-200" 
                 x-transition:enter-start="opacity-0 scale-95" 
                 x-transition:enter-end="opacity-100 scale-100" 
-                class="relative glass-modal rounded-xl max-w-3xl w-full max-h-[90vh] flex flex-col z-10 my-6 overflow-hidden"
+                class="relative bg-white rounded-2xl shadow-[0_30px_70px_rgba(74,35,128,0.2)] max-w-3xl w-full max-h-[90vh] flex flex-col z-10 my-6 overflow-hidden"
                 @click.stop>
                 
                 {{-- Modal Header --}}
-                <div class="flex items-center justify-between px-6 py-4.5 border-b border-white/70 bg-white/50 rounded-t-xl">
+                <div class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white">
                     <div>
                         <h3 class="text-base sm:text-lg font-bold text-purple-deep">Tambah Psikolog Baru</h3>
-                        <p class="text-xs sm:text-[13px] text-[#6B5B85] mt-0.5">Daftarkan data psikolog atau konselor pendamping baru ke UC PSC</p>
+                        <p class="text-xs sm:text-[13px] text-slate-500 font-medium mt-0.5">Daftarkan data psikolog atau konselor pendamping baru ke UC PSC</p>
                     </div>
-                    <button type="button" @click="closeCreateModal()" class="w-8 h-8 rounded-lg text-[#827299] hover:text-purple-deep hover:bg-purple-deep/10 flex items-center justify-center transition cursor-pointer" title="Tutup">
+                    <button type="button" @click="closeCreateModal()" class="w-8 h-8 rounded-lg text-slate-500 hover:text-purple-deep hover:bg-purple-50 flex items-center justify-center transition cursor-pointer" title="Tutup">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
 
-                {{-- Modal Scrollable Body (Card-based design matching clients/create.blade.php) --}}
-                <form action="{{ route('counselors.store') }}" method="POST" enctype="multipart/form-data" class="flex-1 overflow-y-auto bg-[#FAF8FD] p-6 space-y-5" data-no-guard="true">
+                {{-- Modal Scrollable Body --}}
+                <form action="{{ route('counselors.store') }}" method="POST" enctype="multipart/form-data" class="flex-1 overflow-y-auto custom-scrollbar bg-[#FAF8FD] p-6 space-y-5" data-no-guard="true">
                     @csrf
 
                     {{-- CARD 1: DATA IDENTITAS & KONTAK --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                         <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Data Identitas & Kontak</h3>
                         </div>
 
                         {{-- Foto Profil Psikolog --}}
-                        <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-lg bg-gray-50 border border-gray-200">
+                        <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-xl bg-slate-50 border border-slate-100">
                             <div class="relative group flex-shrink-0">
                                 <template x-if="photoPreview">
                                     <img :src="photoPreview" alt="Preview Foto" class="w-20 h-20 rounded-full object-cover shadow-sm border-2 border-white ring-2 ring-gray-200">
@@ -950,12 +949,12 @@
                             </div>
 
                             <div class="flex-1 text-center sm:text-left space-y-1.5">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#2A2035]">Foto Profil Psikolog</label>
-                                <p class="text-xs text-gray-500">Format JPG, PNG, atau WebP. Ukuran maksimal 2 MB.</p>
+                                <label class="block text-xs font-medium text-slate-500">Foto Profil Psikolog</label>
+                                <p class="text-xs text-slate-500">Format JPG, PNG, atau WebP. Ukuran maksimal 2 MB.</p>
                                 
                                 <div class="pt-1">
                                     <input type="file" id="create_photo_input" name="photo" accept="image/*" class="hidden" @change="handlePhotoSelect($event)">
-                                    <label for="create_photo_input" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-gray-300 bg-white text-xs font-semibold text-gray-700 hover:bg-gray-50 transition cursor-pointer shadow-2xs">
+                                    <label for="create_photo_input" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[#D9C2F0] bg-white text-xs font-semibold text-purple-deep hover:bg-purple-50 transition cursor-pointer shadow-2xs">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                                         <span x-text="photoPreview ? 'Ganti Foto Profil' : 'Unggah Foto Profil'"></span>
                                     </label>
@@ -966,43 +965,43 @@
 
                         {{-- Field: Nama Psikolog --}}
                         <div>
-                            <label for="create_name" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
+                            <label for="create_name" class="block text-xs font-medium text-slate-500 mb-1">Nama Konselor / Psikolog <span class="text-red-500">*</span></label>
                             <input type="text" id="create_name" name="name" x-model="newCounselor.name" required
                                 placeholder="Contoh: Dr. Amanda Wijaya, M.Psi., Psikolog"
-                                class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('name') border-red-300 @enderror">
+                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep @error('name') border-red-300 @enderror">
                             @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
 
                         {{-- Kontak: No Telepon & Email --}}
                         <div class="grid sm:grid-cols-2 gap-4">
                             <div>
-                                <label for="create_phone" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">No. Telepon <span class="text-red-500">*</span></label>
+                                <label for="create_phone" class="block text-xs font-medium text-slate-500 mb-1">No. Telepon <span class="text-red-500">*</span></label>
                                 <input type="text" id="create_phone" name="phone" x-model="newCounselor.phone"
                                     inputmode="numeric"
                                     maxlength="13"
                                     @input="newCounselor.phone = $el.value.replace(/[^0-9]/g, '').slice(0, 13); $el.value = newCounselor.phone"
                                     @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                     :disabled="!isPhoneEnabled"
-                                    :class="isPhoneEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
+                                    :class="isPhoneEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'"
                                     :placeholder="isPhoneEnabled ? 'Contoh: 081234567890 (maks. 13 digit)' : ''"
-                                    class="w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] @error('phone') border-red-300 @enderror">
+                                    class="w-full px-3.5 py-2.5 border rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep @error('phone') border-red-300 @enderror">
                                 @error('phone') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
 
                             <div>
-                                <label for="create_email" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Email <span class="text-red-500">*</span></label>
+                                <label for="create_email" class="block text-xs font-medium text-slate-500 mb-1">Email <span class="text-red-500">*</span></label>
                                 <input type="email" id="create_email" name="email" x-model="newCounselor.email"
                                     :disabled="!isEmailEnabled"
-                                    :class="isEmailEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
+                                    :class="isEmailEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'"
                                     :placeholder="isEmailEnabled ? 'Contoh: amanda.wijaya@uc.ac.id' : ''"
-                                    class="w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                    class="w-full px-3.5 py-2.5 border rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                 @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </div>
 
                     {{-- CARD 2: ALAMAT DOMISILI --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                         <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Alamat Domisili</h3>
                         </div>
@@ -1010,21 +1009,21 @@
                         <div class="grid sm:grid-cols-3 gap-4 pt-1">
                             {{-- 1. NEGARA --}}
                             <div class="relative" @click.outside="createCountryOpen = false">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Negara <span class="text-red-500">*</span></label>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Negara <span class="text-red-500">*</span></label>
                                 <input type="hidden" name="country" :value="newCounselor.country">
                                 <button type="button" :disabled="!isAddressEnabled" @click="isAddressEnabled && (createCountryOpen ? (createCountryOpen = false) : openCreateCountry())"
-                                    class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
-                                    :class="isAddressEnabled ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
+                                    class="w-full px-3.5 py-2.5 rounded-lg text-sm font-medium min-h-[42px] flex items-center justify-between text-left transition"
+                                    :class="isAddressEnabled ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-black focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-slate-50 border border-slate-200 text-slate-400 cursor-not-allowed opacity-75'">
                                     <span x-text="newCounselor.country || 'Indonesia'"></span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': createCountryOpen }"><polyline points="6 9 12 15 18 9"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': createCountryOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                                 </button>
-                                <div x-cloak x-show="createCountryOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
+                                <div x-cloak x-show="createCountryOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
                                     <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                        <input type="text" x-ref="createCountrySearchInput" x-model="createCountrySearch" placeholder="Cari negara..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
+                                        <input type="text" x-ref="createCountrySearchInput" x-model="createCountrySearch" placeholder="Cari negara..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-purple-deep">
                                     </div>
                                     <div class="max-h-48 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
                                         <template x-for="c in createCountryList" :key="c">
-                                            <div @click="selectCreateCountry(c)" class="px-4 py-2 text-xs sm:text-sm cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': newCounselor.country === c, 'text-[#2A2035]': newCounselor.country !== c }">
+                                            <div @click="selectCreateCountry(c)" class="px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep': newCounselor.country === c, 'text-black': newCounselor.country !== c }">
                                                 <span x-text="c"></span>
                                                 <svg x-show="newCounselor.country === c" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep"><polyline points="20 6 9 17 4 12"/></svg>
                                             </div>
@@ -1035,25 +1034,25 @@
 
                             {{-- 2. PROVINSI --}}
                             <div class="relative" @click.outside="createProvinceOpen = false">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                                <label class="block text-xs font-medium text-slate-500 mb-1">
                                     Provinsi
                                     <span x-show="newCounselor.country === 'Indonesia'" class="text-red-500">*</span>
-                                    <span x-show="newCounselor.country !== 'Indonesia'" class="text-[11px] font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
+                                    <span x-show="newCounselor.country !== 'Indonesia'" class="text-[11px] font-normal text-slate-400">(Khusus Indonesia)</span>
                                 </label>
                                 <input type="hidden" name="province" :value="newCounselor.country === 'Indonesia' ? newCounselor.province : ''">
                                 <button type="button" :disabled="!isAddressEnabled || newCounselor.country !== 'Indonesia'" @click="isAddressEnabled && newCounselor.country === 'Indonesia' && (createProvinceOpen ? (createProvinceOpen = false) : openCreateProvince())"
-                                    class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
-                                    :class="(isAddressEnabled && newCounselor.country === 'Indonesia') ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
+                                    class="w-full px-3.5 py-2.5 rounded-lg text-sm font-medium min-h-[42px] flex items-center justify-between text-left transition"
+                                    :class="(isAddressEnabled && newCounselor.country === 'Indonesia') ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-black focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-slate-50 border border-slate-200 text-slate-400 cursor-not-allowed opacity-75'">
                                     <span x-text="newCounselor.country === 'Indonesia' ? (newCounselor.province || '-- Pilih Provinsi --') : '-'"></span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': createProvinceOpen }"><polyline points="6 9 12 15 18 9"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': createProvinceOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                                 </button>
-                                <div x-cloak x-show="newCounselor.country === 'Indonesia' && createProvinceOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
+                                <div x-cloak x-show="newCounselor.country === 'Indonesia' && createProvinceOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
                                     <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                        <input type="text" x-ref="createProvinceSearchInput" x-model="createProvinceSearch" placeholder="Cari provinsi..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
+                                        <input type="text" x-ref="createProvinceSearchInput" x-model="createProvinceSearch" placeholder="Cari provinsi..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-purple-deep">
                                     </div>
                                     <div class="max-h-48 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
                                         <template x-for="p in createProvinceList" :key="p">
-                                            <div @click="selectCreateProvince(p)" class="px-4 py-2 text-xs sm:text-sm cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': newCounselor.province === p, 'text-[#2A2035]': newCounselor.province !== p }">
+                                            <div @click="selectCreateProvince(p)" class="px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep': newCounselor.province === p, 'text-black': newCounselor.province !== p }">
                                                 <span x-text="p"></span>
                                                 <svg x-show="newCounselor.province === p" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep"><polyline points="20 6 9 17 4 12"/></svg>
                                             </div>
@@ -1064,25 +1063,25 @@
 
                             {{-- 3. KOTA / KABUPATEN --}}
                             <div class="relative" @click.outside="createCityOpen = false">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                                <label class="block text-xs font-medium text-slate-500 mb-1">
                                     Kota / Kabupaten
                                     <span x-show="newCounselor.country === 'Indonesia'" class="text-red-500">*</span>
-                                    <span x-show="newCounselor.country !== 'Indonesia'" class="text-[11px] font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
+                                    <span x-show="newCounselor.country !== 'Indonesia'" class="text-[11px] font-normal text-slate-400">(Khusus Indonesia)</span>
                                 </label>
                                 <input type="hidden" name="city" :value="newCounselor.country === 'Indonesia' ? newCounselor.city : ''">
                                 <button type="button" :disabled="!isAddressEnabled || newCounselor.country !== 'Indonesia' || !newCounselor.province" @click="isAddressEnabled && newCounselor.country === 'Indonesia' && newCounselor.province && (createCityOpen ? (createCityOpen = false) : openCreateCity())"
-                                    class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
-                                    :class="(isAddressEnabled && newCounselor.country === 'Indonesia' && newCounselor.province) ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
+                                    class="w-full px-3.5 py-2.5 rounded-lg text-sm font-medium min-h-[42px] flex items-center justify-between text-left transition"
+                                    :class="(isAddressEnabled && newCounselor.country === 'Indonesia' && newCounselor.province) ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-black focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-slate-50 border border-slate-200 text-slate-400 cursor-not-allowed opacity-75'">
                                     <span x-text="newCounselor.country === 'Indonesia' ? (newCounselor.province ? (newCounselor.city || '-- Pilih Kota / Kabupaten --') : '-') : '-'"></span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': createCityOpen }"><polyline points="6 9 12 15 18 9"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': createCityOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                                 </button>
-                                <div x-cloak x-show="newCounselor.country === 'Indonesia' && newCounselor.province && createCityOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
+                                <div x-cloak x-show="newCounselor.country === 'Indonesia' && newCounselor.province && createCityOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
                                     <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                        <input type="text" x-ref="createCitySearchInput" x-model="createCitySearch" :placeholder="newCounselor.province ? 'Cari kota di ' + newCounselor.province + '...' : 'Cari kota / kabupaten...'" class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
+                                        <input type="text" x-ref="createCitySearchInput" x-model="createCitySearch" :placeholder="newCounselor.province ? 'Cari kota di ' + newCounselor.province + '...' : 'Cari kota / kabupaten...'" class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-purple-deep">
                                     </div>
                                     <div class="max-h-48 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
                                         <template x-for="c in createCityList" :key="c">
-                                            <div @click="selectCreateCity(c)" class="px-4 py-2 text-xs sm:text-sm cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': newCounselor.city === c, 'text-[#2A2035]': newCounselor.city !== c }">
+                                            <div @click="selectCreateCity(c)" class="px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep': newCounselor.city === c, 'text-black': newCounselor.city !== c }">
                                                 <span x-text="c"></span>
                                                 <svg x-show="newCounselor.city === c" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep"><polyline points="20 6 9 17 4 12"/></svg>
                                             </div>
@@ -1095,27 +1094,27 @@
                             <div class="sm:col-span-3">
                                 <textarea id="create_address" name="address" rows="2" x-model="newCounselor.address"
                                     :disabled="!isAddressEnabled"
-                                    :class="isAddressEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
+                                    :class="isAddressEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'"
                                     :placeholder="isAddressEnabled ? 'Contoh: Jl. CitraLand CBD Boulevard No. 8, Sambikerep, Surabaya, 60219' : ''"
-                                    class="w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] transition"></textarea>
+                                    class="w-full px-3.5 py-2.5 border rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep transition"></textarea>
                                 @error('address') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </div>
 
                     {{-- CARD 3: KUALIFIKASI, IZIN PRAKTIK & STATUS --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                         <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Kualifikasi, Izin Praktik & Status</h3>
                         </div>
 
                         {{-- Bidang Spesialisasi --}}
                         <div>
-                            <label for="create_specialization" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Bidang Spesialisasi / Keahlian <span class="text-red-500">*</span></label>
+                            <label for="create_specialization" class="block text-xs font-medium text-slate-500 mb-1">Bidang Spesialisasi / Keahlian <span class="text-red-500">*</span></label>
                             <select id="create_specialization" name="specialization" x-model="newCounselor.specialization" required
                                 :disabled="!isSpecializationEnabled"
-                                :class="isSpecializationEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
-                                class="w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                :class="isSpecializationEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'"
+                                class="w-full px-3.5 py-2.5 border rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                 <option value="" disabled selected>-- Pilih Bidang Spesialisasi / Keahlian --</option>
                                 @foreach(\App\Models\Counselor::SPECIALIZATIONS as $spec)
                                     <option value="{{ $spec }}">{{ $spec }}</option>
@@ -1127,42 +1126,42 @@
                         {{-- Nomor SIPP & STR --}}
                         <div class="grid sm:grid-cols-2 gap-4">
                             <div>
-                                <label for="create_sipp_number" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nomor SIPP (Surat Izin Praktik) <span class="text-red-500">*</span></label>
+                                <label for="create_sipp_number" class="block text-xs font-medium text-slate-500 mb-1">Nomor SIPP (Surat Izin Praktik) <span class="text-red-500">*</span></label>
                                 <input type="text" id="create_sipp_number" name="sipp_number" x-model="newCounselor.sipp_number"
                                     :disabled="!isSippEnabled"
-                                    :class="isSippEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
+                                    :class="isSippEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'"
                                     :placeholder="isSippEnabled ? 'Contoh: SIPP-12345/2024' : ''"
-                                    class="w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                    class="w-full px-3.5 py-2.5 border rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                 @error('sipp_number') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
 
                             <div>
-                                <label for="create_str_number" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nomor STR (Surat Tanda Registrasi) <span class="text-red-500">*</span></label>
+                                <label for="create_str_number" class="block text-xs font-medium text-slate-500 mb-1">Nomor STR (Surat Tanda Registrasi) <span class="text-red-500">*</span></label>
                                 <input type="text" id="create_str_number" name="str_number" x-model="newCounselor.str_number"
                                     :disabled="!isStrEnabled"
-                                    :class="isStrEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
+                                    :class="isStrEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'"
                                     :placeholder="isStrEnabled ? 'Contoh: STR-98765/2024' : ''"
-                                    class="w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                    class="w-full px-3.5 py-2.5 border rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                 @error('str_number') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
                         {{-- Status Keaktifan --}}
                         <div>
-                            <label for="create_status" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
+                            <label for="create_status" class="block text-xs font-medium text-slate-500 mb-1">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
                             <select id="create_status" name="status" x-model="newCounselor.status" required
                                 :disabled="!isStatusEnabled"
-                                :class="isStatusEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
-                                class="w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
-                                <option value="active" class="text-emerald-700 font-semibold">Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
-                                <option value="inactive" class="text-red-600 font-semibold">Nonaktif (Sedang Tidak Bertugas)</option>
+                                :class="isStatusEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'"
+                                class="w-full px-3.5 py-2.5 border rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                                <option value="active">Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
+                                <option value="inactive">Nonaktif (Sedang Tidak Bertugas)</option>
                             </select>
                             @error('status') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
                     {{-- CARD 3: CATATAN & KETERANGAN TAMBAHAN --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
                         <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Catatan & Keterangan Tambahan</h3>
                         </div>
@@ -1170,9 +1169,9 @@
                         <div>
                             <textarea id="create_notes" name="notes" x-model="newCounselor.notes" rows="3"
                                 :disabled="!isNotesEnabled"
-                                :class="isNotesEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-[#F7F4FB] border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
+                                :class="isNotesEnabled ? 'bg-white border-[#D9C2F0]' : 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'"
                                 :placeholder="isNotesEnabled ? 'Contoh: Bersedia praktek hari Selasa & Kamis pukul 09:00 - 15:00 WIB...' : ''"
-                                class="w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] leading-relaxed"></textarea>
+                                class="w-full px-3.5 py-2.5 border rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep leading-relaxed"></textarea>
                             @error('notes') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
@@ -1180,11 +1179,12 @@
                     {{-- Modal Footer Actions --}}
                     <div class="flex items-center justify-end gap-3 pt-2">
                         <button type="button" @click="closeCreateModal()" 
-                            class="px-5 py-2.5 rounded-lg text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-white transition cursor-pointer">
-                            Batal
+                            class="px-5 py-2.5 rounded-lg text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition cursor-pointer inline-flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <span>Batal</span>
                         </button>
                         <button type="submit" 
-                            class="px-6 py-2.5 rounded-lg text-sm font-bold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
+                            class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-purple-deep hover:bg-purple-deep/90 text-white transition shadow-xs flex items-center gap-2 cursor-pointer">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                             <span>Simpan Psikolog</span>
                         </button>
@@ -1208,7 +1208,7 @@
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0 scale-95" 
             x-transition:enter-end="opacity-100 scale-100" 
-            class="relative bg-white rounded-2xl shadow-2xl border border-[#EDE1FA] max-w-md w-full p-7 z-10 space-y-5"
+            class="relative bg-white rounded-2xl shadow-[0_30px_70px_rgba(74,35,128,0.2)] max-w-md w-full p-7 z-10 space-y-5"
             @click.stop>
             
             <div class="w-14 h-14 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mx-auto shadow-xs">
@@ -1227,10 +1227,10 @@
             </div>
 
             <div class="flex items-center justify-center gap-3 pt-2">
-                <button type="button" @click="createDiscardModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#FAF8FD] transition cursor-pointer">
+                <button type="button" @click="createDiscardModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition cursor-pointer">
                     Lanjut Mengisi
                 </button>
-                <button type="button" @click="closeCreateModal(true)" class="flex-1 px-5 py-3 rounded-lg text-sm font-bold bg-red-600 text-white hover:bg-red-700 transition shadow-xs cursor-pointer">
+                <button type="button" @click="closeCreateModal(true)" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition shadow-xs cursor-pointer">
                     Buang Isian
                 </button>
             </div>
@@ -1257,23 +1257,23 @@
                 @click.stop>
                 
                 {{-- Modal Header (View Mode) --}}
-                <div x-show="!isEditing" class="flex items-center justify-between px-6 py-4.5 border-b border-white/70 bg-white/50 rounded-t-xl">
+                <div x-show="!isEditing" class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white">
                     <div>
                         <h3 class="text-base sm:text-lg font-bold text-purple-deep">Detail Data Psikolog</h3>
-                        <p class="text-xs sm:text-[13px] text-[#6B5B85] mt-0.5">Informasi profil, kualifikasi, dan status konselor</p>
+                        <p class="text-xs sm:text-[13px] text-slate-500 font-medium mt-0.5">Informasi profil, kualifikasi, dan status konselor</p>
                     </div>
-                    <button type="button" @click="closeEditModal()" class="w-8 h-8 rounded-lg text-[#827299] hover:text-purple-deep hover:bg-purple-deep/10 flex items-center justify-center transition cursor-pointer" title="Tutup">
+                    <button type="button" @click="closeEditModal()" class="w-8 h-8 rounded-lg text-slate-500 hover:text-purple-deep hover:bg-purple-50 flex items-center justify-center transition cursor-pointer" title="Tutup">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
 
                 {{-- Modal Header (Edit Mode) --}}
-                <div x-show="isEditing" class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white rounded-t-xl">
+                <div x-show="isEditing" class="flex items-center justify-between px-6 py-4.5 border-b border-[#EDE1FA] bg-white">
                     <div>
                         <h3 class="text-base sm:text-lg font-bold text-purple-deep">Edit Data Psikolog</h3>
-                        <p class="text-xs sm:text-[13px] text-[#6B5B85] mt-0.5">Perbarui data identitas, kualifikasi, atau status konselor</p>
+                        <p class="text-xs sm:text-[13px] text-slate-500 font-medium mt-0.5">Perbarui data identitas, kualifikasi, atau status konselor</p>
                     </div>
-                    <button type="button" @click="closeEditModal()" class="w-8 h-8 rounded-lg text-[#827299] hover:text-purple-deep hover:bg-purple-deep/10 flex items-center justify-center transition cursor-pointer" title="Tutup">
+                    <button type="button" @click="closeEditModal()" class="w-8 h-8 rounded-lg text-slate-500 hover:text-purple-deep hover:bg-purple-50 flex items-center justify-center transition cursor-pointer" title="Tutup">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
@@ -1281,14 +1281,14 @@
                 {{-- ================================================================= --}}
                 {{-- 1. VIEW MODE (Hanya Melihat Data Konselor)                        --}}
                 {{-- ================================================================= --}}
-                <div x-show="!isEditing" class="flex-1 overflow-y-auto bg-[#FAF8FD] p-6 space-y-5">
+                <div x-show="!isEditing" class="flex-1 overflow-y-auto custom-scrollbar bg-[#FAF8FD] p-6 space-y-5">
                     {{-- CARD 1: DATA IDENTITAS & KONTAK (VIEW) --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
-                        <div class="pb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+                        <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Data Identitas &amp; Kontak</h3>
                         </div>
 
-                        <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
+                        <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-xl bg-slate-50 border border-slate-100">
                             <div class="flex-shrink-0">
                                 <template x-if="editingCounselor.photo_url">
                                     <img :src="editingCounselor.photo_url" alt="Foto Profil" class="w-20 h-20 rounded-full object-cover shadow-sm border-2 border-white ring-2 ring-purple-100">
@@ -1302,151 +1302,138 @@
 
                             <div class="flex-1 text-center sm:text-left space-y-1.5 min-w-0">
                                 <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-                                    <h4 class="text-lg font-bold text-purple-deep truncate" x-text="editingCounselor.name"></h4>
-                                    <template x-if="editingCounselor.status === 'active'">
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                            <span>Aktif</span>
-                                        </span>
-                                    </template>
-                                    <template x-if="editingCounselor.status !== 'active'">
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                                            <span>Nonaktif</span>
-                                        </span>
-                                    </template>
+                                    <h4 class="text-lg font-bold text-black truncate" x-text="editingCounselor.name"></h4>
+                                    <span class="text-xs font-medium text-slate-500" x-text="'(' + (editingCounselor.status === 'active' ? 'Aktif' : 'Nonaktif') + ')'"></span>
                                 </div>
-                                <p class="text-xs sm:text-sm text-[#6B5B85] font-medium" x-text="editingCounselor.specialization || 'Psikolog / Konselor Pendamping'"></p>
+                                <p class="text-sm text-black font-medium" x-text="editingCounselor.specialization || 'Psikolog / Konselor Pendamping'"></p>
                             </div>
                         </div>
 
                         <div class="grid sm:grid-cols-2 gap-4 pt-1">
-                            <div class="p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">No. Telepon</span>
-                                <p class="text-sm font-semibold text-[#2A2035] flex items-center gap-2">
-                                    <svg class="text-purple-deep shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            <div>
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">No. Telepon</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center gap-2 text-sm font-medium text-black">
+                                    <svg class="text-slate-400 shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                                     <span x-text="editingCounselor.phone || '-'"></span>
-                                </p>
+                                </div>
                             </div>
 
-                            <div class="p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Email</span>
-                                <p class="text-sm font-semibold text-[#2A2035] flex items-center gap-2">
-                                    <svg class="text-purple-deep shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <div>
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Email</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center gap-2 text-sm font-medium text-black">
+                                    <svg class="text-slate-400 shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                                     <span x-text="editingCounselor.email || '-'" class="truncate"></span>
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {{-- CARD 2: ALAMAT DOMISILI (VIEW) --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
-                        <div class="pb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
+                        <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Alamat Domisili</h3>
                         </div>
 
                         <div class="grid sm:grid-cols-3 gap-4">
-                            <div class="p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Negara</span>
-                                <p class="text-sm font-semibold text-[#2A2035]" x-text="editingCounselor.country || 'Indonesia'"></p>
+                            <div>
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Negara</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="editingCounselor.country || 'Indonesia'"></div>
                             </div>
 
-                            <div class="p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Provinsi</span>
-                                <p class="text-sm font-semibold text-[#2A2035]" x-text="editingCounselor.province || '-'"></p>
+                            <div>
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Provinsi</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="editingCounselor.province || '-'"></div>
                             </div>
 
-                            <div class="p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Kota / Kabupaten</span>
-                                <p class="text-sm font-semibold text-[#2A2035]" x-text="editingCounselor.city || '-'"></p>
+                            <div>
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Kota / Kabupaten</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="editingCounselor.city || '-'"></div>
                             </div>
 
-                            <div class="sm:col-span-3 p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Alamat Lengkap</span>
-                                <p class="text-sm font-semibold text-[#2A2035] flex items-start gap-2">
-                                    <svg class="text-purple-deep shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <div class="sm:col-span-3">
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Alamat Lengkap</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-start gap-2 text-sm font-medium text-black">
+                                    <svg class="text-slate-400 shrink-0 mt-0.5" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                                     <span x-text="editingCounselor.full_address || editingCounselor.address || '-'" class="leading-relaxed whitespace-pre-line"></span>
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {{-- CARD 3: KUALIFIKASI & LEGALITAS (VIEW) --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
-                        <div class="pb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
+                        <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Kualifikasi, Izin Praktik &amp; Status</h3>
                         </div>
 
                         <div class="grid sm:grid-cols-2 gap-4">
-                            <div class="sm:col-span-2 p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Bidang Spesialisasi / Keahlian</span>
-                                <p class="text-sm font-bold text-purple-deep" x-text="editingCounselor.specialization || '-'"></p>
+                            <div class="sm:col-span-2">
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Bidang Spesialisasi / Keahlian</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="editingCounselor.specialization || '-'"></div>
                             </div>
 
-                            <div class="p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Nomor SIPP (Surat Izin Praktik)</span>
-                                <p class="text-sm font-semibold text-[#2A2035]" x-text="editingCounselor.sipp_number || '-'"></p>
+                            <div>
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Nomor SIPP (Surat Izin Praktik)</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="editingCounselor.sipp_number || '-'"></div>
                             </div>
 
-                            <div class="p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Nomor STR (Surat Tanda Registrasi)</span>
-                                <p class="text-sm font-semibold text-[#2A2035]" x-text="editingCounselor.str_number || '-'"></p>
+                            <div>
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Nomor STR (Surat Tanda Registrasi)</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="editingCounselor.str_number || '-'"></div>
                             </div>
 
-                            <div class="sm:col-span-2 p-3.5 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                                <span class="block text-xs font-semibold text-[#827299] mb-1">Status Keaktifan</span>
-                                <p class="text-sm font-semibold" :class="editingCounselor.status === 'active' ? 'text-emerald-700' : 'text-red-600'" x-text="editingCounselor.status === 'active' ? 'Aktif (Siap Menerima Pasangan Klien / Sesi)' : 'Nonaktif (Sedang Tidak Bertugas)'"></p>
+                            <div class="sm:col-span-2">
+                                <span class="text-xs font-medium text-slate-500 mb-1 block">Status Keaktifan</span>
+                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="editingCounselor.status === 'active' ? 'Aktif (Siap Menerima Pasangan Klien / Sesi)' : 'Nonaktif (Sedang Tidak Bertugas)'"></div>
                             </div>
                         </div>
                     </div>
 
                     {{-- CARD 4: CATATAN (VIEW) --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-3">
-                        <div class="pb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-3">
+                        <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Catatan &amp; Keterangan Tambahan</h3>
                         </div>
-                        <div class="p-4 rounded-lg bg-white border border-[#EDE1FA] shadow-2xs">
-                            <template x-if="editingCounselor.notes">
-                                <p class="text-sm text-[#4A3E5C] leading-relaxed whitespace-pre-line" x-text="editingCounselor.notes"></p>
-                            </template>
-                            <template x-if="!editingCounselor.notes">
-                                <p class="text-xs text-gray-400 italic">Tidak ada catatan tambahan untuk psikolog ini.</p>
-                            </template>
+                        <div>
+                            <span class="text-xs font-medium text-slate-500 mb-1 block">Catatan Khusus</span>
+                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black whitespace-pre-line" x-text="editingCounselor.notes || '-'"></div>
                         </div>
                     </div>
 
-                    {{-- VIEW MODE FOOTER ACTIONS --}}
+                    {{-- VIEW MODE FOOTER ACTIONS (Admin Only) --}}
+                    @if(auth()->user()->isAdmin())
                     <div class="flex items-center justify-end gap-3 pt-2">
                         <button type="button" @click="startEditing()" 
-                            class="px-5 py-2.5 rounded-lg text-sm font-semibold text-purple-deep border border-[#D9C2F0] hover:bg-[#FAF8FD] hover:border-purple-deep transition cursor-pointer flex items-center gap-2 shadow-2xs">
+                            class="px-5 py-2.5 rounded-lg text-sm font-semibold text-purple-deep bg-white border border-[#D9C2F0] hover:bg-purple-50 transition cursor-pointer flex items-center gap-2 shadow-xs">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                             <span>Edit Data</span>
                         </button>
 
                         <button type="button" @click="deleteCounselorModalOpen = true" 
-                            class="px-5 py-2.5 rounded-lg text-sm font-semibold text-red-600 border border-red-200 hover:bg-red-50 transition cursor-pointer flex items-center gap-2 shadow-2xs">
+                            class="px-5 py-2.5 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition cursor-pointer flex items-center gap-2 shadow-xs">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                             <span>Hapus Data</span>
                         </button>
                     </div>
+                    @endif
                 </div>
 
                 {{-- ================================================================= --}}
                 {{-- 2. EDIT MODE (Formulir Pengubahan Data Konselor)                   --}}
                 {{-- ================================================================= --}}
-                <form x-show="isEditing" :action="editingCounselor.update_url" method="POST" enctype="multipart/form-data" class="flex-1 overflow-y-auto bg-[#FAF8FD] p-6 space-y-5" data-no-guard="true">
+                <form x-show="isEditing" :action="editingCounselor.update_url" method="POST" enctype="multipart/form-data" class="flex-1 overflow-y-auto custom-scrollbar bg-[#FAF8FD] p-6 space-y-5" data-no-guard="true">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="remove_photo" :value="editRemovePhoto ? '1' : '0'">
 
                     {{-- CARD 1: DATA IDENTITAS & KONTAK (EDIT) --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
-                        <div class="pb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+                        <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Data Identitas &amp; Kontak</h3>
                         </div>
 
                         {{-- Foto Profil Psikolog --}}
-                        <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-lg bg-gray-50 border border-gray-200">
+                        <div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-xl bg-slate-50 border border-slate-100">
                             <div class="relative group flex-shrink-0">
                                 <template x-if="editPhotoPreview">
                                     <img :src="editPhotoPreview" alt="Preview Foto" class="w-20 h-20 rounded-full object-cover shadow-sm border-2 border-white ring-2 ring-gray-200">
@@ -1467,12 +1454,12 @@
                             </div>
 
                             <div class="flex-1 text-center sm:text-left space-y-1.5">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#2A2035]">Foto Profil Psikolog</label>
-                                <p class="text-xs text-gray-500">Format JPG, PNG, atau WebP. Ukuran maksimal 2 MB.</p>
+                                <label class="block text-xs font-medium text-slate-500">Foto Profil Psikolog</label>
+                                <p class="text-xs text-slate-500">Format JPG, PNG, atau WebP. Ukuran maksimal 2 MB.</p>
                                 
                                 <div class="pt-1">
                                     <input type="file" id="edit_photo_input" name="photo" accept="image/*" class="hidden" @change="handleEditPhotoSelect($event)">
-                                    <label for="edit_photo_input" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-gray-300 bg-white text-xs font-semibold text-gray-700 hover:bg-gray-50 transition cursor-pointer shadow-2xs">
+                                    <label for="edit_photo_input" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[#D9C2F0] bg-white text-xs font-semibold text-purple-deep hover:bg-purple-50 transition cursor-pointer shadow-2xs">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                                         <span x-text="editPhotoPreview ? 'Ganti Foto Profil' : 'Unggah Foto Profil'"></span>
                                     </label>
@@ -1482,58 +1469,57 @@
 
                         {{-- Field: Nama Psikolog --}}
                         <div>
-                            <label for="edit_name" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nama Psikolog / Psikolog <span class="text-red-500">*</span></label>
+                            <label for="edit_name" class="block text-xs font-medium text-slate-500 mb-1">Nama Psikolog / Konselor <span class="text-red-500">*</span></label>
                             <input type="text" id="edit_name" name="name" x-model="editingCounselor.name" required
                                 placeholder="Contoh: Dr. Amanda Wijaya, M.Psi., Psikolog"
-                                class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                         </div>
 
                         {{-- Kontak: No Telepon & Email --}}
                         <div class="grid sm:grid-cols-2 gap-4">
                             <div>
-                                <label for="edit_phone" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">No. Telepon</label>
+                                <label for="edit_phone" class="block text-xs font-medium text-slate-500 mb-1">No. Telepon</label>
                                 <input type="text" id="edit_phone" name="phone" x-model="editingCounselor.phone"
                                     inputmode="numeric"
                                     maxlength="13"
                                     @input="editingCounselor.phone = $el.value.replace(/[^0-9]/g, '').slice(0, 13); $el.value = editingCounselor.phone"
                                     @keydown="if (!/[0-9]/.test($event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End'].includes($event.key) && !$event.ctrlKey && !$event.metaKey) $event.preventDefault()"
                                     placeholder="Contoh: 081234567890 (maks. 13 digit)"
-                                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                    class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                             </div>
 
                             <div>
-                                <label for="edit_email" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Email</label>
+                                <label for="edit_email" class="block text-xs font-medium text-slate-500 mb-1">Email</label>
                                 <input type="email" id="edit_email" name="email" x-model="editingCounselor.email"
                                     placeholder="Contoh: amanda.wijaya@uc.ac.id"
-                                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                    class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                             </div>
                         </div>
                     </div>
 
                     {{-- CARD 2: ALAMAT DOMISILI (EDIT) --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
-                        <div class="pb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+                        <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Alamat Domisili</h3>
                         </div>
 
-                        {{-- Alamat Domisili / Tempat Tinggal (Struktur Lengkap seperti Klien) --}}
                         <div class="grid sm:grid-cols-3 gap-4 pt-1">
                             {{-- 1. NEGARA --}}
                             <div class="relative" @click.outside="editCountryOpen = false">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Negara</label>
+                                <label class="block text-xs font-medium text-slate-500 mb-1">Negara</label>
                                 <input type="hidden" name="country" :value="editingCounselor.country">
                                 <button type="button" @click="editCountryOpen ? (editCountryOpen = false) : openEditCountry()"
-                                    class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                                    class="w-full px-3.5 py-2.5 rounded-lg text-sm font-medium min-h-[42px] flex items-center justify-between text-left transition bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-black focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                     <span x-text="editingCounselor.country || 'Indonesia'"></span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': editCountryOpen }"><polyline points="6 9 12 15 18 9"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': editCountryOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                                 </button>
-                                <div x-cloak x-show="editCountryOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
+                                <div x-cloak x-show="editCountryOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
                                     <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                        <input type="text" x-ref="editCountrySearchInput" x-model="editCountrySearch" placeholder="Cari negara..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
+                                        <input type="text" x-ref="editCountrySearchInput" x-model="editCountrySearch" placeholder="Cari negara..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-purple-deep">
                                     </div>
                                     <div class="max-h-48 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
                                         <template x-for="c in editCountryList" :key="c">
-                                            <div @click="selectEditCountry(c)" class="px-4 py-2 text-xs sm:text-sm cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': editingCounselor.country === c, 'text-[#2A2035]': editingCounselor.country !== c }">
+                                            <div @click="selectEditCountry(c)" class="px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep': editingCounselor.country === c, 'text-black': editingCounselor.country !== c }">
                                                 <span x-text="c"></span>
                                                 <svg x-show="editingCounselor.country === c" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep"><polyline points="20 6 9 17 4 12"/></svg>
                                             </div>
@@ -1544,24 +1530,24 @@
 
                             {{-- 2. PROVINSI --}}
                             <div class="relative" @click.outside="editProvinceOpen = false">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                                <label class="block text-xs font-medium text-slate-500 mb-1">
                                     Provinsi
-                                    <span x-show="editingCounselor.country !== 'Indonesia'" class="text-[11px] font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
+                                    <span x-show="editingCounselor.country !== 'Indonesia'" class="text-[11px] font-normal text-slate-400">(Khusus Indonesia)</span>
                                 </label>
                                 <input type="hidden" name="province" :value="editingCounselor.country === 'Indonesia' ? editingCounselor.province : ''">
                                 <button type="button" :disabled="editingCounselor.country !== 'Indonesia'" @click="editingCounselor.country === 'Indonesia' && (editProvinceOpen ? (editProvinceOpen = false) : openEditProvince())"
-                                    class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
-                                    :class="editingCounselor.country === 'Indonesia' ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
+                                    class="w-full px-3.5 py-2.5 rounded-lg text-sm font-medium min-h-[42px] flex items-center justify-between text-left transition"
+                                    :class="editingCounselor.country === 'Indonesia' ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-black focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-slate-50 border border-slate-200 text-slate-400 cursor-not-allowed opacity-75'">
                                     <span x-text="editingCounselor.country === 'Indonesia' ? (editingCounselor.province || '-- Pilih Provinsi --') : '-'"></span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': editProvinceOpen }"><polyline points="6 9 12 15 18 9"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': editProvinceOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                                 </button>
-                                <div x-cloak x-show="editingCounselor.country === 'Indonesia' && editProvinceOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
+                                <div x-cloak x-show="editingCounselor.country === 'Indonesia' && editProvinceOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
                                     <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                        <input type="text" x-ref="editProvinceSearchInput" x-model="editProvinceSearch" placeholder="Cari provinsi..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
+                                        <input type="text" x-ref="editProvinceSearchInput" x-model="editProvinceSearch" placeholder="Cari provinsi..." class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-purple-deep">
                                     </div>
                                     <div class="max-h-48 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
                                         <template x-for="p in editProvinceList" :key="p">
-                                            <div @click="selectEditProvince(p)" class="px-4 py-2 text-xs sm:text-sm cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': editingCounselor.province === p, 'text-[#2A2035]': editingCounselor.province !== p }">
+                                            <div @click="selectEditProvince(p)" class="px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep': editingCounselor.province === p, 'text-black': editingCounselor.province !== p }">
                                                 <span x-text="p"></span>
                                                 <svg x-show="editingCounselor.province === p" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep"><polyline points="20 6 9 17 4 12"/></svg>
                                             </div>
@@ -1572,24 +1558,24 @@
 
                             {{-- 3. KOTA / KABUPATEN --}}
                             <div class="relative" @click.outside="editCityOpen = false">
-                                <label class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">
+                                <label class="block text-xs font-medium text-slate-500 mb-1">
                                     Kota / Kabupaten
-                                    <span x-show="editingCounselor.country !== 'Indonesia'" class="text-[11px] font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
+                                    <span x-show="editingCounselor.country !== 'Indonesia'" class="text-[11px] font-normal text-slate-400">(Khusus Indonesia)</span>
                                 </label>
                                 <input type="hidden" name="city" :value="editingCounselor.country === 'Indonesia' ? editingCounselor.city : ''">
                                 <button type="button" :disabled="editingCounselor.country !== 'Indonesia' || !editingCounselor.province" @click="editingCounselor.country === 'Indonesia' && editingCounselor.province && (editCityOpen ? (editCityOpen = false) : openEditCity())"
-                                    class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
-                                    :class="(editingCounselor.country === 'Indonesia' && editingCounselor.province) ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-[#2A2035] focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
+                                    class="w-full px-3.5 py-2.5 rounded-lg text-sm font-medium min-h-[42px] flex items-center justify-between text-left transition"
+                                    :class="(editingCounselor.country === 'Indonesia' && editingCounselor.province) ? 'bg-white border border-[#D9C2F0] hover:border-[#B59BD6] cursor-pointer text-black focus:outline-none focus:ring-2 focus:ring-purple-deep' : 'bg-slate-50 border border-slate-200 text-slate-400 cursor-not-allowed opacity-75'">
                                     <span x-text="editingCounselor.country === 'Indonesia' ? (editingCounselor.province ? (editingCounselor.city || '-- Pilih Kota / Kabupaten --') : '-') : '-'"></span>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#827299] transition-transform duration-200" :class="{ 'rotate-180': editCityOpen }"><polyline points="6 9 12 15 18 9"/></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': editCityOpen }"><polyline points="6 9 12 15 18 9"/></svg>
                                 </button>
-                                <div x-cloak x-show="editingCounselor.country === 'Indonesia' && editingCounselor.province && editCityOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
+                                <div x-cloak x-show="editingCounselor.country === 'Indonesia' && editingCounselor.province && editCityOpen" class="absolute z-50 mt-1.5 w-full bg-white rounded-xl shadow-xl border border-[#EDE1FA] overflow-hidden">
                                     <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                        <input type="text" x-ref="editCitySearchInput" x-model="editCitySearch" :placeholder="editingCounselor.province ? 'Cari kota di ' + editingCounselor.province + '...' : 'Cari kota / kabupaten...'" class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-purple-deep text-[#2A2035]">
+                                        <input type="text" x-ref="editCitySearchInput" x-model="editCitySearch" :placeholder="editingCounselor.province ? 'Cari kota di ' + editingCounselor.province + '...' : 'Cari kota / kabupaten...'" class="w-full px-3 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-purple-deep">
                                     </div>
                                     <div class="max-h-48 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
                                         <template x-for="c in editCityList" :key="c">
-                                            <div @click="selectEditCity(c)" class="px-4 py-2 text-xs sm:text-sm cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': editingCounselor.city === c, 'text-[#2A2035]': editingCounselor.city !== c }">
+                                            <div @click="selectEditCity(c)" class="px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]" :class="{ 'bg-[#F3EBFC] text-purple-deep': editingCounselor.city === c, 'text-black': editingCounselor.city !== c }">
                                                 <span x-text="c"></span>
                                                 <svg x-show="editingCounselor.city === c" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep"><polyline points="20 6 9 17 4 12"/></svg>
                                             </div>
@@ -1600,24 +1586,25 @@
 
                             {{-- 4. ALAMAT LENGKAP --}}
                             <div class="sm:col-span-3">
+                                <label for="edit_address" class="block text-xs font-medium text-slate-500 mb-1">Alamat Lengkap</label>
                                 <textarea id="edit_address" name="address" rows="2" x-model="editingCounselor.address"
                                     placeholder="Contoh: Jl. CitraLand CBD Boulevard No. 8, Sambikerep, Surabaya, 60219"
-                                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] transition"></textarea>
+                                    class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep transition"></textarea>
                             </div>
                         </div>
                     </div>
 
                     {{-- CARD 3: KUALIFIKASI, IZIN PRAKTIK & STATUS (EDIT) --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
-                        <div class="pb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+                        <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Kualifikasi, Izin Praktik &amp; Status</h3>
                         </div>
 
                         {{-- Bidang Spesialisasi --}}
                         <div>
-                            <label for="edit_specialization" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Bidang Spesialisasi / Keahlian</label>
+                            <label for="edit_specialization" class="block text-xs font-medium text-slate-500 mb-1">Bidang Spesialisasi / Keahlian</label>
                             <select id="edit_specialization" name="specialization" x-model="editingCounselor.specialization"
-                                class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                                 <option value="">-- Pilih Bidang Spesialisasi / Keahlian --</option>
                                 @foreach(\App\Models\Counselor::SPECIALIZATIONS as $spec)
                                     <option value="{{ $spec }}">{{ $spec }}</option>
@@ -1628,52 +1615,54 @@
                         {{-- Nomor SIPP & STR --}}
                         <div class="grid sm:grid-cols-2 gap-4">
                             <div>
-                                <label for="edit_sipp_number" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nomor SIPP (Surat Izin Praktik)</label>
+                                <label for="edit_sipp_number" class="block text-xs font-medium text-slate-500 mb-1">Nomor SIPP (Surat Izin Praktik)</label>
                                 <input type="text" id="edit_sipp_number" name="sipp_number" x-model="editingCounselor.sipp_number"
                                     placeholder="Contoh: SIPP-12345/2024"
-                                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                    class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                             </div>
 
                             <div>
-                                <label for="edit_str_number" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Nomor STR (Surat Tanda Registrasi)</label>
+                                <label for="edit_str_number" class="block text-xs font-medium text-slate-500 mb-1">Nomor STR (Surat Tanda Registrasi)</label>
                                 <input type="text" id="edit_str_number" name="str_number" x-model="editingCounselor.str_number"
                                     placeholder="Contoh: STR-98765/2024"
-                                    class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
+                                    class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
                             </div>
                         </div>
 
                         {{-- Status Keaktifan --}}
                         <div>
-                            <label for="edit_status" class="block text-xs sm:text-[13px] font-bold text-[#5B4A73] mb-1.5">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
+                            <label for="edit_status" class="block text-xs font-medium text-slate-500 mb-1">Status Keaktifan Konselor <span class="text-red-500">*</span></label>
                             <select id="edit_status" name="status" x-model="editingCounselor.status" required
-                                class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035]">
-                                <option value="active" class="text-emerald-700 font-semibold">Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
-                                <option value="inactive" class="text-red-600 font-semibold">Nonaktif (Sedang Tidak Bertugas)</option>
+                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep">
+                                <option value="active">Aktif (Siap Menerima Pasangan Klien / Sesi)</option>
+                                <option value="inactive">Nonaktif (Sedang Tidak Bertugas)</option>
                             </select>
                         </div>
                     </div>
 
                     {{-- CARD 4: CATATAN & KETERANGAN TAMBAHAN (EDIT) --}}
-                    <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
-                        <div class="pb-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
+                        <div class="pb-3 border-b border-[#EDE1FA]">
                             <h3 class="text-base font-bold text-purple-deep">Catatan &amp; Keterangan Tambahan</h3>
                         </div>
 
                         <div>
+                            <label for="edit_notes" class="block text-xs font-medium text-slate-500 mb-1">Catatan Khusus</label>
                             <textarea id="edit_notes" name="notes" x-model="editingCounselor.notes" rows="3"
                                 placeholder="Contoh: Bersedia praktek hari Selasa & Kamis pukul 09:00 - 15:00 WIB..."
-                                class="w-full px-4 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep text-[#2A2035] leading-relaxed"></textarea>
+                                class="w-full px-3.5 py-2.5 bg-white border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep leading-relaxed"></textarea>
                         </div>
                     </div>
 
                     {{-- EDIT MODE FOOTER ACTIONS --}}
                     <div class="flex items-center justify-end gap-3 pt-2">
                         <button type="button" @click="cancelEditing()" 
-                            class="px-5 py-2.5 rounded-lg text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-white transition cursor-pointer">
-                            Batal
+                            class="px-5 py-2.5 rounded-lg text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition cursor-pointer inline-flex items-center gap-1.5">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <span>Batal</span>
                         </button>
                         <button type="submit" 
-                            class="px-6 py-2.5 rounded-lg text-sm font-bold bg-purple-deep text-white hover:opacity-90 transition shadow-sm flex items-center gap-2 cursor-pointer">
+                            class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-purple-deep hover:bg-purple-deep/90 text-white transition shadow-xs flex items-center gap-2 cursor-pointer">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                             <span>Simpan Perubahan</span>
                         </button>
@@ -1697,7 +1686,7 @@
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0 scale-95" 
             x-transition:enter-end="opacity-100 scale-100" 
-            class="relative bg-white rounded-2xl shadow-2xl border border-[#EDE1FA] max-w-md w-full p-7 z-10 space-y-5"
+            class="relative bg-white rounded-2xl shadow-[0_30px_70px_rgba(74,35,128,0.2)] max-w-md w-full p-7 z-10 space-y-5"
             @click.stop>
             
             <div class="w-14 h-14 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mx-auto shadow-xs">
@@ -1716,10 +1705,10 @@
             </div>
 
             <div class="flex items-center justify-center gap-3 pt-2">
-                <button type="button" @click="editDiscardModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#FAF8FD] transition cursor-pointer">
+                <button type="button" @click="editDiscardModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition cursor-pointer">
                     Lanjut Mengedit
                 </button>
-                <button type="button" @click="cancelEditing(true)" class="flex-1 px-5 py-3 rounded-lg text-sm font-bold bg-red-600 text-white hover:bg-red-700 transition shadow-xs cursor-pointer">
+                <button type="button" @click="cancelEditing(true)" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition shadow-xs cursor-pointer">
                     Buang Perubahan
                 </button>
             </div>
@@ -1740,7 +1729,7 @@
             x-transition:enter="ease-out duration-200" 
             x-transition:enter-start="opacity-0 scale-95" 
             x-transition:enter-end="opacity-100 scale-100" 
-            class="relative bg-white rounded-2xl shadow-2xl border border-[#EDE1FA] max-w-md w-full p-7 z-10 space-y-5"
+            class="relative bg-white rounded-2xl shadow-[0_30px_70px_rgba(74,35,128,0.2)] max-w-md w-full p-7 z-10 space-y-5"
             @click.stop>
             
             <div class="w-14 h-14 rounded-xl bg-red-100 text-red-600 flex items-center justify-center mx-auto shadow-xs">
@@ -1755,18 +1744,20 @@
             <div class="text-center space-y-2">
                 <h3 class="text-lg font-bold text-red-600">Hapus Data Psikolog?</h3>
                 <p class="text-sm text-[#6B5B85] leading-relaxed">
-                    Apakah Anda yakin ingin menghapus data psikolog <strong class="text-purple-deep" x-text="editingCounselor.name"></strong>? Data yang dihapus bersifat permanen dan tidak dapat dipulihkan kembali.
+                    Apakah Anda yakin ingin menghapus data psikolog <span class="text-black font-medium" x-text="editingCounselor.name"></span>? Data yang dihapus bersifat permanen dan tidak dapat dipulihkan kembali.
                 </p>
             </div>
 
             <form :action="'{{ url('counselors') }}/' + editingCounselor.id" method="POST" class="flex items-center justify-center gap-3 pt-2">
                 @csrf
                 @method('DELETE')
-                <button type="button" @click="deleteCounselorModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold text-[#6B5B85] border border-[#D9C2F0] hover:bg-[#FAF8FD] transition cursor-pointer">
-                    Batal
+                <button type="button" @click="deleteCounselorModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition cursor-pointer inline-flex items-center justify-center gap-1.5">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <span>Batal</span>
                 </button>
-                <button type="submit" class="flex-1 px-5 py-3 rounded-lg text-sm font-bold bg-red-600 text-white hover:bg-red-700 transition shadow-xs cursor-pointer">
-                    Ya, Hapus
+                <button type="submit" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold bg-red-500 text-white hover:bg-red-600 transition shadow-xs cursor-pointer inline-flex items-center justify-center gap-1.5">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    <span>Ya, Hapus</span>
                 </button>
             </form>
         </div>

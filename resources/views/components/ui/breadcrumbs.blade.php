@@ -83,14 +83,6 @@
                 ['label' => 'Administrasi'],
                 ['label' => 'Rekap Bulanan (I / R)'],
             ],
-            'companies.index' => [
-                ['label' => 'Administrasi'],
-                ['label' => 'Master Perusahaan'],
-            ],
-            'holidays.index' => [
-                ['label' => 'Administrasi'],
-                ['label' => 'Hari Libur Nasional'],
-            ],
             'bookings.create' => [
                 ['label' => 'Layanan & Jadwal'],
                 ['label' => 'Layanan Konseling', 'url' => route('bookings.counseling')],

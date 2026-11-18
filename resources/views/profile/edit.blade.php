@@ -426,7 +426,7 @@ function userProfileHero() {
 
                     <div class="flex flex-col items-start gap-1">
                         <h2 class="text-lg sm:text-xl font-semibold text-black leading-tight">{{ $user->name }}</h2>
-                        <p class="text-sm font-medium text-slate-500">{{ $user->isAdmin() ? 'Administrator' : 'Staff Layanan' }}</p>
+                        <p class="text-sm font-medium text-slate-500">{{ $user->isAdmin() ? 'Administrator' : ($user->isPsikolog() ? 'Psikolog' : 'Staff Layanan') }}</p>
                     </div>
                 </div>
 

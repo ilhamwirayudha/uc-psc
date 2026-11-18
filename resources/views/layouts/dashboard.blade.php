@@ -196,7 +196,7 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-[2rem] bg-white/75 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
+                class="relative transform overflow-hidden rounded-2xl bg-white/85 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.2)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
                 
                 {{-- Centered Top Icon Badge --}}
                 <div class="mx-auto w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
@@ -216,7 +216,7 @@
                     <button 
                         type="button" 
                         @click="showLogoutModal = false"
-                        class="w-full py-3 rounded-2xl text-xs sm:text-sm font-bold text-[#5B4A73] hover:text-[#260E45] bg-white/60 hover:bg-white border border-white/90 hover:border-purple-200/80 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
+                        class="w-full py-3 rounded-lg text-xs sm:text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition-all duration-200 cursor-pointer flex items-center justify-center"
                     >
                         Batal
                     </button>
@@ -236,7 +236,7 @@
                         @csrf
                         <button 
                             type="submit" 
-                            class="w-full py-3 bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-700 hover:to-rose-700 text-white rounded-2xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(225,29,72,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(225,29,72,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
+                            class="w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 shadow-xs cursor-pointer flex items-center justify-center relative overflow-hidden"
                         >
                             <span class="relative z-10">Ya, Keluar</span>
                         </button>
@@ -267,7 +267,7 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.18)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
+                class="relative transform overflow-hidden rounded-2xl bg-white/85 backdrop-blur-2xl text-center shadow-[0_30px_70px_rgba(74,35,128,0.2)] transition-all sm:my-8 sm:w-full sm:max-w-md p-7 sm:p-9">
                 
                 {{-- Centered Top Icon Badge --}}
                 <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mb-5 backdrop-blur-md shadow-xs relative z-10">
@@ -291,15 +291,15 @@
                     <button 
                         type="button" 
                         @click="showUnsavedModal = false"
-                        class="w-full py-3 rounded-2xl text-xs sm:text-sm font-bold text-purple-deep hover:text-[#260E45] bg-white/70 hover:bg-white border border-[#D9C2F0]/80 hover:border-purple-300 shadow-xs hover:shadow-sm active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center"
+                        class="w-full py-3 rounded-lg text-xs sm:text-sm font-semibold text-purple-deep bg-white hover:bg-purple-50 border border-[#D9C2F0] shadow-xs transition-all duration-200 cursor-pointer flex items-center justify-center"
                     >
-                        Lanjut Mengisi
+                        Batal
                     </button>
                     
                     <button 
                         type="button"
                         @click="proceedUnsaved()" 
-                        class="w-full py-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white rounded-2xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_8px_20px_rgba(245,158,11,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_10px_25px_rgba(245,158,11,0.45)] active:scale-[0.98] cursor-pointer flex items-center justify-center border border-white/20 relative overflow-hidden"
+                        class="w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 shadow-xs cursor-pointer flex items-center justify-center relative overflow-hidden"
                     >
                         <span class="relative z-10">Ya, Tinggalkan</span>
                     </button>

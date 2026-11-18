@@ -23,6 +23,11 @@ class ClientPolicy
         return false;
     }
 
+    public function create(User $user): bool
+    {
+        return $user->isAdmin() || $user->isStaff();
+    }
+
     /**
      * Admin & Staff dapat memperbarui biodata klien.
      */

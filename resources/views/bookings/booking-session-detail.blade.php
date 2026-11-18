@@ -24,6 +24,8 @@
     $latestForm = $client ? $client->clientForms->first() : null;
 
     // Inisialisasi Paket Layanan
+    $isPackageConfigured = !empty($booking->service_package_name)
+        || ($client && !empty($client->counseling_type) && (str_contains(strtolower($client->counseling_type), 'reguler') || str_contains(strtolower($client->counseling_type), 'pro')));
     $pkgName = $booking->service_package_name ?: ($client ? $client->counseling_type : '');
     $initJenis = str_contains(strtolower($pkgName), 'reguler') ? 'Reguler' : 'Pro';
     $initMetode = (str_contains(strtolower($pkgName), 'online') || $booking->session_type === 'online') ? 'Online' : 'Offline';
@@ -34,7 +36,7 @@
     $tanggalDijadwalkanVal = $booking->tanggal_dijadwalkan ? $booking->tanggal_dijadwalkan->format('Y-m-d') : '';
     $startTime = $booking->session_start ? substr($booking->session_start, 0, 5) : '';
     $endTime = $booking->session_end ? substr($booking->session_end, 0, 5) : '';
-    $currentStatus = $booking->status ?: 'data_masuk';
+    $currentStatus = ($booking->status && $booking->status !== 'belum_assign') ? $booking->status : 'data_masuk';
     $currentPaymentStatus = $booking->payment_workflow_status ?: 'menunggu_sesi_selesai';
     $currentVa = $booking->va_number ?: '';
 
@@ -70,6 +72,112 @@
     editPembayaran: false,
     editStatus: false,
     discardModalOpen: false,
+    pendingDiscardCard: null,
+    cardSnapshots: {},
+
+    getCardSnapshot(card) {
+        if (card === 'editPaket') {
+            return JSON.stringify({
+                counselingJenis: this.counselingJenis,
+                counselingMetode: this.counselingMetode,
+                counselingKlien: this.counselingKlien,
+                counselingKategori: this.counselingKategori,
+            });
+        }
+        if (card === 'editKonselor') {
+            return JSON.stringify({ counselorIdVal: this.counselorIdVal });
+        }
+        if (card === 'editJadwal') {
+            const form = document.getElementById('form-booking-detail');
+            return JSON.stringify({
+                tanggal_booking_dibuat: form?.querySelector('[name=tanggal_booking_dibuat]')?.value ?? '',
+                tanggalDijadwalkanVal: this.tanggalDijadwalkanVal,
+                startTimeVal: this.startTimeVal,
+                endTimeVal: this.endTimeVal,
+                sessionType: this.sessionType,
+                rescheduledByVal: this.rescheduledByVal,
+                location: form?.querySelector('[name=location]')?.value ?? '',
+            });
+        }
+        if (card === 'editPembayaran') {
+            const form = document.getElementById('form-booking-detail');
+            return JSON.stringify({
+                paymentStatusVal: this.paymentStatusVal,
+                vaNumberVal: this.vaNumberVal,
+                final_price: form?.querySelector('[name=final_price]')?.value ?? '',
+                finance_invoice_number: form?.querySelector('[name=finance_invoice_number]')?.value ?? '',
+                payment_proof_notes: form?.querySelector('[name=payment_proof_notes]')?.value ?? '',
+                overtime_payment_status: form?.querySelector('[name=overtime_payment_status]')?.value ?? '',
+                overtime_final_price: form?.querySelector('[name=overtime_final_price]')?.value ?? '',
+                overtime_va_number: form?.querySelector('[name=overtime_va_number]')?.value ?? '',
+            });
+        }
+        if (card === 'editStatus') {
+            const form = document.getElementById('form-booking-detail');
+            return JSON.stringify({
+                statusVal: this.statusVal,
+                notes: form?.querySelector('[name=notes]')?.value ?? '',
+            });
+        }
+        return '{}';
+    },
+
+    enterEditCard(card) {
+        this.cardSnapshots[card] = this.getCardSnapshot(card);
+        this[card] = true;
+    },
+
+    requestCancelCard(card) {
+        if (this.cardSnapshots[card] !== undefined && this.getCardSnapshot(card) !== this.cardSnapshots[card]) {
+            this.pendingDiscardCard = card;
+            this.discardModalOpen = true;
+            return;
+        }
+        this[card] = false;
+    },
+
+    confirmDiscardAction() {
+        if (this.pendingDiscardCard) {
+            const card = this.pendingDiscardCard;
+            try {
+                const snap = JSON.parse(this.cardSnapshots[card] || '{}');
+                const form = document.getElementById('form-booking-detail');
+                if (card === 'editPaket') {
+                    this.counselingJenis = snap.counselingJenis;
+                    this.counselingMetode = snap.counselingMetode;
+                    this.counselingKlien = snap.counselingKlien;
+                    this.counselingKategori = snap.counselingKategori;
+                } else if (card === 'editKonselor') {
+                    this.counselorIdVal = snap.counselorIdVal;
+                    this.syncStatusWithSchedule();
+                } else if (card === 'editJadwal') {
+                    this.tanggalDijadwalkanVal = snap.tanggalDijadwalkanVal;
+                    this.startTimeVal = snap.startTimeVal;
+                    this.endTimeVal = snap.endTimeVal;
+                    this.sessionType = snap.sessionType;
+                    if (snap.rescheduledByVal !== undefined) this.rescheduledByVal = snap.rescheduledByVal;
+                    if (form?.querySelector('[name=tanggal_booking_dibuat]')) form.querySelector('[name=tanggal_booking_dibuat]').value = snap.tanggal_booking_dibuat;
+                    if (form?.querySelector('[name=location]')) form.querySelector('[name=location]').value = snap.location;
+                } else if (card === 'editPembayaran') {
+                    this.paymentStatusVal = snap.paymentStatusVal;
+                    this.vaNumberVal = snap.vaNumberVal;
+                    ['final_price', 'finance_invoice_number', 'payment_proof_notes', 'overtime_payment_status', 'overtime_final_price', 'overtime_va_number'].forEach(k => {
+                        const el = form?.querySelector(`[name=${k}]`);
+                        if (el) el.value = snap[k] ?? '';
+                    });
+                } else if (card === 'editStatus') {
+                    this.statusVal = snap.statusVal;
+                    const notesEl = form?.querySelector('[name=notes]');
+                    if (notesEl) notesEl.value = snap.notes ?? '';
+                }
+            } catch (e) {}
+            this[card] = false;
+            this.pendingDiscardCard = null;
+            this.discardModalOpen = false;
+            return;
+        }
+        this.closeDirectly();
+    },
 
     get isAnyEditing() {
         return this.editPaket || this.editKonselor || this.editJadwal || this.editPembayaran || this.editStatus;
@@ -77,6 +185,7 @@
 
     attemptClose() {
         if (this.isAnyEditing) {
+            this.pendingDiscardCard = null;
             this.discardModalOpen = true;
             return;
         }
@@ -108,6 +217,7 @@
 
     serviceType: '{{ $booking->kategori }}',
     jenis: '{{ in_array($client->jenis ?? '', ['industri', 'company', 'perusahaan']) ? 'industri' : 'individu' }}',
+    isPackageConfigured: {{ $isPackageConfigured ? 'true' : 'false' }},
 
     // Dropdown bertingkat Konseling
     counselingJenis: '{{ $initJenis }}',
@@ -116,13 +226,15 @@
     counselingKategori: '{{ $initKategori }}',
 
     sessionType: '{{ $sessionType }}',
+    rescheduledByVal: '{{ old('rescheduled_by', $booking->rescheduled_by ?: 'client') }}',
     counselorIdVal: '{{ old('counselor_id', $booking->counselor_id ?? '') }}',
     tanggalDijadwalkanVal: '{{ old('tanggal_dijadwalkan', $tanggalDijadwalkanVal) }}',
     startTimeVal: '{{ $startTime }}',
     endTimeVal: '{{ $endTime }}',
-    statusVal: '{{ old('status', $booking->status ?: 'data_masuk') }}',
+    statusVal: '{{ old('status', $currentStatus) }}',
     paymentStatusVal: '{{ $currentPaymentStatus }}',
     vaNumberVal: '{{ $currentVa }}',
+    followUpOpen: false,
 
     // Helper teks label status booking
     getStatusLabel(statusKey) {
@@ -175,6 +287,8 @@
     // Sinkronisasi status saat durasi/jam selesai diisi atau overtime terdeteksi
     syncStatusWithDuration() {
         if (this.serviceType !== 'konseling') return;
+        const realizedStatuses = ['perlu_bayar_overtime', 'perlu_sesi_lanjutan', 'selesai'];
+        if (!realizedStatuses.includes(this.statusVal)) return;
         if (this.isOvertime) {
             if (this.paymentStatusVal !== 'lunas_overtime' && this.statusVal !== 'batal') {
                 this.statusVal = 'perlu_bayar_overtime';
@@ -213,12 +327,22 @@
         return `${m} Menit`;
     },
 
+    get isRealizedOvertimeEligible() {
+        return this.serviceType === 'konseling'
+            && ['perlu_bayar_overtime', 'perlu_sesi_lanjutan', 'selesai'].includes(this.statusVal);
+    },
+
     get isOvertime() {
-        return this.calculatedDurationMinutes > 90;
+        return this.isRealizedOvertimeEligible && this.calculatedDurationMinutes > 90;
+    },
+
+    get overtimeUnits() {
+        if (!this.isOvertime) return 0;
+        return Math.ceil(Math.max(0, this.calculatedDurationMinutes - 60) / 60);
     },
 
     get overtimeAmount() {
-        return this.isOvertime ? this.counselingOvertime : 0;
+        return this.isOvertime ? (this.counselingOvertime * this.overtimeUnits) : 0;
     },
 
     get totalBillAmount() {
@@ -429,7 +553,9 @@
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="client_id" value="{{ $booking->client_id }}">
-                        <input type="hidden" name="kategori" value="{{ $booking->kategori }}">
+                        @if($booking->kategori !== 'pending' || !auth()->user()->isAdmin())
+                            <input type="hidden" name="kategori" value="{{ $booking->kategori }}">
+                        @endif
                         <input type="hidden" name="status" :value="statusVal">
                         <input type="hidden" name="submitted_card" id="submitted_card_input" value="step-{{ $initialStep }}">
 
@@ -437,6 +563,32 @@
                         {{-- STEP 1: INFORMASI KLIEN & PAKET LAYANAN                   --}}
                         {{-- ========================================================= --}}
                         <div x-show="activeStep === 1" x-cloak class="space-y-4">
+                            @if($booking->kategori === 'pending' && auth()->user()->isAdmin())
+                                <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                                    <div class="px-5 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
+                                        <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
+                                            Klasifikasi Layanan (Biography Form EN)
+                                        </h4>
+                                    </div>
+                                    <div class="p-4 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                                        <div class="flex-1">
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Tentukan Kategori Layanan *</label>
+                                            <select name="kategori" x-model="serviceType" required
+                                                    class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
+                                                <option value="pending" disabled>-- Pilih Kategori Layanan --</option>
+                                                <option value="konseling">Layanan Konseling</option>
+                                                <option value="psikotes">Layanan Psikotes</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" form="form-booking-detail" @click="prepareSubmit('step-1')"
+                                                :disabled="serviceType === 'pending'"
+                                                class="px-5 py-2.5 min-h-[42px] rounded-lg bg-purple-deep hover:bg-purple-deep/90 disabled:opacity-50 text-white text-sm font-semibold shadow-xs cursor-pointer inline-flex items-center gap-2 shrink-0">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                            <span>Simpan Klasifikasi</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endif
 
                             <div class="grid grid-cols-1 gap-5 items-start">
                                 
@@ -581,15 +733,16 @@
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Paket Layanan
                                             </h4>
+                                            @if(auth()->user()->isAdmin())
                                             <div class="flex items-center gap-2">
-                                                <button type="button" x-show="!editPaket" @click="editPaket = true"
+                                                <button type="button" x-show="!editPaket" @click="enterEditCard('editPaket')"
                                                         class="inline-flex items-center justify-center p-2 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white transition cursor-pointer"
                                                         title="Ubah Paket Layanan">
                                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                                 </button>
                                                 <div x-show="editPaket" x-cloak class="flex items-center gap-2">
-                                                    <button type="button" @click="editPaket = false"
-                                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep transition cursor-pointer flex items-center gap-1 shadow-xs"
+                                                    <button type="button" @click="requestCancelCard('editPaket')"
+                                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] transition cursor-pointer flex items-center gap-1 shadow-xs"
                                                             title="Batalkan perubahan">
                                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                                                         <span>Batal</span>
@@ -601,6 +754,7 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            @endif
                                         </div>
 
                                         <div class="p-4 space-y-3">
@@ -610,33 +764,33 @@
                                                 <div class="space-y-2.5">
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Jenis</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingJenis"></div>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="isPackageConfigured ? counselingJenis : '-'"></div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Metode</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingMetode"></div>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="isPackageConfigured ? counselingMetode : '-'"></div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Klien</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingKlien"></div>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="isPackageConfigured ? counselingKlien : '-'"></div>
                                                     </div>
                                                     <div>
                                                         <label class="block text-xs font-medium text-slate-500 mb-1">Kategori</label>
-                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="counselingKategori"></div>
+                                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="isPackageConfigured ? counselingKategori : '-'"></div>
                                                     </div>
                                                 </div>
 
                                                 {{-- Card Paket Terpilih --}}
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Paket Terpilih</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="fullCounselingTitle"></div>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="isPackageConfigured ? fullCounselingTitle : 'Belum ditentukan'"></div>
                                                 </div>
 
                                                 {{-- Card Total Harga per Sesi --}}
                                                 <div>
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Harga per Sesi</label>
                                                     <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center justify-between text-sm font-medium text-black">
-                                                        <span x-text="formatRupiah(counselingPrice)"></span>
+                                                        <span x-text="isPackageConfigured ? formatRupiah(counselingPrice) : '-'"></span>
                                                         <span class="text-xs font-medium text-slate-400">*sebelum PPN & PPh</span>
                                                     </div>
                                                 </div>
@@ -670,8 +824,9 @@
                                                         <label class="block text-xs font-medium text-slate-500">Kategori</label>
                                                         <select x-model="counselingKategori" class="w-full px-3 py-2 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
                                                             <option value="Umum">Umum</option>
-                                                            <option value="Kerja Sama">Kerja Sama</option>
+                                                            <option value="Kerja Sama">Kerja Sama (Civitas UC Aktif: Mahasiswa / Karyawan)</option>
                                                         </select>
+                                                        <p class="text-[11px] font-medium text-slate-500 pt-1">Tarif Kerja Sama konseling berlaku untuk civitas UC aktif dengan pembayaran personal H-1.</p>
                                                     </div>
                                                 </div>
 
@@ -690,9 +845,9 @@
                                                     </div>
                                                 </div>
 
-                                                <input type="hidden" name="counseling_type" :value="fullCounselingTitle">
-                                                <input type="hidden" name="price" :value="counselingPrice">
-                                                <input type="hidden" name="overtime_price" :value="counselingOvertime">
+                                                <input type="hidden" name="counseling_type" :value="fullCounselingTitle" :disabled="!editPaket">
+                                                <input type="hidden" name="price" :value="counselingPrice" :disabled="!editPaket">
+                                                <input type="hidden" name="overtime_price" :value="counselingOvertime" :disabled="!editPaket">
                                             </div>
                                         </div>
                                     </div>
@@ -714,15 +869,16 @@
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 {{ $booking->kategori === 'konseling' ? 'Penugasan Psikolog' : 'Tim Penguji' }}
                                             </h4>
+                                            @if(auth()->user()->isAdmin())
                                             <div class="flex items-center gap-2">
-                                                <button type="button" x-show="!editKonselor" @click="editKonselor = true"
+                                                <button type="button" x-show="!editKonselor" @click="enterEditCard('editKonselor')"
                                                         class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition cursor-pointer">
                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                                     <span>Ubah</span>
                                                 </button>
                                                 <div x-show="editKonselor" x-cloak class="flex items-center gap-2">
-                                                    <button type="button" @click="editKonselor = false"
-                                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep transition cursor-pointer flex items-center gap-1 shadow-xs"
+                                                    <button type="button" @click="requestCancelCard('editKonselor')"
+                                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] transition cursor-pointer flex items-center gap-1 shadow-xs"
                                                             title="Batalkan perubahan">
                                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                                                         <span>Batal</span>
@@ -734,6 +890,7 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            @endif
                                         </div>
 
                                         <div class="p-4 space-y-3">
@@ -747,7 +904,7 @@
 
                                             <div x-show="editKonselor" x-cloak class="bg-slate-50 border border-slate-100 rounded-lg p-4 space-y-2">
                                                 <label class="block text-xs font-medium text-slate-500">Pilih Psikolog Bertugas:</label>
-                                                <select name="counselor_id" x-model="counselorIdVal" @change="syncStatusWithSchedule()"
+                                                <select name="counselor_id" x-model="counselorIdVal" :disabled="!editKonselor" @change="syncStatusWithSchedule()"
                                                     class="w-full px-3 py-2 border border-transparent rounded-lg text-sm focus:outline-none focus:ring-0 bg-white font-medium text-black">
                                                     <option value="">-- Belum Ditugaskan --</option>
                                                     @foreach($counselors as $counselor)
@@ -791,15 +948,16 @@
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Jadwal, Waktu & Lokasi Pertemuan
                                             </h4>
+                                            @if(auth()->user()->isAdmin())
                                             <div class="flex items-center gap-2">
-                                                <button type="button" x-show="!editJadwal" @click="editJadwal = true"
+                                                <button type="button" x-show="!editJadwal" @click="enterEditCard('editJadwal')"
                                                         class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition cursor-pointer">
                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                                     <span>Ubah</span>
                                                 </button>
                                                 <div x-show="editJadwal" x-cloak class="flex items-center gap-2">
-                                                    <button type="button" @click="editJadwal = false"
-                                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep transition cursor-pointer flex items-center gap-1 shadow-xs"
+                                                    <button type="button" @click="requestCancelCard('editJadwal')"
+                                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] transition cursor-pointer flex items-center gap-1 shadow-xs"
                                                             title="Batalkan perubahan">
                                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                                                         <span>Batal</span>
@@ -811,6 +969,7 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            @endif
                                         </div>
 
                                         <div class="p-4 space-y-3">
@@ -841,8 +1000,8 @@
                                                     <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="durationFormatted"></div>
                                                 </div>
                                                 <div>
-                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Status Overtime (>90 mnt)</label>
-                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="calculatedDurationMinutes === 0 ? '-' : (isOvertime ? 'Overtime' : 'Tidak')"></div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Status Overtime (&gt;90 mnt)</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="calculatedDurationMinutes === 0 ? '-' : (isOvertime ? `Overtime (${overtimeUnits}x)` : 'Tidak')"></div>
                                                 </div>
                                                 <div class="sm:col-span-2">
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Metode & Ruangan</label>
@@ -855,6 +1014,15 @@
                                                         {{ $location ? ' - ' . $location : '' }}
                                                     </div>
                                                 </div>
+                                                @if($booking->rescheduled_at)
+                                                <div class="sm:col-span-2">
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Riwayat Reschedule Terakhir</label>
+                                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                                                        {{ $booking->rescheduled_at->locale('id')->isoFormat('D MMMM Y, HH:mm') }} —
+                                                        {{ $booking->rescheduled_by === 'psychologist' ? 'Permintaan Psikolog / UC PSC (Pembayaran Aman)' : 'Permintaan Klien' }}
+                                                    </div>
+                                                </div>
+                                                @endif
                                                 <div class="sm:col-span-2">
                                                     <label class="block text-xs font-medium text-slate-500 mb-1">Sinkronisasi Google Calendar Pribadi</label>
                                                     <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex flex-wrap items-center justify-between gap-2 text-sm font-medium text-black">
@@ -880,27 +1048,28 @@
                                             <div x-show="editJadwal" x-cloak class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Tanggal Booking Dibuat</label>
-                                                    <input type="date" name="tanggal_booking_dibuat" value="{{ old('tanggal_booking_dibuat', $tanggalBookingVal) }}"
+                                                    <input type="date" name="tanggal_booking_dibuat" :disabled="!editJadwal" value="{{ old('tanggal_booking_dibuat', $tanggalBookingVal) }}"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Tanggal Sesi Dijadwalkan</label>
-                                                    <input type="date" name="tanggal_dijadwalkan" x-model="tanggalDijadwalkanVal" @change="syncStatusWithSchedule()" @input="syncStatusWithSchedule()"
+                                                    <input type="date" name="tanggal_dijadwalkan" :disabled="!editJadwal" x-model="tanggalDijadwalkanVal" @change="syncStatusWithSchedule()" @input="syncStatusWithSchedule()"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Jam Mulai Sesi</label>
-                                                    <input type="time" name="start_time" x-model="startTimeVal"
+                                                    <input type="time" name="start_time" :disabled="!editJadwal" x-model="startTimeVal"
+                                                        @change="syncStatusWithDuration()" @input="syncStatusWithDuration()"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Jam Selesai Sesi</label>
-                                                    <input type="time" name="end_time" x-model="endTimeVal" @change="syncStatusWithDuration()" @input="syncStatusWithDuration()"
+                                                    <input type="time" name="end_time" :disabled="!editJadwal" x-model="endTimeVal" @change="syncStatusWithDuration()" @input="syncStatusWithDuration()"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Metode Sesi</label>
-                                                    <select name="session_type" x-model="sessionType"
+                                                    <select name="session_type" :disabled="!editJadwal" x-model="sessionType"
                                                         class="w-full px-3 py-1.5 border border-transparent rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
                                                         <option value="tatap_muka">Tatap Muka (Offline di Ruang PSC)</option>
                                                         <option value="online">Online (Google Meet / Zoom)</option>
@@ -909,13 +1078,23 @@
                                                 </div>
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
                                                     <label class="block text-xs font-medium text-slate-500">Ruangan / Link Meet</label>
-                                                    <input type="text" name="location" value="{{ old('location', $location) }}"
+                                                    <input type="text" name="location" :disabled="!editJadwal" value="{{ old('location', $location) }}"
                                                         :placeholder="sessionType === 'online' ? 'https://meet.google.com/...' : 'Ruang Konseling A'"
                                                         class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
+                                                @if($booking->kategori === 'konseling')
+                                                <div class="sm:col-span-2 bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1">
+                                                    <label class="block text-xs font-medium text-slate-500">Pihak Pemohon Reschedule (Jika Jadwal Berubah)</label>
+                                                    <select name="rescheduled_by" :disabled="!editJadwal" x-model="rescheduledByVal"
+                                                        class="w-full px-3 py-1.5 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black focus:outline-none focus:ring-0">
+                                                        <option value="client">Permintaan Klien (&lt; 24 jam pembayaran hangus)</option>
+                                                        <option value="psychologist">Permintaan Psikolog / UC PSC (&lt; 24 jam pembayaran tetap aman)</option>
+                                                    </select>
+                                                </div>
+                                                @endif
                                                 <div class="sm:col-span-2 bg-slate-50 border border-slate-100 rounded-lg p-3">
                                                     <p class="text-xs font-medium text-slate-500">
-                                                        Catatan Kebijakan Reschedule: Jika jadwal diubah kurang dari 24 jam sebelum sesi dimulai (atau saat sesi berlangsung) dan pembayaran H-1 sudah lunas, pembayaran sebelumnya otomatis dinyatakan hangus dan memerlukan tagihan baru ke UC Finance.
+                                                        Catatan Kebijakan Reschedule: Jika jadwal diubah atas permintaan klien kurang dari 24 jam sebelum sesi dimulai (atau saat sesi berlangsung) dan pembayaran H-1 sudah lunas, pembayaran sebelumnya dinyatakan hangus. Jika reschedule berasal dari pihak psikolog/UC PSC, pembayaran klien tetap aman.
                                                     </p>
                                                 </div>
                                             </div>
@@ -949,7 +1128,7 @@
                                             <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 flex items-center justify-between">
                                                 <div>
                                                     <span class="text-xs font-medium text-slate-500 block">Biaya Overtime:</span>
-                                                    <span class="text-[11px] text-slate-400" x-text="isOvertime ? 'Terhitung (Sesi > 90 mnt)' : 'Tidak Ada Overtime'"></span>
+                                                    <span class="text-[11px] text-slate-400" x-text="isOvertime ? `Terhitung (${overtimeUnits}x × ${formatRupiah(counselingOvertime)})` : 'Tidak Ada Overtime'"></span>
                                                 </div>
                                                 <span class="text-sm font-medium text-black" x-text="formatRupiah(overtimeAmount)"></span>
                                             </div>
@@ -972,15 +1151,16 @@
                                             <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                                 Status Pembayaran UC Finance
                                             </h4>
+                                            @if(auth()->user()->isAdmin())
                                             <div class="flex items-center gap-2">
-                                                <button type="button" x-show="!editPembayaran" @click="editPembayaran = true"
+                                                <button type="button" x-show="!editPembayaran" @click="enterEditCard('editPembayaran')"
                                                         class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition cursor-pointer">
                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                                     <span>Ubah</span>
                                                 </button>
                                                 <div x-show="editPembayaran" x-cloak class="flex items-center gap-2">
-                                                    <button type="button" @click="editPembayaran = false"
-                                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep transition cursor-pointer flex items-center gap-1 shadow-xs"
+                                                    <button type="button" @click="requestCancelCard('editPembayaran')"
+                                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] transition cursor-pointer flex items-center gap-1 shadow-xs"
                                                             title="Batalkan perubahan">
                                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                                                         <span>Batal</span>
@@ -992,6 +1172,7 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            @endif
                                         </div>
 
                                         <div class="p-4 space-y-3">
@@ -1061,7 +1242,7 @@
                                             <div x-show="editPembayaran" x-cloak class="space-y-3">
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
                                                     <label class="block text-xs font-medium text-slate-500">Pilih Status Pembayaran</label>
-                                                    <select name="payment_workflow_status" x-model="paymentStatusVal" @change="onPaymentStatusChange()"
+                                                    <select name="payment_workflow_status" :disabled="!editPembayaran" x-model="paymentStatusVal" @change="onPaymentStatusChange()"
                                                         class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                         <option value="menunggu_sesi_selesai">Belum Ada Tagihan</option>
                                                         <option value="draft_ke_finance">Pengajuan Nota (Email ke Finance)</option>
@@ -1074,25 +1255,25 @@
                                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                                     <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
                                                         <label class="block text-xs font-medium text-slate-500">Nominal Final UC Finance (Rp)</label>
-                                                        <input type="number" name="final_price" value="{{ old('final_price', $booking->final_price) }}" placeholder="Harga final + pajak"
+                                                        <input type="number" name="final_price" :disabled="!editPembayaran" value="{{ old('final_price', $booking->final_price) }}" placeholder="Harga final + pajak"
                                                             class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                     </div>
                                                     <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
                                                         <label class="block text-xs font-medium text-slate-500">Nomor Invoice Finance</label>
-                                                        <input type="text" name="finance_invoice_number" value="{{ old('finance_invoice_number', $booking->finance_invoice_number) }}" placeholder="No. Invoice UC Finance"
+                                                        <input type="text" name="finance_invoice_number" :disabled="!editPembayaran" value="{{ old('finance_invoice_number', $booking->finance_invoice_number) }}" placeholder="No. Invoice UC Finance"
                                                             class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                     </div>
                                                 </div>
 
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
                                                     <label class="block text-xs font-medium text-slate-500">Nomor VA / Referensi Invoice</label>
-                                                    <input type="text" name="va_number" x-model="vaNumberVal" placeholder="Contoh: 988001234567"
+                                                    <input type="text" name="va_number" :disabled="!editPembayaran" x-model="vaNumberVal" placeholder="Contoh: 988001234567"
                                                         class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
 
                                                 <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-1.5">
                                                     <label class="block text-xs font-medium text-slate-500">Catatan Bukti Transfer (Dikirim ke Finance)</label>
-                                                    <input type="text" name="payment_proof_notes" value="{{ old('payment_proof_notes', $booking->payment_proof_notes) }}" placeholder="Contoh: Bukti diterima & diteruskan via email"
+                                                    <input type="text" name="payment_proof_notes" :disabled="!editPembayaran" value="{{ old('payment_proof_notes', $booking->payment_proof_notes) }}" placeholder="Contoh: Bukti diterima & diteruskan via email"
                                                         class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                 </div>
 
@@ -1100,14 +1281,14 @@
                                                     <div class="bg-slate-50 border border-slate-100 rounded-lg p-3 space-y-2.5">
                                                         <label class="block text-xs font-medium text-slate-500">Nota &amp; Pembayaran Overtime (Terpisah)</label>
                                                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                                            <select name="overtime_payment_status" class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
+                                                            <select name="overtime_payment_status" :disabled="!editPembayaran" class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                                 <option value="menunggu_nota" {{ $booking->overtime_payment_status === 'menunggu_nota' ? 'selected' : '' }}>Pengajuan Nota Overtime</option>
                                                                 <option value="menunggu_bayar" {{ $booking->overtime_payment_status === 'menunggu_bayar' ? 'selected' : '' }}>Menunggu Bayar (VA)</option>
                                                                 <option value="lunas" {{ $booking->overtime_payment_status === 'lunas' ? 'selected' : '' }}>Overtime Lunas</option>
                                                             </select>
-                                                            <input type="number" name="overtime_final_price" value="{{ old('overtime_final_price', $booking->overtime_final_price) }}" placeholder="Nominal Final OT"
+                                                            <input type="number" name="overtime_final_price" :disabled="!editPembayaran" value="{{ old('overtime_final_price', $booking->overtime_final_price) }}" placeholder="Nominal Final OT"
                                                                 class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
-                                                            <input type="text" name="overtime_va_number" value="{{ old('overtime_va_number', $booking->overtime_va_number) }}" placeholder="No. VA Overtime"
+                                                            <input type="text" name="overtime_va_number" :disabled="!editPembayaran" value="{{ old('overtime_va_number', $booking->overtime_va_number) }}" placeholder="No. VA Overtime"
                                                                 class="w-full px-3 py-2 border border-[#D9C2F0] rounded-lg text-xs bg-white font-medium text-black">
                                                         </div>
                                                     </div>
@@ -1129,15 +1310,16 @@
                                     <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
                                         Status Layanan & Catatan Sesi
                                     </h4>
+                                    @if(auth()->user()->isAdmin())
                                     <div class="flex items-center gap-2">
-                                        <button type="button" x-show="!editStatus" @click="editStatus = true"
+                                        <button type="button" x-show="!editStatus" @click="enterEditCard('editStatus')"
                                                 class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition cursor-pointer">
                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                             <span>Ubah</span>
                                         </button>
                                         <div x-show="editStatus" x-cloak class="flex items-center gap-2">
-                                            <button type="button" @click="editStatus = false"
-                                                    class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep transition cursor-pointer flex items-center gap-1 shadow-xs"
+                                            <button type="button" @click="requestCancelCard('editStatus')"
+                                                    class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] transition cursor-pointer flex items-center gap-1 shadow-xs"
                                                     title="Batalkan perubahan">
                                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                                                 <span>Batal</span>
@@ -1149,6 +1331,7 @@
                                             </button>
                                         </div>
                                     </div>
+                                    @endif
                                 </div>
 
                                 <div class="p-5 space-y-4">
@@ -1159,7 +1342,7 @@
                                             <p class="text-sm font-medium text-black mt-0.5" x-text="getStatusLabel(statusVal)"></p>
                                         </div>
                                         <div x-show="editStatus" x-cloak>
-                                            <select x-model="statusVal"
+                                            <select x-model="statusVal" :disabled="!editStatus"
                                                 class="w-full px-3.5 py-2 border border-transparent rounded-lg text-sm focus:outline-none focus:ring-0 bg-white font-medium text-black">
                                                 <option value="data_masuk" {{ old('status', $booking->status) === 'data_masuk' ? 'selected' : '' }}>Data Masuk</option>
                                                 <option value="waiting_list" {{ old('status', $booking->status) === 'waiting_list' ? 'selected' : '' }}>Waiting List (Cari Psikolog/Jadwal)</option>
@@ -1181,7 +1364,7 @@
                                             <p class="text-sm font-medium text-black mt-0.5 whitespace-pre-line leading-relaxed">{{ $booking->notes ?: '-' }}</p>
                                         </div>
                                         <div x-show="editStatus" x-cloak>
-                                            <textarea name="notes" rows="4" placeholder="Informasi kebutuhan khusus klien, paket yang diambil, atau instruksi ruangan..."
+                                            <textarea name="notes" rows="4" :disabled="!editStatus" placeholder="Informasi kebutuhan khusus klien, paket yang diambil, atau instruksi ruangan..."
                                                 class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">{{ old('notes', $booking->notes) }}</textarea>
                                         </div>
                                     </div>
@@ -1189,6 +1372,69 @@
                             </div>
                         </div>
                     </form>
+
+                    {{-- Card Sesi Lanjutan (Follow-Up) di Step 4 --}}
+                    <div x-show="activeStep === 4" x-cloak class="mt-4 bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                        <div class="px-5 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
+                            <h4 class="font-bold text-white text-xs sm:text-sm uppercase tracking-wider">
+                                Rantai Sesi Lanjutan (Follow-Up)
+                            </h4>
+                            @if(auth()->user()->isAdmin() && $booking->kategori === 'konseling')
+                                <button type="button" @click="followUpOpen = !followUpOpen"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition cursor-pointer">
+                                    <span>+ Buat Sesi Lanjutan</span>
+                                </button>
+                            @endif
+                        </div>
+                        <div class="p-5 space-y-3">
+                            @if($booking->followUpOf)
+                                <div class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 flex items-center justify-between gap-3">
+                                    <span class="text-xs font-medium text-slate-500">Sesi ini merupakan lanjutan dari:</span>
+                                    <a href="{{ route('bookings.show', $booking->followUpOf) }}" class="text-xs font-semibold text-purple-deep hover:underline">
+                                        Booking #{{ $booking->followUpOf->id }} ({{ $booking->followUpOf->tanggal_dijadwalkan ? $booking->followUpOf->tanggal_dijadwalkan->locale('id')->isoFormat('D MMMM Y') : 'Belum dijadwalkan' }})
+                                    </a>
+                                </div>
+                            @endif
+
+                            @if($booking->followUps->isNotEmpty())
+                                <div class="space-y-2">
+                                    <span class="text-xs font-medium text-slate-500 block">Daftar Sesi Lanjutan Terdaftar:</span>
+                                    @foreach($booking->followUps as $fu)
+                                        <a href="{{ route('bookings.show', $fu) }}" class="block bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-lg p-3 flex items-center justify-between transition">
+                                            <span class="text-sm font-medium text-black">Booking #{{ $fu->id }} — {{ $fu->tanggal_dijadwalkan ? $fu->tanggal_dijadwalkan->locale('id')->isoFormat('D MMMM Y') : 'Belum Dijadwalkan' }}</span>
+                                            <span class="text-xs font-medium text-purple-deep">Buka Detail →</span>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @elseif(!$booking->followUpOf)
+                                <p class="text-xs font-medium text-slate-500" x-show="!followUpOpen">Belum ada sesi lanjutan untuk booking ini.</p>
+                            @endif
+
+                            @if(auth()->user()->isAdmin() && $booking->kategori === 'konseling')
+                                <form x-show="followUpOpen" x-cloak method="POST" action="{{ route('bookings.follow-up', $booking) }}" class="bg-slate-50 border border-slate-100 rounded-lg p-4 space-y-3">
+                                    @csrf
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Tanggal Sesi Lanjutan (Opsional)</label>
+                                            <input type="date" name="tanggal_dijadwalkan" class="w-full px-3.5 py-2 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Catatan Sesi Lanjutan</label>
+                                            <input type="text" name="notes" placeholder="Catatan agenda tindak lanjut..." class="w-full px-3.5 py-2 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button type="button" @click="followUpOpen = false" class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs cursor-pointer">Batal</button>
+                                        <button type="submit" class="px-4 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-xs shadow-xs cursor-pointer inline-flex items-center gap-1.5">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                            <span>Simpan Sesi Lanjutan</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+
                     <form id="form-sync-gcal" method="POST" action="{{ route('bookings.sync-gcal', $booking) }}" class="hidden">@csrf</form>
                 </div>
 
@@ -1250,7 +1496,7 @@
             x-transition:leave="ease-in duration-150" 
             x-transition:leave-start="opacity-100 scale-100" 
             x-transition:leave-end="opacity-0 scale-95" 
-            class="relative bg-white rounded-2xl shadow-2xl border border-[#EDE1FA] max-w-md w-full p-7 z-10 space-y-5"
+            class="relative bg-white rounded-2xl shadow-[0_30px_70px_rgba(74,35,128,0.2)] max-w-md w-full p-7 z-10 space-y-5"
             @click.stop>
             
             <div class="w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center mx-auto shadow-xs">
@@ -1262,18 +1508,18 @@
             </div>
             
             <div class="text-center space-y-2">
-                <h3 class="text-lg font-bold text-purple-deep">Mode Edit Masih Aktif</h3>
+                <h3 class="text-lg font-bold text-purple-deep">Perubahan Belum Disimpan</h3>
                 <p class="text-sm text-[#6B5B85] leading-relaxed">
-                    Anda sedang mengubah data booking ini. Jika Anda keluar sekarang, perubahan yang belum disimpan akan hilang.
+                    Anda telah mengubah data pada form ini. Jika keluar atau membatalkan sekarang, perubahan yang belum disimpan akan hilang.
                 </p>
             </div>
 
             <div class="flex items-center justify-center gap-3 pt-2">
-                <button type="button" @click="discardModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold text-purple-deep border border-[#D9C2F0] hover:bg-[#FAF8FD] transition cursor-pointer">
-                    Lanjut Mengedit
+                <button type="button" @click="discardModalOpen = false" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] transition shadow-xs cursor-pointer">
+                    Batal
                 </button>
-                <button type="button" @click="closeDirectly()" class="flex-1 px-5 py-3 rounded-lg text-sm font-bold bg-amber-600 text-white hover:bg-amber-700 transition shadow-xs cursor-pointer">
-                    Ya, Keluar
+                <button type="button" @click="confirmDiscardAction()" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold bg-red-500 hover:bg-red-600 text-white transition shadow-xs cursor-pointer">
+                    Ya, Tinggalkan
                 </button>
             </div>
         </div>

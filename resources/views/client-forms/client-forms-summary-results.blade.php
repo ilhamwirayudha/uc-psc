@@ -182,7 +182,7 @@
     {{-- ============================================================== --}}
     {{-- SPREADSHEET RESPON MASUK (GOOGLE SHEETS STYLE)                 --}}
     {{-- ============================================================== --}}
-    <div class="bg-white rounded-3xl border border-[#EDE1FA] shadow-xs overflow-hidden" 
+    <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden" 
          x-data="{
              exportToCSV() {
                  let table = document.getElementById('sheetsResponseTable');
@@ -414,25 +414,25 @@
                         @endphp
                         <tr class="divide-x divide-slate-200 hover:bg-slate-50 transition font-mono text-[11px] group">
                             {{-- Row Number --}}
-                            <td class="py-2 px-2.5 bg-[#F8F9FA] text-center font-medium text-slate-400 select-none no-export">
+                            <td class="py-2 px-2.5 text-center font-medium text-black select-none no-export">
                                 {{ $submissions->firstItem() + $index }}
                             </td>
 
                             {{-- Tanggal & Waktu --}}
-                            <td class="py-2 px-3 whitespace-nowrap text-slate-600">
-                                {{ $sub->created_at->locale('id')->translatedFormat('d F Y') }}
+                            <td class="py-2 px-3 whitespace-nowrap text-black font-medium">
+                                {{ $sub->created_at->format('d/m/Y') }}
                             </td>
-                            <td class="py-2 px-3 whitespace-nowrap text-slate-600">
-                                {{ $sub->created_at->format('H:i:s') }}
+                            <td class="py-2 px-3 whitespace-nowrap text-black font-medium">
+                                {{ $sub->created_at->format('H:i') }}
                             </td>
 
                             {{-- Consent --}}
-                            <td class="py-2 px-3 whitespace-nowrap text-center text-slate-700 font-medium">
+                            <td class="py-2 px-3 whitespace-nowrap text-center text-black font-medium">
                                 {{ $sub->consent_agreed ? 'Setuju' : 'Tidak' }}
                             </td>
 
                             {{-- Nama Klien --}}
-                            <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-900">
+                            <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-black">
                                 {{ $sub->client_name }}
                             </td>
 
@@ -466,11 +466,11 @@
                                 <td class="py-2 px-3 font-sans truncate max-w-[150px]">{{ $ans['ketakutan_phobia'] ?? '-' }}</td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[150px]">{{ $ans['riwayat_trauma'] ?? '-' }}</td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[150px]">{{ $ans['riwayat_kesehatan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-800 bg-blue-50/20">{{ $ans['nama_ayah'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-black">{{ $ans['nama_ayah'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap text-center">{{ $ans['usia_ayah'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan_ayah'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $ans['phone_ayah'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-800 bg-pink-50/20">{{ $ans['nama_ibu'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-black">{{ $ans['nama_ibu'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap text-center">{{ $ans['usia_ibu'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan_ibu'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $ans['phone_ibu'] ?? '-' }}</td>
@@ -505,11 +505,11 @@
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $sub->client_phone }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['agama'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-800 bg-rose-50/20">{{ $ans['nama_pasangan'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-black">{{ $ans['nama_pasangan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $formatBirthPlaceDate($ans['tempat_lahir_pasangan'] ?? null, $ans['tanggal_lahir_pasangan'] ?? null, null) }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $ans['phone_pasangan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan_pasangan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-purple-deep">{{ $ans['tanggal_rencana_pernikahan'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-black">{{ $ans['tanggal_rencana_pernikahan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans text-center">{{ $ans['lama_berkenalan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans text-center">{{ $ans['lama_berpacaran'] ?? '-' }}</td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[250px]" title="{{ $ans['alasan_konseling'] ?? '-' }}">{{ $ans['alasan_konseling'] ?? '-' }}</td>
@@ -521,7 +521,7 @@
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $sub->client_phone }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['agama'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-slate-800 bg-rose-50/20">{{ $ans['nama_pasangan'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-black">{{ $ans['nama_pasangan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $formatBirthPlaceDate($ans['tempat_lahir_pasangan'] ?? null, $ans['tanggal_lahir_pasangan'] ?? null, null) }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $ans['phone_pasangan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['pekerjaan_pasangan'] ?? '-' }}</td>
@@ -572,10 +572,10 @@
                                 <td class="py-2 px-3 whitespace-nowrap">{{ $sub->client_phone }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['status_perkawinan'] ?? '-' }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ ($ans['pendidikan_terakhir'] ?? '-') . ' (IPK: ' . ($ans['ipk_terakhir'] ?? '-') . ')' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-purple-deep bg-purple-50/20">{{ $ans['posisi_dituju'] ?? '-' }}</td>
+                                <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-black">{{ $ans['posisi_dituju'] ?? '-' }}</td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[180px]">{{ $ans['pekerjaan_saat_ini'] ?? '-' }}</td>
-                                <td class="py-2 px-3 whitespace-nowrap text-center font-medium {{ $pssTotal >= 27 ? 'text-rose-600 bg-rose-50/30' : ($pssTotal >= 14 ? 'text-amber-600 bg-amber-50/30' : 'text-slate-700 bg-slate-50/50') }}">
-                                    {{ $pssTotal }} / 40
+                                <td class="py-2 px-3 whitespace-nowrap text-center font-medium text-black">
+                                    {{ $pssTotal }}
                                 </td>
                                 <td class="py-2 px-3 font-sans truncate max-w-[220px]">{{ ($ans['pengalaman_kerja_1'] ?? '-') }}</td>
                                 <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['ekspektasi_gaji'] ?? '-' }}</td>
@@ -591,13 +591,13 @@
                             <td class="py-2 px-3 whitespace-nowrap font-sans text-center">{{ $ans['pernah_konseling'] ?? '-' }}</td>
                             <td class="py-2 px-3 font-sans truncate max-w-[160px]" title="{{ $ans['kontak_darurat'] ?? '-' }}">{{ $ans['kontak_darurat'] ?? '-' }}</td>
                             <td class="py-2 px-3 whitespace-nowrap font-sans">{{ $ans['sumber_info'] ?? '-' }}</td>
-                            <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-purple-deep">{{ !empty($ans['preferensi_konseling']) ? $ans['preferensi_konseling'] : '-' }}</td>
+                            <td class="py-2 px-3 whitespace-nowrap font-sans font-medium text-black">{{ !empty($ans['preferensi_konseling']) ? $ans['preferensi_konseling'] : '-' }}</td>
 
                             {{-- Action Sticky Column --}}
-                            <td class="py-2 px-2.5 whitespace-nowrap text-center no-export sticky right-0 bg-white group-hover:bg-[#f2faf5] shadow-xs">
+                            <td class="py-2 px-2.5 whitespace-nowrap text-center no-export sticky right-0 bg-white group-hover:bg-slate-50 shadow-xs">
                                 <button type="button" 
                                         @click="openDossier({{ json_encode($sub) }})"
-                                        class="px-2.5 py-1 rounded-lg bg-purple-50 text-purple-deep hover:bg-purple-deep hover:text-white transition font-bold text-[10px] shadow-2xs cursor-pointer"
+                                        class="px-2.5 py-1 rounded-lg bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-deep hover:text-white transition font-semibold text-[10px] shadow-2xs cursor-pointer"
                                         title="Buka Lembar Dossier Lengkap">
                                     Detail
                                 </button>
@@ -610,7 +610,7 @@
 
             {{-- Footer Pagination --}}
             <div class="px-5 py-3.5 bg-[#F8F9FA] border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
-                <span>Menampilkan <strong>{{ $submissions->count() }}</strong> dari <strong>{{ $submissions->total() }}</strong> total baris respon</span>
+                <span>Menampilkan <span class="text-black font-medium">{{ $submissions->count() }}</span> dari <span class="text-black font-medium">{{ $submissions->total() }}</span> total baris respon</span>
                 <div>
                     {{ $submissions->links() }}
                 </div>
@@ -623,7 +623,7 @@
     {{-- ============================================================== --}}
     <div x-show="showDossierModal" x-cloak 
          class="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-3xl max-h-[calc(92vh/0.85)] flex flex-col shadow-2xl overflow-hidden animate-scale-up">
+        <div class="bg-white rounded-2xl w-full max-w-3xl max-h-[calc(92vh/0.85)] flex flex-col shadow-[0_30px_70px_rgba(74,35,128,0.2)] overflow-hidden animate-scale-up">
             
             {{-- Modal Header --}}
             <div class="p-6 bg-purple-deep text-white flex items-center justify-between">
@@ -659,87 +659,159 @@
             </div>
 
             {{-- Modal Body (Answers List) --}}
-            <div class="p-6 overflow-y-auto space-y-6 text-sm text-slate-800">
+            <div class="p-6 overflow-y-auto custom-scrollbar space-y-6 text-sm text-black">
                 <template x-if="selectedForm && selectedForm.answers">
                     <div class="space-y-6">
-                        {{-- 1. Ringkasan Identitas Klien --}}
-                        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                            <h4 class="font-bold text-black text-xs uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                        {{-- Ringkasan Identitas Klien --}}
+                        <div class="bg-white rounded-2xl p-5 border border-[#EDE1FA] space-y-4">
+                            <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5 pb-2.5 border-b border-[#EDE1FA]">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                 <span>Data Diri Klien</span>
                             </h4>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                                <div><span class="text-slate-400 block font-medium">Nama Lengkap:</span> <strong class="text-slate-900" x-text="selectedForm.client_name || selectedForm.answers.nama_lengkap || selectedForm.answers.full_name || '-'"></strong></div>
-                                <div><span class="text-slate-400 block font-medium">Jenis Kelamin:</span> <span class="font-semibold text-slate-800" x-text="selectedForm.answers.jenis_kelamin || selectedForm.answers.gender || '-'"></span></div>
-                                <div><span class="text-slate-400 block font-medium">TTL:</span> <span class="font-semibold text-slate-800" x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.birth_place_date || selectedForm.answers.tempat_tanggal_lahir)"></span></div>
-                                <div><span class="text-slate-400 block font-medium">Urutan Kelahiran:</span> <span class="text-slate-800" x-text="selectedForm.answers.urutan_kelahiran || selectedForm.answers.birth_order || '-'"></span></div>
-                                <div><span class="text-slate-400 block font-medium">No. Telepon:</span> <strong class="text-purple-deep" x-text="selectedForm.client_phone || selectedForm.answers.phone || '-'"></strong></div>
-                                <div><span class="text-slate-400 block font-medium">Email:</span> <span class="text-slate-800" x-text="selectedForm.answers.email || '-'"></span></div>
-                                <div><span class="text-slate-400 block font-medium">Agama / Religion:</span> <span class="text-slate-800" x-text="selectedForm.answers.agama || selectedForm.answers.religion || '-'"></span></div>
-                                <div><span class="text-slate-400 block font-medium">Suku / Ethnicity:</span> <span class="text-slate-800" x-text="selectedForm.answers.suku_bangsa || selectedForm.answers.ethnicity || '-'"></span></div>
-                                <div><span class="text-slate-400 block font-medium">Pendidikan Terakhir:</span> <span class="text-slate-800" x-text="selectedForm.answers.pendidikan_terakhir || selectedForm.answers.last_education || '-'"></span></div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Nama Lengkap</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.client_name || selectedForm.answers.nama_lengkap || selectedForm.answers.full_name || '-'"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Jenis Kelamin</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.jenis_kelamin || selectedForm.answers.gender || '-'"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Tempat &amp; Tanggal Lahir</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir, selectedForm.answers.tanggal_lahir, selectedForm.answers.birth_place_date || selectedForm.answers.tempat_tanggal_lahir)"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Urutan Kelahiran</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.urutan_kelahiran || selectedForm.answers.birth_order || '-'"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">No. Telepon</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.client_phone || selectedForm.answers.phone || '-'"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Email</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black break-all" x-text="selectedForm.answers.email || '-'"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Agama / Religion</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.agama || selectedForm.answers.religion || '-'"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Suku / Ethnicity</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.suku_bangsa || selectedForm.answers.ethnicity || '-'"></div>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Pendidikan Terakhir</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.pendidikan_terakhir || selectedForm.answers.last_education || '-'"></div>
+                                </div>
                                 <template x-if="selectedForm.answers.status_pernikahan_ortu">
-                                    <div><span class="text-slate-400 block font-medium">Status Nikah Ortu:</span> <span class="text-slate-800" x-text="selectedForm.answers.status_pernikahan_ortu"></span></div>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Status Nikah Ortu</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.status_pernikahan_ortu"></div>
+                                    </div>
                                 </template>
                                 <template x-if="selectedForm.answers.status_perkawinan">
-                                    <div><span class="text-slate-400 block font-medium">Status Perkawinan:</span> <span class="text-slate-800" x-text="selectedForm.answers.status_perkawinan"></span></div>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Status Perkawinan</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.status_perkawinan"></div>
+                                    </div>
                                 </template>
                                 <template x-if="selectedForm.answers.asal_kota">
-                                    <div><span class="text-slate-400 block font-medium">Asal Kota:</span> <span class="text-slate-800" x-text="selectedForm.answers.asal_kota"></span></div>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Asal Kota</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.asal_kota"></div>
+                                    </div>
                                 </template>
-                                <div class="col-span-2 sm:col-span-3"><span class="text-slate-400 block font-medium">Alamat:</span> <strong class="text-slate-800 font-medium" x-text="selectedForm.answers.alamat || selectedForm.answers.alamat_sekarang || selectedForm.answers.current_address || '-'"></strong></div>
+                                <div class="sm:col-span-2 lg:col-span-3">
+                                    <span class="text-xs font-medium text-slate-500 mb-1 block">Alamat</span>
+                                    <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.alamat || selectedForm.answers.alamat_sekarang || selectedForm.answers.current_address || '-'"></div>
+                                </div>
                             </div>
                         </div>
 
-                        {{-- 2. Data Pasangan (Khusus Pra-Nikah & Pernikahan) --}}
+                        {{-- Data Pasangan (Khusus Pra-Nikah & Pernikahan) --}}
                         <template x-if="selectedForm.answers.nama_pasangan">
-                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3">
-                                <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <div class="bg-white rounded-2xl p-5 border border-[#EDE1FA] space-y-4">
+                                <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5 pb-2.5 border-b border-[#EDE1FA]">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                                    <span>Data Pasangan & Riwayat Hubungan</span>
+                                    <span>Data Pasangan &amp; Riwayat Hubungan</span>
                                 </h4>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                                    <div><span class="text-slate-400 block">Nama Pasangan:</span> <strong class="text-black" x-text="selectedForm.answers.nama_pasangan || '-'"></strong></div>
-                                    <div><span class="text-slate-400 block">Jenis Kelamin:</span> <span x-text="selectedForm.answers.jenis_kelamin_pasangan || '-'"></span></div>
-                                    <div><span class="text-slate-400 block">TTL Pasangan:</span> <span x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir_pasangan, selectedForm.answers.tanggal_lahir_pasangan, null)"></span></div>
-                                    <div><span class="text-slate-400 block">HP Pasangan:</span> <strong class="text-slate-900" x-text="selectedForm.answers.phone_pasangan || '-'"></strong></div>
-                                    <div><span class="text-slate-400 block">Pekerjaan:</span> <span x-text="selectedForm.answers.pekerjaan_pasangan || '-'"></span></div>
-                                    <div><span class="text-slate-400 block">Agama:</span> <span x-text="selectedForm.answers.agama_pasangan || '-'"></span></div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Nama Pasangan</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.nama_pasangan || '-'"></div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Jenis Kelamin</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.jenis_kelamin_pasangan || '-'"></div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">TTL Pasangan</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="formatBirthPlaceDate(selectedForm.answers.tempat_lahir_pasangan, selectedForm.answers.tanggal_lahir_pasangan, null)"></div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">HP Pasangan</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.phone_pasangan || '-'"></div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Pekerjaan</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.pekerjaan_pasangan || '-'"></div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Agama</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.agama_pasangan || '-'"></div>
+                                    </div>
                                     <template x-if="selectedForm.answers.tanggal_rencana_pernikahan">
-                                        <div class="col-span-2 sm:col-span-3 bg-white p-2.5 rounded-xl border border-slate-100">
-                                            <span class="text-black font-bold block mb-0.5">Rencana Pernikahan:</span>
-                                            <p class="text-slate-800" x-text="selectedForm.answers.tanggal_rencana_pernikahan"></p>
+                                        <div class="sm:col-span-2 lg:col-span-3">
+                                            <span class="text-xs font-medium text-slate-500 mb-1 block">Rencana Pernikahan</span>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.tanggal_rencana_pernikahan"></div>
                                         </div>
                                     </template>
                                     <template x-if="selectedForm.answers.tempat_tanggal_pernikahan">
-                                        <div><span class="text-slate-400 block">Tgl & Tempat Nikah:</span> <span x-text="selectedForm.answers.tempat_tanggal_pernikahan"></span></div>
+                                        <div>
+                                            <span class="text-xs font-medium text-slate-500 mb-1 block">Tgl &amp; Tempat Nikah</span>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.tempat_tanggal_pernikahan"></div>
+                                        </div>
                                     </template>
                                     <template x-if="selectedForm.answers.lama_pernikahan">
-                                        <div><span class="text-slate-400 block">Lama Pernikahan:</span> <strong x-text="selectedForm.answers.lama_pernikahan"></strong></div>
+                                        <div>
+                                            <span class="text-xs font-medium text-slate-500 mb-1 block">Lama Pernikahan</span>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.lama_pernikahan"></div>
+                                        </div>
                                     </template>
                                     <template x-if="selectedForm.answers.jumlah_anak">
-                                        <div><span class="text-slate-400 block">Jumlah Anak:</span> <strong x-text="selectedForm.answers.jumlah_anak"></strong></div>
+                                        <div>
+                                            <span class="text-xs font-medium text-slate-500 mb-1 block">Jumlah Anak</span>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.jumlah_anak"></div>
+                                        </div>
                                     </template>
                                     <template x-if="selectedForm.answers.lama_berkenalan">
-                                        <div><span class="text-slate-400 block">Lama Berkenalan:</span> <span x-text="selectedForm.answers.lama_berkenalan"></span></div>
+                                        <div>
+                                            <span class="text-xs font-medium text-slate-500 mb-1 block">Lama Berkenalan</span>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.lama_berkenalan"></div>
+                                        </div>
                                     </template>
                                     <template x-if="selectedForm.answers.lama_berpacaran">
-                                        <div><span class="text-slate-400 block">Lama Berpacaran:</span> <span x-text="selectedForm.answers.lama_berpacaran"></span></div>
+                                        <div>
+                                            <span class="text-xs font-medium text-slate-500 mb-1 block">Lama Berpacaran</span>
+                                            <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.lama_berpacaran"></div>
+                                        </div>
                                     </template>
                                 </div>
 
                                 <template x-if="selectedForm.answers.harapan_pernikahan || selectedForm.answers.keluhan_hubungan || selectedForm.answers.keluhan_utama">
-                                    <div class="space-y-2 pt-2 border-t border-slate-100 text-xs">
+                                    <div class="space-y-3 pt-3 border-t border-slate-100">
                                         <template x-if="selectedForm.answers.harapan_pernikahan">
                                             <div>
-                                                <span class="text-black font-semibold block">Harapan dari Pernikahan:</span>
-                                                <p class="text-slate-800 font-medium" x-text="selectedForm.answers.harapan_pernikahan"></p>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">Harapan dari Pernikahan</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.harapan_pernikahan"></div>
                                             </div>
                                         </template>
                                         <template x-if="selectedForm.answers.keluhan_hubungan || selectedForm.answers.keluhan_utama">
                                             <div>
-                                                <span class="text-black font-semibold block">Keluhan / Masalah Hubungan:</span>
-                                                <p class="text-slate-800 font-medium" x-text="selectedForm.answers.keluhan_hubungan || selectedForm.answers.keluhan_utama"></p>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">Keluhan / Masalah Hubungan</span>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.keluhan_hubungan || selectedForm.answers.keluhan_utama"></div>
                                             </div>
                                         </template>
                                     </div>
@@ -747,41 +819,41 @@
                             </div>
                         </template>
 
-                        {{-- 3. Data Industri & Stres PSS (Khusus Formulir Industri) --}}
+                        {{-- Data Industri & Stres PSS (Khusus Formulir Industri) --}}
                         <template x-if="selectedForm.form_type === 'industri' || selectedForm.answers.posisi_dituju">
-                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3 text-xs">
-                                <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5">
+                            <div class="bg-white rounded-2xl p-5 border border-[#EDE1FA] space-y-4">
+                                <h4 class="font-bold text-black text-xs uppercase tracking-wider flex items-center gap-1.5 pb-2.5 border-b border-[#EDE1FA]">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                                    <span>Posisi Dilamar & Pengalaman Industri</span>
+                                    <span>Posisi Dilamar &amp; Pengalaman Industri</span>
                                 </h4>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                    <div class="col-span-2 sm:col-span-1 bg-white p-2.5 rounded-xl border border-slate-100">
-                                        <span class="text-slate-400 block font-medium">Posisi yang Dituju:</span>
-                                        <strong class="text-purple-deep text-sm" x-text="selectedForm.answers.posisi_dituju || '-'"></strong>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Posisi yang Dituju</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.posisi_dituju || '-'"></div>
                                     </div>
-                                    <div class="bg-white p-2.5 rounded-xl border border-slate-100">
-                                        <span class="text-slate-400 block font-medium">Pekerjaan Saat Ini:</span>
-                                        <strong class="text-slate-800" x-text="selectedForm.answers.pekerjaan_saat_ini || '-'"></strong>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Pekerjaan Saat Ini</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.pekerjaan_saat_ini || '-'"></div>
                                     </div>
-                                    <div class="bg-white p-2.5 rounded-xl border border-slate-100">
-                                        <span class="text-slate-400 block font-medium">Ekspektasi Gaji:</span>
-                                        <strong class="text-purple-deep" x-text="selectedForm.answers.ekspektasi_gaji || '-'"></strong>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Ekspektasi Gaji</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.ekspektasi_gaji || '-'"></div>
                                     </div>
-                                    <div class="col-span-2 sm:col-span-3">
-                                        <span class="text-slate-400 block font-medium">Pengalaman Kerja:</span>
-                                        <p class="text-slate-800 font-medium" x-text="`${selectedForm.answers.pengalaman_kerja_1 || ''} ${selectedForm.answers.pengalaman_kerja_2 ? ' | ' + selectedForm.answers.pengalaman_kerja_2 : ''}`"></p>
+                                    <div class="sm:col-span-3">
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Pengalaman Kerja</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="`${selectedForm.answers.pengalaman_kerja_1 || '-'} ${selectedForm.answers.pengalaman_kerja_2 ? ' | ' + selectedForm.answers.pengalaman_kerja_2 : ''}`"></div>
                                     </div>
                                 </div>
 
                                 {{-- PSS Stress Score Summary --}}
                                 <template x-if="selectedForm.answers.pss_1 !== undefined">
                                     <div class="mt-3 pt-3 border-t border-slate-100">
-                                        <h5 class="font-bold text-slate-800 mb-2">Hasil Kuesioner Stres (PSS 10 Butir):</h5>
-                                        <div class="grid grid-cols-5 sm:grid-cols-10 gap-1 text-center font-mono">
+                                        <span class="text-xs font-medium text-slate-500 mb-2 block">Hasil Kuesioner Stres (PSS 10 Butir)</span>
+                                        <div class="grid grid-cols-5 sm:grid-cols-10 gap-1.5 text-center">
                                             <template x-for="n in 10" :key="n">
-                                                <div class="p-1.5 rounded-lg border bg-white">
-                                                    <span class="text-[9px] text-slate-400 block" x-text="'B' + n"></span>
-                                                    <strong class="text-xs text-slate-800" x-text="selectedForm.answers['pss_' + n] || '0'"></strong>
+                                                <div class="p-2 rounded-lg border border-slate-200 bg-slate-200">
+                                                    <span class="text-[10px] text-slate-600 block font-medium" x-text="'B' + n"></span>
+                                                    <span class="text-xs font-bold text-black" x-text="selectedForm.answers['pss_' + n] ?? '0'"></span>
                                                 </div>
                                             </template>
                                         </div>
@@ -790,49 +862,79 @@
                             </div>
                         </template>
 
-                        {{-- 4. Profil Orang Tua & Keluarga --}}
+                        {{-- Profil Orang Tua & Keluarga --}}
                         <template x-if="selectedForm.answers.nama_ayah || selectedForm.answers.nama_ibu || selectedForm.answers.father_name || selectedForm.answers.mother_name">
-                            <div class="space-y-2">
-                                <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Data Orang Tua & Keluarga</h4>
+                            <div class="bg-white rounded-2xl p-5 border border-[#EDE1FA] space-y-4">
+                                <h4 class="font-bold text-black text-xs uppercase tracking-wider pb-2.5 border-b border-[#EDE1FA]">Data Orang Tua &amp; Keluarga</h4>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div class="border rounded-2xl p-4 bg-slate-50/50 space-y-1.5 text-xs">
-                                        <h5 class="font-bold text-blue-900 uppercase mb-2 flex items-center gap-1.5">👨 Profil Ayah</h5>
-                                        <p><span class="text-slate-400">Nama:</span> <strong x-text="selectedForm.answers.nama_ayah || selectedForm.answers.father_name || '-'"></strong></p>
+                                    <div class="rounded-xl p-4 bg-slate-50 border border-slate-100 space-y-3">
+                                        <h5 class="text-xs font-bold text-black uppercase">Profil Ayah</h5>
+                                        <div>
+                                            <span class="text-xs font-medium text-slate-500 mb-1 block">Nama</span>
+                                            <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.nama_ayah || selectedForm.answers.father_name || '-'"></div>
+                                        </div>
                                         <template x-if="selectedForm.answers.usia_ayah || selectedForm.answers.father_age">
-                                            <p><span class="text-slate-400">Usia:</span> <span x-text="selectedForm.answers.usia_ayah || selectedForm.answers.father_age || '-'"></span></p>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">Usia</span>
+                                                <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.usia_ayah || selectedForm.answers.father_age || '-'"></div>
+                                            </div>
                                         </template>
                                         <template x-if="selectedForm.answers.pendidikan_ayah || selectedForm.answers.father_education">
-                                            <p><span class="text-slate-400">Pendidikan:</span> <span x-text="selectedForm.answers.pendidikan_ayah || selectedForm.answers.father_education || '-'"></span></p>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">Pendidikan</span>
+                                                <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.pendidikan_ayah || selectedForm.answers.father_education || '-'"></div>
+                                            </div>
                                         </template>
                                         <template x-if="selectedForm.answers.pekerjaan_ayah || selectedForm.answers.father_occupation">
-                                            <p><span class="text-slate-400">Pekerjaan:</span> <span x-text="selectedForm.answers.pekerjaan_ayah || selectedForm.answers.father_occupation || '-'"></span></p>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">Pekerjaan</span>
+                                                <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.pekerjaan_ayah || selectedForm.answers.father_occupation || '-'"></div>
+                                            </div>
                                         </template>
                                         <template x-if="selectedForm.answers.phone_ayah">
-                                            <p><span class="text-slate-400">HP:</span> <strong x-text="selectedForm.answers.phone_ayah"></strong></p>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">HP</span>
+                                                <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.phone_ayah"></div>
+                                            </div>
                                         </template>
                                     </div>
 
-                                    <div class="border rounded-2xl p-4 bg-slate-50/50 space-y-1.5 text-xs">
-                                        <h5 class="font-bold text-pink-900 uppercase mb-2 flex items-center gap-1.5">👩 Profil Ibu</h5>
-                                        <p><span class="text-slate-400">Nama:</span> <strong x-text="selectedForm.answers.nama_ibu || selectedForm.answers.mother_name || '-'"></strong></p>
+                                    <div class="rounded-xl p-4 bg-slate-50 border border-slate-100 space-y-3">
+                                        <h5 class="text-xs font-bold text-black uppercase">Profil Ibu</h5>
+                                        <div>
+                                            <span class="text-xs font-medium text-slate-500 mb-1 block">Nama</span>
+                                            <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.nama_ibu || selectedForm.answers.mother_name || '-'"></div>
+                                        </div>
                                         <template x-if="selectedForm.answers.usia_ibu || selectedForm.answers.mother_age">
-                                            <p><span class="text-slate-400">Usia:</span> <span x-text="selectedForm.answers.usia_ibu || selectedForm.answers.mother_age || '-'"></span></p>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">Usia</span>
+                                                <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.usia_ibu || selectedForm.answers.mother_age || '-'"></div>
+                                            </div>
                                         </template>
                                         <template x-if="selectedForm.answers.pendidikan_ibu || selectedForm.answers.mother_education">
-                                            <p><span class="text-slate-400">Pendidikan:</span> <span x-text="selectedForm.answers.pendidikan_ibu || selectedForm.answers.mother_education || '-'"></span></p>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">Pendidikan</span>
+                                                <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.pendidikan_ibu || selectedForm.answers.mother_education || '-'"></div>
+                                            </div>
                                         </template>
                                         <template x-if="selectedForm.answers.pekerjaan_ibu || selectedForm.answers.mother_occupation">
-                                            <p><span class="text-slate-400">Pekerjaan:</span> <span x-text="selectedForm.answers.pekerjaan_ibu || selectedForm.answers.mother_occupation || '-'"></span></p>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">Pekerjaan</span>
+                                                <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.pekerjaan_ibu || selectedForm.answers.mother_occupation || '-'"></div>
+                                            </div>
                                         </template>
                                         <template x-if="selectedForm.answers.phone_ibu">
-                                            <p><span class="text-slate-400">HP:</span> <strong x-text="selectedForm.answers.phone_ibu"></strong></p>
+                                            <div>
+                                                <span class="text-xs font-medium text-slate-500 mb-1 block">HP</span>
+                                                <div class="px-3.5 py-2.5 bg-white rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.phone_ibu"></div>
+                                            </div>
                                         </template>
                                     </div>
                                 </div>
                                 <template x-if="selectedForm.answers.data_saudara || selectedForm.answers.siblings_info">
-                                    <div class="p-3 rounded-xl border bg-slate-50 text-xs">
-                                        <span class="text-slate-400 font-semibold block">Informasi Saudara:</span>
-                                        <p class="font-medium text-slate-800" x-text="selectedForm.answers.data_saudara || selectedForm.answers.siblings_info"></p>
+                                    <div>
+                                        <span class="text-xs font-medium text-slate-500 mb-1 block">Informasi Saudara</span>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="selectedForm.answers.data_saudara || selectedForm.answers.siblings_info"></div>
                                     </div>
                                 </template>
                             </div>
@@ -961,12 +1063,12 @@
 
             {{-- Modal Footer --}}
             <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                <button type="button" @click="showDossierModal = false" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                <button type="button" @click="showDossierModal = false" class="px-4 py-2 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-xs transition cursor-pointer shadow-xs">
                     Tutup
                 </button>
                 <div class="flex items-center gap-2">
                     <template x-if="selectedForm && selectedForm.client_id">
-                        <a :href="`/daftar-klien/${selectedForm.client_id}`" class="px-4 py-2 rounded-xl bg-purple-deep text-white text-xs font-bold hover:bg-[#4A2F85] transition">
+                        <a :href="`/daftar-klien/${selectedForm.client_id}`" class="px-4 py-2 rounded-lg bg-purple-deep text-white text-xs font-semibold hover:bg-purple-deep/90 transition shadow-xs">
                             Buka di Profil Klien &rarr;
                         </a>
                     </template>

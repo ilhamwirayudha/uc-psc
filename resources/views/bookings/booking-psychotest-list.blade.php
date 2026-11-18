@@ -110,12 +110,16 @@
                             <a href="{{ route('psychotest-bookings.show', $kc->booking_id) }}" class="text-xs font-medium text-purple-deep hover:underline">
                                 Detail Booking
                             </a>
-                            <form method="POST" action="{{ route('psychotest-bookings.candidate.kilat-sent', [$kc->booking_id, $kc->id]) }}">
-                                @csrf
-                                <button type="submit" class="px-3.5 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white text-xs font-semibold shadow-xs cursor-pointer">
-                                    Tandai Kilat Terkirim
-                                </button>
-                            </form>
+                            @if(auth()->user()->isAdmin())
+                                <form method="POST" action="{{ route('psychotest-bookings.candidate.kilat-sent', [$kc->booking_id, $kc->id]) }}">
+                                    @csrf
+                                    <button type="submit" class="px-3.5 py-2 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white text-xs font-semibold shadow-xs cursor-pointer">
+                                        Tandai Kilat Terkirim
+                                    </button>
+                                </form>
+                            @else
+                                <span class="text-xs font-medium text-slate-500">Menunggu Kirim Admin</span>
+                            @endif
                         </div>
                     </div>
                 @endforeach

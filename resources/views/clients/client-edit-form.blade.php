@@ -12,7 +12,6 @@
 @endsection
 
 @section('content')
-@include('clients.partials.address-script')
 <form action="{{ route('clients.update', $client) }}" method="POST" x-data="{
     name: @js(old('name', $client->name ?? '')),
     dob: @js(old('dob', $client->dob ? $client->dob->format('Y-m-d') : '')),
@@ -23,92 +22,7 @@
     occupation: @js(old('occupation', $client->occupation ?? '')),
     phone: @js(old('phone', $client->phone ?? '')),
     email: @js(old('email', $client->email ?? '')),
-    country: @js(old('country', $client->country ?? '')),
-    province: @js(old('province', $client->province ?? '')),
-    city: @js(old('city', $client->city ?? '')),
     address: @js(old('address', $client->address ?? '')),
-
-    countryOpen: false,
-    countrySearch: '',
-    provinceOpen: false,
-    provinceSearch: '',
-    cityOpen: false,
-    citySearch: '',
-
-    get countryList() {
-        const list = [...(window.addressData?.countries || [])].sort((a, b) => a.localeCompare('id', { sensitivity: 'base' }));
-        if (!this.countrySearch) return list;
-        return list.filter(c => c.toLowerCase().includes(this.countrySearch.toLowerCase()));
-    },
-    get provinceList() {
-        const list = [...(window.addressData?.provinces || [])].sort((a, b) => a.localeCompare('id', { sensitivity: 'base' }));
-        if (!this.provinceSearch) return list;
-        return list.filter(p => p.toLowerCase().includes(this.provinceSearch.toLowerCase()));
-    },
-    get cityList() {
-        if (!this.province || !window.addressData?.citiesByProvince || !window.addressData.citiesByProvince[this.province]) {
-            return [];
-        }
-        const list = [...window.addressData.citiesByProvince[this.province]].sort((a, b) => a.localeCompare('id', { sensitivity: 'base' }));
-        if (!this.citySearch) return list;
-        return list.filter(c => c.toLowerCase().includes(this.citySearch.toLowerCase()));
-    },
-
-    openCountry() {
-        if (!this.isAddressAllowed) return;
-        this.countryOpen = true;
-        this.countrySearch = '';
-        this.provinceOpen = false;
-        this.cityOpen = false;
-        this.$nextTick(() => {
-            this.$refs.countrySearchInput && this.$refs.countrySearchInput.focus();
-        });
-    },
-    selectCountry(val) {
-        this.country = val;
-        this.countryOpen = false;
-        this.countrySearch = '';
-        if (val !== 'Indonesia') {
-            this.province = '';
-            this.provinceSearch = '';
-            this.provinceOpen = false;
-            this.city = '';
-            this.citySearch = '';
-            this.cityOpen = false;
-        }
-    },
-    openProvince() {
-        if (!this.isAddressAllowed || this.country !== 'Indonesia') return;
-        this.provinceOpen = true;
-        this.provinceSearch = '';
-        this.countryOpen = false;
-        this.cityOpen = false;
-        this.$nextTick(() => {
-            this.$refs.provinceSearchInput && this.$refs.provinceSearchInput.focus();
-        });
-    },
-    selectProvince(val) {
-        this.province = val;
-        this.provinceOpen = false;
-        this.provinceSearch = '';
-        this.city = '';
-        this.citySearch = '';
-    },
-    openCity() {
-        if (!this.isAddressAllowed || this.country !== 'Indonesia' || !this.province) return;
-        this.cityOpen = true;
-        this.citySearch = '';
-        this.countryOpen = false;
-        this.provinceOpen = false;
-        this.$nextTick(() => {
-            this.$refs.citySearchInput && this.$refs.citySearchInput.focus();
-        });
-    },
-    selectCity(val) {
-        this.city = val;
-        this.cityOpen = false;
-        this.citySearch = '';
-    },
 
     get isDobEnabled() {
         return !!this.name && this.name.trim().length > 0;
@@ -148,12 +62,7 @@
         return this.isContactCompleted;
     },
     get isAddressEnabled() {
-        if (!this.isAddressAllowed) return false;
-        if (!this.country) return false;
-        if (this.country === 'Indonesia') {
-            return !!this.province && !!this.city;
-        }
-        return true;
+        return this.isAddressAllowed;
     },
     get isAddressCompleted() {
         if (!this.isAddressEnabled) return false;
@@ -185,14 +94,14 @@
         {{-- Left Column: Identitas & Layanan Klien (7 cols on lg) --}}
         <div class="lg:col-span-7 space-y-6">
             {{-- Card 1: Data Identitas Klien --}}
-            <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+            <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                 <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
-                    <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center font-bold text-sm">
-                        1
+                    <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     </div>
                     <div>
-                        <h3 class="text-base font-semibold text-black">Identitas & Kontak Klien</h3>
-                        <p class="text-xs font-medium text-gray-500">Informasi dasar dan kontak klien yang dapat dihubungi</p>
+                        <h3 class="text-base font-semibold text-black">Identitas &amp; Kontak Klien</h3>
+                        <p class="text-xs font-medium text-slate-500">Informasi dasar dan kontak klien yang dapat dihubungi</p>
                     </div>
                 </div>
 
@@ -350,9 +259,9 @@
                     </div>
                 </div>
             </div>            {{-- Card: Alamat & Domisili --}}
-            <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
+            <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-5">
                 <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
-                    <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center font-bold text-sm">
+                    <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center text-sm">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                     </div>
                     <div>
@@ -362,243 +271,19 @@
                 </div>
 
                 <div class="grid sm:grid-cols-3 gap-4">
-                    {{-- 1. NEGARA (Dropdown dengan Search Box di Atas) --}}
-                    <div class="relative" @click.outside="countryOpen = false">
-                        <label class="block text-xs font-medium text-gray-500 mb-1.5">Negara <span class="text-red-500">*</span></label>
-                        <input type="hidden" name="country" :value="country" required>
-                        
-                        {{-- Form Field Button --}}
-                        <button type="button" 
-                            :disabled="!isAddressAllowed"
-                            @click="isAddressAllowed && (countryOpen ? (countryOpen = false) : openCountry())" 
-                            class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
-                            :class="isAddressAllowed
-                                ? 'bg-white border hover:border-[#B59BD6] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer text-black font-medium @error('country') border-red-400 @else border-[#D9C2F0] @enderror' 
-                                : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
-                            <span :class="isAddressAllowed ? (country ? 'text-black font-medium' : 'text-[#827299]') : 'text-[#A093B3]'" 
-                                  x-text="isAddressAllowed ? (country || '-- Pilih Negara --') : ''"></span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transition-transform duration-200" 
-                                 :class="isAddressAllowed ? 'text-[#827299]' : 'text-[#C4B7D6]'" 
-                                 :class="{ 'rotate-180': countryOpen }">
-                                 <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        @error('country')
-                            <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                        @enderror
-
-                        {{-- Dropdown Popup Panel --}}
-                        <div x-cloak x-show="isAddressAllowed && countryOpen"
-                            x-transition:enter="transition ease-out duration-150"
-                            x-transition:enter-start="opacity-0 translate-y-1"
-                            x-transition:enter-end="opacity-100 translate-y-0"
-                            x-transition:leave="transition ease-in duration-100"
-                            x-transition:leave-start="opacity-100 translate-y-0"
-                            x-transition:leave-end="opacity-0 translate-y-1"
-                            class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
-                            
-                            {{-- Sticky Search Input Paling Atas --}}
-                            <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                <div class="relative">
-                                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[#827299]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                                    </svg>
-                                    <input type="text"
-                                        x-ref="countrySearchInput"
-                                        x-model="countrySearch"
-                                        placeholder="Cari negara..."
-                                        class="w-full pl-8 pr-7 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-purple-deep text-black font-medium">
-                                    <button x-show="countrySearch" @click="countrySearch = ''" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#827299] hover:text-red-500">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                    </button>
-                                </div>
-                            </div>
-
-                            {{-- List Opsi Negara (Scrollable) --}}
-                            <div class="max-h-52 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
-                                <template x-for="c in countryList" :key="c">
-                                    <div @click="selectCountry(c)"
-                                        class="px-3.5 py-2 text-xs cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]"
-                                        :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': country === c, 'text-black font-medium': country !== c }">
-                                        <span x-text="c"></span>
-                                        <svg x-show="country === c" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-                                    </div>
-                                </template>
-                                <div x-show="countryList.length === 0" class="px-3.5 py-4 text-center text-xs text-[#827299]">
-                                    <p>Tidak ditemukan "<span x-text="countrySearch"></span>"</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- 2. PROVINSI (Dropdown dengan Search Box di Atas) --}}
-                    <div class="relative" @click.outside="provinceOpen = false">
-                        <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                            Provinsi 
-                            <span x-show="country === 'Indonesia'" class="text-red-500">*</span>
-                            <span x-show="country !== 'Indonesia'" class="text-xs font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
-                        </label>
-                        <input type="hidden" name="province" :value="country === 'Indonesia' ? province : ''">
-                        
-                        {{-- Form Field Button --}}
-                        <button type="button" 
-                            :disabled="!isAddressAllowed || country !== 'Indonesia'"
-                            @click="(isAddressAllowed && country === 'Indonesia') && (provinceOpen ? (provinceOpen = false) : openProvince())" 
-                            class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
-                            :class="(isAddressAllowed && country === 'Indonesia') 
-                                ? 'bg-white border hover:border-[#B59BD6] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer text-black font-medium @error('province') border-red-400 @else border-[#D9C2F0] @enderror' 
-                                : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
-                            <span :class="(isAddressAllowed && country === 'Indonesia') ? (province ? 'text-black font-medium' : 'text-[#827299]') : 'text-[#A093B3]'" 
-                                  x-text="isAddressAllowed ? (country === 'Indonesia' ? (province || '-- Pilih Provinsi --') : '-') : ''"></span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transition-transform duration-200" 
-                                 :class="(isAddressAllowed && country === 'Indonesia') ? 'text-[#827299]' : 'text-[#C4B7D6]'" 
-                                 :class="{ 'rotate-180': provinceOpen }">
-                                 <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        @error('province')
-                            <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                        @enderror
-
-                        {{-- Dropdown Popup Panel --}}
-                        <div x-cloak x-show="isAddressAllowed && country === 'Indonesia' && provinceOpen"
-                            x-transition:enter="transition ease-out duration-150"
-                            x-transition:enter-start="opacity-0 translate-y-1"
-                            x-transition:enter-end="opacity-100 translate-y-0"
-                            x-transition:leave="transition ease-in duration-100"
-                            x-transition:leave-start="opacity-100 translate-y-0"
-                            x-transition:leave-end="opacity-0 translate-y-1"
-                            class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
-                            
-                            {{-- Sticky Search Input Paling Atas --}}
-                            <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                <div class="relative">
-                                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[#827299]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                                    </svg>
-                                    <input type="text"
-                                        x-ref="provinceSearchInput"
-                                        x-model="provinceSearch"
-                                        placeholder="Cari provinsi..."
-                                        class="w-full pl-8 pr-7 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-purple-deep text-black font-medium">
-                                    <button x-show="provinceSearch" @click="provinceSearch = ''" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#827299] hover:text-red-500">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                    </button>
-                                </div>
-                            </div>
-
-                            {{-- List Opsi Provinsi (Scrollable) --}}
-                            <div class="max-h-52 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
-                                <template x-for="p in provinceList" :key="p">
-                                    <div @click="selectProvince(p)"
-                                        class="px-3.5 py-2 text-xs cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]"
-                                        :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': province === p, 'text-black font-medium': province !== p }">
-                                        <span x-text="p"></span>
-                                        <svg x-show="province === p" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-                                    </div>
-                                </template>
-                                <div x-show="provinceList.length === 0" class="px-3.5 py-4 text-center text-xs text-[#827299]">
-                                    <p>Tidak ditemukan "<span x-text="provinceSearch"></span>"</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- 3. KOTA / KABUPATEN (Dropdown dengan Search Box di Atas) --}}
-                    <div class="relative" @click.outside="cityOpen = false">
-                        <label class="block text-xs font-medium text-gray-500 mb-1.5">
-                            Kota / Kabupaten
-                            <span x-show="country === 'Indonesia'" class="text-red-500">*</span>
-                            <span x-show="country !== 'Indonesia'" class="text-xs font-normal text-[#9D8EB0]">(Khusus Indonesia)</span>
-                        </label>
-                        <input type="hidden" name="city" :value="country === 'Indonesia' ? city : ''">
-                        
-                        {{-- Form Field Button --}}
-                        <button type="button" 
-                            :disabled="!isAddressAllowed || country !== 'Indonesia' || !province"
-                            @click="(isAddressAllowed && country === 'Indonesia' && province) && (cityOpen ? (cityOpen = false) : openCity())" 
-                            class="w-full px-4 py-2.5 rounded-lg text-sm flex items-center justify-between text-left transition"
-                            :class="(isAddressAllowed && country === 'Indonesia' && province)
-                                ? 'bg-white border hover:border-[#B59BD6] focus:outline-none focus:ring-2 focus:ring-purple-deep cursor-pointer text-black font-medium @error('city') border-red-400 @else border-[#D9C2F0] @enderror' 
-                                : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'">
-                            <span :class="(isAddressAllowed && country === 'Indonesia' && province) ? (city ? 'text-black font-medium' : 'text-[#827299]') : 'text-[#A093B3]'" 
-                                  x-text="isAddressAllowed ? (country === 'Indonesia' ? (province ? (city || '-- Pilih Kota / Kabupaten --') : '') : '-') : ''"></span>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transition-transform duration-200" 
-                                 :class="(isAddressAllowed && country === 'Indonesia' && province) ? 'text-[#827299]' : 'text-[#C4B7D6]'" 
-                                 :class="{ 'rotate-180': cityOpen }">
-                                 <polyline points="6 9 12 15 18 9"/>
-                            </svg>
-                        </button>
-                        @error('city')
-                            <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                        @enderror
-
-                        {{-- Dropdown Popup Panel --}}
-                        <div x-cloak x-show="isAddressAllowed && country === 'Indonesia' && province && cityOpen"
-                            x-transition:enter="transition ease-out duration-150"
-                            x-transition:enter-start="opacity-0 translate-y-1"
-                            x-transition:enter-end="opacity-100 translate-y-0"
-                            x-transition:leave="transition ease-in duration-100"
-                            x-transition:leave-start="opacity-100 translate-y-0"
-                            x-transition:leave-end="opacity-0 translate-y-1"
-                            class="absolute z-50 mt-1.5 w-full bg-white rounded-lg shadow-xl border border-[#EDE1FA] overflow-hidden">
-                            
-                            {{-- Sticky Search Input Paling Atas --}}
-                            <div class="p-2.5 border-b border-[#EDE1FA] bg-[#FAF8FD]">
-                                <div class="relative">
-                                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-[#827299]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                                    </svg>
-                                    <input type="text"
-                                        x-ref="citySearchInput"
-                                        x-model="citySearch"
-                                        :placeholder="province ? 'Cari kota di ' + province + '...' : 'Cari kota / kabupaten...'"
-                                        class="w-full pl-8 pr-7 py-1.5 bg-white border border-[#D9C2F0] rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-purple-deep text-black font-medium">
-                                    <button x-show="citySearch" @click="citySearch = ''" type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#827299] hover:text-red-500">
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                    </button>
-                                </div>
-                            </div>
-
-                            {{-- List Opsi Kota (Scrollable) --}}
-                            <div class="max-h-52 overflow-y-auto divide-y divide-[#FAF8FD] py-1 custom-scrollbar">
-                                <template x-for="c in cityList" :key="c">
-                                    <div @click="selectCity(c)"
-                                        class="px-3.5 py-2 text-xs cursor-pointer flex items-center justify-between transition hover:bg-[#FAF8FD]"
-                                        :class="{ 'bg-[#F3EBFC] text-purple-deep font-bold': city === c, 'text-black font-medium': city !== c }">
-                                        <span x-text="c"></span>
-                                        <svg x-show="city === c" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-purple-deep flex-shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
-                                    </div>
-                                </template>
-                                <div x-show="cityList.length === 0" class="px-3.5 py-4 text-center text-xs text-[#827299]">
-                                    <p>Tidak ditemukan "<span x-text="citySearch"></span>"</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="sm:col-span-3">
-                        <textarea id="address" name="address" rows="2" required
+                        <label for="address" class="block text-xs font-medium text-slate-500 mb-1">Alamat Domisili Lengkap <span class="text-red-500">*</span></label>
+                        <textarea id="address" name="address" rows="3" required
                             x-model="address"
                             :disabled="!isAddressEnabled"
                             :class="isAddressEnabled 
                                 ? 'bg-white border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep @error('address') border-red-400 @enderror' 
                                 : 'bg-[#F7F4FB] border border-[#E8DEF2] text-[#A093B3] cursor-not-allowed opacity-75'"
-                            :placeholder="isAddressEnabled ? 'Contoh: Jl. Soekarno Hatta No. 112, RT 002/RW 005, Kel. Jatimulyo, Kec. Lowokwaru' : ''"
+                            :placeholder="isAddressEnabled ? 'Contoh: Jl. Soekarno Hatta No. 112, Kel. Jatimulyo, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141' : ''"
                             class="w-full px-4 py-2.5 rounded-lg border transition text-sm font-medium text-black">{{ old('address', $client->address) }}</textarea>
                         @error('address')
                             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                         @enderror
-
-                        {{-- Live Preview Format Penulisan Alamat Standar --}}
-                        <div x-show="isAddressEnabled && (address || city || province)" class="mt-2 p-3 rounded-lg bg-[#FAF8FD] border border-[#EDE1FA] text-xs space-y-1">
-                            <div class="flex items-center gap-1.5 font-bold text-purple-deep text-[11px]">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                <span>Format Alamat Lengkap Otomatis:</span>
-                            </div>
-                            <p class="text-black font-medium leading-relaxed" 
-                               x-text="[address.trim(), city.trim(), province.trim(), (country && country !== 'Indonesia' ? country.trim() : (country === 'Indonesia' ? 'Indonesia' : ''))].filter(Boolean).join(', ') || '-'"></p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -614,14 +299,14 @@
                 $currentSessionType = old('session_type', $upcomingRecord?->type ?? 'tatap_muka');
                 $currentLocation = old('location', $upcomingRecord?->location ?? '');
             @endphp
-            <div class="bg-[#FBF9FE] rounded-xl border border-[#E9DAFA] p-6 space-y-4">
+            <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-4">
                 <div class="flex items-center gap-3 pb-3 border-b border-[#EDE1FA]">
-                    <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center font-bold text-sm">
-                        2
+                    <div class="w-8 h-8 rounded-lg bg-purple-deep/10 text-purple-deep flex items-center justify-center text-sm">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     </div>
                     <div>
                         <h3 class="text-base font-semibold text-black" x-text="serviceType === 'psikotes' ? 'Jadwal Psikotes & Tester' : 'Jadwal Konseling & Konselor'">Jadwal Sesi & Konselor</h3>
-                        <p class="text-xs font-medium text-gray-500">Perbarui jadwal kegiatan dan penanggung jawab klien</p>
+                        <p class="text-xs font-medium text-slate-500">Perbarui jadwal kegiatan dan penanggung jawab klien</p>
                     </div>
                 </div>
 
@@ -671,18 +356,19 @@
             </div>
 
             {{-- Card 4: Catatan --}}
-            <div class="bg-white rounded-xl shadow-sm border border-[#EDE1FA] p-6 space-y-3">
-                <label for="notes" class="block text-xs font-medium text-gray-500 mb-1.5">Catatan & Keterangan Tambahan</label>
+            <div class="bg-white rounded-2xl shadow-sm border border-[#EDE1FA] p-6 space-y-3">
+                <label for="notes" class="block text-xs font-medium text-slate-500 mb-1.5">Catatan &amp; Keterangan Tambahan</label>
                 <textarea id="notes" name="notes" rows="4" placeholder="Tuliskan keluhan awal, preferensi jadwal, atau catatan penting lainnya..."
                     class="w-full px-4 py-3 rounded-lg border border-[#D9C2F0] focus:outline-none focus:ring-2 focus:ring-purple-deep focus:border-transparent transition text-sm font-medium text-black resize-none">{{ old('notes', $client->notes_text) }}</textarea>
             </div>
 
             {{-- Action Buttons --}}
             <div class="flex items-center justify-end gap-3 pt-2">
-                <a href="{{ route('clients.index') }}" class="px-6 py-3 rounded-lg text-sm font-semibold text-black border border-[#D9C2F0] hover:bg-[#F7F5FB] transition">
-                    Batal
+                <a href="{{ route('clients.index') }}" class="px-6 py-3 rounded-lg text-sm font-semibold bg-white hover:bg-purple-50 text-purple-deep border border-[#D9C2F0] transition shadow-xs inline-flex items-center gap-1.5">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <span>Batal</span>
                 </a>
-                <button type="submit" class="bg-purple-deep text-white px-8 py-3 rounded-lg text-sm font-semibold hover:opacity-90 transition shadow-sm flex items-center gap-2">
+                <button type="submit" class="bg-purple-deep hover:bg-purple-deep/90 text-white px-8 py-3 rounded-lg text-sm font-semibold transition shadow-xs flex items-center gap-2 cursor-pointer">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                     Perbarui Data Klien
                 </button>

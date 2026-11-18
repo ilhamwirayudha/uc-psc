@@ -5,11 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CounselorController;
-use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\BookingController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Controllers\OperationalCalendarController;
 use App\Http\Controllers\ProfileController;
@@ -80,11 +77,8 @@ Route::middleware('auth')->group(function () {
         ->names('clients')
         ->parameters(['daftar-klien' => 'client']);
 
-    // Psikolog
-    Route::resource('psikolog', CounselorController::class)
-        ->except(['show'])
-        ->names('counselors')
-        ->parameters(['psikolog' => 'counselor']);
+    // Psikolog (daftar direktori dapat diakses staf/psikolog; mutasi hanya Admin)
+    Route::get('psikolog', [CounselorController::class, 'index'])->name('counselors.index');
 
     // Formulir Klien
     Route::get('formulir-klien', [ClientFormManagementController::class, 'index'])->name('client-forms.index');
@@ -106,6 +100,7 @@ Route::middleware('auth')->group(function () {
     Route::put('layanan-psikotes/{booking}/meta', [PsychotestBookingController::class, 'updateMeta'])->name('psychotest-bookings.update-meta');
     Route::post('layanan-psikotes/{booking}/kandidat/{candidate}/kehadiran', [PsychotestBookingController::class, 'updateAttendance'])->name('psychotest-bookings.candidate.attendance');
     Route::post('layanan-psikotes/{booking}/kandidat/{candidate}/langkah', [PsychotestBookingController::class, 'toggleCandidateStep'])->name('psychotest-bookings.candidate.step');
+    Route::post('layanan-psikotes/{booking}/kandidat/{candidate}/softcopy-kirim', [PsychotestBookingController::class, 'toggleSoftcopySent'])->name('psychotest-bookings.candidate.softcopy-sent');
     Route::post('layanan-psikotes/{booking}/kandidat/{candidate}/kilat-kirim', [PsychotestBookingController::class, 'toggleKilatSent'])->name('psychotest-bookings.candidate.kilat-sent');
     Route::post('layanan-psikotes/{booking}/petugas/{assignee}/selesai', [PsychotestBookingController::class, 'toggleAssigneeBatch'])->name('psychotest-bookings.assignee.toggle');
 
@@ -121,6 +116,11 @@ Route::middleware('auth')->group(function () {
 
     // Admin-only routes
     Route::middleware(\App\Http\Middleware\EnsureAdmin::class)->group(function () {
+        Route::resource('psikolog', CounselorController::class)
+            ->only(['create', 'store', 'edit', 'update', 'destroy'])
+            ->names('counselors')
+            ->parameters(['psikolog' => 'counselor']);
+
         Route::resource('kelola-staff', StaffManagementController::class)
             ->except(['edit', 'update'])
             ->names('staff-management')
@@ -129,16 +129,5 @@ Route::middleware('auth')->group(function () {
         // Kelola Penugasan (Workload & Task Tracker)
         Route::get('kelola-penugasan', [AssignmentController::class, 'index'])->name('assignments.index');
         Route::post('kelola-penugasan/reassign', [AssignmentController::class, 'reassignTask'])->name('assignments.reassign-task');
-
-        // Master Perusahaan & Hari Libur Nasional
-        Route::resource('kelola-perusahaan', CompanyController::class)
-            ->only(['index', 'store', 'update', 'destroy'])
-            ->names('companies')
-            ->parameters(['kelola-perusahaan' => 'company']);
-
-        Route::resource('hari-libur', HolidayController::class)
-            ->only(['index', 'store', 'update', 'destroy'])
-            ->names('holidays')
-            ->parameters(['hari-libur' => 'holiday']);
     });
 });

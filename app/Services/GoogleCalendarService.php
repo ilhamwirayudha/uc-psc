@@ -145,20 +145,30 @@ class GoogleCalendarService
     public function syncBooking(Booking $booking): string
     {
         if (!$booking->tanggal_dijadwalkan || $booking->status === 'batal') {
-            if ($booking->status === 'batal') {
-                $this->deleteBookingEvents($booking);
-            }
+            $this->deleteBookingEvents($booking);
             $booking->update(['gcal_sync_status' => 'not_applicable']);
             return 'not_applicable';
         }
 
         // Untuk Konseling, hanya sinkron otomatis saat status terjadwal_gocal / reminder_h1 atau setelah dikonfirmasi
         if ($booking->kategori === 'konseling' && !in_array($booking->status, ['terjadwal_gocal', 'reminder_h1', 'perlu_bayar_overtime', 'perlu_sesi_lanjutan', 'selesai'], true)) {
+            $this->deleteBookingEvents($booking);
             $booking->update(['gcal_sync_status' => 'not_applicable']);
             return 'not_applicable';
         }
 
         $targetUsers = $this->resolveTargetUsersForBooking($booking);
+        $targetUserIds = $targetUsers->pluck('id')->all();
+
+        // Hapus event Google Calendar yang sudah tidak lagi di-assign ke petugas terkait
+        $staleEvents = $booking->googleCalendarEvents()
+            ->when(!empty($targetUserIds), fn ($q) => $q->whereNotIn('user_id', $targetUserIds))
+            ->with('user')
+            ->get();
+        foreach ($staleEvents as $staleEvent) {
+            $this->deleteSingleEventRecord($staleEvent);
+        }
+
         if ($targetUsers->isEmpty()) {
             $booking->update(['gcal_sync_status' => 'pending_auth']);
             return 'pending_auth';
@@ -232,17 +242,22 @@ class GoogleCalendarService
     {
         $events = $booking->googleCalendarEvents()->with('user')->get();
         foreach ($events as $event) {
-            if ($event->google_event_id && $event->user && $event->user->hasGoogleCalendarConnected() && $this->isConfigured()) {
-                $token = $this->ensureValidAccessToken($event->user);
-                if ($token) {
-                    $calendarId = urlencode($event->google_calendar_id ?: 'primary');
-                    Http::withToken($token)->delete(
-                        "https://www.googleapis.com/calendar/v3/calendars/{$calendarId}/events/" . urlencode($event->google_event_id)
-                    );
-                }
-            }
-            $event->delete();
+            $this->deleteSingleEventRecord($event);
         }
+    }
+
+    protected function deleteSingleEventRecord(GoogleCalendarEvent $event): void
+    {
+        if ($event->google_event_id && $event->user && $event->user->hasGoogleCalendarConnected() && $this->isConfigured()) {
+            $token = $this->ensureValidAccessToken($event->user);
+            if ($token) {
+                $calendarId = urlencode($event->google_calendar_id ?: 'primary');
+                Http::withToken($token)->delete(
+                    "https://www.googleapis.com/calendar/v3/calendars/{$calendarId}/events/" . urlencode($event->google_event_id)
+                );
+            }
+        }
+        $event->delete();
     }
 
     protected function ensureValidAccessToken(User $user): ?string

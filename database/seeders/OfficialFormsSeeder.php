@@ -10,6 +10,10 @@ class OfficialFormsSeeder extends Seeder
 {
     public function run(): void
     {
+        if (ClientForm::where('ticket_number', 'PSC-IND-261007-60DA')->exists()) {
+            return;
+        }
+
         // Form 9: industri (Dimas Arya Pratama, S.Kom.)
         $client = Client::create(array (
   'name' => 'Dimas Arya Pratama, S.Kom.',

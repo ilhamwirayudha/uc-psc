@@ -148,12 +148,13 @@ class ProfileController extends Controller
         }
 
         if ($user->created_at) {
+            $roleLabel = $user->isAdmin() ? 'Administrator' : ($user->isPsikolog() ? 'Psikolog' : 'Staff Layanan');
             $logs->push([
                 'id' => 'user-created-' . $user->id,
                 'category' => 'akun',
                 'category_label' => 'Akun',
                 'title' => 'Akun Terdaftar di Sistem',
-                'description' => 'Akun ' . ($user->isAdmin() ? 'Administrator' : 'Staff Layanan') . ' dibuat untuk ' . $user->name . '.',
+                'description' => 'Akun ' . $roleLabel . ' dibuat untuk ' . $user->name . '.',
                 'meta' => $user->email,
                 'timestamp_text' => $this->formatIndonesianDateTime($user->created_at),
                 'ts' => Carbon::parse($user->created_at)->timestamp,
@@ -166,13 +167,14 @@ class ProfileController extends Controller
             && $user->updated_at
             && (! $user->created_at || $user->updated_at->gt($user->created_at))
         ) {
+            $roleLabel = $user->isAdmin() ? 'Administrator' : ($user->isPsikolog() ? 'Psikolog' : 'Staff Layanan');
             $logs->push([
                 'id' => 'user-updated-' . $user->id,
                 'category' => 'akun',
                 'category_label' => 'Akun',
                 'title' => 'Pembaruan Data Akun',
                 'description' => 'Data biodata, foto profil, background hero, atau kata sandi akun diperbarui.',
-                'meta' => $user->position ?: ($user->isAdmin() ? 'Administrator' : 'Staff Layanan'),
+                'meta' => $user->position ?: $roleLabel,
                 'timestamp_text' => $this->formatIndonesianDateTime($user->updated_at),
                 'ts' => Carbon::parse($user->updated_at)->timestamp,
                 'sort_id' => 0,
@@ -492,6 +494,14 @@ class ProfileController extends Controller
 
         $user->update($data);
 
+        if ($user->isPsikolog() && $user->counselor) {
+            $user->counselor->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'] ?? $user->counselor->phone,
+            ]);
+        }
+
         ActivityLogger::logUserProfileUpdate($user, $before, $data, $mediaChanges, $wantsPasswordChange);
 
         return redirect()->route('profile.edit')->with('success', 'Profil akun berhasil diperbarui.');
@@ -514,6 +524,10 @@ class ProfileController extends Controller
 
         $oldEmail = $user->email;
         $user->update($validated);
+
+        if ($user->isPsikolog() && $user->counselor) {
+            $user->counselor->update(['email' => $validated['email']]);
+        }
 
         if ($oldEmail !== $validated['email']) {
             UserActivityLog::record(

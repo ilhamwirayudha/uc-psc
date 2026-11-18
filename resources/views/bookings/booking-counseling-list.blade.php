@@ -5,13 +5,7 @@
 @section('page-subtitle', 'Kelola jadwal sesi dan reservasi klien konseling')
 
 @section('content')
-@include('bookings.partials.build-booking-data')
-
-<div 
-    x-data="bookingManager()"
-    x-cloak
-    class="space-y-6"
->
+<div class="space-y-6">
     {{-- Header & Search Bar --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         {{-- Search Bar --}}
@@ -36,14 +30,27 @@
         </form>
 
         {{-- Tombol Booking Konseling Baru --}}
+        @if(auth()->user()->isAdmin())
         <button type="button" @click="$dispatch('open-booking-modal', { category: 'konseling' })" 
             class="px-4.5 py-2.5 bg-orange text-white text-sm font-semibold rounded-lg hover:bg-orange/90 transition shadow-xs flex-shrink-0 text-center cursor-pointer flex items-center justify-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <span>Booking Konseling Baru</span>
         </button>
+        @endif
     </div>
 
     {{-- Tag Filter Aktif (Jika ada filter atau pencarian) --}}
+    @if(!empty($pendingBiographyCount) && $pendingBiographyCount > 0)
+    <div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <p class="text-xs font-medium text-black">
+            Terdapat {{ $pendingBiographyCount }} booking masuk dari Biography Form (English) yang belum diklasifikasikan ke Layanan Konseling atau Psikotes.
+        </p>
+        <a href="{{ route('bookings.index', ['kategori' => 'pending']) }}" class="text-xs font-semibold text-purple-deep hover:underline whitespace-nowrap">
+            Tentukan Layanan →
+        </a>
+    </div>
+    @endif
+
     @if(request()->hasAny(['search', 'status']))
     <div class="flex items-center gap-2 flex-wrap text-xs pt-0.5">
         <span class="text-gray-500 font-medium">Filter aktif:</span>
@@ -216,12 +223,18 @@
                 <tbody class="divide-y divide-[#F3EAFB]">
                     @forelse($counselingBookings as $booking)
                         @php
-                            $bookingData = buildBookingDataPayload($booking);
-                            $jamSesi = $bookingData['jam_sesi'];
+                            $jamSesi = null;
+                            if ($booking->session_start && $booking->session_end) {
+                                $jamSesi = substr($booking->session_start, 0, 5) . ' - ' . substr($booking->session_end, 0, 5) . ' WIB';
+                            } elseif ($booking->session_start) {
+                                $jamSesi = substr($booking->session_start, 0, 5) . ' WIB';
+                            } elseif ($booking->notes && preg_match('/(?:Waktu|Jam Pelaksanaan)\s*:\s*([^\n\r\]]+)/i', $booking->notes, $matches)) {
+                                $jamSesi = trim($matches[1]);
+                            }
 
                             // Deteksi WNA / WNI
                             $isWna = false;
-                            $rawType = strtoupper(($booking->client->counseling_type ?? '') . ' ' . ($booking->client->notes ?? '') . ' ' . ($booking->notes ?? ''));
+                            $rawType = strtoupper(($booking->service_package_name ?? '') . ' ' . ($booking->client->counseling_type ?? '') . ' ' . ($booking->client->notes ?? '') . ' ' . ($booking->notes ?? ''));
                             if (str_contains($rawType, 'WNA')) {
                                 $isWna = true;
                             }
@@ -240,7 +253,7 @@
                                 $metodeKategoriText = trim($method . ' - ' . ($cleanCat ?: 'Reguler Umum'), ' -');
                             }
                         @endphp
-                        <tr class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 cursor-pointer" @click="openDetail({{ json_encode($bookingData) }})">
+                        <tr class="table-row-clickable hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 cursor-pointer" onclick="window.location='{{ route('bookings.show', $booking) }}'">
                             {{-- 1. ID --}}
                             <td class="px-6 py-3.5 text-black font-medium whitespace-nowrap">
                                 {{ $booking->id }}
@@ -249,7 +262,7 @@
                             {{-- 2. Tanggal & Waktu Konseling --}}
                             <td class="px-6 py-3.5 text-black font-medium whitespace-nowrap">
                                 @if($booking->tanggal_dijadwalkan)
-                                    {{ $booking->tanggal_dijadwalkan->locale('id')->translatedFormat('d F Y') }}
+                                    {{ $booking->tanggal_dijadwalkan->format('d/m/Y') }}
                                 @else
                                     <span class="text-gray-400 font-medium">-</span>
                                 @endif
@@ -286,7 +299,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-10 text-center text-gray-400 font-medium">Belum ada data booking layanan konseling.</td>
+                            <td colspan="7" class="px-6 py-10 text-center text-gray-400 font-medium">Belum ada data booking layanan konseling.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -299,10 +312,5 @@
         </div>
         @endif
     </div>
-
-    @include('bookings.partials.detail-modal')
-    @include('bookings.partials.confirm-modal')
 </div>
-
-@include('bookings.partials.script')
 @endsection

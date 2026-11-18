@@ -57,6 +57,15 @@
 
         <div class="flex flex-wrap items-center gap-3">
             <span class="px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200 text-xs font-medium text-black">
+                Status:
+                {{ match($booking->status) {
+                    'selesai' => 'Selesai',
+                    'batal' => 'Dibatalkan',
+                    default => 'Berjalan',
+                } }}
+            </span>
+
+            <span class="px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200 text-xs font-medium text-black">
                 Google Calendar:
                 @if($booking->gcal_sync_status === 'synced')
                     Tersinkron ({{ $booking->last_gcal_synced_at ? $booking->last_gcal_synced_at->locale('id')->isoFormat('D MMMM Y, HH:mm') : '-' }})
@@ -101,12 +110,18 @@
                                 </span>
                             </p>
                         </div>
-                        <form method="POST" action="{{ route('psychotest-bookings.candidate.kilat-sent', [$booking, $kc]) }}">
-                            @csrf
-                            <button type="submit" class="w-full px-4 py-2 rounded-lg {{ $kc->kilat_sent_at ? 'bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-50' : 'bg-purple-deep hover:bg-purple-deep/90 text-white' }} text-xs font-semibold shadow-xs cursor-pointer">
-                                {{ $kc->kilat_sent_at ? 'Batalkan Kirim Kilat' : 'Tandai Kilat Terkirim' }}
-                            </button>
-                        </form>
+                        @if($isAdmin)
+                            <form method="POST" action="{{ route('psychotest-bookings.candidate.kilat-sent', [$booking, $kc]) }}">
+                                @csrf
+                                <button type="submit" class="w-full px-4 py-2 rounded-lg {{ $kc->kilat_sent_at ? 'bg-white border border-[#D9C2F0] text-purple-deep hover:bg-purple-50' : 'bg-purple-deep hover:bg-purple-deep/90 text-white' }} text-xs font-semibold shadow-xs cursor-pointer">
+                                    {{ $kc->kilat_sent_at ? 'Batalkan Kirim Kilat' : 'Tandai Kilat Terkirim' }}
+                                </button>
+                            </form>
+                        @else
+                            <div class="text-xs font-medium text-slate-500 pt-1">
+                                {{ $kc->kilat_sent_at ? 'Sudah ditandai terkirim oleh Admin.' : 'Menunggu konfirmasi kirim oleh Admin.' }}
+                            </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -175,15 +190,16 @@
                         <th class="px-3 py-3.5 text-center font-semibold whitespace-nowrap">Editing</th>
                         <th class="px-3 py-3.5 text-center font-semibold whitespace-nowrap">Cetak</th>
                         <th class="px-3 py-3.5 text-center font-semibold whitespace-nowrap">Approval</th>
-                        <th class="px-3 py-3.5 text-center font-semibold whitespace-nowrap">Kirim</th>
+                        @if($booking->delivery_mode === 'both')
+                            <th class="px-3 py-3.5 text-center font-semibold whitespace-nowrap">Softcopy</th>
+                        @endif
+                        <th class="px-3 py-3.5 text-center font-semibold whitespace-nowrap">{{ $booking->delivery_mode === 'both' ? 'Kirim (Hardcopy & Invoice)' : 'Kirim' }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#F3EAFB]">
                     @forelse($booking->candidates as $cand)
                         @php
-                            $canAttendance = $isAdmin
-                                || ($user->isPsikolog() && $user->counselor_id && (int) $cand->assigned_psikolog_id === (int) $user->counselor_id)
-                                || ($user->isStaff() && $booking->assignees->where('role_type', 'tester')->where('user_id', $user->id)->isNotEmpty());
+                            $canAttendance = $workflowService->canUserManageCandidateAttendance($user, $booking, $cand);
 
                             $steps = [
                                 'psikotes' => ['applicable' => true, 'at' => $cand->step_psikotes_at],
@@ -220,7 +236,15 @@
                             <td class="px-4 py-3.5 text-black text-xs font-medium whitespace-nowrap">
                                 {{ $cand->assignedPsikolog?->name ?? '-' }}
                                 <span class="block text-[11px] {{ $cand->isPsychologistReportOverdue() ? 'text-red-600' : 'text-slate-500' }} font-medium">
-                                    {{ $cand->isAbsent() ? 'Gugur (Absen)' : ($cand->psychologist_deadline_date ? $cand->psychologist_deadline_date->format('d/m/Y') . ($cand->isPsychologistReportOverdue() ? ' (Terlambat)' : '') : '-') }}
+                                    @if($cand->isAbsent())
+                                        Gugur (Absen)
+                                    @elseif($cand->is_kilat && $cand->kilat_sent_at)
+                                        Terkirim (KILAT)
+                                    @elseif($cand->psychologist_deadline_date)
+                                        {{ $cand->psychologist_deadline_date->format('d/m/Y') . ($cand->isPsychologistReportOverdue() ? ' (Terlambat)' : '') }}
+                                    @else
+                                        -
+                                    @endif
                                 </span>
                             </td>
                             <td class="px-4 py-3.5 text-black text-xs font-medium whitespace-nowrap">{{ $cand->assignedEditor?->name ?? '-' }}</td>
@@ -229,6 +253,22 @@
                             </td>
 
                             @foreach($steps as $stepKey => $stepMeta)
+                                @if($stepKey === 'kirim' && $booking->delivery_mode === 'both')
+                                    <td class="px-3 py-3.5 text-center whitespace-nowrap">
+                                        @if($cand->isAbsent())
+                                            <span class="text-slate-400 text-xs font-medium">-</span>
+                                        @elseif($isAdmin)
+                                            <form method="POST" action="{{ route('psychotest-bookings.candidate.softcopy-sent', [$booking, $cand]) }}">
+                                                @csrf
+                                                <button type="submit" class="px-2.5 py-1 rounded-lg {{ $cand->softcopy_sent_at ? 'bg-purple-deep text-white' : 'bg-white border border-[#D9C2F0] text-black hover:text-purple-deep' }} text-xs font-medium cursor-pointer" title="Centang jika Softcopy sudah dikirim via email (tanggal kirim final tetap mengikuti Hardcopy + Invoice)">
+                                                    {{ $cand->softcopy_sent_at ? '✓' : 'Centang' }}
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="text-xs font-medium text-black">{{ $cand->softcopy_sent_at ? '✓' : '-' }}</span>
+                                        @endif
+                                    </td>
+                                @endif
                                 <td class="px-3 py-3.5 text-center whitespace-nowrap">
                                     @if($cand->isAbsent() && $stepKey !== 'psikotes')
                                         <span class="text-slate-400 text-xs font-medium">-</span>
@@ -256,8 +296,8 @@
                                         @else
                                             <span class="text-xs font-medium text-black">{{ $isDone ? '✓' : '-' }}</span>
                                         @endif
-                                        @if($stepKey === 'kirim' && $isDone && $cand->resi_number)
-                                            <span class="block text-[10px] text-slate-500 font-medium mt-0.5">{{ $cand->resi_number }}</span>
+                                        @if($stepKey === 'kirim' && $isDone && ($cand->resi_number || $cand->resi_date))
+                                            <span class="block text-[10px] text-slate-500 font-medium mt-0.5">{{ trim(($cand->resi_date ? $cand->resi_date->format('d/m/Y') : '') . ($cand->resi_number ? ' · ' . $cand->resi_number : ''), ' ·') }}</span>
                                         @endif
                                     @endif
                                 </td>
@@ -265,7 +305,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="13" class="px-6 py-8 text-center text-slate-400 text-xs font-medium">Belum ada kandidat tercatat pada booking ini.</td>
+                            <td colspan="{{ $booking->delivery_mode === 'both' ? 14 : 13 }}" class="px-6 py-8 text-center text-slate-400 text-xs font-medium">Belum ada kandidat tercatat pada booking ini.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -312,6 +352,16 @@
                         <span class="text-xs font-medium text-slate-500 mb-1 block">Perlu Surat Keluar?</span>
                         <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">{{ $booking->requires_outgoing_letter ? 'Ya (Wajib)' : 'Tidak Perlu' }}</div>
                     </div>
+                    <div class="sm:col-span-2">
+                        <span class="text-xs font-medium text-slate-500 mb-1 block">Status Booking Psikotes</span>
+                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black">
+                            {{ match($booking->status) {
+                                'selesai' => 'Selesai',
+                                'batal' => 'Dibatalkan',
+                                default => 'Berjalan',
+                            } }}
+                        </div>
+                    </div>
                 </div>
 
                 @if($isAdmin)
@@ -354,6 +404,15 @@
                                     <input type="checkbox" name="requires_outgoing_letter" value="1" {{ $booking->requires_outgoing_letter ? 'checked' : '' }} class="w-4 h-4 rounded border-slate-300 text-purple-deep">
                                     <span class="text-sm font-medium text-black">Perlu Surat Keluar?</span>
                                 </label>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="text-xs font-medium text-slate-500 mb-1 block">Status Booking Psikotes</label>
+                                <select name="status" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
+                                    <option value="baru" {{ $booking->status === 'baru' ? 'selected' : '' }}>Berjalan</option>
+                                    <option value="selesai" {{ $booking->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                    <option value="batal" {{ $booking->status === 'batal' ? 'selected' : '' }}>Dibatalkan (Batal)</option>
+                                </select>
+                                <p class="text-[11px] font-medium text-slate-500 mt-1">Mengubah status menjadi Dibatalkan akan melepas formulir kandidat kembali ke antrean Belum Dibooking dan menghapus jadwal dari Google Calendar.</p>
                             </div>
                         </div>
                         <div class="flex justify-end">
@@ -573,12 +632,16 @@
                                         <td class="px-4 py-2.5 text-xs font-medium text-black">{{ $cand->candidate_name }}</td>
                                         @if(!$booking->isSpecialNonIndustri())
                                             <td class="px-4 py-2.5">
-                                                <select name="candidate_psikolog[{{ $cand->id }}]" class="w-full px-3 py-1.5 rounded-lg border border-[#D9C2F0] bg-white text-xs font-medium text-black">
-                                                    <option value="">-- Pilih Psikolog --</option>
-                                                    @foreach($counselors as $c)
-                                                        <option value="{{ $c->id }}" {{ (int) $cand->assigned_psikolog_id === $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                                @if(!$cand->isSpecialPackage())
+                                                    <select name="candidate_psikolog[{{ $cand->id }}]" class="w-full px-3 py-1.5 rounded-lg border border-[#D9C2F0] bg-white text-xs font-medium text-black">
+                                                        <option value="">-- Pilih Psikolog --</option>
+                                                        @foreach($counselors as $c)
+                                                            <option value="{{ $c->id }}" {{ (int) $cand->assigned_psikolog_id === $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @else
+                                                    <span class="text-xs font-medium text-slate-400">Khusus (Admin)</span>
+                                                @endif
                                             </td>
                                         @endif
                                         <td class="px-4 py-2.5">
@@ -635,6 +698,9 @@
                         <label class="text-xs font-medium text-slate-500 mb-1 block">Nomor Resi Ekspedisi *</label>
                         <input type="text" name="resi_number" x-model="resiNumber" required placeholder="Contoh: J00123456789" class="w-full px-3.5 py-2.5 rounded-lg border border-[#D9C2F0] bg-white text-sm font-medium text-black min-h-[42px]">
                     </div>
+                    @if($booking->delivery_mode === 'both')
+                        <p class="text-[11px] font-medium text-slate-500">Untuk metode Softcopy &amp; Hardcopy, tanggal kirim resmi mengikuti pengiriman fisik Hardcopy (+ Invoice).</p>
+                    @endif
                     <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
                         <button type="button" @click="resiModalOpen = false" class="px-5 py-2.5 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-sm shadow-xs cursor-pointer">Batal</button>
                         <button type="submit" class="px-5 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-sm shadow-xs cursor-pointer inline-flex items-center gap-2">

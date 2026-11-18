@@ -19,6 +19,33 @@
     counselingKlien: '{{ old('counseling_klien', '') }}',
     counselingKategori: '{{ old('counseling_kategori', '') }}',
 
+    // Katalog Psikotes Resmi & Master Perusahaan
+    psikotesCatalog: @js(config('service_catalog.psikotes')),
+    companiesList: @js(($companies ?? collect())->map(fn($c) => ['id' => $c->id, 'name' => $c->name, 'pic_name' => $c->pic_name, 'category' => $c->category])->values()),
+    companyId: '{{ old('company_id', '') }}',
+    picName: '{{ old('pic_name', '') }}',
+    requiresOutgoingLetter: {{ old('requires_outgoing_letter') ? 'true' : 'false' }},
+    isKilat: {{ old('is_kilat') ? 'true' : 'false' }},
+    psikotesTier: '{{ old('service_tier', 'industri') }}',
+    psikotesPackageKey: '{{ old('service_package_key', 'short_staf_umum') }}',
+
+    get psikotesPackagesForTier() {
+        return this.psikotesCatalog?.[this.psikotesTier]?.packages || {};
+    },
+
+    get psikotesSelectedPackage() {
+        return this.psikotesPackagesForTier?.[this.psikotesPackageKey] || null;
+    },
+
+    get psikotesUnitPrice() {
+        return Number(this.psikotesSelectedPackage?.price || 0);
+    },
+
+    onPsikotesTierChange() {
+        const keys = Object.keys(this.psikotesPackagesForTier);
+        this.psikotesPackageKey = keys[0] || '';
+    },
+
     get isCounselingConfigured() {
         return Boolean(this.counselingJenis && this.counselingMetode && this.counselingKlien && this.counselingKategori);
     },
@@ -88,6 +115,10 @@
         this.counselingKlien = '';
         this.counselingKategori = '';
         this.sessionType = '';
+        this.companyId = '';
+        this.picName = '';
+        this.requiresOutgoingLetter = false;
+        this.isKilat = false;
         const initialClientId = (typeof detail === 'object' && detail !== null) ? detail.client_id : detail;
         const requestedCategory = (typeof detail === 'object' && detail !== null) ? detail.category : null;
 
@@ -130,7 +161,7 @@
         this.selectClient(client);
     },
 
-    selectClient(client) {
+    selectClient(client, applyDefaults = true) {
         this.selectedClient = client;
         this.clientId = client.id;
         this.showClientSelector = false;
@@ -138,6 +169,22 @@
             this.jenis = (client.jenis === 'industri' || client.jenis === 'company') ? 'industri' : 'individu';
         } else {
             this.jenis = 'individu';
+        }
+
+        if (applyDefaults) {
+            this.psikotesTier = this.jenis === 'industri' ? 'industri' : 'non_industri_bakat_minat';
+            this.onPsikotesTierChange();
+            if (client.pic_name && !this.picName) {
+                this.picName = client.pic_name;
+            }
+            const cName = (client.company_name || client.name || '').toLowerCase();
+            const matchedCompany = (this.companiesList || []).find(co => (co.name || '').toLowerCase() === cName);
+            if (matchedCompany) {
+                this.companyId = String(matchedCompany.id);
+                if (!this.picName && matchedCompany.pic_name) {
+                    this.picName = matchedCompany.pic_name;
+                }
+            }
         }
 
         if (this.lockCategory) {
@@ -161,11 +208,22 @@
         }
     },
 
+    onCompanyModalChange() {
+        const matched = (this.companiesList || []).find(c => String(c.id) === String(this.companyId));
+        if (matched && matched.pic_name && !this.picName) {
+            this.picName = matched.pic_name;
+        }
+    },
+
     clearClient() {
         this.selectedClient = null;
         this.clientId = '';
         this.searchQuery = '';
         this.jenis = 'individu';
+        this.companyId = '';
+        this.picName = '';
+        this.requiresOutgoingLetter = false;
+        this.isKilat = false;
         this.showClientSelector = true;
         this.counselingJenis = '';
         this.counselingMetode = '';
@@ -236,7 +294,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                 <div class="p-6 sm:p-8 overflow-y-auto space-y-6 text-black bg-white flex-1 custom-scrollbar">
 
                     {{-- ERROR SUMMARY ALERT --}}
-                    @if($errors->any() && session('booking_modal_error'))
+                    @if($errors->any() && (old('from_modal') || session('booking_modal_error')))
                     <div class="bg-red-50 border border-red-200 rounded-xl p-4.5 shadow-xs mb-2">
                         <div class="flex items-start gap-3">
                             <div class="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-xs">
@@ -265,18 +323,18 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                         {{-- CARD: FORMULIR TERAKHIR YANG DIISI                        --}}
                         {{-- ========================================================= --}}
                         <template x-if="selectedClient">
-                            <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                            <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                 <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                     <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                         <span>Formulir Terakhir yang Diisi</span>
                                     </h4>
                                 </div>
                                 <div class="p-5 sm:p-6">
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 flex items-center justify-between gap-4">
+                                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 flex items-center justify-between gap-4">
                                         <template x-if="selectedClient.latest_form_type_label">
                                             <div class="flex items-center justify-between gap-4 w-full">
-                                                <p class="text-base font-medium text-black" x-text="selectedClient.latest_form_type_label"></p>
-                                                <p class="text-base font-medium text-slate-600 shrink-0" x-text="'Waktu Pengisian: ' + (selectedClient.latest_form_date || '-')"></p>
+                                                <p class="text-sm font-medium text-black" x-text="selectedClient.latest_form_type_label"></p>
+                                                <p class="text-sm font-medium text-black shrink-0" x-text="'Waktu Pengisian: ' + (selectedClient.latest_form_date || '-')"></p>
                                             </div>
                                         </template>
                                         <template x-if="!selectedClient.latest_form_type_label">
@@ -290,7 +348,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                         {{-- ========================================================= --}}
                         {{-- CARD 1: INFORMASI KLIEN TERDAFTAR (PENATAAN VERTIKAL)      --}}
                         {{-- ========================================================= --}}
-                        <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                        <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                             <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                 <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                     <span>Pilih Klien Terdaftar</span>
@@ -468,7 +526,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- ========================================================= --}}
                             {{-- CARD 2: PAKET LAYANAN (PENATAAN VERTIKAL)                 --}}
                             {{-- ========================================================= --}}
-                            <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                            <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                 <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                     <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                         PAKET LAYANAN
@@ -476,20 +534,20 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                 </div>
 
                                 <div class="p-5 sm:p-6 space-y-4">
-                                    {{-- Subcard 1: Format / Nama Layanan (Teks Bold Polos) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-1.5">
-                                        <label class="block text-sm font-semibold text-slate-700">Layanan</label>
-                                        <p class="text-base font-medium text-black" x-text="serviceType === 'psikotes' ? 'Psikotes' : 'Konseling'">Konseling</p>
+                                    {{-- Subcard 1: Format / Nama Layanan --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">Layanan</label>
+                                        <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="serviceType === 'psikotes' ? 'Psikotes' : 'Konseling'">Konseling</div>
                                     </div>
 
                                     {{-- KONDISI 1: FORMULASI DROPDOWN BERJENJANG KHUSUS KONSELING --}}
                                     <template x-if="serviceType === 'konseling'">
                                         <div class="space-y-4">
                                             {{-- Dropdown 1: Jenis (Pro / Reguler) --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                                <label class="block text-sm font-semibold text-slate-700">Jenis</label>
-                                                <select x-model="counselingJenis"
-                                                    class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Jenis <span class="text-red-500">*</span></label>
+                                                <select x-model="counselingJenis" :required="serviceType === 'konseling'"
+                                                    class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                                     <option value="">Pilih Jenis...</option>
                                                     <option value="Pro">Pro</option>
                                                     <option value="Reguler">Reguler</option>
@@ -497,10 +555,10 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                             </div>
 
                                             {{-- Dropdown 2: Metode (Offline / Online) --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                                <label class="block text-sm font-semibold text-slate-700">Metode</label>
-                                                <select x-model="counselingMetode" @change="sessionType = (counselingMetode === 'Offline' ? 'tatap_muka' : (counselingMetode === 'Online' ? 'online' : ''))"
-                                                    class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Metode <span class="text-red-500">*</span></label>
+                                                <select x-model="counselingMetode" :required="serviceType === 'konseling'" @change="sessionType = (counselingMetode === 'Offline' ? 'tatap_muka' : (counselingMetode === 'Online' ? 'online' : ''))"
+                                                    class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                                     <option value="">Pilih Metode...</option>
                                                     <option value="Offline">Offline</option>
                                                     <option value="Online">Online</option>
@@ -508,10 +566,10 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                             </div>
 
                                             {{-- Dropdown 3: Klien (WNI / WNA) --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                                <label class="block text-sm font-semibold text-slate-700">Klien</label>
-                                                <select x-model="counselingKlien"
-                                                    class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Klien <span class="text-red-500">*</span></label>
+                                                <select x-model="counselingKlien" :required="serviceType === 'konseling'"
+                                                    class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                                     <option value="">Pilih Klien...</option>
                                                     <option value="WNI">WNI</option>
                                                     <option value="WNA">WNA</option>
@@ -519,32 +577,33 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                             </div>
 
                                             {{-- Dropdown 4: Kategori (Umum / Kerja Sama) --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                                <label class="block text-sm font-semibold text-slate-700">Kategori</label>
-                                                <select x-model="counselingKategori"
-                                                    class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Kategori <span class="text-red-500">*</span></label>
+                                                <select x-model="counselingKategori" :required="serviceType === 'konseling'"
+                                                    class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                                     <option value="">Pilih Kategori...</option>
                                                     <option value="Umum">Umum</option>
-                                                    <option value="Kerja Sama">Kerja Sama</option>
+                                                    <option value="Kerja Sama">Kerja Sama (Civitas UC Aktif: Mahasiswa / Karyawan)</option>
                                                 </select>
+                                                <p class="text-[11px] font-medium text-slate-500 mt-1">Tarif Kerja Sama konseling berlaku untuk civitas UC aktif dengan pembayaran personal H-1.</p>
                                             </div>
 
                                             {{-- Field Akhir: Layanan Lengkap yang Dipilih --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-1.5">
-                                                <label class="block text-sm font-semibold text-slate-700">Layanan Lengkap yang Dipilih</label>
-                                                <p class="text-base font-medium text-black" x-text="fullCounselingTitle"></p>
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Layanan Lengkap yang Dipilih</label>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="fullCounselingTitle"></div>
                                             </div>
 
                                             {{-- Tarif / Sesi --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-1.5">
-                                                <label class="block text-sm font-semibold text-slate-700">Tarif / Sesi</label>
-                                                <p class="text-base font-medium text-black" x-text="formatRupiah(counselingPrice)"></p>
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Tarif / Sesi</label>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="formatRupiah(counselingPrice)"></div>
                                             </div>
 
                                             {{-- Overtime --}}
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-1.5">
-                                                <label class="block text-sm font-semibold text-slate-700">Overtime</label>
-                                                <p class="text-base font-medium text-black" x-text="formatRupiah(counselingOvertime)"></p>
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Overtime</label>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="formatRupiah(counselingOvertime)"></div>
                                             </div>
 
                                             <input type="hidden" name="counseling_type" :value="isCounselingConfigured ? fullCounselingTitle : ''">
@@ -556,22 +615,88 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                     {{-- KONDISI 2: JIKA KATEGORI PSIKOTES --}}
                                     <template x-if="serviceType === 'psikotes'">
                                         <div class="space-y-4">
-                                            <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                                <label class="block text-sm font-semibold text-slate-700">Pilih Paket Layanan Spesifik</label>
-                                                <select name="counseling_type"
-                                                    class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
-                                                    <option value="">-- Pilih Paket Layanan Spesifik --</option>
-                                                    <option value="Tes IQ & Intelegensi (Kognitif)">Tes IQ & Intelegensi (Kognitif)</option>
-                                                    <option value="Tes Kepribadian (Personality Profile)">Tes Kepribadian (Personality Profile)</option>
-                                                    <option value="Tes Minat & Bakat (Career Guidance)">Tes Minat & Bakat (Career Guidance)</option>
-                                                    <option value="Tes Kesiapan Masuk Sekolah (TK / SD)">Tes Kesiapan Masuk Sekolah (TK / SD)</option>
-                                                    <option value="Pemeriksaan Psikologis Klinis Komprehensif">Pemeriksaan Psikologis Klinis Komprehensif</option>
-                                                    <option value="Asesmen Rekrutmen & Seleksi Karyawan">Asesmen Rekrutmen & Seleksi Karyawan</option>
-                                                    <option value="Asesmen Promosi Jabatan & Leadership">Asesmen Promosi Jabatan & Leadership</option>
-                                                    <option value="Pemetaan Potensi & Kompetensi SDM">Pemetaan Potensi & Kompetensi SDM</option>
-                                                    <option value="Asesmen Massal Calon Karyawan (Batch)">Asesmen Massal Calon Karyawan (Batch)</option>
+                                            <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                                <p class="text-xs font-medium text-slate-600">
+                                                    Untuk batch multi-kandidat, multi-paket, dan penugasan 5 peran lengkap, gunakan halaman Buat Booking Psikotes.
+                                                </p>
+                                                <a href="{{ route('psychotest-bookings.create') }}" class="px-3.5 py-2 rounded-lg bg-purple-deep text-white text-xs font-semibold hover:bg-purple-deep/90 whitespace-nowrap text-center">
+                                                    Buka Form Psikotes Batch →
+                                                </a>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Klasifikasi Psikotes</label>
+                                                <select name="service_tier" x-model="psikotesTier" @change="onPsikotesTierChange()"
+                                                    class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+                                                    <option value="industri">Psikotes Industri</option>
+                                                    <option value="non_industri_bakat_minat">Psikotes Non-Industri Bakat Minat Biasa</option>
+                                                    <option value="non_industri_khusus">Psikotes Non-Industri Khusus</option>
                                                 </select>
                                             </div>
+
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Paket &amp; Tarif Resmi</label>
+                                                <select name="service_package_key" x-model="psikotesPackageKey"
+                                                    class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+                                                    <template x-for="(pkg, pKey) in psikotesPackagesForTier" :key="pKey">
+                                                        <option :value="pKey" x-text="pkg.label"></option>
+                                                    </template>
+                                                </select>
+                                            </div>
+
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" x-show="jenis === 'industri' || jenis === 'company'">
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Perusahaan</label>
+                                                    <select name="company_id" x-model="companyId" @change="onCompanyModalChange()" class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] bg-white">
+                                                        <option value="">-- Pilih Perusahaan --</option>
+                                                        @foreach(($companies ?? collect()) as $company)
+                                                            <option value="{{ $company->id }}">{{ $company->name }} ({{ $company->category === 'kerja_sama' ? 'Kerja Sama' : 'Umum' }})</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Nama PIC Perusahaan</label>
+                                                    <input type="text" name="pic_name" x-model="picName" placeholder="Nama kontak PIC..." class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] bg-white">
+                                                </div>
+                                            </div>
+
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Skema Penagihan</label>
+                                                    <select name="billing_scheme" class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] bg-white">
+                                                        <option value="v">Reguler / Invoice (v)</option>
+                                                        <option value="I">Rekap Internal UCS (I)</option>
+                                                        <option value="R">Rekap Perusahaan (R)</option>
+                                                        <option value="-">Gratis / Deal Khusus (-)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-xs font-medium text-slate-500 mb-1">Pengiriman Hasil</label>
+                                                    <select name="delivery_mode" class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] bg-white">
+                                                        <option value="softcopy">Softcopy</option>
+                                                        <option value="hardcopy">Hardcopy</option>
+                                                        <option value="both">Softcopy &amp; Hardcopy</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                <label class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 flex items-center gap-2.5 cursor-pointer">
+                                                    <input type="checkbox" name="requires_outgoing_letter" value="1" x-model="requiresOutgoingLetter" class="w-4 h-4 rounded border-slate-300 text-purple-deep">
+                                                    <span class="text-sm font-medium text-black">Perlu Surat Keluar?</span>
+                                                </label>
+                                                <label class="bg-slate-50 border border-slate-100 rounded-lg p-3.5 flex items-center gap-2.5 cursor-pointer">
+                                                    <input type="checkbox" name="is_kilat" value="1" x-model="isKilat" class="w-4 h-4 rounded border-slate-300 text-purple-deep">
+                                                    <span class="text-sm font-medium text-black">Prioritas KILAT (Maks 1/Psikolog/Hari)</span>
+                                                </label>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-xs font-medium text-slate-500 mb-1">Tarif Dasar / Peserta (Sebelum PPN &amp; PPh)</label>
+                                                <div class="px-3.5 py-2.5 bg-slate-50 rounded-lg border border-slate-100 min-h-[42px] flex items-center text-sm font-medium text-black" x-text="formatRupiah(psikotesUnitPrice)"></div>
+                                            </div>
+
+                                            <input type="hidden" name="counseling_type" :value="psikotesSelectedPackage?.label || ''">
                                         </div>
                                     </template>
                                 </div>
@@ -580,7 +705,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- ========================================================= --}}
                             {{-- CARD 3: PENUGASAN PELAKSANA (PENATAAN VERTIKAL)           --}}
                             {{-- ========================================================= --}}
-                            <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                            <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                 <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                     <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                         <span x-text="serviceType === 'konseling' ? 'Penugasan Psikolog Bertugas' : 'Penugasan Tim Penguji & Skoring'"></span>
@@ -588,14 +713,14 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                 </div>
 
                                 <div class="p-5 sm:p-6 space-y-4">
-                                    {{-- Penugasan Konseling --}}
-                                    <div x-show="serviceType === 'konseling'" class="space-y-4">
-                                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                            <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Penugasan Psikolog (Konseling & Psikotes Non-Khusus) --}}
+                                    <div x-show="serviceType === 'konseling' || (serviceType === 'psikotes' && psikotesTier !== 'non_industri_khusus')" class="space-y-4">
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">
                                                 Pilih Psikolog Bertugas
                                             </label>
-                                            <select name="counselor_id"
-                                                class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            <select name="counselor_id" :disabled="serviceType === 'psikotes' && psikotesTier === 'non_industri_khusus'"
+                                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                                 <option value="">-- Pilih Psikolog --</option>
                                                 @foreach($counselors as $counselor)
                                                 <option value="{{ $counselor->id }}" {{ old('counselor_id') == $counselor->id ? 'selected' : '' }}>
@@ -608,33 +733,44 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
 
                                     {{-- Penugasan Psikotes (Vertikal Penuh) --}}
                                     <div x-show="serviceType === 'psikotes'" class="space-y-4">
-                                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                            <label class="block text-sm font-semibold text-slate-700">Staff Penguji / Tester</label>
-                                            <select name="staff_penguji_id"
-                                                class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
-                                                <option value="">-- Pilih Staff Penguji --</option>
+                                        <div x-show="psikotesTier !== 'non_industri_khusus'">
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Tester (Staff)</label>
+                                            <select name="staff_penguji_id" :disabled="psikotesTier === 'non_industri_khusus'"
+                                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+                                                <option value="">-- Pilih Tester --</option>
                                                 @foreach($staffs as $staff)
                                                 <option value="{{ $staff->id }}" {{ old('staff_penguji_id') == $staff->id ? 'selected' : '' }}>{{ $staff->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
 
-                                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                            <label class="block text-sm font-semibold text-slate-700">Staff Koreksi / Skoring</label>
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Skorer Manual (Staff)</label>
                                             <select name="staff_koreksi_id"
-                                                class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
-                                                <option value="">-- Pilih Staff Koreksi --</option>
+                                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+                                                <option value="">-- Pilih Skorer Manual --</option>
                                                 @foreach($staffs as $staff)
                                                 <option value="{{ $staff->id }}" {{ old('staff_koreksi_id') == $staff->id ? 'selected' : '' }}>{{ $staff->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
 
-                                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                            <label class="block text-sm font-semibold text-slate-700">Staff Pelapor / Pembuat Hasil</label>
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Skorer Software (Staff)</label>
+                                            <select name="staff_koreksi_software_id"
+                                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+                                                <option value="">-- Pilih Skorer Software --</option>
+                                                @foreach($staffs as $staff)
+                                                <option value="{{ $staff->id }}" {{ old('staff_koreksi_software_id') == $staff->id ? 'selected' : '' }}>{{ $staff->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-xs font-medium text-slate-500 mb-1">Editor Laporan (Staff)</label>
                                             <select name="staff_pelapor_id"
-                                                class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
-                                                <option value="">-- Pilih Staff Pelapor --</option>
+                                                class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+                                                <option value="">-- Pilih Editor --</option>
                                                 @foreach($staffs as $staff)
                                                 <option value="{{ $staff->id }}" {{ old('staff_pelapor_id') == $staff->id ? 'selected' : '' }}>{{ $staff->name }}</option>
                                                 @endforeach
@@ -647,57 +783,57 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- ========================================================= --}}
                             {{-- CARD 4: JADWAL, WAKTU & LOKASI SESI (PENATAAN VERTIKAL)   --}}
                             {{-- ========================================================= --}}
-                            <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                            <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                 <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                     <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
-                                        <span>Jadwal, Waktu & Lokasi Sesi</span>
+                                        <span>Jadwal, Waktu &amp; Lokasi Sesi</span>
                                     </h4>
                                 </div>
 
                                 <div class="p-5 sm:p-6 space-y-4">
-                                    {{-- Field 1: Tanggal Permintaan Booking (Full Width) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                        <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Field 1: Tanggal Permintaan Booking --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">
                                             Tanggal Permintaan Booking
                                         </label>
                                         <input type="date" name="tanggal_booking_dibuat" :min="today" value="{{ old('tanggal_booking_dibuat') }}"
-                                            class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                     </div>
 
-                                    {{-- Field 2: Tanggal Sesi Dijadwalkan (Full Width) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                        <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Field 2: Tanggal Sesi Dijadwalkan --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">
                                             Tanggal Sesi Dijadwalkan
                                         </label>
                                         <input type="date" name="tanggal_dijadwalkan" :min="today" value="{{ old('tanggal_dijadwalkan') }}"
-                                            class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                     </div>
 
-                                    {{-- Field 3: Jam Mulai Sesi (Full Width) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                        <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Field 3: Jam Mulai Sesi --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">
                                             Jam Mulai Sesi
                                         </label>
                                         <input type="time" name="start_time" value="{{ old('start_time') }}"
-                                            class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                     </div>
 
-                                    {{-- Field 4: Jam Selesai Sesi (Full Width) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                        <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Field 4: Jam Selesai Sesi --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">
                                             Jam Selesai Sesi
                                         </label>
                                         <input type="time" name="end_time" value="{{ old('end_time') }}"
-                                            class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                     </div>
 
-                                    {{-- Field 5: Metode Pertemuan / Sesi (Full Width) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                        <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Field 5: Metode Pertemuan / Sesi --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">
                                             Metode Pertemuan / Sesi
                                         </label>
                                         <select name="session_type" x-model="sessionType"
-                                            class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                             <option value="">-- Pilih Metode Pertemuan --</option>
                                             <option value="tatap_muka">Tatap Muka (Offline di Ruang PSC)</option>
                                             <option value="online">Online (Google Meet / Zoom)</option>
@@ -705,14 +841,14 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                         </select>
                                     </div>
 
-                                    {{-- Field 6: Ruangan / Lokasi / Link Meeting (Full Width) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                        <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Field 6: Ruangan / Lokasi / Link Meeting --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">
                                             Ruangan / Lokasi / Link Meeting
                                         </label>
                                         <input type="text" name="location" value="{{ old('location') }}" 
                                             :placeholder="sessionType === 'online' ? 'https://meet.google.com/xxx-xxxx-xxx' : 'Contoh: Ruang Konseling A / Lab Psikodiagnostik'"
-                                            class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
+                                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
                                     </div>
                                 </div>
                             </div>
@@ -720,36 +856,47 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- ========================================================= --}}
                             {{-- CARD 5: STATUS & CATATAN KHUSUS (PENATAAN VERTIKAL)       --}}
                             {{-- ========================================================= --}}
-                            <div class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                            <div class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                 <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA]">
                                     <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
-                                        <span>Status Layanan & Catatan Sesi</span>
+                                        <span>Status Layanan &amp; Catatan Sesi</span>
                                     </h4>
                                 </div>
 
                                 <div class="p-5 sm:p-6 space-y-4">
-                                    {{-- Field 1: Status Sesi Booking (Full Width) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                        <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Field 1: Status Sesi Booking --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">
                                             Status Sesi Booking
                                         </label>
                                         <select name="status"
-                                            class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">
-                                            <option value="">-- Pilih Status Booking --</option>
-                                            <option value="baru" {{ old('status', 'baru') === 'baru' ? 'selected' : '' }}>Baru (Terjadwal)</option>
-                                            <option value="lanjutan" {{ old('status') === 'lanjutan' ? 'selected' : '' }}>Lanjutan (Follow-up)</option>
-                                            <option value="selesai" {{ old('status') === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black min-h-[42px] focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">
+                                            <template x-if="serviceType === 'konseling'">
+                                                <optgroup label="Status Konseling">
+                                                    <option value="data_masuk">Data Masuk</option>
+                                                    <option value="waiting_list">Waiting List (Cari Konselor/Jadwal)</option>
+                                                    <option value="menunggu_konfirmasi">Sudah Dijadwalkan (Belum Konfirmasi)</option>
+                                                    <option value="terjadwal_gocal">Sudah Dijadwalkan &amp; Konfirmasi (GCal)</option>
+                                                </optgroup>
+                                            </template>
+                                            <template x-if="serviceType !== 'konseling'">
+                                                <optgroup label="Status Psikotes">
+                                                    <option value="baru">Berjalan (Terjadwal)</option>
+                                                    <option value="selesai">Selesai</option>
+                                                    <option value="batal">Dibatalkan</option>
+                                                </optgroup>
+                                            </template>
                                         </select>
-                                        <p class="text-sm text-slate-500 mt-1">Status akan menentukan alur kerja konselor dan penyiapan berkas.</p>
+                                        <p class="text-xs text-slate-500 mt-1">Status akan menentukan alur kerja konselor dan penyiapan berkas.</p>
                                     </div>
 
-                                    {{-- Field 2: Catatan Khusus Sesi (Full Width) --}}
-                                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 sm:p-5 space-y-2">
-                                        <label class="block text-sm font-semibold text-slate-700">
+                                    {{-- Field 2: Catatan Khusus Sesi --}}
+                                    <div>
+                                        <label class="block text-xs font-medium text-slate-500 mb-1">
                                             Catatan Khusus Sesi
                                         </label>
                                         <textarea name="notes" rows="3" placeholder="Informasi kebutuhan khusus klien, paket yang diambil, atau instruksi ruangan..."
-                                            class="w-full px-4 py-2.5 border border-[#D9C2F0] rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white font-medium text-black">{{ old('notes') }}</textarea>
+                                            class="w-full px-3.5 py-2.5 border border-[#D9C2F0] rounded-lg text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-purple-deep bg-white">{{ old('notes') }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -757,7 +904,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                             {{-- ========================================================= --}}
                             {{-- CARD 6: DAFTAR PESERTA ASESMEN (KHUSUS INDUSTRI)          --}}
                             {{-- ========================================================= --}}
-                            <div x-show="jenis === 'industri' || jenis === 'company'" class="bg-white rounded-xl border border-[#EDE1FA] shadow-xs overflow-hidden">
+                            <div x-show="jenis === 'industri' || jenis === 'company'" class="bg-white rounded-2xl border border-[#EDE1FA] shadow-xs overflow-hidden">
                                 <div class="px-5 sm:px-6 py-4 bg-purple-deep border-b border-[#EDE1FA] flex items-center justify-between">
                                     <h4 class="font-bold text-white text-sm sm:text-base uppercase tracking-wider">
                                         <span>Daftar Karyawan / Peserta Asesmen</span>
@@ -772,7 +919,7 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                                 <div class="p-5 sm:p-6 space-y-3">
                                     <template x-for="(p, i) in participants" :key="i">
                                         <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 sm:p-4 flex items-center gap-3">
-                                            <span class="text-sm font-bold text-slate-500 w-6" x-text="(i + 1) + '.'"></span>
+                                            <span class="text-sm font-medium text-slate-500 w-6" x-text="(i + 1) + '.'"></span>
                                             <input type="text" :name="'participants[' + i + ']'" x-model="participants[i]"
                                                 :disabled="jenis !== 'industri' && jenis !== 'company'"
                                                 placeholder="Nama lengkap karyawan / kandidat..."
@@ -792,11 +939,11 @@ aria-labelledby="modal-booking-title" role="dialog" aria-modal="true" x-cloak>
                         {{-- ========================================================= --}}
                         <div class="flex items-center justify-end gap-3 pt-4 border-t border-[#EDE1FA]">
                             <button type="button" @click="bookingModalOpen = false" 
-                                    class="px-5 py-2.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 font-semibold text-sm transition cursor-pointer">
+                                    class="px-5 py-2.5 rounded-lg bg-white hover:bg-purple-50 text-purple-deep font-semibold border border-[#D9C2F0] text-sm shadow-xs transition cursor-pointer">
                                 Batal
                             </button>
                             <button type="submit" 
-                                    class="px-6 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-800 text-white font-semibold text-sm transition shadow-md flex items-center gap-2 cursor-pointer">
+                                    class="px-6 py-2.5 rounded-lg bg-purple-deep hover:bg-purple-deep/90 text-white font-semibold text-sm transition shadow-xs flex items-center gap-2 cursor-pointer">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                                 <span>Simpan Jadwal Booking</span>
                             </button>
